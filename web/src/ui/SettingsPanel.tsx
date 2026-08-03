@@ -12,11 +12,21 @@ export interface GameSettings {
   /** Floating rank crests over every figure. */
   rankBadges: boolean;
   muted: boolean;
+  /**
+   * Safe rendering: no composer, no reflection probe, no shadow maps. The way
+   * out for drivers (mostly Linux/Mesa software rasterisers) that draw the hall
+   * completely black.
+   */
+  safeMode: boolean;
+  /** Exposure multiplier, 0.6–1.8. */
+  brightness: number;
 }
 
 interface SettingsPanelProps {
   settings: GameSettings;
   autoDetected: QualityPreset;
+  /** Driver line, e.g. `llvmpipe · WebGL2 · software`. */
+  gpu: string;
   fps: number;
   onChange: (settings: GameSettings) => void;
   onClose: () => void;
@@ -29,7 +39,7 @@ const PRESETS: { key: QualityPreset; label: string; note: string }[] = [
   { key: "ultra", label: "Ultra", note: "Ambient occlusion, 4K shadows, dense particles" },
 ];
 
-export function SettingsPanel({ settings, autoDetected, fps, onChange, onClose }: SettingsPanelProps) {
+export function SettingsPanel({ settings, autoDetected, gpu, fps, onChange, onClose }: SettingsPanelProps) {
   return (
     <div className="pointer-events-auto absolute inset-0 z-20 flex flex-col items-center justify-center overflow-hidden bg-black/60 px-5 py-6 backdrop-blur-sm">
       <div className="mc-slate mc-goldleaf mc-rise flex max-h-full w-full min-h-0 max-w-lg flex-col p-5 sm:p-6">
@@ -81,6 +91,33 @@ export function SettingsPanel({ settings, autoDetected, fps, onChange, onClose }
           Auto-detected on this device: <span className="text-[#c8ab74]">{autoDetected}</span>
           {fps > 0 ? ` · currently ${fps} FPS` : ""}
         </p>
+        {gpu ? <p className="mt-0.5 text-[0.68rem] text-[#6d6149]">Renderer: {gpu}</p> : null}
+
+        <div className="mc-rule my-5" />
+
+        <p className="mc-display mb-2 text-[0.6rem] tracking-[0.3em] text-[#a89268]">Picture</p>
+        <div className="flex items-center gap-3 py-1">
+          <span className="mc-display w-24 shrink-0 text-[0.72rem] text-[#efe0c0]">Brightness</span>
+          <input
+            type="range"
+            className="mc-slider flex-auto"
+            min={0.6}
+            max={1.8}
+            step={0.05}
+            value={settings.brightness}
+            onChange={(event) => onChange({ ...settings, brightness: Number(event.target.value) })}
+            aria-label="Brightness"
+          />
+          <span className="w-10 shrink-0 text-right text-xs text-[#c8ab74]">
+            {Math.round(settings.brightness * 100)}%
+          </span>
+        </div>
+        <Toggle
+          label="Safe rendering"
+          note="For a black or unlit hall — drops effects, reflections and shadows"
+          value={settings.safeMode}
+          onChange={(value) => onChange({ ...settings, safeMode: value })}
+        />
 
         <div className="mc-rule my-5" />
 

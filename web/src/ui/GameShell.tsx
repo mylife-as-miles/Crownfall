@@ -6,7 +6,7 @@ import type { LedgerMove } from "../core/types";
 import { Clapperboard } from "lucide-react";
 import { ARENA_LOOKS, DEFAULT_ARENA, type ArenaTheme } from "../scene/arena";
 import { detectQualityPreset, type QualityPreset } from "../scene/quality";
-import { SceneEngine, type CameraPreset } from "../scene/sceneEngine";
+import { SceneEngine, type CameraPreset, type ShowcaseCamera } from "../scene/sceneEngine";
 import { GameOverModal } from "./GameOverModal";
 import { Hud } from "./Hud";
 import { MainMenu, type MatchConfig } from "./MainMenu";
@@ -17,6 +17,41 @@ import "./medieval.css";
 type Phase = "loading" | "menu" | "playing";
 
 const ATTRACT_DELAY_MS = 30_000;
+const RENDER_PREFS_KEY = "kg.render";
+
+interface RenderPrefs {
+  safeMode: boolean;
+  brightness: number;
+}
+
+/**
+ * Safe rendering and brightness are remembered across visits, and `?safe=1`
+ * forces them on — a player whose driver blacks the hall out must not have to
+ * find the toggle again on every reload.
+ */
+function loadRenderPrefs(): RenderPrefs {
+  const fallback: RenderPrefs = { safeMode: false, brightness: 1 };
+  if (typeof window === "undefined") return fallback;
+  try {
+    const forced = new URLSearchParams(window.location.search).has("safe");
+    const raw = window.localStorage.getItem(RENDER_PREFS_KEY);
+    const stored = raw ? (JSON.parse(raw) as Partial<RenderPrefs>) : {};
+    return {
+      safeMode: forced || stored.safeMode === true,
+      brightness: typeof stored.brightness === "number" ? Math.min(1.8, Math.max(0.6, stored.brightness)) : 1,
+    };
+  } catch {
+    return fallback;
+  }
+}
+
+function saveRenderPrefs(prefs: RenderPrefs): void {
+  try {
+    window.localStorage.setItem(RENDER_PREFS_KEY, JSON.stringify(prefs));
+  } catch {
+    // Private browsing — the session still works, it just will not be remembered.
+  }
+}
 
 export function GameShell() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -27,6 +62,7 @@ export function GameShell() {
   const snapshot = useGameSnapshot(controller);
 
   const detected = useMemo<QualityPreset>(() => detectQualityPreset(), []);
+  const initialRender = useMemo<RenderPrefs>(() => loadRenderPrefs(), []);
   const [settings, setSettings] = useState<GameSettings>(() => ({
     quality: detected,
     arena: DEFAULT_ARENA,
@@ -34,7 +70,10 @@ export function GameShell() {
     rotateBoard: true,
     rankBadges: true,
     muted: false,
+    safeMode: initialRender.safeMode,
+    brightness: initialRender.brightness,
   }));
+  const [gpu, setGpu] = useState<string>("");
 
   const [phase, setPhase] = useState<Phase>("loading");
   const [progress, setProgress] = useState(0);
@@ -51,6 +90,8 @@ export function GameShell() {
   const [notice, setNotice] = useState<string | null>(null);
   /** Showcase recording: strips every panel so the capture is board-only. */
   const [cinema, setCinema] = useState(false);
+  /** How the camera behaves during a showcase duel: held, orbiting or following. */
+  const [showcaseCamera, setShowcaseCamera] = useState<ShowcaseCamera>("follow");
 
   // ------------------------------------------------------------ boot the scene
   useEffect(() => {
@@ -84,6 +125,11 @@ export function GameShell() {
           onContextLost: () => setContextLost(true),
           onCameraFlipped: (flipped) => setCameraFlipped(flipped),
           onTacticalView: (active) => setTactical(active),
+          onRenderFallback: (message, safe) => {
+            if (safe) setSettings((current) => ({ ...current, safeMode: true }));
+            setNotice(message);
+            setTimeout(() => setNotice(null), 9000);
+          },
         },
         detected,
         DEFAULT_ARENA,
@@ -96,6 +142,9 @@ export function GameShell() {
 
     engineRef.current = engine;
     engine.setInteractive(false);
+    engine.setSafeMode(initialRender.safeMode);
+    engine.setBrightness(initialRender.brightness);
+    setGpu(engine.getGpuSummary());
     engine.start();
 
     void engine.load().then(async () => {
@@ -108,7 +157,7 @@ export function GameShell() {
       engineRef.current = null;
       engine.dispose();
     };
-  }, [controller, detected]);
+  }, [controller, detected, initialRender]);
 
   useEffect(() => () => controller.dispose(), [controller]);
 
@@ -134,7 +183,10 @@ export function GameShell() {
     engine.setCaptureCinematics(settings.captureCinematics);
     engine.setRotateBoard(settings.rotateBoard);
     engine.setRankBadges(settings.rankBadges);
+    engine.setSafeMode(settings.safeMode);
+    engine.setBrightness(settings.brightness);
     audio.setMuted(settings.muted);
+    saveRenderPrefs({ safeMode: settings.safeMode, brightness: settings.brightness });
   }, [settings]);
 
   // ------------------------------------------------------------- attract mode
@@ -178,10 +230,11 @@ export function GameShell() {
       const showcase = config.mode === "demo";
       engine?.setAttract(false);
       engine?.setInteractive(true);
-      engine?.setShowcase(showcase);
-      engine?.setCameraPreset(
-        showcase ? "cinematic" : config.mode === "ai" && config.playerColor === "b" ? "black" : "white",
-      );
+      // A showcase brings its own framing (and its own crisp grade) with it.
+      engine?.setShowcase(showcase, showcaseCamera);
+      if (!showcase) {
+        engine?.setCameraPreset(config.mode === "ai" && config.playerColor === "b" ? "black" : "white");
+      }
       controller.start({
         mode: config.mode,
         difficulty: config.difficulty,
@@ -191,7 +244,7 @@ export function GameShell() {
       });
       setPhase("playing");
     },
-    [controller, stopAttract],
+    [controller, showcaseCamera, stopAttract],
   );
 
   const returnToMenu = useCallback(() => {
@@ -229,9 +282,14 @@ export function GameShell() {
 
   const handleDemoRestart = useCallback(() => {
     audio.blip("press");
-    engineRef.current?.setCameraPreset("cinematic");
     controller.restartDemo();
   }, [controller]);
+
+  const handleShowcaseCamera = useCallback((mode: ShowcaseCamera) => {
+    audio.blip("press");
+    setShowcaseCamera(mode);
+    engineRef.current?.setShowcaseCamera(mode);
+  }, []);
 
   const handleUndo = useCallback(() => {
     if (controller.undo()) {
@@ -370,6 +428,8 @@ export function GameShell() {
             onDemoSpeed={handleDemoSpeed}
             onDemoLoop={handleDemoLoop}
             onDemoRestart={handleDemoRestart}
+            showcaseCamera={showcaseCamera}
+            onShowcaseCamera={handleShowcaseCamera}
             onToggleCinema={() => setCinema(true)}
           />
         ) : null}
@@ -408,6 +468,7 @@ export function GameShell() {
           <SettingsPanel
             settings={settings}
             autoDetected={detected}
+            gpu={gpu}
             fps={fps}
             onChange={setSettings}
             onClose={() => setShowSettings(false)}

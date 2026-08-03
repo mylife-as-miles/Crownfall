@@ -851,52 +851,70 @@
 
 /* ------------------------------------------------- showcase (engine vs engine) */
 
-/* A single slim transport rail at the very foot of the screen. It sits below
-   the board's lowest rank at every camera preset, so it never eats a click. */
-.mc-demo-bar {
+/* The transport is docked in the bottom-right corner rather than stretched
+   across the foot of the screen: the board is centred, so a small corner rail
+   leaves every rank visible. Icon-only, and it folds to a single sigil. */
+.mc-demo-dock {
   position: absolute;
-  bottom: 0.85rem;
-  left: 50%;
-  transform: translateX(-50%);
+  right: 0.7rem;
+  bottom: 0.7rem;
   z-index: 20;
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
-  gap: 0.45rem;
-  max-width: calc(100vw - 7rem);
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 0.4rem 0.6rem;
+  justify-content: flex-start;
+  gap: 0.35rem;
+  max-width: calc(100vw - 1.4rem);
+  flex-wrap: wrap-reverse;
+}
+
+.mc-demo-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.28rem;
   border-radius: 999px;
-  border: 1px solid rgba(216, 177, 99, 0.32);
-  background: linear-gradient(180deg, rgba(28, 26, 22, 0.92), rgba(11, 11, 14, 0.94));
+  border: 1px solid rgba(216, 177, 99, 0.26);
+  background: linear-gradient(180deg, rgba(26, 24, 20, 0.8), rgba(10, 10, 13, 0.86));
   box-shadow:
-    inset 0 1px 0 rgba(255, 226, 170, 0.12),
-    0 14px 38px rgba(0, 0, 0, 0.62);
+    inset 0 1px 0 rgba(255, 226, 170, 0.1),
+    0 10px 26px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
-  animation: mc-demo-in 340ms cubic-bezier(0.2, 1.25, 0.35, 1) both;
+  opacity: 0.74;
+  transition:
+    opacity 240ms ease,
+    border-color 240ms ease;
+  animation: mc-demo-in 300ms cubic-bezier(0.2, 1.25, 0.35, 1) both;
+}
+
+.mc-demo-bar:hover,
+.mc-demo-bar:focus-within {
+  opacity: 1;
+  border-color: rgba(246, 223, 165, 0.5);
 }
 
 @keyframes mc-demo-in {
   from {
     opacity: 0;
-    transform: translate(-50%, 14px);
+    transform: translateX(18px);
   }
   to {
-    opacity: 1;
-    transform: translate(-50%, 0);
+    opacity: 0.74;
+    transform: translateX(0);
   }
 }
 
 .mc-demo-play {
   display: grid;
   place-items: center;
-  width: 2.1rem;
-  height: 2.1rem;
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
   border-radius: 999px;
   color: #1a1408;
   border: 1px solid rgba(246, 223, 165, 0.85);
   background: linear-gradient(180deg, rgba(216, 177, 99, 0.96), rgba(138, 101, 34, 0.96));
-  box-shadow: 0 0 18px rgba(216, 177, 99, 0.35);
+  box-shadow: 0 0 12px rgba(216, 177, 99, 0.3);
   cursor: pointer;
   transition:
     transform 150ms cubic-bezier(0.2, 1.4, 0.4, 1),
@@ -904,36 +922,256 @@
 }
 
 .mc-demo-play:hover {
-  transform: scale(1.06);
-  box-shadow: 0 0 26px rgba(216, 177, 99, 0.55);
+  transform: scale(1.08);
+  box-shadow: 0 0 22px rgba(216, 177, 99, 0.55);
 }
 
 .mc-demo-play:active {
-  transform: scale(0.93);
+  transform: scale(0.92);
+}
+
+.mc-demo-play[data-paused] {
+  animation: mc-demo-breathe 1.9s ease-in-out infinite;
+}
+
+@keyframes mc-demo-breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(216, 177, 99, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(246, 223, 165, 0.68);
+  }
 }
 
 .mc-demo-speed {
-  padding: 0.3rem 0.55rem;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
+  min-width: 1.7rem;
+  padding: 0.24rem 0.28rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.03em;
+  text-align: center;
+  border-radius: 999px;
+}
+
+/* Icon-only controls — the label lives in the tooltip. */
+.mc-demo-icon {
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  padding: 0;
   border-radius: 999px;
 }
 
 .mc-demo-sep {
+  flex: none;
   width: 1px;
-  height: 1.1rem;
-  background: rgba(216, 177, 99, 0.26);
+  height: 1rem;
+  background: rgba(216, 177, 99, 0.24);
+}
+
+.mc-demo-fold,
+.mc-demo-tab {
+  display: grid;
+  place-items: center;
+  flex: none;
+  border-radius: 999px;
+  color: rgba(232, 213, 170, 0.6);
+  border: 1px solid rgba(216, 177, 99, 0.24);
+  background: rgba(12, 12, 16, 0.5);
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    opacity 200ms ease,
+    transform 150ms cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.mc-demo-fold {
+  width: 1.15rem;
+  height: 1.55rem;
+  border-color: transparent;
+  background: transparent;
+}
+
+.mc-demo-tab {
+  width: 1.9rem;
+  height: 1.9rem;
+  opacity: 0.45;
+  backdrop-filter: blur(6px);
+}
+
+.mc-demo-fold:hover,
+.mc-demo-tab:hover {
+  color: #fff4dc;
+  border-color: rgba(246, 223, 165, 0.6);
+  opacity: 1;
+}
+
+.mc-demo-fold:active,
+.mc-demo-tab:active {
+  transform: scale(0.92);
+}
+
+.mc-demo-tab[data-paused] {
+  opacity: 0.9;
+  color: #f0dfb6;
+  border-color: rgba(246, 223, 165, 0.55);
 }
 
 .mc-demo-flag {
   font-family: "Cinzel", Georgia, serif;
-  font-size: 0.56rem;
-  letter-spacing: 0.26em;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
   color: #f0dfb6;
-  padding: 0.24rem 0.5rem;
+  padding: 0.18rem 0.4rem;
   border-radius: 999px;
+  border: 1px solid rgba(216, 177, 99, 0.45);
+  background: rgba(16, 14, 11, 0.7);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------- tooltips */
+
+/* Icon-only controls carry their name in a forged-brass bubble. The anchor is
+   inline-flex so it never disturbs the rows it sits in, and disabled buttons
+   let the pointer through so their tooltip still opens. */
+.mc-tip-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+.mc-tip-anchor > button:disabled {
+  pointer-events: none;
+}
+
+/* Inside the slim showcase rail the anchors must not stretch or shrink. */
+.mc-demo-bar .mc-tip-anchor {
+  flex: none;
+}
+
+.mc-tip {
+  position: absolute;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.16rem;
+  width: max-content;
+  max-width: min(15rem, calc(100vw - 2rem));
+  padding: 0.4rem 0.55rem;
+  border-radius: 3px;
   border: 1px solid rgba(216, 177, 99, 0.5);
+  background: linear-gradient(180deg, rgba(38, 33, 27, 0.97) 0%, rgba(18, 16, 13, 0.97) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 226, 170, 0.16),
+    0 10px 26px rgba(0, 0, 0, 0.66);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+  animation: mc-tip-in 150ms cubic-bezier(0.2, 1.25, 0.35, 1) both;
+}
+
+.mc-tip[data-side="bottom"] {
+  top: calc(100% + 0.45rem);
+  transform-origin: top center;
+}
+
+.mc-tip[data-side="top"] {
+  bottom: calc(100% + 0.45rem);
+  transform-origin: bottom center;
+}
+
+.mc-tip[data-side="left"] {
+  top: 50%;
+  right: calc(100% + 0.45rem);
+  transform-origin: center right;
+  margin-top: -0.05rem;
+  translate: 0 -50%;
+}
+
+/* Caret pointing back at the icon. */
+.mc-tip[data-side="bottom"]::before,
+.mc-tip[data-side="top"]::before {
+  content: "";
+  position: absolute;
+  width: 0.42rem;
+  height: 0.42rem;
+  rotate: 45deg;
+  background: inherit;
+  border: 1px solid rgba(216, 177, 99, 0.5);
+}
+
+.mc-tip[data-side="bottom"]::before {
+  top: -0.24rem;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.mc-tip[data-side="top"]::before {
+  bottom: -0.24rem;
+  border-left-color: transparent;
+  border-top-color: transparent;
+}
+
+.mc-tip[data-align="end"]::before {
+  right: 0.72rem;
+}
+
+.mc-tip[data-align="start"]::before {
+  left: 0.72rem;
+}
+
+.mc-tip-label {
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #f6e6c1;
+  white-space: nowrap;
+}
+
+.mc-tip-hint {
+  font-family: "Crimson Pro", Georgia, serif;
+  font-size: 0.72rem;
+  line-height: 1.25;
+  color: #a89268;
+}
+
+.mc-tip-key {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.4rem;
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: #d8b163;
+  padding: 0.06rem 0.26rem;
+  border-radius: 2px;
+  border: 1px solid rgba(216, 177, 99, 0.35);
   background: rgba(216, 177, 99, 0.12);
+  white-space: nowrap;
+}
+
+/* Keep the key cap clear of the name. */
+.mc-tip:has(.mc-tip-key) .mc-tip-label {
+  padding-right: 2.1rem;
+}
+
+@keyframes mc-tip-in {
+  from {
+    opacity: 0;
+    scale: 0.94;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mc-tip {
+    animation-duration: 1ms;
+  }
 }
 
 /* Clean-capture mode: the only thing left on screen. */
@@ -962,4 +1200,53 @@
   opacity: 1;
   color: #fff4dc;
   border-color: rgba(246, 223, 165, 0.7);
+}
+
+/* Brightness slider — brass rail with a gold nail. */
+.mc-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1.1rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.mc-slider::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(20, 18, 15, 0.9), rgba(216, 177, 99, 0.85));
+  border: 1px solid rgba(216, 177, 99, 0.28);
+}
+
+.mc-slider::-moz-range-track {
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(20, 18, 15, 0.9), rgba(216, 177, 99, 0.85));
+  border: 1px solid rgba(216, 177, 99, 0.28);
+}
+
+.mc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -5.5px;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 30%, #fbe9bd, #8a6522);
+  border: 1px solid rgba(246, 223, 165, 0.9);
+  box-shadow: 0 0 8px rgba(246, 223, 165, 0.35);
+}
+
+.mc-slider::-moz-range-thumb {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 30%, #fbe9bd, #8a6522);
+  border: 1px solid rgba(246, 223, 165, 0.9);
+  box-shadow: 0 0 8px rgba(246, 223, 165, 0.35);
+}
+
+.mc-slider:focus-visible::-webkit-slider-thumb {
+  outline: 1px solid rgba(246, 223, 165, 0.9);
+  outline-offset: 2px;
 }

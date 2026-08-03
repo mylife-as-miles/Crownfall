@@ -16,6 +16,50 @@ export interface DeathCryOptions {
   delay?: number;
 }
 
+/**
+ * The material voice of one footfall. Drives the noise band, the body mode and
+ * the ring, so the ear can tell a barefoot footsoldier from a plated guardian.
+ */
+export type FootstepTimbre = "scuff" | "leather" | "plate" | "regal";
+
+/** One foot meeting the stone. */
+export interface FootstepOptions {
+  /** -1 hard left … 1 hard right — where the figure is on screen. */
+  pan?: number;
+  /** Relative loudness. */
+  volume?: number;
+  /** How the boot is built — see {@link FootstepTimbre}. */
+  timbre?: FootstepTimbre;
+  /** Seconds to wait before it sounds. */
+  delay?: number;
+  /** Slight per-step detune so a march never turns into a metronome. */
+  jitter?: number;
+}
+
+/** Placement of one spell sound in the mix. */
+export interface SpellOptions {
+  /** -1 hard left … 1 hard right — where the caster or the blast is on screen. */
+  pan?: number;
+  /** Relative loudness. */
+  volume?: number;
+  /** Seconds to wait before it sounds. */
+  delay?: number;
+  /** How long the charge takes to reach full power (charge only). */
+  duration?: number;
+}
+
+/** Placement of one melee-strike sound in the mix. */
+export interface StrikeSoundOptions {
+  /** -1 hard left … 1 hard right — where the blow is on screen. */
+  pan?: number;
+  /** Relative loudness. */
+  volume?: number;
+  /** Seconds to wait before it sounds. */
+  delay?: number;
+  /** 0 = a light blade cutting air, 1 = a siege hammer being hauled round. */
+  weight?: number;
+}
+
 /** A wooden piece being lifted from or set down on the board. */
 export interface WoodTapOptions {
   /** -1 hard left … 1 hard right — where the square is on screen. */
@@ -41,6 +85,91 @@ const MAX_VOICES = 3;
 const MAX_CRY_SECONDS = 1.15;
 /** Ramp-out at the tail so a trimmed clip never clicks. */
 const CRY_FADE = 0.1;
+
+interface FootstepVoice {
+  /** Overall loudness of this boot. */
+  level: number;
+  /** Low body mode — the weight going into the floor, in Hz. */
+  body: number;
+  /** Peak of the body thump. */
+  weight: number;
+  /** How long the thump takes to die away. */
+  decay: number;
+  /** Centre of the noise band — grit, cloth or steel. */
+  noise: number;
+  /** Sharpness of that band. */
+  q: number;
+  /** Level of the noise transient. */
+  hiss: number;
+  /** Length of the scuff in seconds. */
+  scuff: number;
+  /** Envelope exponent — higher is a shorter, snappier scrape. */
+  grit: number;
+  /** Level of the metallic afterring (0 for unarmoured feet). */
+  ring: number;
+  /** Pitch of that ring, in Hz. */
+  ringHz: number;
+}
+
+/**
+ * The four boots that walk this board. Footsoldiers scuff, the clergy creak in
+ * leather, the tower guardians clank in full plate, and the crown puts a slow,
+ * deep, deliberate weight through every step.
+ */
+const FOOTSTEP_VOICES: Record<FootstepTimbre, FootstepVoice> = {
+  scuff: {
+    level: 0.82,
+    body: 108,
+    weight: 0.2,
+    decay: 0.09,
+    noise: 1650,
+    q: 0.8,
+    hiss: 0.5,
+    scuff: 0.055,
+    grit: 3.2,
+    ring: 0,
+    ringHz: 0,
+  },
+  leather: {
+    level: 0.9,
+    body: 96,
+    weight: 0.24,
+    decay: 0.11,
+    noise: 1180,
+    q: 0.7,
+    hiss: 0.42,
+    scuff: 0.075,
+    grit: 2.4,
+    ring: 0.03,
+    ringHz: 2350,
+  },
+  plate: {
+    level: 1.12,
+    body: 72,
+    weight: 0.34,
+    decay: 0.17,
+    noise: 820,
+    q: 0.55,
+    hiss: 0.34,
+    scuff: 0.09,
+    grit: 2,
+    ring: 0.09,
+    ringHz: 3120,
+  },
+  regal: {
+    level: 1.05,
+    body: 62,
+    weight: 0.32,
+    decay: 0.2,
+    noise: 940,
+    q: 0.6,
+    hiss: 0.3,
+    scuff: 0.1,
+    grit: 2.2,
+    ring: 0.055,
+    ringHz: 2680,
+  },
+};
 
 interface Bed {
   gain: GainNode;
@@ -425,6 +554,420 @@ export class AudioManager {
       body.start(when);
       body.stop(when + 0.25);
     }
+  }
+
+  /**
+   * One footfall on stone: a short low body thump for the weight, a burst of
+   * band-passed noise for the grit under the sole, and — for armour — a thin
+   * metallic ring of harness and plate riding on top. Fully synthesised, so a
+   * whole march costs nothing to stream and lands exactly on the frame the
+   * stride clock asks for.
+   */
+  footstep(options: FootstepOptions = {}): void {
+    if (!this.ctx || !this.master || this.muted) return;
+    const ctx = this.ctx;
+    const timbre = options.timbre ?? "scuff";
+    const voice = FOOTSTEP_VOICES[timbre];
+    const when = ctx.currentTime + Math.max(0, options.delay ?? 0);
+    const jitter = 1 + (options.jitter ?? (Math.random() - 0.5) * 0.16);
+    const level = 0.42 * voice.level * (options.volume ?? 1);
+
+    const bus = ctx.createGain();
+    bus.gain.value = level;
+    if (typeof ctx.createStereoPanner === "function") {
+      const panner = ctx.createStereoPanner();
+      panner.pan.value = Math.max(-1, Math.min(1, options.pan ?? 0)) * 0.6;
+      bus.connect(panner);
+      panner.connect(this.master);
+    } else {
+      bus.connect(this.master);
+    }
+
+    // Weight going through the sole into the floor.
+    const thump = ctx.createOscillator();
+    const thumpGain = ctx.createGain();
+    thump.type = "sine";
+    thump.frequency.setValueAtTime(voice.body * jitter, when);
+    thump.frequency.exponentialRampToValueAtTime(voice.body * 0.55 * jitter, when + voice.decay);
+    thumpGain.gain.setValueAtTime(0.0001, when);
+    thumpGain.gain.exponentialRampToValueAtTime(voice.weight, when + 0.006);
+    thumpGain.gain.exponentialRampToValueAtTime(0.0001, when + voice.decay);
+    thump.connect(thumpGain);
+    thumpGain.connect(bus);
+    thump.start(when);
+    thump.stop(when + voice.decay + 0.05);
+
+    // Grit and leather: a fast noise transient shaped by the sole material.
+    const length = Math.max(1, Math.floor(ctx.sampleRate * voice.scuff));
+    const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < length; i += 1) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, voice.grit);
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+    const band = ctx.createBiquadFilter();
+    band.type = "bandpass";
+    band.frequency.value = voice.noise * jitter;
+    band.Q.value = voice.q;
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.value = voice.hiss;
+    noise.connect(band);
+    band.connect(noiseGain);
+    noiseGain.connect(bus);
+    noise.start(when);
+
+    // Harness, mail and greaves answering the step.
+    if (voice.ring > 0) {
+      const ring = ctx.createOscillator();
+      const ringGain = ctx.createGain();
+      ring.type = "triangle";
+      ring.frequency.setValueAtTime(voice.ringHz * jitter, when);
+      ringGain.gain.setValueAtTime(0.0001, when + 0.008);
+      ringGain.gain.exponentialRampToValueAtTime(voice.ring, when + 0.016);
+      ringGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.16);
+      ring.connect(ringGain);
+      ringGain.connect(bus);
+      ring.start(when);
+      ring.stop(when + 0.2);
+    }
+  }
+
+  /**
+   * Fire gathering at the head of a staff: two detuned saw voices climbing an
+   * octave under a band of noise that opens as the charge builds, so the ear
+   * hears the power being pulled in before the bolt leaves.
+   */
+  spellCharge(options: SpellOptions = {}): void {
+    if (!this.ctx || !this.master || this.muted) return;
+    const ctx = this.ctx;
+    const when = ctx.currentTime + Math.max(0, options.delay ?? 0);
+    const span = Math.max(0.18, options.duration ?? 0.5);
+    const level = 0.2 * (options.volume ?? 1);
+    const bus = this.spellBus(options.pan ?? 0, 0.6);
+
+    for (const detune of [1, 1.008, 0.5]) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = detune === 0.5 ? "triangle" : "sawtooth";
+      osc.frequency.setValueAtTime(96 * detune, when);
+      osc.frequency.exponentialRampToValueAtTime(340 * detune, when + span);
+      gain.gain.setValueAtTime(0.0001, when);
+      gain.gain.exponentialRampToValueAtTime(level * (detune === 0.5 ? 0.7 : 1), when + span * 0.92);
+      gain.gain.exponentialRampToValueAtTime(0.0001, when + span + 0.06);
+      osc.connect(gain);
+      gain.connect(bus);
+      osc.start(when);
+      osc.stop(when + span + 0.12);
+    }
+
+    // Air being dragged into the crystal.
+    const noise = ctx.createBufferSource();
+    noise.buffer = this.noiseBuffer(span + 0.1, 0.35);
+    const band = ctx.createBiquadFilter();
+    band.type = "bandpass";
+    band.Q.value = 1.4;
+    band.frequency.setValueAtTime(420, when);
+    band.frequency.exponentialRampToValueAtTime(2600, when + span);
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.0001, when);
+    noiseGain.gain.exponentialRampToValueAtTime(level * 1.5, when + span * 0.95);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, when + span + 0.08);
+    noise.connect(band);
+    band.connect(noiseGain);
+    noiseGain.connect(bus);
+    noise.start(when);
+  }
+
+  /** The bolt leaving the staff: a bright snap into a falling whoosh. */
+  spellCast(options: SpellOptions = {}): void {
+    if (!this.ctx || !this.master || this.muted) return;
+    const ctx = this.ctx;
+    const when = ctx.currentTime + Math.max(0, options.delay ?? 0);
+    const level = 0.42 * (options.volume ?? 1);
+    const bus = this.spellBus(options.pan ?? 0, 0.7);
+
+    const noise = ctx.createBufferSource();
+    noise.buffer = this.noiseBuffer(0.42, 1.6);
+    const band = ctx.createBiquadFilter();
+    band.type = "bandpass";
+    band.Q.value = 0.9;
+    band.frequency.setValueAtTime(3200, when);
+    band.frequency.exponentialRampToValueAtTime(380, when + 0.36);
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(level, when);
+    noiseGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.4);
+    noise.connect(band);
+    band.connect(noiseGain);
+    noiseGain.connect(bus);
+    noise.start(when);
+
+    // The kick of it leaving the hand.
+    const thump = ctx.createOscillator();
+    const thumpGain = ctx.createGain();
+    thump.type = "sine";
+    thump.frequency.setValueAtTime(220, when);
+    thump.frequency.exponentialRampToValueAtTime(58, when + 0.24);
+    thumpGain.gain.setValueAtTime(0.0001, when);
+    thumpGain.gain.exponentialRampToValueAtTime(level * 0.7, when + 0.01);
+    thumpGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.3);
+    thump.connect(thumpGain);
+    thumpGain.connect(bus);
+    thump.start(when);
+    thump.stop(when + 0.36);
+  }
+
+  /**
+   * The bolt landing on a body: a hard crack, a low boom that drops away under
+   * it, and a long crackle of fire eating what is left.
+   */
+  spellImpact(options: SpellOptions = {}): void {
+    if (!this.ctx || !this.master || this.muted) return;
+    const ctx = this.ctx;
+    const when = ctx.currentTime + Math.max(0, options.delay ?? 0);
+    const level = 0.5 * (options.volume ?? 1);
+    const bus = this.spellBus(options.pan ?? 0, 0.45);
+
+    const boom = ctx.createOscillator();
+    const boomGain = ctx.createGain();
+    boom.type = "sine";
+    boom.frequency.setValueAtTime(140, when);
+    boom.frequency.exponentialRampToValueAtTime(32, when + 0.5);
+    boomGain.gain.setValueAtTime(0.0001, when);
+    boomGain.gain.exponentialRampToValueAtTime(level, when + 0.008);
+    boomGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.6);
+    boom.connect(boomGain);
+    boomGain.connect(bus);
+    boom.start(when);
+    boom.stop(when + 0.7);
+
+    // The crack of the shell breaking open.
+    const crack = ctx.createBufferSource();
+    crack.buffer = this.noiseBuffer(0.12, 5);
+    const snap = ctx.createBiquadFilter();
+    snap.type = "highpass";
+    snap.frequency.value = 1400;
+    const crackGain = ctx.createGain();
+    crackGain.gain.value = level * 0.55;
+    crack.connect(snap);
+    snap.connect(crackGain);
+    crackGain.connect(bus);
+    crack.start(when);
+
+    // Fire left burning on the stone.
+    const fire = ctx.createBufferSource();
+    fire.buffer = this.noiseBuffer(0.85, 1.1);
+    const body = ctx.createBiquadFilter();
+    body.type = "lowpass";
+    body.frequency.setValueAtTime(2600, when);
+    body.frequency.exponentialRampToValueAtTime(520, when + 0.8);
+    const fireGain = ctx.createGain();
+    fireGain.gain.setValueAtTime(level * 0.5, when + 0.02);
+    fireGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.9);
+    fire.connect(body);
+    body.connect(fireGain);
+    fireGain.connect(bus);
+    fire.start(when);
+  }
+
+  /**
+   * Steel moving through air: a band of noise sweeping down as the swing comes
+   * round, with a low gust under it for anything heavy enough to shift weight.
+   * `weight` runs from a light blade to a two-handed siege hammer.
+   */
+  bladeWhoosh(options: StrikeSoundOptions = {}): void {
+    if (!this.ctx || !this.master || this.muted) return;
+    const ctx = this.ctx;
+    const when = ctx.currentTime + Math.max(0, options.delay ?? 0);
+    const weight = Math.max(0, Math.min(1, options.weight ?? 0.5));
+    const level = 0.3 * (options.volume ?? 1);
+    const span = 0.22 + weight * 0.16;
+    const bus = this.spellBus(options.pan ?? 0, 0.55);
+
+    // The air being cut. A heavier weapon sweeps a lower, longer band.
+    const air = ctx.createBufferSource();
+    air.buffer = this.noiseBuffer(span + 0.08, 1.4);
+    const band = ctx.createBiquadFilter();
+    band.type = "bandpass";
+    band.Q.value = 1.1 + weight * 0.6;
+    band.frequency.setValueAtTime(2600 - weight * 900, when);
+    band.frequency.exponentialRampToValueAtTime(380 - weight * 180, when + span);
+    const airGain = ctx.createGain();
+    airGain.gain.setValueAtTime(0.0001, when);
+    airGain.gain.exponentialRampToValueAtTime(level, when + span * 0.62);
+    airGain.gain.exponentialRampToValueAtTime(0.0001, when + span + 0.06);
+    air.connect(band);
+    band.connect(airGain);
+    airGain.connect(bus);
+    air.start(when);
+
+    if (weight <= 0.2) return;
+    // Mass being hauled round: a short low gust trailing the swing.
+    const gust = ctx.createOscillator();
+    const gustGain = ctx.createGain();
+    gust.type = "sine";
+    gust.frequency.setValueAtTime(150 - weight * 60, when + span * 0.3);
+    gust.frequency.exponentialRampToValueAtTime(62 - weight * 18, when + span);
+    gustGain.gain.setValueAtTime(0.0001, when + span * 0.3);
+    gustGain.gain.exponentialRampToValueAtTime(level * 0.55 * weight, when + span * 0.55);
+    gustGain.gain.exponentialRampToValueAtTime(0.0001, when + span + 0.1);
+    gust.connect(gustGain);
+    gustGain.connect(bus);
+    gust.start(when + span * 0.28);
+    gust.stop(when + span + 0.16);
+  }
+
+  /**
+   * A blow that goes through the body and into the floor: a sub-bass drop, the
+   * crack of stone giving, and a tail of rubble settling. What the tower
+   * guardians and the crown leave behind — never a footsoldier.
+   */
+  groundSlam(options: StrikeSoundOptions = {}): void {
+    if (!this.ctx || !this.master || this.muted) return;
+    const ctx = this.ctx;
+    const when = ctx.currentTime + Math.max(0, options.delay ?? 0);
+    const level = 0.46 * (options.volume ?? 1);
+    const bus = this.spellBus(options.pan ?? 0, 0.4);
+
+    // The floor taking it.
+    for (const [start, end, gain, span] of [
+      [96, 26, 1, 0.62],
+      [58, 19, 0.55, 0.9],
+    ] as const) {
+      const sub = ctx.createOscillator();
+      const subGain = ctx.createGain();
+      sub.type = "sine";
+      sub.frequency.setValueAtTime(start, when);
+      sub.frequency.exponentialRampToValueAtTime(end, when + span);
+      subGain.gain.setValueAtTime(0.0001, when);
+      subGain.gain.exponentialRampToValueAtTime(level * gain, when + 0.012);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, when + span);
+      sub.connect(subGain);
+      subGain.connect(bus);
+      sub.start(when);
+      sub.stop(when + span + 0.08);
+    }
+
+    // Stone splitting under the head of the weapon.
+    const crack = ctx.createBufferSource();
+    crack.buffer = this.noiseBuffer(0.16, 4.5);
+    const shape = ctx.createBiquadFilter();
+    shape.type = "bandpass";
+    shape.Q.value = 0.7;
+    shape.frequency.setValueAtTime(900, when);
+    shape.frequency.exponentialRampToValueAtTime(240, when + 0.15);
+    const crackGain = ctx.createGain();
+    crackGain.gain.value = level * 0.7;
+    crack.connect(shape);
+    shape.connect(crackGain);
+    crackGain.connect(bus);
+    crack.start(when);
+
+    // Grit and chips coming back down.
+    const rubble = ctx.createBufferSource();
+    rubble.buffer = this.noiseBuffer(0.55, 2.2);
+    const grit = ctx.createBiquadFilter();
+    grit.type = "highpass";
+    grit.frequency.value = 1800;
+    const rubbleGain = ctx.createGain();
+    rubbleGain.gain.setValueAtTime(0.0001, when + 0.05);
+    rubbleGain.gain.exponentialRampToValueAtTime(level * 0.3, when + 0.1);
+    rubbleGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.6);
+    rubble.connect(grit);
+    grit.connect(rubbleGain);
+    rubbleGain.connect(bus);
+    rubble.start(when + 0.04);
+
+    this.duckBeds(0.7, 0.7);
+  }
+
+  /**
+   * The sentence being passed: a struck bell built from inharmonic partials with
+   * a slow bloom of air under it. Only the crown gets to ring this.
+   */
+  judgementToll(options: StrikeSoundOptions = {}): void {
+    if (!this.ctx || !this.master || this.muted) return;
+    const ctx = this.ctx;
+    const when = ctx.currentTime + Math.max(0, options.delay ?? 0);
+    const level = 0.26 * (options.volume ?? 1);
+    const bus = this.spellBus(options.pan ?? 0, 0.35);
+    const root = 196;
+
+    // A real bell is not a harmonic series — these ratios are what make it metal.
+    const partials: { ratio: number; gain: number; decay: number }[] = [
+      { ratio: 0.5, gain: 0.7, decay: 2.6 },
+      { ratio: 1, gain: 1, decay: 2.2 },
+      { ratio: 2.02, gain: 0.5, decay: 1.6 },
+      { ratio: 2.98, gain: 0.28, decay: 1.1 },
+      { ratio: 4.07, gain: 0.15, decay: 0.7 },
+    ];
+    for (const partial of partials) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.value = root * partial.ratio;
+      gain.gain.setValueAtTime(0.0001, when);
+      gain.gain.exponentialRampToValueAtTime(level * partial.gain, when + 0.014);
+      gain.gain.exponentialRampToValueAtTime(0.0001, when + partial.decay);
+      osc.connect(gain);
+      gain.connect(bus);
+      osc.start(when);
+      osc.stop(when + partial.decay + 0.1);
+    }
+
+    // Air pulled up around the light.
+    const swell = ctx.createBufferSource();
+    swell.buffer = this.noiseBuffer(0.9, 0.6);
+    const body = ctx.createBiquadFilter();
+    body.type = "bandpass";
+    body.Q.value = 0.8;
+    body.frequency.setValueAtTime(520, when);
+    body.frequency.exponentialRampToValueAtTime(2200, when + 0.7);
+    const swellGain = ctx.createGain();
+    swellGain.gain.setValueAtTime(0.0001, when);
+    swellGain.gain.exponentialRampToValueAtTime(level * 0.55, when + 0.5);
+    swellGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.95);
+    swell.connect(body);
+    body.connect(swellGain);
+    swellGain.connect(bus);
+    swell.start(when);
+
+    this.duckBeds(0.6, 1.1);
+  }
+
+  /** Panned input bus shared by the spell voices. */
+  private spellBus(pan: number, width: number): GainNode {
+    const ctx = this.ctx;
+    const master = this.master;
+    if (!ctx || !master) throw new Error("mixer not started");
+    const bus = ctx.createGain();
+    bus.gain.value = 1;
+    if (typeof ctx.createStereoPanner === "function") {
+      const panner = ctx.createStereoPanner();
+      panner.pan.value = Math.max(-1, Math.min(1, pan)) * width;
+      bus.connect(panner);
+      panner.connect(master);
+    } else {
+      bus.connect(master);
+    }
+    return bus;
+  }
+
+  /**
+   * Decaying white noise of a given length.
+   *
+   * @param falloff envelope exponent — 1 fades evenly, higher is a sharper burst
+   */
+  private noiseBuffer(seconds: number, falloff: number): AudioBuffer {
+    const ctx = this.ctx;
+    if (!ctx) throw new Error("mixer not started");
+    const length = Math.max(1, Math.floor(ctx.sampleRate * seconds));
+    const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < length; i += 1) {
+      data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, falloff);
+    }
+    return buffer;
   }
 
   /** Synthesised UI feedback — cheap, instant, no assets. */

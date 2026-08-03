@@ -3,20 +3,33 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import type { GameController } from "../core/gameController";
 import type { Faction, GameSnapshot, MoveEvent, PieceKind, SquareId } from "../core/types";
-import { audio } from "../audio/audioManager";
+import { audio, type FootstepTimbre } from "../audio/audioManager";
 import type { ArenaTheme } from "./arena";
 import { ARENA_LOOKS, DEFAULT_ARENA } from "./arena";
 import { Battlefield } from "./battlefield";
 import { JungleOverlay } from "./jungle";
 import { BOARD_TOP, BoardView, type HighlightKind, TILE, squareToWorld, worldToSquare } from "./board";
 import { CastleHall, buildEnvironmentMap } from "./environment";
+import { describeGpu, probeGpu, reflectionProbeWorks, type GpuReport } from "./diagnostics";
 import { EffectsSystem, ShakeSystem } from "./effects";
-import { FACTION_ACCENT, PieceFactory, PieceView } from "./pieces";
+import { FACTION_ACCENT, PieceFactory, PieceView, type ClipName, type TemplateKey } from "./pieces";
 import { PostFX } from "./postfx";
 import { QUALITY_SETTINGS, type QualityPreset } from "./quality";
-import { Ease, TweenManager, wait } from "./tween";
+import { SPELL_LOOK, SpellLightPool, SpellOrb } from "./spells";
+import { disposeStrikeAssets, spawnGroundWave, spawnPillar, spawnSlash } from "./strikes";
+import { Ease, type Easing, TweenManager, wait } from "./tween";
 
 export type CameraPreset = "white" | "black" | "top" | "cinematic";
+
+/**
+ * How the camera behaves during a computer-vs-computer showcase.
+ *
+ * - `still` holds one framing and never moves on its own.
+ * - `orbit` drifts slowly around the board (the old behaviour).
+ * - `follow` keeps the figure on the move — and the fight it walks into —
+ *   centred in frame, pulling in tighter for the kill.
+ */
+export type ShowcaseCamera = "still" | "orbit" | "follow";
 
 export interface SceneCallbacks {
   onLoadProgress: (ratio: number) => void;
@@ -27,6 +40,12 @@ export interface SceneCallbacks {
   onContextLost: () => void;
   onCameraFlipped?: (flipped: boolean) => void;
   onTacticalView?: (active: boolean) => void;
+  /**
+   * Fired when the engine had to drop part of the pipeline to get a picture on
+   * screen. `safe` is true once it has fallen all the way back to safe
+   * rendering, so the UI can persist that choice for the next visit.
+   */
+  onRenderFallback?: (message: string, safe: boolean) => void;
 }
 
 interface CameraShot {
@@ -42,6 +61,19 @@ const CAMERA_SHOTS: Record<CameraPreset, CameraShot> = {
 };
 
 /**
+ * The showcase framing: higher and further back than the cinematic shot, so the
+ * whole board reads at once and no figure is seen through the haze at floor
+ * level. This is the angle a still showcase holds for the entire duel.
+ */
+const SHOWCASE_SHOT: CameraShot = {
+  position: new THREE.Vector3(7.1, 6.5, 8.2),
+  target: new THREE.Vector3(0, 0.35, 0),
+};
+
+/** What the follow camera looks at between moves. */
+const BOARD_FOCUS = new THREE.Vector3(0, 0.45, 0);
+
+/**
  * The flat tactical map: high above the board, dead centre and shot through a
  * narrow lens so the squares read as a grid instead of a receding perspective.
  */
@@ -53,6 +85,13 @@ const TACTICAL_FOV = 28;
 const DEFAULT_FOV = 46;
 
 const PROMOTION_CHOICES: PieceKind[] = ["q", "r", "b", "n"];
+
+/**
+ * When the frame is sampled for the black-screen watchdog, in seconds since the
+ * first frame. The first check is late enough that the hall is standing and the
+ * intro has moved off its opening frame.
+ */
+const DARK_FRAME_CHECKS = [2, 3.4, 4.8, 6.2, 8];
 
 /**
  * How each rank sounds when it goes down: the court and the big bodies die
@@ -89,6 +128,223 @@ const WOOD_WEIGHT: Record<PieceKind, number> = {
   p: 0.3,
 };
 
+/** How one rank crosses the board on its own legs. */
+interface Gait {
+  /** Footfalls put down per square of travel — the length of the stride. */
+  stepsPerTile: number;
+  /** Footfalls per second — the cadence of the march. */
+  cadence: number;
+  /** What the boot sounds like against the stone. */
+  timbre: FootstepTimbre;
+  /** Loudness of one footfall. */
+  volume: number;
+}
+
+/**
+ * The twelve figures do not walk alike. Footsoldiers take short, quick, scuffing
+ * steps; the tower guardians tread slowly in full plate; the crown crosses the
+ * board at a deliberate pace that nothing on the board hurries.
+ */
+const GAITS: Record<PieceKind, Gait> = {
+  k: { stepsPerTile: 1.55, cadence: 1.85, timbre: "regal", volume: 1 },
+  q: { stepsPerTile: 1.7, cadence: 2.1, timbre: "regal", volume: 0.88 },
+  r: { stepsPerTile: 1.5, cadence: 1.95, timbre: "plate", volume: 1.12 },
+  b: { stepsPerTile: 1.9, cadence: 2.45, timbre: "leather", volume: 0.78 },
+  n: { stepsPerTile: 2, cadence: 2.9, timbre: "plate", volume: 0.95 },
+  p: { stepsPerTile: 2, cadence: 2.7, timbre: "scuff", volume: 0.72 },
+};
+
+/**
+ * The two ranks that never touch what they kill: the sorceress queen and the
+ * staff-bearing mage. Both open the fight from where they stand, throwing a
+ * ball of fire down the line, and only walk onto the square once the body on it
+ * has burned away.
+ */
+const RANGED_KINDS: PieceKind[] = ["q", "b"];
+
+/**
+ * How one rank's blow is staged. The shape of a hand-to-hand kill never changes
+ * — charge, square up, strike, crumble — but its weight does, and it climbs
+ * with rank: a footsoldier stabs and moves on, a rider cuts on the charge, a
+ * tower guardian puts the floor out of shape, and the crown calls the light
+ * down before it swings.
+ */
+interface StrikeProfile {
+  /** Degrees of lens punch-in held over the beat. */
+  zoom: number;
+  /** March-speed multiplier on the run into the stand-off. */
+  charge: number;
+  /** Held breath between arriving and swinging. */
+  wind: number;
+  /** Scales the flash, the sparks, the board hit and the camera kick. */
+  power: number;
+  /** Loudness of the swing through the air; 0 keeps the wind-up silent. */
+  swing: number;
+  /** 0 = a light blade, 1 = a siege weapon being hauled round. */
+  heft: number;
+  /** Arc of steel left hanging where the blade went through. */
+  slash: { size: number; color: number } | null;
+  /** Wave rolling out across the stone, for a blow that reaches the floor. */
+  wave: { radius: number; color: number } | null;
+  /** Column of light dropped on the condemned before the blow. */
+  pillar: { radius: number; color: number } | null;
+  /** Dust torn up along the line of a charge. */
+  wake: boolean;
+  /** Second tremor a beat after the strike; 0 leaves the hall still. */
+  aftershock: number;
+  /** Hitstop on the frame of contact, before the body starts to go down. */
+  hold: number;
+}
+
+/**
+ * The six blows, in order of what the rank is worth. The footsoldier's line is
+ * the original beat and is deliberately left untouched — everything above it is
+ * measured against it.
+ */
+const STRIKES: Record<PieceKind, StrikeProfile> = {
+  p: {
+    zoom: 5.5,
+    charge: 1.35,
+    wind: 0.1,
+    power: 1,
+    swing: 0,
+    heft: 0,
+    slash: null,
+    wave: null,
+    pillar: null,
+    wake: false,
+    aftershock: 0,
+    hold: 0,
+  },
+  // The rider arrives faster than it can be answered and cuts on the way past.
+  n: {
+    zoom: 7.2,
+    charge: 1.75,
+    wind: 0.04,
+    power: 1.35,
+    swing: 0.7,
+    heft: 0.3,
+    slash: { size: 1.7, color: 0xfff3d8 },
+    wave: null,
+    pillar: null,
+    wake: true,
+    aftershock: 0.12,
+    hold: 0.05,
+  },
+  // The mage only ever fights at range; this is a safety net, not a beat.
+  b: {
+    zoom: 6,
+    charge: 1.4,
+    wind: 0.12,
+    power: 1.15,
+    swing: 0.45,
+    heft: 0.15,
+    slash: { size: 1.2, color: 0xd8e6ff },
+    wave: null,
+    pillar: null,
+    wake: false,
+    aftershock: 0,
+    hold: 0.03,
+  },
+  // Plate and a hammer: slow in, and the stone takes most of the blow.
+  r: {
+    zoom: 8.6,
+    charge: 1.1,
+    wind: 0.24,
+    power: 1.8,
+    swing: 1,
+    heft: 0.95,
+    slash: null,
+    wave: { radius: 3.2, color: 0xffa257 },
+    pillar: null,
+    wake: false,
+    aftershock: 0.3,
+    hold: 0.09,
+  },
+  // Never reached — the sorceress burns her victims from her own square.
+  q: {
+    zoom: 8,
+    charge: 1.3,
+    wind: 0.16,
+    power: 1.6,
+    swing: 0.6,
+    heft: 0.35,
+    slash: { size: 1.5, color: 0xffe0b0 },
+    wave: null,
+    pillar: null,
+    wake: false,
+    aftershock: 0.14,
+    hold: 0.06,
+  },
+  // An execution, not a fight: the light comes down, the bell rings, then gold.
+  k: {
+    zoom: 11,
+    charge: 1.2,
+    wind: 0.3,
+    power: 2.25,
+    swing: 1,
+    heft: 0.7,
+    slash: { size: 2, color: 0xffdf9a },
+    wave: { radius: 3.7, color: 0xffcf7a },
+    pillar: { radius: 0.6, color: 0xffe3a8 },
+    wake: false,
+    aftershock: 0.34,
+    hold: 0.13,
+  },
+};
+
+/** How much fire a caster throws, and what it does when it lands. */
+interface SpellProfile {
+  /** Degrees of lens punch-in held over the beat. */
+  zoom: number;
+  /** Seconds of wind-up added on top of the cast clip. */
+  gather: number;
+  /** Size of the ball held at the head of the staff. */
+  orb: number;
+  /** How many bolts go down the line. */
+  bolts: number;
+  /** Scales the blast at the far end. */
+  blast: number;
+  /** Radius of the fire rolled out across the square; 0 for none. */
+  ring: number;
+}
+
+/** The mage: one bolt, thrown clean. */
+const MAGE_SPELL: SpellProfile = { zoom: 4.5, gather: 0, orb: 0.42, bolts: 1, blast: 1, ring: 0 };
+
+/**
+ * The sorceress: a longer, heavier gather and a volley of three — two leaders
+ * that break on the body and a killing bolt behind them that takes the square
+ * with it.
+ */
+const QUEEN_SPELL: SpellProfile = { zoom: 7.5, gather: 0.28, orb: 0.66, bolts: 3, blast: 1.75, ring: 3.4 };
+
+function spellProfile(kind: PieceKind): SpellProfile {
+  return kind === "q" ? QUEEN_SPELL : MAGE_SPELL;
+}
+
+/**
+ * A marching distance profile: a short push-off, a long stretch at constant
+ * speed, then a brief settle. The stride clock runs at a fixed cadence, so an
+ * eased-all-the-way curve (what a sliding piece uses) would leave the feet
+ * visibly skating at both ends of the move.
+ *
+ * @param ramp fraction of the move spent accelerating, and again decelerating
+ */
+function strideEasing(ramp: number): Easing {
+  const r = Math.min(0.4, Math.max(0.02, ramp));
+  // Distance covered by the ramp-up + cruise + ramp-down, before normalising.
+  const span = 1 - r;
+  return (t: number): number => {
+    if (t <= r) return t * t * 0.5 / r / span;
+    if (t >= 1 - r) {
+      const rest = 1 - t;
+      return (span - rest * rest * 0.5 / r) / span;
+    }
+    return (t - r * 0.5) / span;
+  };
+}
+
 /**
  * Owns every three.js object. The chess core drives it through events and the
  * animator hook; React only calls the small imperative API at the bottom.
@@ -104,6 +360,13 @@ export class SceneEngine {
   private jungle: JungleOverlay;
   private board = new BoardView();
   private effects = new EffectsSystem();
+  /**
+   * The only point lights sorcery is ever allowed to use. They are added to the
+   * scene once and reused, because every change to the scene's light count makes
+   * three.js recompile every material in the hall — the sorceress' three-bolt
+   * volley used to do that eight times in a second and hang the tab.
+   */
+  private spellLights: SpellLightPool;
   private shake = new ShakeSystem();
   private tweens = new TweenManager();
   private factory = new PieceFactory();
@@ -117,6 +380,18 @@ export class SceneEngine {
    * strike / death clips would sit frozen on their first frame.
    */
   private motion = new Set<PieceView>();
+  /**
+   * Bumped every time the board is rebuilt from the chess core (quality change,
+   * undo, new game). A move animation that was already running is holding views
+   * that no longer exist, so it checks this after every await and bails out
+   * instead of putting a dead figure back on a square — an orphan left standing
+   * in the hall was the ghost model seen after an automatic graphics downgrade.
+   */
+  private boardRevision = 0;
+  /** Move animations currently in flight. */
+  private movesInFlight = 0;
+  /** A rebuild waiting for the board to go quiet (see {@link setQuality}). */
+  private rebuildPending = false;
   private promotionGroup: THREE.Group | null = null;
   private promotionViews: PieceView[] = [];
   private promotionResolve: ((kind: PieceKind) => void) | null = null;
@@ -127,7 +402,6 @@ export class SceneEngine {
 
   private selected: SquareId | null = null;
   private hoveredPiece: PieceView | null = null;
-  private dragging: { piece: PieceView; from: SquareId; origin: THREE.Vector3 } | null = null;
   private pointerDownAt: { x: number; y: number; square: SquareId | null } | null = null;
   private legalTargets = new Map<SquareId, boolean>();
   private previewing = false;
@@ -138,7 +412,29 @@ export class SceneEngine {
   private running = false;
   private disposed = false;
   private frameErrors = 0;
-  private blackFrameChecks = 0;
+  /** How many times the frame has been sampled for the black-screen check. */
+  private darkFrameChecks = 0;
+  /** How far the engine has already fallen back (see `escalateFallback`). */
+  private fallbackStage = 0;
+  /** What this driver is, and what it can do. */
+  private gpu: GpuReport;
+  /**
+   * Safe rendering: no composer, no reflection probe, no shadow maps. Every one
+   * of those has been seen to render an all-black hall on Mesa drivers, so this
+   * is the switch that always gets a picture up.
+   */
+  private safeMode = false;
+  /** Player-side exposure multiplier, for screens that read too dark. */
+  private brightness = 1;
+  /** The probe currently lighting the scene, kept so it can be disposed. */
+  private environmentMap: THREE.Texture | null = null;
+  /**
+   * Null until the probe has been tested on this driver, then false forever if
+   * the test failed — there is no point rebuilding it on every arena change.
+   */
+  private environmentUsable: boolean | null = null;
+  /** Stands in for the probe's ambient contribution when the probe is off. */
+  private ambientFallback: THREE.AmbientLight;
 
   private preset: QualityPreset;
   private arena: ArenaTheme = DEFAULT_ARENA;
@@ -149,11 +445,29 @@ export class SceneEngine {
   private rankBadges = true;
   private interactive = true;
   private attract = false;
-  /** Computer-vs-computer showcase: slow auto orbit + cinematic grade. */
+  /** Computer-vs-computer showcase: crisp grade and a chosen camera behaviour. */
   private showcase = false;
+  private showcaseCamera: ShowcaseCamera = "follow";
   private showcaseOrbitSpeed = 0.32;
   /** Elapsed time of the last manual camera drag (auto orbit yields to it). */
   private lastManualCameraAt = -999;
+  /** The figure the follow camera is tracking, if any. */
+  private followPiece: PieceView | null = null;
+  /** A fixed point the follow camera holds when no figure is moving. */
+  private followPoint: THREE.Vector3 | null = null;
+  /** Radius multiplier: a fight pulls the rig in closer than a plain march. */
+  private followTightness = 1;
+  /** The eased point actually being framed, so a jumping focus never snaps. */
+  private followedFocus = new THREE.Vector3(0, 0.45, 0);
+  /** Azimuth, elevation and distance the follow camera holds. */
+  private followRig = new THREE.Spherical(7.6, 0.92, Math.PI * 0.32);
+  private followOffset = new THREE.Spherical();
+  private scratchFocus = new THREE.Vector3();
+  private scratchDesired = new THREE.Vector3();
+  /** True while the engine itself is moving the camera (never counts as input). */
+  private cameraDriven = false;
+  /** True while a scripted camera move (intro, dolly, preset) is running. */
+  private cameraScripted = false;
   private introPlaying = false;
   private introSkipped = false;
   private orbiting = false;
@@ -191,8 +505,11 @@ export class SceneEngine {
     this.renderer.shadowMap.enabled = settings.shadows;
     this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = look.exposure;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+    this.gpu = probeGpu(this.renderer);
+    console.info(`[scene] gpu: ${describeGpu(this.gpu)}`);
+    this.applyExposure(look.exposure);
 
     this.scene.background = new THREE.Color(look.background);
     // Thinner, warmer haze than a sealed hall would use: the siege camps and
@@ -223,6 +540,10 @@ export class SceneEngine {
     this.scene.add(this.board.group);
     this.board.applyArena(look);
     this.scene.add(this.effects.group);
+    // Three slots: the gathering fire, the killing bolt and a judgement column
+    // can all be alight at once. Anything beyond that goes unlit rather than
+    // growing the set. Presets without post-processing stay entirely unlit.
+    this.spellLights = new SpellLightPool(this.scene, settings.postFx ? 3 : 0);
 
     // A soft lamp parented to the camera: whichever way the board is turned,
     // the faces and shields pointing at the player are never in shadow.
@@ -233,8 +554,11 @@ export class SceneEngine {
     this.cameraLamp.target.position.set(0, 0, -1);
     this.scene.add(this.camera);
 
-    this.scene.environment = buildEnvironmentMap(this.renderer, look);
-    this.scene.environmentIntensity = look.environment.intensity;
+    // Skylight stand-in: silent while the reflection probe is doing its job,
+    // turned up the moment the probe is dropped so nothing goes unlit.
+    this.ambientFallback = new THREE.AmbientLight(look.environment.top, 0);
+    this.scene.add(this.ambientFallback);
+    this.applyEnvironment();
 
     this.postfx = new PostFX(this.renderer, this.scene, this.camera);
     this.postfx.setGrade(look.grade);
@@ -242,6 +566,7 @@ export class SceneEngine {
     this.postfx.setPreset(preset);
 
     this.bindEvents();
+    this.factory.onClip((keys, name, clip) => this.adoptClip(keys, name, clip));
     this.controller.setAnimator((event) => this.animateMove(event));
     this.controller.on("state", (snapshot) => this.onState(snapshot));
     this.controller.on("reset", () => this.rebuildPieces());
@@ -257,6 +582,25 @@ export class SceneEngine {
     if (this.disposed) return;
     this.rebuildPieces();
     this.callbacks.onReady();
+    // The rigs and their stances are in; the strikes, deaths and strides come
+    // down behind the game so the first move never waits on seventy GLBs.
+    void this.factory.warmClips();
+  }
+
+  /**
+   * A clip finished downloading after the board was already standing: hand it to
+   * every figure of that roster on the board, in the tray and mid-move, so a
+   * piece built during the opening is not left without a strike for the game.
+   */
+  private adoptClip(keys: TemplateKey[], name: ClipName, clip: THREE.AnimationClip): void {
+    const wanted = new Set<TemplateKey>(keys);
+    const install = (piece: PieceView): void => {
+      if (wanted.has(`${piece.color}${piece.kind}`)) piece.installClip(name, clip);
+    };
+    for (const piece of this.pieces.values()) install(piece);
+    for (const piece of this.motion) install(piece);
+    for (const piece of this.captured) install(piece);
+    for (const piece of this.promotionViews) install(piece);
   }
 
   start(): void {
@@ -314,12 +658,19 @@ export class SceneEngine {
 
     if (this.tactical) this.alignTokens();
 
-    // Auto orbit for the attract loop and the showcase, but never fight the
-    // hand on the mouse: a drag suspends it for a few seconds.
+    // Auto orbit for the attract loop, and for a showcase only when the viewer
+    // has actually asked for one. Never fight the hand on the mouse: a drag
+    // suspends it for a few seconds.
     const orbitIdle = this.elapsed - this.lastManualCameraAt > 3.2;
-    this.controls.autoRotate = !this.tactical && (this.attract || (this.showcase && orbitIdle));
+    const showcaseOrbit = this.showcase && this.showcaseCamera === "orbit" && orbitIdle;
+    this.controls.autoRotate = !this.tactical && (this.attract || showcaseOrbit);
     this.controls.autoRotateSpeed = this.attract ? 0.45 : this.showcaseOrbitSpeed;
+
+    // The follow camera writes the camera itself, so `change` events fired by
+    // the controls below must not be mistaken for the viewer grabbing the view.
+    this.cameraDriven = this.updateFollowCamera(delta);
     this.controls.update();
+    this.cameraDriven = false;
 
     this.camera.position.add(this.shake.offset);
     this.postfx.render(delta);
@@ -330,46 +681,175 @@ export class SceneEngine {
   }
 
   /**
-   * Some GPU/driver combinations silently produce an empty frame through the
-   * composer. Sample the middle of the canvas twice during the first seconds
-   * and fall back to a plain forward render rather than showing a black hall.
+   * Black-screen watchdog.
+   *
+   * Several driver stacks — Mesa's software rasterisers above all, which is what
+   * a Linux box without working hardware acceleration falls back to — render an
+   * all-black hall while the interface above it is perfectly fine. The cause is
+   * never the same twice: sometimes the composer returns an empty buffer,
+   * sometimes the reflection probe samples as NaN and poisons every lit
+   * surface, sometimes it is the shadow maps.
+   *
+   * So rather than guessing, the frame itself is sampled five times over the
+   * first seconds and each failed sample drops one more layer, in increasing
+   * order of how much it costs to lose.
    */
   private guardAgainstBlackFrames(): void {
-    if (this.blackFrameChecks >= 2 || !this.postfx.enabled) return;
-    const due = this.blackFrameChecks === 0 ? 1.2 : 2.6;
-    if (this.elapsed < due) return;
-    this.blackFrameChecks += 1;
-    if (!this.isCentreBlack()) {
-      this.blackFrameChecks = 2;
+    if (this.darkFrameChecks >= DARK_FRAME_CHECKS.length) return;
+    if (this.elapsed < DARK_FRAME_CHECKS[this.darkFrameChecks]) return;
+    if (typeof document !== "undefined" && document.hidden) return;
+    this.darkFrameChecks += 1;
+    if (!this.isFrameBlack()) {
+      // A picture is on screen — stand the watchdog down for good.
+      this.darkFrameChecks = DARK_FRAME_CHECKS.length;
       return;
     }
-    if (this.blackFrameChecks < 2) return;
-    this.postfx.forceDirect("composer produced an empty frame");
+    this.escalateFallback();
   }
 
-  private isCentreBlack(): boolean {
+  /**
+   * Reads five small patches spread across the frame (centre plus the four
+   * quadrants). Every one of them has to come back black before anything is
+   * dropped, so a dark corner or a night-time arena never triggers this.
+   */
+  private isFrameBlack(): boolean {
     const gl = this.renderer.getContext();
     const { width, height } = this.renderer.domElement;
-    if (width < 8 || height < 8) return false;
-    const span = 8;
+    const span = 6;
+    if (width < span * 4 || height < span * 4) return false;
+    const spots: [number, number][] = [
+      [0.5, 0.5],
+      [0.28, 0.32],
+      [0.72, 0.32],
+      [0.28, 0.7],
+      [0.72, 0.7],
+    ];
     const pixels = new Uint8Array(span * span * 4);
-    try {
-      gl.readPixels(
-        Math.floor(width / 2 - span / 2),
-        Math.floor(height / 2 - span / 2),
-        span,
-        span,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        pixels,
-      );
-    } catch {
-      return false;
-    }
-    for (let i = 0; i < pixels.length; i += 4) {
-      if (pixels[i] > 10 || pixels[i + 1] > 10 || pixels[i + 2] > 10) return false;
+    for (const [u, v] of spots) {
+      try {
+        gl.readPixels(
+          Math.floor(width * u - span / 2),
+          Math.floor(height * v - span / 2),
+          span,
+          span,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          pixels,
+        );
+      } catch {
+        return false;
+      }
+      for (let i = 0; i < pixels.length; i += 4) {
+        if (pixels[i] > 10 || pixels[i + 1] > 10 || pixels[i + 2] > 10) return false;
+      }
     }
     return true;
+  }
+
+  /** Drops the next layer of the pipeline and tells the interface why. */
+  private escalateFallback(): void {
+    this.fallbackStage += 1;
+    switch (this.fallbackStage) {
+      case 1:
+        if (this.postfx.isBypassed) {
+          this.escalateFallback();
+          return;
+        }
+        this.postfx.setBypassed(true);
+        this.report("Post-processing produced an empty frame on this driver — cinematic effects turned off.", false);
+        return;
+      case 2:
+        if (this.environmentUsable === false) {
+          this.escalateFallback();
+          return;
+        }
+        this.environmentUsable = false;
+        this.applyEnvironment();
+        this.report("This driver cannot sample the reflection probe — switched to plain skylight.", false);
+        return;
+      default:
+        if (this.safeMode) {
+          console.warn("[scene] still rendering black after every fallback", describeGpu(this.gpu));
+          this.darkFrameChecks = DARK_FRAME_CHECKS.length;
+          return;
+        }
+        this.setSafeMode(true);
+        this.report("Switched to safe rendering — your graphics driver could not draw the full scene.", true);
+        return;
+    }
+  }
+
+  private report(message: string, safe: boolean): void {
+    console.warn(`[scene] ${message} (${describeGpu(this.gpu)})`);
+    this.callbacks.onRenderFallback?.(message, safe);
+  }
+
+  // -------------------------------------------------------------- render health
+
+  /** Tone mapping exposure, with the player's brightness on top of the theme. */
+  private applyExposure(base = this.baseExposure()): void {
+    this.renderer.toneMappingExposure = base * this.brightness * (this.safeMode ? 1.2 : 1);
+  }
+
+  private baseExposure(): number {
+    const look = ARENA_LOOKS[this.arena];
+    return this.tactical ? look.exposure * 1.12 : look.exposure;
+  }
+
+  /**
+   * (Re)builds the reflection probe for the current arena, self-tests it once on
+   * this driver, and falls back to a plain ambient skylight if it cannot be
+   * trusted. A NaN probe blacks out every lit surface in the hall, so this is
+   * the single most likely cause of an all-black scene.
+   */
+  private applyEnvironment(): void {
+    const look = ARENA_LOOKS[this.arena];
+    const previous = this.environmentMap;
+    this.environmentMap = null;
+    this.scene.environment = null;
+    previous?.dispose();
+
+    const allowed = !this.safeMode && this.environmentUsable !== false && this.gpu.halfFloatBuffer;
+    if (allowed) {
+      try {
+        const map = buildEnvironmentMap(this.renderer, look);
+        if (this.environmentUsable === null) {
+          this.environmentUsable = reflectionProbeWorks(this.renderer, map);
+          if (!this.environmentUsable) console.warn("[scene] reflection probe renders black — using ambient skylight");
+        }
+        if (this.environmentUsable) {
+          this.environmentMap = map;
+          this.scene.environment = map;
+          this.scene.environmentIntensity = look.environment.intensity;
+        } else {
+          map.dispose();
+        }
+      } catch (error) {
+        this.environmentUsable = false;
+        console.warn("[scene] could not build the reflection probe", error);
+      }
+    }
+
+    // Without a probe the ambient term has to come from somewhere, or armour and
+    // marble read as pure silhouettes.
+    const lit = this.environmentMap !== null;
+    this.ambientFallback.color.setHex(look.environment.top).lerp(new THREE.Color(look.environment.warm), 0.4);
+    this.ambientFallback.intensity = lit ? 0 : look.environment.intensity * 1.15;
+    this.refreshMaterials();
+  }
+
+  /**
+   * Forces a shader rebuild on every material in the scene. Needed whenever the
+   * shadow map is switched on or off at runtime, which otherwise leaves stale
+   * programs behind.
+   */
+  private refreshMaterials(): void {
+    this.scene.traverse((object) => {
+      const material = (object as THREE.Mesh).material;
+      if (!material) return;
+      if (Array.isArray(material)) material.forEach((entry) => (entry.needsUpdate = true));
+      else material.needsUpdate = true;
+    });
   }
 
   private sampleFps(delta: number): void {
@@ -399,9 +879,20 @@ export class SceneEngine {
   // ------------------------------------------------------------------- pieces
 
   private rebuildPieces(): void {
+    // Any beat still running belongs to the old board: invalidate it first so it
+    // cannot re-register the figure it is carrying once its awaits resolve.
+    this.boardRevision += 1;
+    this.rebuildPending = false;
     for (const piece of this.pieces.values()) piece.dispose();
+    // Figures mid-march, mid-strike or mid-death are not in `pieces` — without
+    // this they would stay in the scene forever as a frozen double of the figure
+    // the rebuild puts back on their square.
+    for (const piece of this.motion) piece.dispose();
     for (const piece of this.captured) piece.dispose();
     this.pieces.clear();
+    this.motion.clear();
+    this.hoveredPiece = null;
+    this.followPiece = null;
     this.captured = [];
     this.selected = null;
     this.legalTargets.clear();
@@ -451,8 +942,28 @@ export class SceneEngine {
   // ---------------------------------------------------------------- animation
 
   private async animateMove(event: MoveEvent): Promise<void> {
+    this.movesInFlight += 1;
+    try {
+      await this.runMove(event);
+    } finally {
+      this.movesInFlight -= 1;
+      // A quality change that arrived mid-fight was held back; run it now.
+      if (this.movesInFlight === 0 && this.rebuildPending) this.rebuildPieces();
+    }
+  }
+
+  /**
+   * True when the board has been rebuilt under a running beat, which means every
+   * view that beat is holding has already been disposed.
+   */
+  private isStale(revision: number): boolean {
+    return revision !== this.boardRevision || this.disposed;
+  }
+
+  private async runMove(event: MoveEvent): Promise<void> {
     const piece = this.pieces.get(event.from);
     if (!piece) return;
+    const revision = this.boardRevision;
 
     this.clearSelection();
     this.board.clearHighlights();
@@ -466,40 +977,71 @@ export class SceneEngine {
     const from = squareToWorld(event.from);
     const to = squareToWorld(event.to);
 
+    // Showcase follow camera: ride with the figure that is on the move, and
+    // sit in a shade closer when it is walking into a fight.
+    this.focusPiece(piece, victim ? 0.86 : 0.98);
+
     if (victim) {
       const strikeSquare = event.capture ? event.capture.square : event.to;
       // The battle beat is a camera performance — it has no meaning on the map.
-      if (this.captureCinematics && !this.tactical)
-        await this.playCaptureCinematic(piece, victim, from, to, strikeSquare);
-      else {
+      if (this.captureCinematics && !this.tactical) {
+        // The strike and the fall are the whole beat: make sure both figures
+        // actually hold those clips before the fight starts.
+        await this.armCombat(piece, victim);
+        try {
+          // The casters kill at range; everyone else has to walk into the blow.
+          if (RANGED_KINDS.includes(piece.kind))
+            await this.playSpellCinematic(piece, victim, from, to, strikeSquare);
+          else await this.playCaptureCinematic(piece, victim, from, to, strikeSquare);
+        } catch (error) {
+          // A broken effect must never strand a figure in the middle of a fight:
+          // finish the kill the plain way so the board stays consistent.
+          console.warn("[scene] battle beat failed", error);
+          this.camera.fov = DEFAULT_FOV;
+          this.camera.updateProjectionMatrix();
+          piece.setStrikeTilt(0);
+          if (!victim.isSlain) await this.crumble(victim, from);
+        }
+      } else {
         const approach = squareToWorld(event.from);
         await this.glide(piece, from, to, event.kind === "n");
         this.strikeImpact(strikeSquare, 0.8);
         await this.crumble(victim, approach);
       }
+      if (this.isStale(revision)) return;
       void this.sendToTray(victim);
     } else {
       await this.glide(piece, from, to, event.kind === "n");
       audio.play("place", 0.55);
     }
 
+    if (this.isStale(revision)) return;
     piece.container.position.copy(to);
     this.motion.delete(piece);
     this.pieces.set(event.to, piece);
+    // The move is over: hold on the square that was just taken.
+    this.focusPoint(to, 1);
     // Taking the square: dust ring, tile dip and the figure settling its weight.
     // Softer after a kill — the strike already shook the stone.
     this.landOn(piece, event.to, victim ? 0.7 : event.kind === "n" ? 1.25 : 1);
+    // Arrived: face the enemy side again rather than holding the march heading.
+    // A promoting figure is about to be replaced, so it is left alone.
+    if (!event.promotion) void piece.turnHome(this.tweens, 0.3);
 
     if (event.rook) {
       const rook = this.pieces.get(event.rook.from);
       if (rook) {
         this.pieces.delete(event.rook.from);
         this.motion.add(rook);
-        await this.glide(rook, squareToWorld(event.rook.from), squareToWorld(event.rook.to), false, 0.34);
+        // The tower walks its own path after the king has taken its square, so
+        // castling reads as two moves rather than one synchronised slide.
+        await this.glide(rook, squareToWorld(event.rook.from), squareToWorld(event.rook.to), false);
+        if (this.isStale(revision)) return;
         this.motion.delete(rook);
         this.pieces.set(event.rook.to, rook);
         audio.play("place", 0.4);
         this.landOn(rook, event.rook.to, 0.85);
+        void rook.turnHome(this.tweens, 0.3);
       }
     }
 
@@ -523,6 +1065,7 @@ export class SceneEngine {
         easing: Ease.outBack,
         onUpdate: (t) => view.container.scale.setScalar(Math.max(0.01, t)),
       });
+      if (this.isStale(revision)) return;
       view.container.scale.setScalar(1);
       this.landOn(view, event.to, 1.3);
     }
@@ -545,13 +1088,62 @@ export class SceneEngine {
     }
   }
 
-  private async glide(piece: PieceView, from: THREE.Vector3, to: THREE.Vector3, arc: boolean, duration?: number) {
+  /**
+   * Both fighters are handed the clips their beat is built on. They are fetched
+   * in the background at start-up, but a request dropped during the opening
+   * burst would otherwise leave a figure that kills without ever swinging — so
+   * a capture asks for them again here, behind a ceiling that keeps a bad
+   * network from stopping the game.
+   */
+  private async armCombat(attacker: PieceView, victim: PieceView): Promise<void> {
+    const ready = attacker.hasClip("attack") && (victim.hasClip("death") || !victim.hasAnimations);
+    if (ready) return;
+    await Promise.race([
+      Promise.all([
+        this.factory.ensureClip(attacker.color, attacker.kind, "attack"),
+        this.factory.ensureClip(victim.color, victim.kind, "death"),
+      ]),
+      wait(2.4),
+    ]);
+  }
+
+  /**
+   * Moving a figure between two squares. A rigged sculpt turns to face its
+   * destination, crosses the distance on its own legs and puts a real footfall
+   * down on every step: the walk clip is retimed to the cadence of its rank, so
+   * the skeleton and the stride clock that fires the footstep sounds and the
+   * grit puffs are the same clock — nothing skates.
+   *
+   * The knight keeps its leap and runs through the air instead of walking.
+   * Sculpts with no rig (and the low preset, where skeletal animation is off)
+   * keep the old smooth slide, but still step audibly so the board is not silent.
+   *
+   * @param hurry cadence multiplier — above 1 the figure presses forward, which
+   *   is what a charge into a standoff needs.
+   */
+  private async glide(piece: PieceView, from: THREE.Vector3, to: THREE.Vector3, arc: boolean, hurry = 1) {
     const settings = QUALITY_SETTINGS[this.preset];
     const distance = from.distanceTo(to);
-    const time = duration ?? Math.min(0.72, 0.24 + distance * 0.055);
+    const gait = GAITS[piece.kind];
+    const clip: "walk" | "run" = arc && piece.hasClip("run") ? "run" : "walk";
+    const onFoot =
+      !this.tactical && settings.characterAnimations && piece.hasAnimations && piece.hasClip(clip);
+
+    // Longer moves take more steps rather than a faster slide.
+    const tiles = Math.max(0.6, distance / TILE);
+    const steps = Math.max(2, Math.round(tiles * gait.stepsPerTile * (arc ? 0.8 : 1)));
+    const cadence = gait.cadence * hurry * (arc ? 1.5 : 1);
+    const time = onFoot
+      ? THREE.MathUtils.clamp(steps / cadence, 0.34, 2.4)
+      : Math.min(0.72, 0.24 + distance * 0.055) / hurry;
+    // The realised cadence, after the clamp — this is what the legs must match.
+    const stepRate = steps / time;
     const height = arc ? 0.85 + distance * 0.08 : 0.06;
     const trails = settings.captureParticles >= 34 && distance > TILE * 0.6;
     let nextTrail = 0.18;
+    // A fraction of a step, so the first boot lands just after the push-off
+    // instead of on the frame the figure starts to move.
+    let nextStep = 0.34;
 
     if (arc) {
       // Kicking off: grit thrown back off the tile the rider leaves behind.
@@ -560,16 +1152,37 @@ export class SceneEngine {
         speed: 1.4,
         life: 0.4,
       });
+    } else if (onFoot) {
+      // Nobody walks backwards: square up on the destination before setting off.
+      await piece.turnTowards(to, this.tweens, Math.min(0.22, 0.5 / cadence));
     }
+
+    const marching = onFoot && piece.startMarch(clip, stepRate);
+    // A ground march holds a constant speed through the middle of the move; a
+    // slide and a leap keep their eased curves.
+    const easing: Easing = arc
+      ? Ease.inOutCubic
+      : marching
+        ? strideEasing(Math.min(0.3, 1.1 / steps))
+        : Ease.inOutQuart;
 
     await this.tweens.to({
       duration: time,
-      easing: arc ? Ease.inOutCubic : Ease.inOutQuart,
+      easing,
       onUpdate: (t) => {
         piece.container.position.lerpVectors(from, to, t);
         piece.container.position.y = from.y + Math.sin(Math.PI * t) * height;
-        // A thin wake of dust follows the figure across the stone.
-        if (trails && t >= nextTrail && t < 0.88) {
+        // Footfalls: the boot itself, plus the grit it lifts off the stone. The
+        // rider is in the air, so its run makes no contact until it lands.
+        if (!arc && steps > 0) {
+          const taken = t * steps;
+          while (taken >= nextStep && nextStep <= steps) {
+            this.footfall(piece, gait, Math.round(nextStep), trails);
+            nextStep += 1;
+          }
+        }
+        // A thin wake of dust follows a sliding figure or a leaping rider.
+        if (trails && !marching && t >= nextTrail && t < 0.88) {
           nextTrail += arc ? 0.2 : 0.24;
           this.effects.spawnSmoke(piece.container.position.clone().setY(BOARD_TOP + 0.07), {
             count: 2,
@@ -586,7 +1199,36 @@ export class SceneEngine {
       },
     });
     piece.container.position.copy(to);
+    if (marching) piece.stopMarch(0.2);
     if (arc) this.shake.add(0.05);
+  }
+
+  /**
+   * One boot going down mid-march: the step itself, panned to where the figure
+   * is on screen and pitch-jittered so a long march never turns metronomic,
+   * plus a small puff of grit lifted exactly where the foot struck.
+   */
+  private footfall(piece: PieceView, gait: Gait, index: number, dust: boolean): void {
+    const at = piece.container.position;
+    audio.footstep({
+      pan: this.stereoPan(at),
+      timbre: gait.timbre,
+      // Alternating feet are never quite equal, and neither are two steps.
+      volume: gait.volume * (index % 2 === 0 ? 1 : 0.93),
+      jitter: (Math.random() - 0.5) * 0.16,
+    });
+    if (!dust) return;
+    this.effects.spawnSmoke(at.clone().setY(BOARD_TOP + 0.05), {
+      count: 2,
+      radius: 0.16,
+      scale: 0.24 + gait.volume * 0.12,
+      growth: 2.2,
+      life: 0.5,
+      speed: 0.26,
+      rise: 0.08,
+      color: 0xa2947c,
+      opacity: 0.15,
+    });
   }
 
   /**
@@ -604,6 +1246,7 @@ export class SceneEngine {
 
     this.board.land(square, FACTION_ACCENT[piece.color], strength);
     this.woodKnock(piece, centre, strength);
+    this.landingSteps(piece, centre, strength);
     piece.flareAura(Math.min(1, 0.8 * strength));
     if (strength > 0.9) this.shake.add(0.035 * strength);
 
@@ -639,6 +1282,20 @@ export class SceneEngine {
     });
   }
 
+  /**
+   * Boots taking the square. Everyone puts one foot down as they arrive; the
+   * rider drops out of its leap onto both, a beat apart, which is what makes
+   * the landing read as weight rather than a touch-down.
+   */
+  private landingSteps(piece: PieceView, at: THREE.Vector3, strength: number): void {
+    const gait = GAITS[piece.kind];
+    const pan = this.stereoPan(at);
+    const volume = gait.volume * Math.min(1.4, 0.85 + strength * 0.45);
+    audio.footstep({ pan, timbre: gait.timbre, volume });
+    if (piece.kind !== "n") return;
+    audio.footstep({ pan, timbre: gait.timbre, volume: volume * 1.15, delay: 0.07, jitter: -0.09 });
+  }
+
   /** Knees taking the load: a fast compression that springs back out. */
   private async settle(piece: PieceView, strength: number): Promise<void> {
     const depth = Math.min(1, 0.5 + strength * 0.45);
@@ -655,7 +1312,12 @@ export class SceneEngine {
     piece.setSquash(0);
   }
 
-  /** Sub-1.5s battle beat: lunge, strike, sparks, shake, crumble. */
+  /**
+   * The hand-to-hand battle beat: charge, square up, strike, crumble. How hard
+   * it hits is read out of {@link STRIKES} for the attacking rank, so the same
+   * choreography carries a footsoldier's stab and a royal execution without
+   * either one borrowing the other's weight.
+   */
   private async playCaptureCinematic(
     attacker: PieceView,
     victim: PieceView,
@@ -663,8 +1325,12 @@ export class SceneEngine {
     to: THREE.Vector3,
     strikeSquare: SquareId,
   ): Promise<void> {
+    const profile = STRIKES[attacker.kind];
+    const settings = QUALITY_SETTINGS[this.preset];
     const direction = to.clone().sub(from).normalize();
     const standoff = to.clone().sub(direction.clone().multiplyScalar(TILE * 0.52));
+    // The fight is the shot: frame the two bodies and pull the rig in.
+    this.focusPoint(standoff.clone().lerp(to, 0.5), 0.68);
     // En passant kills a pawn on a different square than the one moved to.
     const victimSpot = victim.container.position.clone();
     const blow = victimSpot.clone().sub(standoff).setY(0);
@@ -676,7 +1342,7 @@ export class SceneEngine {
       duration: 0.22,
       easing: Ease.outCubic,
       onUpdate: (t) => {
-        this.camera.fov = originalFov - 5.5 * t;
+        this.camera.fov = originalFov - profile.zoom * t;
         this.camera.updateProjectionMatrix();
       },
     });
@@ -684,57 +1350,116 @@ export class SceneEngine {
     // Both fighters square up: the attacker charges in, the defender turns to
     // meet its killer so the blow never lands on the back of a head.
     await Promise.all([
-      this.glide(attacker, from, standoff, attacker.kind === "n", 0.34),
+      // Pressing forward into the blow: the same march, a quicker cadence.
+      this.glide(attacker, from, standoff, attacker.kind === "n", profile.charge),
       victim.turnTowards(standoff, this.tweens, 0.3),
     ]);
     attacker.faceTowards(victimSpot);
+    // Arrival beat: the march has stopped and the figure is squared up on its
+    // target. A held breath here is what makes the blow read as its own action
+    // rather than the tail of the walk. The heavier the rank, the longer it
+    // stands there before it commits.
+    await wait(profile.wind);
 
-    // Strike: the skeletal attack clip when the sculpt is rigged, otherwise a
-    // short thrust of the runtime node so the board anchor stays put.
-    const strike = attacker.hasAnimations ? attacker.playAttack() : null;
-    if (strike && strike.duration > 0) {
-      await wait(strike.impact);
-    } else {
-      await this.tweens.to({
-        duration: 0.12,
-        easing: Ease.inCubic,
-        onUpdate: (t) => {
-          attacker.runtime.position.x = direction.x * t * 0.28;
-          attacker.runtime.position.z = direction.z * t * 0.28;
-        },
+    // Sentence before execution: the crown drops a column of light on the
+    // condemned and the hall is told what is coming.
+    if (profile.pillar) await this.passSentence(victim, victimSpot, profile.pillar, settings.postFx);
+
+    // Strike: the skeletal attack clip when the rig carries one, otherwise a
+    // wind-up and lunge driven off the runtime node so the board anchor stays
+    // put. Note this asks for the clip itself, not merely for a rig — a figure
+    // whose strike failed to download must still visibly attack.
+    const strike = attacker.hasClip("attack") ? attacker.playAttack() : null;
+    if (profile.swing > 0) {
+      // The weapon is heard coming round just before it arrives.
+      const lead = strike && strike.duration > 0 ? Math.max(0, strike.impact - 0.18) : 0.05;
+      audio.bladeWhoosh({
+        pan: this.stereoPan(standoff),
+        volume: profile.swing,
+        weight: profile.heft,
+        delay: lead,
       });
     }
+    if (strike && strike.duration > 0) await wait(strike.impact);
+    else await this.lunge(attacker, direction, profile.heft);
 
     const impact = victimSpot.clone().setY(0.55);
-    audio.play("capture", 0.85);
-    this.strikeImpact(strikeSquare, 1);
-    this.effects.spawnFlash(impact, 2.2, 0.24);
-    this.effects.spawnBurst(impact, 0xffc978, QUALITY_SETTINGS[this.preset].captureParticles, {
-      speed: 3.4,
+    const power = profile.power;
+    audio.play("capture", Math.min(1, 0.85 * power));
+    // The board itself is capped: past a point the tiles stop reading as stone.
+    this.strikeImpact(strikeSquare, Math.min(1.5, power));
+    this.effects.spawnFlash(impact, Math.min(4.4, 2.2 * power), 0.24);
+    this.effects.spawnBurst(impact, 0xffc978, Math.round(settings.captureParticles * power), {
+      speed: 3.4 * (0.9 + power * 0.1),
       life: 0.75,
     });
-    this.shake.add(0.55);
+    this.shake.add(Math.min(1, 0.55 * power));
 
-    if (!strike || strike.duration === 0) {
-      void this.tweens.to({
-        duration: 0.28,
-        easing: Ease.outCubic,
-        onUpdate: (t) => {
-          attacker.runtime.position.x = direction.x * (1 - t) * 0.28;
-          attacker.runtime.position.z = direction.z * (1 - t) * 0.28;
-        },
+    // Steel: the cut hangs in the air for a couple of frames after the blade.
+    if (profile.slash) {
+      void spawnSlash(this.scene, this.tweens, impact, {
+        color: profile.slash.color,
+        size: profile.slash.size,
+        tilt: -0.55 - Math.random() * 0.35,
       });
     }
 
+    // Weight: a blow that carries into the floor sends a wave across the stone.
+    if (profile.wave) {
+      audio.groundSlam({ pan: this.stereoPan(victimSpot), volume: Math.min(1, power * 0.6) });
+      void spawnGroundWave(this.scene, this.tweens, victimSpot, {
+        color: profile.wave.color,
+        radius: profile.wave.radius,
+        height: BOARD_TOP + 0.03,
+        echo: profile.aftershock > 0.2,
+      });
+      this.effects.spawnSmoke(victimSpot.clone().setY(BOARD_TOP + 0.14), {
+        count: Math.max(4, Math.round(settings.captureParticles * 0.3)),
+        radius: 0.5,
+        scale: 0.8,
+        growth: 3.2,
+        life: 1.2,
+        speed: 2.4,
+        rise: 0.1,
+        color: 0x9c8f7d,
+        opacity: 0.5,
+      });
+    }
+
+    // A charge does not stop where it strikes: dust keeps going past the body.
+    if (profile.wake) {
+      this.effects.spawnSmoke(standoff.clone().setY(BOARD_TOP + 0.12), {
+        count: Math.max(3, Math.round(settings.captureParticles * 0.2)),
+        radius: 0.34,
+        scale: 0.6,
+        growth: 2.8,
+        life: 0.9,
+        speed: 0.8,
+        rise: 0.15,
+        color: 0xa5977f,
+        opacity: 0.4,
+        drift: direction.clone().multiplyScalar(2.1),
+      });
+    }
+
+    // Hitstop: on a heavy blow the whole beat holds for a frame or two on
+    // contact, which is what makes the hit feel like it connected with mass.
+    if (profile.hold > 0) await wait(profile.hold);
+
+    if (!strike || strike.duration === 0) this.recover(attacker, direction, profile.heft);
+
+    // The hall answers a beat later.
+    if (profile.aftershock > 0) void this.aftershock(strikeSquare, profile.aftershock);
+
     // The defender goes down while the attacker finishes following through.
-    const recovery = strike ? Math.min(0.45, Math.max(0, strike.duration - strike.impact)) : 0;
+    const recovery = strike ? Math.min(0.45, Math.max(0, strike.duration - strike.impact)) : 0.18;
     await Promise.all([this.slay(victim, blow), wait(recovery)]);
 
     void this.tweens.to({
       duration: 0.45,
       easing: Ease.outCubic,
       onUpdate: (t) => {
-        this.camera.fov = originalFov - 5.5 * (1 - t);
+        this.camera.fov = originalFov - profile.zoom * (1 - t);
         this.camera.updateProjectionMatrix();
       },
     });
@@ -742,9 +1467,461 @@ export class SceneEngine {
     // The corpse is thrown clear in smoke as the victor takes the square.
     await Promise.all([
       this.banish(victim, blow),
-      this.glide(attacker, standoff, to, false, 0.3),
+      // The last stride onto the square it has just cleared.
+      this.glide(attacker, standoff, to, false, 1.5),
     ]);
     audio.play("place", 0.5);
+  }
+
+  /**
+   * The crown's prerogative: before the blow, a column of light is dropped on
+   * the condemned, a bell is rung over it, and motes are drawn up off the stone
+   * around its feet. Nothing else on the board is allowed this beat.
+   */
+  private async passSentence(
+    victim: PieceView,
+    at: THREE.Vector3,
+    pillar: { radius: number; color: number },
+    withLight: boolean,
+  ): Promise<void> {
+    const settings = QUALITY_SETTINGS[this.preset];
+    audio.judgementToll({ pan: this.stereoPan(at), volume: 0.95 });
+    void spawnPillar(this.scene, this.tweens, at, {
+      color: pillar.color,
+      radius: pillar.radius,
+      height: 5.6,
+      floor: BOARD_TOP,
+      hold: 0.46,
+      light: withLight ? this.spellLights.acquire(pillar.color, 5.2) : null,
+    });
+    // Light pulling the dust up off the floor around the condemned.
+    this.effects.spawnBurst(at.clone().setY(BOARD_TOP + 0.1), 0xffe6b4, Math.round(settings.captureParticles * 0.4), {
+      speed: 0.5,
+      life: 1,
+      gravity: -1.6,
+      radius: pillar.radius * 0.9,
+      size: 0.08,
+      growth: 0.4,
+      drag: 1.4,
+      rise: 0.7,
+    });
+    victim.flareAura(0.8);
+    await wait(0.36);
+  }
+
+  /**
+   * The stone still moving after a heavy blow: a second, softer kick through the
+   * tiles and a low cloud of grit rolling off the square.
+   */
+  private async aftershock(square: SquareId, strength: number): Promise<void> {
+    await wait(0.18);
+    const settings = QUALITY_SETTINGS[this.preset];
+    this.shake.add(strength);
+    this.board.impact(square, 0xffa457, strength * 0.7);
+    const ground = squareToWorld(square, BOARD_TOP + 0.06);
+    this.effects.spawnBurst(ground, 0xd8b285, Math.round(settings.captureParticles * 0.3), {
+      speed: 1.4,
+      life: 0.9,
+      gravity: 2.2,
+      radius: 0.55,
+    });
+  }
+
+  /**
+   * The caster's beat. Nothing about this fight is fought at arm's length: the
+   * sorceress and the mage stay on their own square, level the staff down the
+   * line, gather fire at the crystal and throw it. The target burns where it
+   * stands — and only once the body is gone does the caster walk the whole
+   * distance and take the square, footsteps and all.
+   */
+  private async playSpellCinematic(
+    attacker: PieceView,
+    victim: PieceView,
+    from: THREE.Vector3,
+    to: THREE.Vector3,
+    strikeSquare: SquareId,
+  ): Promise<void> {
+    // En passant aside, the victim stands on the destination square; either way
+    // the fire flies at the body, and the blast throws it away from the caster.
+    const victimSpot = victim.container.position.clone();
+    const blow = victimSpot.clone().sub(from).setY(0);
+    if (blow.lengthSq() < 1e-6) blow.copy(to.clone().sub(from).setY(0));
+    if (blow.lengthSq() < 1e-6) blow.set(0, 0, 1);
+    blow.normalize();
+
+    const spell = spellProfile(attacker.kind);
+    // A duel at range: hold both ends of the bolt in frame.
+    this.focusPoint(from.clone().lerp(victimSpot, 0.55), 0.92);
+    const originalFov = this.camera.fov;
+    void this.tweens.to({
+      duration: 0.28,
+      easing: Ease.outCubic,
+      onUpdate: (t) => {
+        this.camera.fov = originalFov - spell.zoom * t;
+        this.camera.updateProjectionMatrix();
+      },
+    });
+
+    // The caster levels its staff; the target sees what is coming for it.
+    await Promise.all([
+      attacker.turnTowards(victimSpot, this.tweens, 0.34),
+      victim.turnTowards(from, this.tweens, 0.32),
+    ]);
+    attacker.faceTowards(victimSpot);
+
+    // The strike clip doubles as the incantation: fire builds at the crystal
+    // right up to the frame the clip would have landed its blow. The sorceress
+    // holds hers longer, and holds far more of it.
+    const cast = attacker.hasClip("attack") ? attacker.playAttack() : null;
+    const gather = (cast && cast.duration > 0 ? Math.max(0.34, cast.impact) : 0.55) + spell.gather;
+    // No cast clip on this rig: the body does the casting instead of the
+    // skeleton — it leans back over the fire it is gathering.
+    const byHand = !cast || cast.duration <= 0;
+    if (byHand) void this.castWind(attacker, gather);
+    await this.gatherSpell(attacker, gather, spell.orb);
+    // ...and throws itself after the bolt as it leaves the staff.
+    if (byHand) this.castRelease(attacker, blow);
+
+    const impact = victimSpot.clone().setY(0.62);
+    if (spell.bolts > 1) {
+      // A volley: leaders go first and break on the body, the killing bolt lands
+      // behind them and is the one that takes the square.
+      const leaders: Promise<void>[] = [];
+      for (let i = 0; i < spell.bolts - 1; i += 1) {
+        leaders.push(this.throwFireball(attacker, impact, { size: 0.34, delay: i * 0.11, leader: true }));
+      }
+      await wait(0.18);
+      await this.throwFireball(attacker, impact, { size: 0.64 });
+      await Promise.all(leaders);
+    } else {
+      await this.throwFireball(attacker, impact);
+    }
+    this.spellBurst(attacker.color, impact, strikeSquare, spell.blast, spell.ring);
+
+    // Dead before the caster has taken a single step.
+    await this.slay(victim, blow);
+
+    void this.tweens.to({
+      duration: 0.45,
+      easing: Ease.outCubic,
+      onUpdate: (t) => {
+        this.camera.fov = originalFov - spell.zoom * (1 - t);
+        this.camera.updateProjectionMatrix();
+      },
+    });
+
+    // The body is cleared off the board, and only then is the square walked to.
+    await this.banish(victim, blow);
+    if (cast) attacker.playIdle(0.2);
+    this.focusPiece(attacker, 0.94);
+    await this.glide(attacker, from, to, false, 1.15);
+    audio.play("place", 0.5);
+  }
+
+  /** Caster with no clip: the shoulders go back over the gathering fire. */
+  private async castWind(attacker: PieceView, duration: number): Promise<void> {
+    await this.tweens.to({
+      duration: Math.max(0.14, duration * 0.85),
+      easing: Ease.outCubic,
+      onUpdate: (t) => attacker.setStrikeTilt(-0.22 * t),
+    });
+  }
+
+  /** The release: the staff comes down and the body follows the bolt out. */
+  private castRelease(attacker: PieceView, direction: THREE.Vector3): void {
+    const reach = TILE * 0.2;
+    const push = (offset: number, tilt: number) => {
+      attacker.runtime.position.x = direction.x * offset;
+      attacker.runtime.position.z = direction.z * offset;
+      attacker.setStrikeTilt(tilt);
+    };
+    void (async () => {
+      await this.tweens.to({
+        duration: 0.14,
+        easing: Ease.outQuint,
+        onUpdate: (t) => push(reach * t, THREE.MathUtils.lerp(-0.22, 0.26, t)),
+      });
+      await this.tweens.to({
+        duration: 0.38,
+        easing: Ease.outCubic,
+        onUpdate: (t) => push(reach * (1 - t), 0.26 * (1 - t)),
+      });
+      push(0, 0);
+    })();
+  }
+
+  /**
+   * The wind-up: a ball of fire drawn together at the head of the staff, fed by
+   * embers pulled in out of the air around it, over a rising charge in the mix.
+   * The fire is repositioned every frame from the prop's own casting point, so
+   * it stays in the crystal however the casting arm swings.
+   */
+  private async gatherSpell(attacker: PieceView, duration: number, size: number): Promise<void> {
+    const settings = QUALITY_SETTINGS[this.preset];
+    const look = SPELL_LOOK[attacker.color];
+    const orb = new SpellOrb(look, size, this.spellLights.acquire(look.light, 4.6));
+    orb.group.position.copy(attacker.castOrigin());
+    this.scene.add(orb.group);
+
+    audio.spellCharge({ pan: this.stereoPan(orb.group.position), duration, volume: size * 2 });
+    attacker.flareAura(Math.min(1.2, size * 1.4));
+
+    const motes = Math.max(3, Math.round(settings.captureParticles * 0.14 * (size * 2.4)));
+    let nextMote = 0.14;
+    try {
+      await this.tweens.to({
+        duration,
+        easing: Ease.linear,
+        onUpdate: (t) => {
+          const at = attacker.castOrigin();
+          orb.group.position.copy(at);
+          // Slow to catch, then it runs away with itself.
+          orb.setIntensity(t * t * 1.15);
+          orb.animate(this.elapsed);
+          if (t >= nextMote) {
+            nextMote += 0.16;
+            // Motes falling inward: thrown out wide, dragged back by the pull.
+            this.effects.spawnBurst(at, look.ember, motes, {
+              speed: 0.55,
+              life: 0.45,
+              gravity: -1.1,
+              radius: 0.36,
+              size: 0.075,
+              growth: 0.28,
+              drag: 2.6,
+              rise: 0.2,
+            });
+          }
+        },
+      });
+    } finally {
+      orb.dispose();
+    }
+  }
+
+  /**
+   * One bolt: a flat, fast arc from the staff to the target's chest, shedding
+   * embers and a thin trail of smoke the whole way. Longer shots take
+   * proportionally longer, so the distance across the board is felt.
+   *
+   * A `leader` is one of the smaller balls the sorceress sends ahead of the
+   * killing bolt — it is thrown off-centre, breaks on the body on its own and
+   * never takes the square with it.
+   */
+  private async throwFireball(
+    attacker: PieceView,
+    target: THREE.Vector3,
+    options: { size?: number; delay?: number; leader?: boolean } = {},
+  ): Promise<void> {
+    if (options.delay && options.delay > 0) await wait(options.delay);
+    const settings = QUALITY_SETTINGS[this.preset];
+    const look = SPELL_LOOK[attacker.color];
+    const start = attacker.castOrigin();
+    const size = options.size ?? 0.52;
+    const leader = options.leader === true;
+    // Leaders come in off the shoulder rather than straight down the line.
+    const aim = target.clone();
+    if (leader) {
+      const side = new THREE.Vector3(0, 1, 0).cross(target.clone().sub(start).setY(0).normalize());
+      aim.addScaledVector(side, (Math.random() - 0.5) * 0.5).setY(target.y + (Math.random() - 0.4) * 0.3);
+    }
+    const distance = start.distanceTo(aim);
+    const flight = THREE.MathUtils.clamp(distance * 0.1, 0.22, 0.62);
+    const lift = 0.1 + distance * 0.05;
+    const motes = Math.max(3, Math.round(settings.captureParticles * 0.16 * (leader ? 0.6 : 1)));
+    const smoking = settings.captureParticles >= 34 && !leader;
+
+    // Only the killing bolt lights the hall: the leaders it is sent ahead of
+    // would be fighting over the same three slots for a few frames each.
+    const orb = new SpellOrb(look, size, leader ? null : this.spellLights.acquire(look.light, 4.6));
+    orb.group.position.copy(start);
+    orb.setIntensity(1);
+    this.scene.add(orb.group);
+
+    audio.spellCast({ pan: this.stereoPan(start), volume: leader ? 0.5 : 1 });
+    this.shake.add(leader ? 0.04 : 0.08);
+
+    const at = new THREE.Vector3();
+    let nextTrail = 0;
+    try {
+      await this.tweens.to({
+        duration: flight,
+        easing: Ease.linear,
+        onUpdate: (t) => {
+          at.lerpVectors(start, target, t);
+          at.y += Math.sin(Math.PI * t) * lift;
+          orb.group.position.copy(at);
+          // It tightens and brightens as it closes on the body.
+          orb.setIntensity(1 + t * 0.4);
+          orb.animate(this.elapsed);
+          if (t >= nextTrail) {
+            nextTrail += 0.1;
+            this.effects.spawnBurst(at.clone(), look.ember, motes, {
+              speed: 0.7,
+              life: 0.65,
+              gravity: -0.4,
+              radius: 0.12,
+              size: 0.09,
+              growth: 0.35,
+              drag: 2.2,
+              rise: 0.1,
+            });
+            if (smoking) {
+              this.effects.spawnSmoke(at.clone(), {
+                count: 2,
+                radius: 0.12,
+                scale: 0.32,
+                growth: 2.6,
+                life: 0.6,
+                speed: 0.25,
+                rise: 0.18,
+                color: 0x8a7d6e,
+                opacity: 0.22,
+              });
+            }
+          }
+        },
+      });
+    } finally {
+      orb.dispose();
+    }
+
+    // A leader breaks on its own: a small clap of fire, no square taken.
+    if (leader) {
+      audio.spellImpact({ pan: this.stereoPan(aim), volume: 0.4 });
+      this.effects.spawnFlash(aim, 1.5, 0.2);
+      this.effects.spawnBurst(aim, look.core, Math.round(settings.captureParticles * 0.35), {
+        speed: 2.8,
+        life: 0.45,
+        gravity: 1.8,
+        radius: 0.12,
+      });
+      this.shake.add(0.14);
+    }
+  }
+
+  /**
+   * The bolt breaking open on the body: a hard white flash, a shell of fire
+   * thrown outward, embers left hanging on the air and the square itself struck
+   * as hard as any blade would have struck it. `scale` is how much fire the
+   * caster put behind it, and `ring` rolls the blast out across the stone — the
+   * sorceress leaves one, the mage does not.
+   */
+  private spellBurst(color: Faction, at: THREE.Vector3, square: SquareId, scale = 1, ring = 0): void {
+    const settings = QUALITY_SETTINGS[this.preset];
+    const look = SPELL_LOOK[color];
+
+    audio.spellImpact({ pan: this.stereoPan(at), volume: Math.min(1.4, scale) });
+    audio.play("capture", Math.min(1, 0.5 * scale));
+    this.strikeImpact(square, Math.min(1.5, 1.1 * scale));
+    this.effects.spawnFlash(at, Math.min(6, 3.4 * scale), 0.3);
+    this.effects.spawnBurst(at, look.core, Math.round(settings.captureParticles * scale), {
+      speed: 4.4 * (0.9 + scale * 0.1),
+      life: 0.55,
+      gravity: 2.6,
+      radius: 0.1,
+    });
+    this.effects.spawnBurst(at, look.ember, Math.round(settings.captureParticles * 0.7 * scale), {
+      speed: 1.5,
+      life: 1.5,
+      gravity: -0.7,
+      radius: 0.3 * scale,
+      size: 0.1,
+      growth: 0.38,
+      drag: 1.6,
+      rise: 0.5,
+    });
+    this.effects.spawnSmoke(at, {
+      count: Math.max(3, Math.round(settings.captureParticles * 0.22 * scale)),
+      radius: 0.34 * scale,
+      scale: 0.7 * scale,
+      growth: 2.8,
+      life: 1.1,
+      speed: 1.2,
+      rise: 0.6,
+      color: 0x7d7062,
+      opacity: 0.55,
+    });
+    this.shake.add(Math.min(1, 0.6 * scale));
+
+    if (ring > 0) {
+      // Fire thrown out flat across the square, and the floor answering it.
+      audio.groundSlam({ pan: this.stereoPan(at), volume: 0.5 });
+      void spawnGroundWave(this.scene, this.tweens, at, {
+        color: look.flame,
+        radius: ring,
+        height: BOARD_TOP + 0.03,
+        life: 0.62,
+        echo: true,
+      });
+      this.effects.spawnBurst(at.clone().setY(BOARD_TOP + 0.12), look.ember, Math.round(settings.captureParticles * 0.5), {
+        speed: 3.6,
+        life: 0.9,
+        gravity: 1.2,
+        radius: 0.2,
+        size: 0.1,
+        growth: 0.5,
+        drag: 1.8,
+      });
+    }
+  }
+
+  /**
+   * The strike for a figure with no attack clip — an unrigged sculpt, or one
+   * whose clip never arrived. It winds up away from its target, leaning back and
+   * twisting out of line, then unloads everything forward and brings the blow
+   * over the top; it resolves exactly as the blow lands, so the impact beat the
+   * caller plays is unchanged. The tilt is held through {@link PieceView} so the
+   * skeleton, which owns the pose on a rigged sculpt, cannot wipe the swing.
+   *
+   * @param heft 0 = a light blade, 1 = a siege weapon hauled round
+   */
+  private async lunge(attacker: PieceView, direction: THREE.Vector3, heft = 0): Promise<void> {
+    const reach = TILE * (0.36 + heft * 0.1);
+    const wind = -reach * 0.45;
+    const twist = 0.44 + heft * 0.22;
+    const chop = 0.3 + heft * 0.14;
+    const push = (offset: number, yaw: number, tilt: number) => {
+      attacker.runtime.position.x = direction.x * offset;
+      attacker.runtime.position.z = direction.z * offset;
+      attacker.runtime.rotation.y = yaw;
+      attacker.setStrikeTilt(tilt);
+    };
+
+    // Weight shifts back onto the rear foot, shoulders turning out of line and
+    // the weapon taken back behind the body.
+    await this.tweens.to({
+      duration: 0.2 + heft * 0.14,
+      easing: Ease.outCubic,
+      onUpdate: (t) => push(wind * t, -twist * t, -0.18 * t),
+    });
+    // Then everything unloads forward at once and the blow comes over the top.
+    await this.tweens.to({
+      duration: 0.11,
+      easing: Ease.inCubic,
+      onUpdate: (t) =>
+        push(
+          THREE.MathUtils.lerp(wind, reach, t),
+          THREE.MathUtils.lerp(-twist, 0.3, t),
+          THREE.MathUtils.lerp(-0.18, chop, t),
+        ),
+    });
+  }
+
+  /** Coming out of a lunge: the body unwinds back over its own square. */
+  private recover(attacker: PieceView, direction: THREE.Vector3, heft = 0): void {
+    const reach = TILE * (0.36 + heft * 0.1);
+    const chop = 0.3 + heft * 0.14;
+    void this.tweens.to({
+      duration: 0.32 + heft * 0.1,
+      easing: Ease.outCubic,
+      onUpdate: (t) => {
+        attacker.runtime.position.x = direction.x * reach * (1 - t);
+        attacker.runtime.position.z = direction.z * reach * (1 - t);
+        attacker.runtime.rotation.y = 0.3 * (1 - t);
+        attacker.setStrikeTilt(chop * (1 - t));
+      },
+    });
   }
 
   /**
@@ -1137,15 +2314,86 @@ export class SceneEngine {
     const fromPosition = this.camera.position.clone();
     const fromTarget = this.controls.target.clone();
     this.controls.enabled = false;
-    await this.tweens.to({
-      duration,
-      easing: Ease.inOutCubic,
-      onUpdate: (t) => {
-        this.camera.position.lerpVectors(fromPosition, shot.position, t);
-        this.controls.target.lerpVectors(fromTarget, shot.target, t);
-      },
-    });
+    this.cameraScripted = true;
+    try {
+      await this.tweens.to({
+        duration,
+        easing: Ease.inOutCubic,
+        onUpdate: (t) => {
+          this.camera.position.lerpVectors(fromPosition, shot.position, t);
+          this.controls.target.lerpVectors(fromTarget, shot.target, t);
+        },
+      });
+    } finally {
+      this.cameraScripted = false;
+      this.captureFollowRig();
+    }
     this.controls.enabled = this.interactive;
+  }
+
+  // ------------------------------------------------------------ follow camera
+
+  /**
+   * The showcase follow camera. It holds one angle and one distance — whatever
+   * the viewer last left the view on — and only ever slides that rig sideways
+   * to keep the action in frame, so the board never spins under the fight.
+   *
+   * @returns true while the engine is the one writing the camera.
+   */
+  private updateFollowCamera(delta: number): boolean {
+    if (!this.showcase || this.showcaseCamera !== "follow") return false;
+    if (this.tactical || this.orbiting || this.cameraScripted || this.introPlaying) return false;
+    // A hand on the mouse always wins; tracking resumes a couple of seconds later.
+    if (this.elapsed - this.lastManualCameraAt < 2.4) return false;
+
+    const focus = this.followPiece?.container.position ?? this.followPoint ?? BOARD_FOCUS;
+    this.followedFocus.lerp(
+      this.scratchFocus.copy(focus).setY(THREE.MathUtils.clamp(focus.y + 0.45, 0.35, 1.1)),
+      1 - Math.exp(-delta * 3.6),
+    );
+
+    this.followOffset.set(
+      THREE.MathUtils.clamp(this.followRig.radius * this.followTightness, 4.8, 16),
+      this.followRig.phi,
+      this.followRig.theta,
+    );
+    const desired = this.scratchDesired.setFromSpherical(this.followOffset).add(this.followedFocus);
+    const smooth = 1 - Math.exp(-delta * 2.4);
+    this.camera.position.lerp(desired, smooth);
+    this.controls.target.lerp(this.followedFocus, smooth);
+    return true;
+  }
+
+  /**
+   * Remembers the angle and distance the view is currently sitting at, so the
+   * follow camera tracks the action from wherever the viewer put the camera
+   * rather than snapping back to a canned shot.
+   */
+  private captureFollowRig(): void {
+    const offset = this.scratchDesired.copy(this.camera.position).sub(this.controls.target);
+    if (offset.lengthSq() < 1e-4) return;
+    const spherical = new THREE.Spherical().setFromVector3(offset);
+    this.followRig.phi = spherical.phi;
+    this.followRig.theta = spherical.theta;
+    this.followRig.radius = THREE.MathUtils.clamp(
+      spherical.radius / Math.max(0.4, this.followTightness),
+      5.4,
+      13,
+    );
+  }
+
+  /** Follow-camera subject: the figure currently crossing the board. */
+  private focusPiece(piece: PieceView | null, tightness = 1): void {
+    this.followPiece = piece;
+    if (piece) this.followPoint = null;
+    this.followTightness = tightness;
+  }
+
+  /** Follow-camera subject: a fixed point — the fight, or the square taken. */
+  private focusPoint(point: THREE.Vector3 | null, tightness = 1): void {
+    this.followPiece = null;
+    this.followPoint = point ? point.clone() : null;
+    this.followTightness = tightness;
   }
 
   setCameraPreset(preset: CameraPreset): void {
@@ -1198,7 +2446,7 @@ export class SceneEngine {
     (this.scene.background as THREE.Color).setHex(look.background);
     const fog = this.scene.fog as THREE.FogExp2 | null;
     if (fog) fog.density = look.fog.density;
-    this.renderer.toneMappingExposure = look.exposure;
+    this.applyExposure(look.exposure);
     for (const piece of this.allPieces()) piece.setFlat(false);
 
     this.controls.enableRotate = true;
@@ -1215,6 +2463,7 @@ export class SceneEngine {
     const fromTarget = this.controls.target.clone();
     const fromFov = this.camera.fov;
     this.controls.enabled = false;
+    this.cameraScripted = true;
     await this.tweens.to({
       duration: 0.95,
       easing: Ease.inOutCubic,
@@ -1227,6 +2476,8 @@ export class SceneEngine {
     });
     this.camera.fov = fov;
     this.camera.updateProjectionMatrix();
+    this.cameraScripted = false;
+    this.captureFollowRig();
     this.controls.enabled = this.interactive;
   }
 
@@ -1236,7 +2487,7 @@ export class SceneEngine {
     (this.scene.background as THREE.Color).setHex(look.background).multiplyScalar(0.16);
     const fog = this.scene.fog as THREE.FogExp2 | null;
     if (fog) fog.density = 0;
-    this.renderer.toneMappingExposure = look.exposure * 1.12;
+    this.applyExposure(look.exposure * 1.12);
   }
 
   /**
@@ -1461,6 +2712,7 @@ export class SceneEngine {
   private bindEvents(): void {
     this.controls.addEventListener("start", this.onManualCamera);
     this.controls.addEventListener("change", this.onManualCameraChange);
+    this.controls.addEventListener("end", this.onManualCameraEnd);
     this.canvas.addEventListener("pointermove", this.onPointerMove);
     this.canvas.addEventListener("pointerdown", this.onPointerDown);
     window.addEventListener("pointerup", this.onPointerUp);
@@ -1525,15 +2777,6 @@ export class SceneEngine {
     if (!this.interactive) return;
     this.updatePointer(event);
 
-    if (this.dragging) {
-      const point = new THREE.Vector3();
-      if (this.raycaster.ray.intersectPlane(this.boardPlane, point)) {
-        this.dragging.piece.container.position.set(point.x, 0.42, point.z);
-      }
-      this.board.setHover(this.squareUnderRay());
-      return;
-    }
-
     if (this.promotionGroup) {
       this.board.setHover(null);
       return;
@@ -1587,67 +2830,40 @@ export class SceneEngine {
       return;
     }
 
-    const { square, piece } = this.pickTarget();
+    // Only the press position is recorded here — the board is played entirely
+    // by tapping (pick a figure, then tap its destination), so acting on release
+    // lets a press that turns into a camera orbit be discarded.
+    const { square } = this.pickTarget();
     this.pointerDownAt = { x: event.clientX, y: event.clientY, square };
-    if (!square) return;
-
-    const snapshot = this.controller.getSnapshot();
-    if (snapshot.status !== "playing" || !this.controller.isHumanTurn()) return;
-
-    if (piece && piece.color === snapshot.turn) {
-      this.select(square);
-      this.dragging = { piece, from: square, origin: piece.container.position.clone() };
-      this.controls.enabled = false;
-      // Picking the figure up off the board: a dry, brighter tick, not a UI blip.
-      audio.woodTap({
-        pan: this.stereoPan(piece.container.position),
-        weight: WOOD_WEIGHT[piece.kind],
-        volume: 0.8,
-        lift: true,
-      });
-    }
   };
 
   private onPointerUp = (event: PointerEvent): void => {
     if (!this.interactive) return;
     const down = this.pointerDownAt;
     this.pointerDownAt = null;
-    const drag = this.dragging;
-    this.dragging = null;
-    this.controls.enabled = this.interactive && !this.introPlaying;
-
     if (!down) return;
-    this.updatePointer(event);
-    const { square } = this.pickTarget(drag?.piece ?? null);
-    const moved = Math.hypot(event.clientX - down.x, event.clientY - down.y) > 8;
 
-    if (drag) {
-      if (moved) {
-        // Drag and drop.
-        if (square && square !== drag.from && this.legalTargets.has(square)) {
-          void this.commitMove(drag.from, square);
-        } else {
-          drag.piece.container.position.copy(drag.origin);
-          if (square && square !== drag.from) void this.rejectMove(drag.from);
-        }
-        return;
-      }
-      drag.piece.container.position.copy(drag.origin);
-    }
+    // A press that travelled was the camera being swung around, not a tap on a
+    // square, so it must never move a figure or change the selection.
+    if (Math.hypot(event.clientX - down.x, event.clientY - down.y) > 8) return;
+
+    this.updatePointer(event);
+    const { square, piece } = this.pickTarget();
 
     if (!square) {
       this.clearSelection();
       return;
     }
 
+    const snapshot = this.controller.getSnapshot();
+    if (snapshot.status !== "playing" || !this.controller.isHumanTurn()) return;
+
     if (this.selected && square !== this.selected) {
       if (this.legalTargets.has(square)) {
         void this.commitMove(this.selected, square);
         return;
       }
-      const piece = this.pieces.get(square);
-      const snapshot = this.controller.getSnapshot();
-      if (piece && piece.color === snapshot.turn) this.select(square);
+      if (piece && piece.color === snapshot.turn) this.selectWithTap(square, piece);
       else {
         void this.rejectMove(this.selected);
         this.clearSelection();
@@ -1655,8 +2871,24 @@ export class SceneEngine {
       return;
     }
 
-    if (this.selected === square && !drag) this.clearSelection();
+    if (this.selected === square) {
+      this.clearSelection();
+      return;
+    }
+
+    if (piece && piece.color === snapshot.turn) this.selectWithTap(square, piece);
   };
+
+  /** Selecting by tap: the figure stands to attention with a dry wooden tick. */
+  private selectWithTap(square: SquareId, piece: PieceView): void {
+    this.select(square);
+    audio.woodTap({
+      pan: this.stereoPan(piece.container.position),
+      weight: WOOD_WEIGHT[piece.kind],
+      volume: 0.8,
+      lift: true,
+    });
+  }
 
   private async commitMove(from: SquareId, to: SquareId): Promise<void> {
     let promotion: PieceKind | undefined;
@@ -1778,7 +3010,7 @@ export class SceneEngine {
     this.arena = theme;
     const look = ARENA_LOOKS[theme];
 
-    this.renderer.toneMappingExposure = look.exposure;
+    this.applyExposure(look.exposure);
     (this.scene.background as THREE.Color).setHex(look.background);
     const fog = this.scene.fog as THREE.FogExp2 | null;
     if (fog) {
@@ -1803,10 +3035,7 @@ export class SceneEngine {
       this.applyTacticalAtmosphere();
     }
 
-    const previous = this.scene.environment;
-    this.scene.environment = buildEnvironmentMap(this.renderer, look);
-    this.scene.environmentIntensity = look.environment.intensity;
-    previous?.dispose();
+    this.applyEnvironment();
   }
 
   /** The map currently staged. */
@@ -1819,17 +3048,57 @@ export class SceneEngine {
     this.preset = preset;
     const settings = QUALITY_SETTINGS[preset];
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, settings.maxPixelRatio));
-    this.renderer.shadowMap.enabled = settings.shadows;
+    this.renderer.shadowMap.enabled = settings.shadows && !this.safeMode;
     this.hall.applyQuality(preset);
     this.battlefield.applyQuality(preset);
     this.jungle.applyQuality(preset);
     this.postfx.setPreset(preset);
     this.handleResize();
-    this.rebuildPieces();
+    // Rebuilding the figures mid-fight would tear down the ones that are
+    // marching, striking or dying and cut their beat short, so an automatic
+    // downgrade (which usually fires *because* a fight is on screen) waits for
+    // the board to go quiet. The rebuild then runs from `animateMove`.
+    if (this.movesInFlight > 0) this.rebuildPending = true;
+    else this.rebuildPieces();
     if (this.tactical) {
       this.restoreWorld();
       this.strikeWorld();
     }
+  }
+
+  /**
+   * Safe rendering. Drops the three things that have been seen to render an
+   * all-black scene on Linux/Mesa drivers — the post-processing composer, the
+   * reflection probe and the shadow maps — and lifts the exposure a touch to
+   * make up for the lost ambient. Fully reversible.
+   */
+  setSafeMode(active: boolean): void {
+    if (this.safeMode === active) return;
+    this.safeMode = active;
+    this.postfx.setBypassed(active);
+    this.renderer.shadowMap.enabled = !active && QUALITY_SETTINGS[this.preset].shadows;
+    // A probe that was never tested deserves another chance when safe mode is
+    // switched off by hand; one that failed its self-test stays off.
+    this.applyEnvironment();
+    this.applyExposure();
+    this.refreshMaterials();
+  }
+
+  isSafeMode(): boolean {
+    return this.safeMode;
+  }
+
+  /** Player-side exposure multiplier (0.6–1.8) for screens that read too dark. */
+  setBrightness(value: number): void {
+    const clamped = Math.min(1.8, Math.max(0.6, value));
+    if (Math.abs(clamped - this.brightness) < 0.001) return;
+    this.brightness = clamped;
+    this.applyExposure();
+  }
+
+  /** One line naming the driver, for the settings panel and bug reports. */
+  getGpuSummary(): string {
+    return describeGpu(this.gpu);
   }
 
   /** Rebuilds every figure from the chess core (used after undo). */
@@ -1861,20 +3130,55 @@ export class SceneEngine {
   }
 
   /**
-   * Showcase presentation for computer-vs-computer demos: cinematic grading and
-   * a slow orbit, while the viewer keeps full control of the camera.
+   * Showcase presentation for computer-vs-computer duels.
+   *
+   * The viewer is only ever watching here, so the picture is tuned for reading
+   * the board rather than for atmosphere: no depth of field at all (that soft
+   * wash was blurring the whole hall), grain, vignette and bloom pulled back,
+   * and one held framing instead of a permanent orbit. The camera behaviour is
+   * the viewer's choice — see {@link ShowcaseCamera}.
    */
-  setShowcase(active: boolean, orbitSpeed = 0.32): void {
-    if (this.showcase === active && this.showcaseOrbitSpeed === orbitSpeed) return;
+  setShowcase(active: boolean, camera: ShowcaseCamera = "follow", orbitSpeed = 0.32): void {
+    const changed = this.showcase !== active;
     this.showcase = active;
     this.showcaseOrbitSpeed = orbitSpeed;
-    this.postfx.setCinematic(active, 9);
-    if (!active) this.controls.autoRotate = false;
+    this.showcaseCamera = camera;
+    // A showcase is watched, never squinted at: keep it sharp.
+    this.postfx.setCinematic(false);
+    this.postfx.setClarity(active);
+    if (!active) {
+      this.controls.autoRotate = false;
+      this.focusPoint(null);
+      return;
+    }
+    if (camera !== "orbit") this.controls.autoRotate = false;
+    if (changed && !this.tactical) {
+      this.followedFocus.copy(BOARD_FOCUS);
+      void this.moveCameraTo(SHOWCASE_SHOT, 1.4);
+    }
+  }
+
+  /** Switches the showcase camera between a held angle, an orbit and following. */
+  setShowcaseCamera(camera: ShowcaseCamera): void {
+    if (this.showcaseCamera === camera) return;
+    this.showcaseCamera = camera;
+    if (camera !== "orbit") this.controls.autoRotate = false;
+    if (camera === "follow") {
+      // Track from wherever the view is sitting right now.
+      this.captureFollowRig();
+      this.followedFocus.copy(this.controls.target);
+    }
+  }
+
+  /** The showcase camera behaviour currently in force. */
+  getShowcaseCamera(): ShowcaseCamera {
+    return this.showcaseCamera;
   }
 
   setAttract(active: boolean): void {
     this.attract = active;
-    this.postfx.setCinematic(active, 10);
+    this.postfx.setCinematic(false);
+    this.postfx.setClarity(active || this.showcase);
     if (active) {
       this.controls.enabled = false;
       void this.moveCameraTo(CAMERA_SHOTS.cinematic, 2);
@@ -1909,8 +3213,13 @@ export class SceneEngine {
 
   /** Damping keeps firing `change` after a drag; only count real user input. */
   private onManualCameraChange = (): void => {
-    if (this.controls.autoRotate || this.orbiting) return;
+    if (this.controls.autoRotate || this.orbiting || this.cameraDriven || this.cameraScripted) return;
     this.lastManualCameraAt = this.elapsed;
+  };
+
+  /** The angle and distance the viewer just chose become the follow rig. */
+  private onManualCameraEnd = (): void => {
+    this.captureFollowRig();
   };
 
   private onContextLost = (event: Event): void => {
@@ -1934,6 +3243,7 @@ export class SceneEngine {
     this.controller.setAnimator(null);
     this.controls.removeEventListener("start", this.onManualCamera);
     this.controls.removeEventListener("change", this.onManualCameraChange);
+    this.controls.removeEventListener("end", this.onManualCameraEnd);
     this.canvas.removeEventListener("pointermove", this.onPointerMove);
     this.canvas.removeEventListener("pointerdown", this.onPointerDown);
     window.removeEventListener("pointerup", this.onPointerUp);
@@ -1946,11 +3256,16 @@ export class SceneEngine {
     this.pieces.clear();
     this.captured = [];
     this.effects.dispose();
+    this.spellLights.dispose();
+    disposeStrikeAssets();
     this.board.dispose();
     this.hall.dispose();
     this.battlefield.dispose();
     this.jungle.dispose();
     this.factory.dispose();
+    this.environmentMap?.dispose();
+    this.environmentMap = null;
+    this.scene.environment = null;
     this.postfx.dispose();
     this.controls.dispose();
     this.renderer.dispose();

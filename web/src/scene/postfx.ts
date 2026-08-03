@@ -87,9 +87,13 @@ export class PostFX {
   private grade: ArenaLook["grade"] = ARENA_LOOKS[DEFAULT_ARENA].grade;
   private bloom: ArenaLook["bloom"] = ARENA_LOOKS[DEFAULT_ARENA].bloom;
   private cinematic = false;
+  /** Showcase clarity: grain, vignette and bloom pulled back so sculpts read. */
+  private clarity = false;
   private elapsed = 0;
   /** Set when a pass misbehaves on this GPU — from then on we render straight. */
   private direct = false;
+  /** Reversible version of the above, driven by the safe-rendering setting. */
+  private bypassed = false;
 
   constructor(
     private renderer: THREE.WebGLRenderer,
@@ -111,7 +115,7 @@ export class PostFX {
   private build(): void {
     this.dispose();
     const settings = QUALITY_SETTINGS[this.preset];
-    if (this.direct || !settings.postFx) return;
+    if (this.direct || this.bypassed || !settings.postFx) return;
 
     const size = new THREE.Vector2();
     this.renderer.getSize(size);
@@ -143,6 +147,7 @@ export class PostFX {
       );
       composer.addPass(bloom);
       this.bloomPass = bloom;
+      this.pushBloom();
     }
 
     if (settings.dof) {
@@ -184,19 +189,39 @@ export class PostFX {
    */
   setBloom(bloom: ArenaLook["bloom"]): void {
     this.bloom = bloom;
+    this.pushBloom();
+  }
+
+  /**
+   * Presentation mode for computer-vs-computer duels, where the viewer is only
+   * ever watching: the film grain, the vignette and the bloom halo are pulled
+   * right back so the twelve sculpts stay sharp instead of sitting behind a
+   * layer of haze. Depth of field is never used here.
+   */
+  setClarity(active: boolean): void {
+    if (this.clarity === active) return;
+    this.clarity = active;
+    this.pushGrade();
+    this.pushBloom();
+  }
+
+  private pushBloom(): void {
     if (!this.bloomPass) return;
-    this.bloomPass.strength = bloom.strength;
-    this.bloomPass.radius = bloom.radius;
-    this.bloomPass.threshold = bloom.threshold;
+    const bloom = this.bloom;
+    this.bloomPass.strength = this.clarity ? bloom.strength * 0.62 : bloom.strength;
+    this.bloomPass.radius = this.clarity ? bloom.radius * 0.8 : bloom.radius;
+    this.bloomPass.threshold = this.clarity ? Math.min(0.98, bloom.threshold + 0.04) : bloom.threshold;
   }
 
   private pushGrade(): void {
     if (!this.gradePass) return;
     const uniforms = this.gradePass.uniforms as unknown as Record<string, { value: number }>;
-    uniforms.uVignette.value = this.grade.vignette;
-    uniforms.uGrain.value = this.grade.grain;
-    uniforms.uLift.value = this.grade.lift;
-    uniforms.uStrength.value = this.grade.strength;
+    const grade = this.grade;
+    const soften = this.clarity;
+    uniforms.uVignette.value = soften ? grade.vignette * 0.5 : grade.vignette;
+    uniforms.uGrain.value = soften ? grade.grain * 0.3 : grade.grain;
+    uniforms.uLift.value = grade.lift;
+    uniforms.uStrength.value = soften ? grade.strength * 0.82 : grade.strength;
   }
 
   /** Enables depth of field for the intro, promotion picker and checkmate dolly. */
@@ -216,6 +241,20 @@ export class PostFX {
     this.composer?.setPixelRatio(this.renderer.getPixelRatio());
     this.composer?.setSize(width, height);
     if (this.ssaoPass) this.ssaoPass.setSize(width, height);
+  }
+
+  /**
+   * Safe rendering: skip the composer entirely but stay able to come back, so
+   * the player can try the cinematic pipeline again without a reload.
+   */
+  setBypassed(active: boolean): void {
+    if (this.bypassed === active) return;
+    this.bypassed = active;
+    this.build();
+  }
+
+  get isBypassed(): boolean {
+    return this.bypassed || this.direct;
   }
 
   /**
