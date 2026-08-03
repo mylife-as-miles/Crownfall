@@ -1,4 +1,4 @@
-# King's Gambit — Medieval 3D Chess
+# Crownfall — A King's Gambit Story
 
 A cinematic 3D chess game in the browser. Two rival civilisations — a medieval European
 **Ivory Kingdom** and a Mesoamerican **Sun Empire** — face each other as sculpted, rigged
@@ -13,6 +13,26 @@ cd web && bun install && bun run dev
 ```
 
 ---
+
+## Crownfall campaign vertical slice
+
+The original King's Gambit chess engine now powers the first playable Crownfall chapter,
+**The Pawn Who Would Not Die**. The campaign shell adds a prologue, war-room hub, mission
+briefings, formation choices, optional Gambits, battle objectives, persistent consequences,
+and a chapter finale without coupling story state to three.js.
+
+Chapter One contains three compact tactical missions: Cael's opening sacrifice, a rook
+operation that can bind Garran or Tamsin to the Oath of Ash, and Cael's promotion trial.
+Named-piece identity follows legal move metadata through ordinary captures, en passant,
+castling rook movement, promotion, and undo. A versioned autosave stores the roster,
+assignments, active battle position, move history, Gambit choice, and consequence report in
+local storage, so reloading during a mission resumes the same deterministic state.
+
+Campaign consequences are seeded from saved battle evidence. Difficulty, essential-character
+protection, traits, the chosen Gambit, promotion, experience, and loyalty all produce an
+explainable outcome rather than a hidden arbitrary roll. The current slice is deliberately
+local-first and single-player; online play, a backend, more chapters, expanded maps, and
+additional character art remain future phases.
 
 ## Table of contents
 

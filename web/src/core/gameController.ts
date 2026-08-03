@@ -25,6 +25,8 @@ export interface StartOptions {
   difficulty: Difficulty;
   playerColor: Faction;
   clockMinutes: number | null;
+  /** Optional legal position for handcrafted campaign missions and trials. */
+  startingFen?: string;
   /** Only read when `mode === "demo"`. */
   demo?: DemoOptions;
 }
@@ -44,6 +46,8 @@ interface ControllerEvents {
   move: MoveEvent;
   check: Faction;
   gameover: GameResult;
+  /** Fires after the renderer has completed the move and state is stable. */
+  settled: MoveEvent;
   reset: StartOptions;
   illegal: { from: SquareId; to: SquareId };
 }
@@ -144,7 +148,7 @@ export class GameController extends Emitter<ControllerEvents> {
     this.paused = false;
     if (options.mode !== "demo" || this.options.mode !== "demo") this.demoRound = 1;
     this.options = options.mode === "demo" ? { ...options, demo: options.demo ?? DEFAULT_DEMO } : options;
-    this.chess = new Chess();
+    this.chess = options.startingFen ? new Chess(options.startingFen) : new Chess();
     this.status = "playing";
     this.result = null;
     this.thinking = false;
@@ -299,7 +303,9 @@ export class GameController extends Emitter<ControllerEvents> {
 
     this.busy = false;
     this.publish();
+    this.emit("settled", event);
 
+    if (this.status !== "playing") return;
     if (this.checkEnd()) return;
     void this.maybeRunEngine();
   }
@@ -350,6 +356,10 @@ export class GameController extends Emitter<ControllerEvents> {
       this.finish({ winner: null, reason: "insufficient" });
       return true;
     }
+    if (this.chess.isDrawByFiftyMoves()) {
+      this.finish({ winner: null, reason: "fiftymove" });
+      return true;
+    }
     this.finish({ winner: null, reason: "draw" });
     return true;
   }
@@ -382,8 +392,17 @@ export class GameController extends Emitter<ControllerEvents> {
 
   resign(): void {
     if (this.status !== "playing") return;
-    const loser = this.options.mode === "ai" ? this.options.playerColor : (this.chess.turn() as Faction);
+    const loser =
+      this.options.mode === "ai" || this.options.mode === "campaign"
+        ? this.options.playerColor
+        : (this.chess.turn() as Faction);
     this.finish({ winner: loser === "w" ? "b" : "w", reason: "resignation" });
+  }
+
+  /** Ends a campaign mission whose data-driven objective has been satisfied. */
+  completeObjective(winner: Faction): void {
+    if (this.status !== "playing") return;
+    this.finish({ winner, reason: "objective" });
   }
 
   /** Undo one ply (hotseat) or a full move pair (vs computer). */
@@ -397,7 +416,10 @@ export class GameController extends Emitter<ControllerEvents> {
     this.generation += 1;
     this.ai.cancel();
     this.chess.undo();
-    if (this.options.mode === "ai" && this.chess.turn() !== this.options.playerColor) {
+    if (
+      (this.options.mode === "ai" || this.options.mode === "campaign") &&
+      this.chess.turn() !== this.options.playerColor
+    ) {
       this.chess.undo();
     }
     this.thinking = false;
@@ -411,7 +433,7 @@ export class GameController extends Emitter<ControllerEvents> {
     const mode = this.options.mode;
     if (mode === "hotseat") return;
     const turn = this.chess.turn() as Faction;
-    if (mode === "ai" && turn === this.options.playerColor) return;
+    if ((mode === "ai" || mode === "campaign") && turn === this.options.playerColor) return;
     if (this.thinking) return;
 
     const generation = this.generation;

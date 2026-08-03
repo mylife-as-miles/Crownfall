@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
 import { audio } from "../audio/audioManager";
+import { CampaignController } from "../campaign/campaignController";
+import type { CampaignDifficulty } from "../campaign/types";
+import { useCampaignSnapshot } from "../campaign/useCampaignSnapshot";
 import { GameController } from "../core/gameController";
 import type { LedgerMove } from "../core/types";
 import { Clapperboard } from "lucide-react";
 import { ARENA_LOOKS, DEFAULT_ARENA, type ArenaTheme } from "../scene/arena";
 import { detectQualityPreset, type QualityPreset } from "../scene/quality";
 import { SceneEngine, type CameraPreset, type ShowcaseCamera } from "../scene/sceneEngine";
+import { CampaignExperience } from "./CampaignExperience";
 import { GameOverModal } from "./GameOverModal";
 import { Hud } from "./Hud";
 import { MainMenu, type MatchConfig } from "./MainMenu";
@@ -14,7 +18,7 @@ import { SettingsPanel, type GameSettings } from "./SettingsPanel";
 import { useGameSnapshot } from "./useGameSnapshot";
 import "./medieval.css";
 
-type Phase = "loading" | "menu" | "playing";
+type Phase = "loading" | "menu" | "playing" | "campaign";
 
 const ATTRACT_DELAY_MS = 30_000;
 const RENDER_PREFS_KEY = "kg.render";
@@ -60,6 +64,8 @@ export function GameShell() {
 
   const controller = useMemo(() => new GameController(), []);
   const snapshot = useGameSnapshot(controller);
+  const campaign = useMemo(() => new CampaignController(), []);
+  const campaignSnapshot = useCampaignSnapshot(campaign);
 
   const detected = useMemo<QualityPreset>(() => detectQualityPreset(), []);
   const initialRender = useMemo<RenderPrefs>(() => loadRenderPrefs(), []);
@@ -159,7 +165,14 @@ export function GameShell() {
     };
   }, [controller, detected, initialRender]);
 
-  useEffect(() => () => controller.dispose(), [controller]);
+  useEffect(() => campaign.connectGame(controller), [campaign, controller]);
+  useEffect(
+    () => () => {
+      campaign.dispose();
+      controller.dispose();
+    },
+    [campaign, controller],
+  );
 
   // ----------------------------------------------------- audio unlock on input
   useEffect(() => {
@@ -247,6 +260,56 @@ export function GameShell() {
     [controller, showcaseCamera, stopAttract],
   );
 
+  const startCampaignBattle = useCallback(() => {
+    const save = campaign.getSnapshot().save;
+    if (!save?.activeBattle) campaign.launchBattle();
+    const options = campaign.getBattleStartOptions();
+    const mission = campaign.getCurrentMission();
+    if (!options || !mission) return;
+    void audio.unlock();
+    audio.blip("press");
+    const engine = engineRef.current;
+    engine?.setAttract(false);
+    engine?.setShowcase(false);
+    engine?.setTacticalView(false);
+    engine?.setInteractive(true);
+    engine?.setCameraPreset("white");
+    if (["dawn", "dusk", "frost", "jungle"].includes(mission.battlefieldId)) {
+      setSettings((current) => ({ ...current, arena: mission.battlefieldId as ArenaTheme }));
+    }
+    controller.start(options);
+    setPhase("campaign");
+  }, [campaign, controller]);
+
+  const beginCampaign = useCallback(
+    (difficulty: CampaignDifficulty) => {
+      stopAttract();
+      controller.stop();
+      campaign.newCampaign(difficulty);
+      const engine = engineRef.current;
+      engine?.setAttract(false);
+      engine?.setShowcase(false);
+      engine?.setInteractive(false);
+      engine?.setCameraPreset("cinematic");
+      setPhase("campaign");
+    },
+    [campaign, controller, stopAttract],
+  );
+
+  const continueCampaign = useCallback(() => {
+    stopAttract();
+    controller.stop();
+    if (!campaign.continueCampaign()) return;
+    setPhase("campaign");
+    const loaded = campaign.getSnapshot().save;
+    if (loaded?.screen === "battle" && loaded.activeBattle) startCampaignBattle();
+    else {
+      engineRef.current?.setShowcase(false);
+      engineRef.current?.setInteractive(false);
+      engineRef.current?.setCameraPreset("cinematic");
+    }
+  }, [campaign, controller, startCampaignBattle, stopAttract]);
+
   const returnToMenu = useCallback(() => {
     controller.stop();
     const engine = engineRef.current;
@@ -257,6 +320,21 @@ export function GameShell() {
     setCinema(false);
     setPhase("menu");
   }, [controller]);
+
+  const returnCampaignToMenu = useCallback(() => {
+    controller.stop();
+    const engine = engineRef.current;
+    engine?.setTacticalView(false);
+    engine?.setInteractive(false);
+    engine?.setShowcase(false);
+    engine?.setCameraPreset("cinematic");
+    setPhase("menu");
+  }, [controller]);
+
+  useEffect(() => {
+    if (phase !== "campaign" || campaignSnapshot.save?.screen === "battle") return;
+    engineRef.current?.setInteractive(false);
+  }, [campaignSnapshot.save?.screen, phase]);
 
   // -------------------------------------------------------- showcase controls
   const handleTogglePause = useCallback(() => {
@@ -352,7 +430,8 @@ export function GameShell() {
       if (event.key === "Escape") setShowSettings(false);
       const target = event.target as HTMLElement | null;
       const typing = target ? /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName) || target.isContentEditable : false;
-      if (typing || event.metaKey || event.ctrlKey || event.altKey || phase !== "playing") return;
+      const campaignBattle = phase === "campaign" && campaignSnapshot.save?.screen === "battle";
+      if (typing || event.metaKey || event.ctrlKey || event.altKey || (phase !== "playing" && !campaignBattle)) return;
       if (event.key === "f" || event.key === "F") handleFlipCamera();
       if (event.key === "t" || event.key === "T") handleToggleTactical();
       if (event.key === "c" || event.key === "C") setCinema((hidden) => !hidden);
@@ -363,7 +442,7 @@ export function GameShell() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [controller, handleFlipCamera, handleToggleTactical, phase, snapshot.mode]);
+  }, [campaignSnapshot.save?.screen, controller, handleFlipCamera, handleToggleTactical, phase, snapshot.mode]);
 
   const skipIntro = useCallback(() => {
     engineRef.current?.skipIntro();
@@ -399,9 +478,26 @@ export function GameShell() {
         {phase === "menu" && !introPlaying ? (
           <MainMenu
             onStart={startMatch}
+            onNewCampaign={beginCampaign}
+            onContinueCampaign={continueCampaign}
+            hasCampaign={campaignSnapshot.hasSave}
+            campaignError={campaignSnapshot.loadError ?? campaignSnapshot.saveError}
             onOpenSettings={() => setShowSettings(true)}
             attract={attract}
             onInteract={stopAttract}
+          />
+        ) : null}
+
+        {phase === "campaign" ? (
+          <CampaignExperience
+            controller={campaign}
+            snapshot={campaignSnapshot}
+            game={snapshot}
+            onLaunchBattle={startCampaignBattle}
+            onReturnToTitle={returnCampaignToMenu}
+            onOpenSettings={() => setShowSettings(true)}
+            onToggleTactical={handleToggleTactical}
+            tactical={tactical}
           />
         ) : null}
 
@@ -513,9 +609,10 @@ export function GameShell() {
 function LoadingScreen({ progress }: { progress: number }) {
   return (
     <div className="mc-fade absolute inset-0 flex flex-col items-center justify-center gap-5 bg-[#05060a]/85 px-6">
-      <p className="mc-display text-[0.62rem] tracking-[0.5em] text-[#a89268]">MUSTERING THE ARMIES</p>
-      <h1 className="mc-display mc-title-glow text-4xl text-[#f4e3bd]">KING&apos;S GAMBIT</h1>
-      <div className="h-[3px] w-64 overflow-hidden rounded-full bg-[#2a251c]">
+      <p className="mc-display text-[0.62rem] tracking-[0.5em] text-[#a89268]">MUSTERING THE NAMED PIECES</p>
+      <h1 className="mc-display mc-title-glow text-4xl text-[#f4e3bd]">CROWNFALL</h1>
+      <p className="mc-display -mt-4 text-[0.54rem] tracking-[0.3em] text-[#76664b]">A KING&apos;S GAMBIT STORY</p>
+      <div className="h-[3px] w-64 overflow-hidden rounded-full bg-[#2a251c]" role="progressbar" aria-label="Loading Crownfall" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress * 100)}>
         <div
           className="h-full rounded-full bg-gradient-to-r from-[#8a6522] via-[#f6dfa5] to-[#8a6522] transition-[width] duration-300"
           style={{ width: `${Math.round(progress * 100)}%` }}

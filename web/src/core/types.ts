@@ -11,7 +11,7 @@ export type SquareId = string;
 
 export type Difficulty = "easy" | "medium" | "hard";
 
-export type GameMode = "ai" | "hotseat" | "attract" | "demo";
+export type GameMode = "ai" | "hotseat" | "attract" | "demo" | "campaign";
 
 /** Computer-vs-computer showcase settings (used for recording demos). */
 export interface DemoOptions {
@@ -35,6 +35,7 @@ export type EndReason =
   | "threefold"
   | "insufficient"
   | "fiftymove"
+  | "objective"
   | "draw";
 
 export interface GameResult {

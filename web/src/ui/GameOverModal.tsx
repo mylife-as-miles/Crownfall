@@ -21,6 +21,7 @@ const REASON_COPY: Record<EndReason, string> = {
   threefold: "Threefold repetition",
   insufficient: "Insufficient material",
   fiftymove: "Fifty-move rule",
+  objective: "Mission objective fulfilled",
   draw: "Drawn position",
 };
 

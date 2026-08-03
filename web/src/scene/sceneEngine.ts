@@ -2782,7 +2782,11 @@ export class SceneEngine {
       return;
     }
 
-    const { square: hoveredSquare, piece } = this.pickTarget();
+    // Once a figure is selected, ignore its tall collider while aiming at a
+    // destination. Otherwise a pawn can physically cover the promotion square
+    // behind it in a low camera view, making the legal tile impossible to tap.
+    const selectedPiece = this.selected ? (this.pieces.get(this.selected) ?? null) : null;
+    const { square: hoveredSquare, piece } = this.pickTarget(selectedPiece);
     const snapshot = this.controller.getSnapshot();
     const canTouch =
       piece !== null && this.controller.isHumanTurn() && piece.color === snapshot.turn && snapshot.status === "playing";
@@ -2833,7 +2837,8 @@ export class SceneEngine {
     // Only the press position is recorded here — the board is played entirely
     // by tapping (pick a figure, then tap its destination), so acting on release
     // lets a press that turns into a camera orbit be discarded.
-    const { square } = this.pickTarget();
+    const selectedPiece = this.selected ? (this.pieces.get(this.selected) ?? null) : null;
+    const { square } = this.pickTarget(selectedPiece);
     this.pointerDownAt = { x: event.clientX, y: event.clientY, square };
   };
 
@@ -2848,7 +2853,8 @@ export class SceneEngine {
     if (Math.hypot(event.clientX - down.x, event.clientY - down.y) > 8) return;
 
     this.updatePointer(event);
-    const { square, piece } = this.pickTarget();
+    const selectedPiece = this.selected ? (this.pieces.get(this.selected) ?? null) : null;
+    const { square, piece } = this.pickTarget(selectedPiece);
 
     if (!square) {
       this.clearSelection();
