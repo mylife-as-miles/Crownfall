@@ -1,3 +1,4 @@
+import { useEffect, useRef, type KeyboardEvent } from "react";
 import { X } from "lucide-react";
 
 import { ARENA_LOOKS, ARENA_ORDER, type ArenaTheme } from "../scene/arena";
@@ -40,12 +41,50 @@ const PRESETS: { key: QualityPreset; label: string; note: string }[] = [
 ];
 
 export function SettingsPanel({ settings, autoDetected, gpu, fps, onChange, onClose }: SettingsPanelProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    closeRef.current?.focus();
+    return () => previousFocus?.focus();
+  }, []);
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>): void => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      onClose();
+      return;
+    }
+    if (event.key !== "Tab" || !panelRef.current) return;
+    const focusable = Array.from(
+      panelRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
   return (
     <div className="pointer-events-auto absolute inset-0 z-20 flex flex-col items-center justify-center overflow-hidden bg-black/60 px-5 py-6 backdrop-blur-sm">
-      <div className="mc-slate mc-goldleaf mc-rise flex max-h-full w-full min-h-0 max-w-lg flex-col p-5 sm:p-6">
+      <div
+        ref={panelRef}
+        className="mc-slate mc-goldleaf mc-rise flex max-h-full w-full min-h-0 max-w-lg flex-col p-5 sm:p-6"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="settings-title"
+        onKeyDown={handleKeyDown}
+      >
         <div className="mb-4 flex shrink-0 items-center justify-between">
-          <h2 className="mc-display text-lg text-[#f2e2bd]">Settings</h2>
-          <button type="button" className="mc-btn mc-icon-btn" onClick={onClose} aria-label="Close settings">
+          <h2 id="settings-title" className="mc-display text-lg text-[#f2e2bd]">Settings</h2>
+          <button ref={closeRef} type="button" className="mc-btn mc-icon-btn" onClick={onClose} aria-label="Close settings">
             <X size={16} />
           </button>
         </div>
@@ -59,6 +98,7 @@ export function SettingsPanel({ settings, autoDetected, gpu, fps, onChange, onCl
               type="button"
               className="mc-arena-card"
               data-active={settings.arena === theme}
+              aria-pressed={settings.arena === theme}
               onClick={() => onChange({ ...settings, arena: theme })}
             >
               <span className="mc-arena-swatch" data-arena={theme} />
@@ -78,6 +118,7 @@ export function SettingsPanel({ settings, autoDetected, gpu, fps, onChange, onCl
               type="button"
               className="mc-chip py-2.5"
               data-active={settings.quality === preset.key}
+              aria-pressed={settings.quality === preset.key}
               onClick={() => onChange({ ...settings, quality: preset.key })}
             >
               {preset.label}
@@ -166,6 +207,8 @@ function Toggle({
     <button
       type="button"
       className="flex w-full items-center justify-between gap-4 border-b border-[#8a652222] py-3 text-left last:border-b-0"
+      role="switch"
+      aria-checked={value}
       onClick={() => onChange(!value)}
     >
       <span>

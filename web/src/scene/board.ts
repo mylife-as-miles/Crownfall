@@ -208,6 +208,8 @@ export class BoardView {
   private baseMaterial: THREE.MeshStandardMaterial | null = null;
   private borderMaterial: THREE.MeshStandardMaterial | null = null;
   private trimMaterial: THREE.MeshStandardMaterial | null = null;
+  private arenaLook: ArenaLook | null = null;
+  private presentationMode = false;
   private disposables: { dispose: () => void }[] = [];
   private elapsed = 0;
   private tileBySquare = new Map<SquareId, THREE.Mesh>();
@@ -225,6 +227,8 @@ export class BoardView {
     const lightMaterial = this.track(
       new THREE.MeshPhysicalMaterial({
         map: lightMap,
+        bumpMap: lightMap,
+        bumpScale: 0.018,
         color: 0xf6efe0,
         roughness: 0.22,
         metalness: 0.02,
@@ -236,6 +240,8 @@ export class BoardView {
     const darkMaterial = this.track(
       new THREE.MeshPhysicalMaterial({
         map: darkMap,
+        bumpMap: darkMap,
+        bumpScale: 0.024,
         color: 0x23252c,
         roughness: 0.3,
         metalness: 0.12,
@@ -851,11 +857,51 @@ export class BoardView {
    * light, so daylight themes lift them to a readable slate.
    */
   applyArena(look: ArenaLook): void {
+    this.arenaLook = look;
+    if (this.presentationMode) return;
     this.lightTileMaterial.color.setHex(look.board.light);
     this.darkTileMaterial.color.setHex(look.board.dark);
     this.baseMaterial?.color.setHex(look.board.base);
     this.borderMaterial?.color.setHex(look.board.border);
     this.trimMaterial?.color.setHex(look.board.trim);
+  }
+
+  /**
+   * Title-screen material profile. The board remains legible as a crafted
+   * object, but stops being the brightest, glossiest subject in the frame.
+   */
+  setPresentationMode(active: boolean): void {
+    if (this.presentationMode === active) return;
+    this.presentationMode = active;
+    this.clearHighlights();
+    this.setHover(null);
+    if (active) {
+      this.lightTileMaterial.color.setHex(0xbab09c);
+      this.lightTileMaterial.roughness = 0.5;
+      this.lightTileMaterial.clearcoat = 0.2;
+      this.lightTileMaterial.envMapIntensity = 0.55;
+      this.darkTileMaterial.color.setHex(0x34363b);
+      this.darkTileMaterial.roughness = 0.57;
+      this.darkTileMaterial.clearcoat = 0.16;
+      this.darkTileMaterial.envMapIntensity = 0.5;
+      if (this.trimMaterial) {
+        this.trimMaterial.emissiveIntensity = 0;
+        this.trimMaterial.roughness = 0.48;
+      }
+      return;
+    }
+
+    this.lightTileMaterial.roughness = 0.22;
+    this.lightTileMaterial.clearcoat = 0.7;
+    this.lightTileMaterial.envMapIntensity = 0.9;
+    this.darkTileMaterial.roughness = 0.3;
+    this.darkTileMaterial.clearcoat = 0.6;
+    this.darkTileMaterial.envMapIntensity = 0.8;
+    if (this.trimMaterial) {
+      this.trimMaterial.emissiveIntensity = 0.4;
+      this.trimMaterial.roughness = 0.28;
+    }
+    if (this.arenaLook) this.applyArena(this.arenaLook);
   }
 
   dispose(): void {

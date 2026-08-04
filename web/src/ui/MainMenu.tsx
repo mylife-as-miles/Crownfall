@@ -5,15 +5,21 @@ import {
   ChevronRight,
   Clapperboard,
   Crown,
+  LoaderCircle,
   LockKeyhole,
+  ScrollText,
   Settings as SettingsIcon,
   Shield,
   Swords,
   Users,
 } from "lucide-react";
 
+import { audio } from "../audio/audioManager";
+import type { CampaignMenuSummary } from "../campaign/menuSummary";
 import type { CampaignDifficulty } from "../campaign/types";
 import type { DemoOptions, Difficulty, Faction } from "../core/types";
+import { CharacterPortrait } from "./CharacterPortrait";
+import { DifficultyEmblem } from "./DifficultyEmblem";
 import { Crest } from "./Heraldry";
 
 export interface MatchConfig {
@@ -28,14 +34,13 @@ interface MainMenuProps {
   onStart: (config: MatchConfig) => void;
   onNewCampaign: (difficulty: CampaignDifficulty) => void;
   onContinueCampaign: () => void;
-  hasCampaign: boolean;
+  campaignSummary: CampaignMenuSummary | null;
   campaignError: string | null;
   onOpenSettings: () => void;
-  attract: boolean;
-  onInteract: () => void;
 }
 
 type MenuMode = "campaign" | "classic" | "hotseat" | "demo";
+type CampaignView = "continue" | "new";
 
 const DIFFICULTY_COPY: Record<Difficulty, string> = {
   easy: "Squire — swift, forgiving play",
@@ -43,11 +48,16 @@ const DIFFICULTY_COPY: Record<Difficulty, string> = {
   hard: "Warlord — full search, no mercy",
 };
 
-const CAMPAIGN_DIFFICULTY: { id: CampaignDifficulty; title: string; copy: string }[] = [
-  { id: "story", title: "Story", copy: "Threat warnings, protected essential characters, forgiving fates." },
-  { id: "tactician", title: "Tactician", copy: "Limited guidance, capable commanders, lasting consequences." },
-  { id: "grandmaster", title: "Grandmaster", copy: "Minimal assistance, severe fates, the strongest search." },
-  { id: "iron-crown", title: "Iron Crown", copy: "Single-save intent and the harshest deterministic outcomes." },
+const CAMPAIGN_DIFFICULTY: {
+  id: CampaignDifficulty;
+  title: string;
+  legend: string;
+  copy: string;
+}[] = [
+  { id: "story", title: "Story", legend: "The Chronicle", copy: "Threat warnings and protected essential characters." },
+  { id: "tactician", title: "Tactician", legend: "The War Table", copy: "Limited guidance with lasting consequences." },
+  { id: "grandmaster", title: "Grandmaster", legend: "The Deep Game", copy: "Minimal assistance and the strongest search." },
+  { id: "iron-crown", title: "Iron Crown", legend: "The Unbroken Oath", copy: "One severe record with deterministic fates." },
 ];
 
 const DEMO_SPEEDS = [
@@ -64,17 +74,25 @@ const CLOCKS: { label: string; value: number | null }[] = [
   { label: "15 min", value: 15 },
 ];
 
+function saveTimeLabel(value: string): string {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Recently";
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date);
+}
+
 export function MainMenu({
   onStart,
   onNewCampaign,
   onContinueCampaign,
-  hasCampaign,
+  campaignSummary,
   campaignError,
   onOpenSettings,
-  attract,
-  onInteract,
 }: MainMenuProps) {
   const [mode, setMode] = useState<MenuMode>("campaign");
+  const [campaignView, setCampaignView] = useState<CampaignView>(campaignSummary ? "continue" : "new");
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [campaignDifficulty, setCampaignDifficulty] = useState<CampaignDifficulty>("story");
   const [playerColor, setPlayerColor] = useState<Faction>("w");
@@ -84,184 +102,216 @@ export function MainMenu({
   const [demoSpeed, setDemoSpeed] = useState(1);
   const [demoLoop, setDemoLoop] = useState(true);
   const [confirmNewCampaign, setConfirmNewCampaign] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"continue" | "campaign" | "match" | null>(null);
+
+  const perform = (id: NonNullable<typeof pendingAction>, action: () => void): void => {
+    if (pendingAction) return;
+    audio.blip("press");
+    setPendingAction(id);
+    window.requestAnimationFrame(action);
+    window.setTimeout(() => setPendingAction(null), 1500);
+  };
 
   const startMatch = (): void => {
     const gameMode = mode === "hotseat" ? "hotseat" : mode === "demo" ? "demo" : "ai";
-    onStart({
+    perform("match", () => onStart({
       mode: gameMode,
       difficulty,
       playerColor,
       clockMinutes: gameMode === "demo" ? null : clock,
       demo: gameMode === "demo" ? { white: demoWhite, black: demoBlack, speed: demoSpeed, autoRematch: demoLoop } : undefined,
-    });
+    }));
+  };
+
+  const chooseMode = (next: MenuMode): void => {
+    if (next !== mode) audio.blip("press");
+    setMode(next);
+    if (next === "campaign") setCampaignView(campaignSummary ? "continue" : "new");
   };
 
   return (
-    <div
-      className="mc-menu pointer-events-auto absolute inset-0 flex items-center justify-center overflow-hidden px-4 py-4 sm:px-6"
-      onPointerDown={onInteract}
-      onPointerMove={onInteract}
-    >
-      <div className="cf-menu-layout w-full max-w-6xl">
+    <div className="mc-menu cf-menu pointer-events-auto absolute inset-0 overflow-hidden">
+      <div className="cf-menu-contrast" aria-hidden="true" />
+      <div className="cf-menu-layout">
         <header className="mc-unfurl cf-title-lockup">
-          <p className="mc-display text-[0.62rem] tracking-[0.52em] text-[#b89a64]">A KING&apos;S GAMBIT STORY</p>
-          <h1 className="mc-display mc-title-glow mt-2 text-5xl font-bold text-[#f4e3bd] sm:text-7xl">CROWNFALL</h1>
-          <div className="mc-rule mt-3 w-56" />
-          <p className="mt-3 max-w-md text-sm italic leading-relaxed text-[#c5b28d]">
-            {attract
-              ? "The old Game continues behind the veil. Move, and the pieces will remember you."
-              : "Every sacrifice has a name. Every surviving piece remembers."}
-          </p>
+          <div className="cf-title-chapter"><span>Chapter I</span><i /></div>
+          <p className="mc-display cf-overline">A King&apos;s Gambit Story</p>
+          <h1 className="mc-display mc-title-glow">CROWNFALL</h1>
+          <div className="mc-rule" />
+          <p className="cf-title-tagline">Every sacrifice has a name. Every surviving piece remembers.</p>
+          <div className="cf-title-witness"><span aria-hidden="true">♙</span><p><strong>Cael remembers the first board.</strong><small>The war is no longer played by nameless pieces.</small></p></div>
         </header>
 
         <nav className="cf-mode-rail" aria-label="Game modes">
-          <ModeButton icon={<Crown size={16} />} active={mode === "campaign"} onClick={() => setMode("campaign")}>
-            Story Campaign
-          </ModeButton>
-          <ModeButton icon={<Swords size={16} />} active={mode === "classic"} onClick={() => setMode("classic")}>
-            Classic Chess
-          </ModeButton>
-          <ModeButton icon={<Users size={16} />} active={mode === "hotseat"} onClick={() => setMode("hotseat")}>
-            Local Duel
-          </ModeButton>
-          <ModeButton icon={<Clapperboard size={16} />} active={mode === "demo"} onClick={() => setMode("demo")}>
-            Showcase
-          </ModeButton>
-          <button type="button" className="cf-mode-button" disabled aria-label="Online Duel, planned">
-            <LockKeyhole size={15} /> <span>Online Duel</span><small>Planned</small>
+          <ModeButton icon={<Crown size={17} />} active={mode === "campaign"} onClick={() => chooseMode("campaign")}>Story Campaign</ModeButton>
+          <ModeButton icon={<Swords size={17} />} active={mode === "classic"} onClick={() => chooseMode("classic")}>Classic Chess</ModeButton>
+          <ModeButton icon={<Users size={17} />} active={mode === "hotseat"} onClick={() => chooseMode("hotseat")}>Local Duel</ModeButton>
+          <ModeButton icon={<Clapperboard size={17} />} active={mode === "demo"} onClick={() => chooseMode("demo")}>Showcase</ModeButton>
+          <button type="button" className="cf-mode-button" disabled aria-label="Online Duel, unavailable">
+            <LockKeyhole size={16} /><span>Online Duel</span><small>Unavailable</small>
           </button>
-          <button type="button" className="cf-mode-button" disabled aria-label="Codex, planned">
-            <BookOpen size={15} /> <span>Codex</span><small>Planned</small>
+          <button type="button" className="cf-mode-button" disabled aria-label="Codex, unavailable">
+            <BookOpen size={16} /><span>Codex</span><small>Unavailable</small>
           </button>
         </nav>
 
-        <section className="mc-slate mc-goldleaf mc-rise cf-menu-panel" aria-live="polite">
-          <div className="mc-scroll min-h-0 flex-1 overflow-y-auto pr-1">
-            {mode === "campaign" ? (
-              <div className="mc-fade">
-                <p className="cf-kicker">Chapter One</p>
-                <h2 className="mc-display mt-2 text-2xl text-[#f2e2bd]">The Pawn Who Would Not Die</h2>
-                <p className="mt-3 text-sm leading-relaxed text-[#b7a88a]">
-                  Meet the named pieces of Aldermoor, prepare their formation, accept or reject a dangerous Gambit, and
-                  carry their identities through three connected chess missions.
-                </p>
-
-                {campaignError ? (
-                  <div className="cf-save-error mt-4" role="alert">
-                    <AlertTriangle size={16} />
-                    <span><strong>Campaign save unavailable.</strong>{campaignError}</span>
-                  </div>
-                ) : null}
-
-                {hasCampaign ? (
-                  <button type="button" className="mc-btn mc-btn-primary mt-5 flex w-full items-center justify-between px-4 py-3.5" onClick={onContinueCampaign}>
-                    <span className="flex items-center gap-2"><Crown size={16} /> Continue Campaign</span>
-                    <ChevronRight size={16} />
-                  </button>
-                ) : null}
-
-                <div className="mt-6">
-                  <p className="cf-kicker">New campaign consequence rules</p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                    {CAMPAIGN_DIFFICULTY.map((option) => (
-                      <button
-                        key={option.id}
-                        type="button"
-                        className="cf-difficulty-card"
-                        data-active={campaignDifficulty === option.id}
-                        aria-pressed={campaignDifficulty === option.id}
-                        onClick={() => setCampaignDifficulty(option.id)}
-                      >
-                        <span className="mc-display text-xs tracking-[0.15em] text-[#e9d4a7]">{option.title}</span>
-                        <span>{option.copy}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {confirmNewCampaign ? (
-                  <div className="cf-overwrite-warning mt-4" role="alert">
-                    <div><AlertTriangle size={17} /><span><strong>Replace the current autosave?</strong><small>The existing campaign will be overwritten.</small></span></div>
+        <section className="cf-menu-panel" aria-live="polite" aria-busy={pendingAction !== null}>
+          <div className="cf-artifact-rivet cf-artifact-rivet-nw" aria-hidden="true" />
+          <div className="cf-artifact-rivet cf-artifact-rivet-se" aria-hidden="true" />
+          <div className="cf-artifact-spine" aria-hidden="true"><span>I</span></div>
+          <div className="mc-scroll cf-menu-scroll">
+            <div key={`${mode}-${campaignView}`} className="cf-menu-content">
+              {mode === "campaign" ? (
+                <CampaignPanel
+                  summary={campaignSummary}
+                  campaignError={campaignError}
+                  view={campaignView}
+                  setView={setCampaignView}
+                  difficulty={campaignDifficulty}
+                  setDifficulty={setCampaignDifficulty}
+                  confirmNew={confirmNewCampaign}
+                  setConfirmNew={setConfirmNewCampaign}
+                  pending={pendingAction}
+                  onContinue={() => perform("continue", onContinueCampaign)}
+                  onNew={() => perform("campaign", () => onNewCampaign(campaignDifficulty))}
+                />
+              ) : mode === "classic" ? (
+                <div className="cf-mode-content">
+                  <PanelHeading kicker="King's Gambit combat engine" title="Classic Chess" copy="Pure legal chess. No campaign advantages, injuries, or altered rules." />
+                  <ChoiceGrid label="Opponent" values={["easy", "medium", "hard"]} active={difficulty} onSelect={setDifficulty} />
+                  <p className="cf-option-note">{DIFFICULTY_COPY[difficulty]}</p>
+                  <div>
+                    <p className="cf-kicker mb-2">Your banner</p>
                     <div className="grid grid-cols-2 gap-2">
-                      <button type="button" className="mc-btn" onClick={() => setConfirmNewCampaign(false)}>Keep current</button>
-                      <button type="button" className="mc-btn mc-btn-primary" onClick={() => onNewCampaign(campaignDifficulty)}>Replace save</button>
+                      {(["w", "b"] as Faction[]).map((color) => (
+                        <button key={color} type="button" className="mc-chip cf-choice-chip" data-active={playerColor === color} aria-pressed={playerColor === color} onClick={() => setPlayerColor(color)}>
+                          <Crest faction={color} size={18} active={playerColor === color} />{color === "w" ? "Ivory" : "Obsidian"}
+                        </button>
+                      ))}
                     </div>
                   </div>
-                ) : (
-                  <button type="button" className="mc-btn mt-4 flex w-full items-center justify-center gap-2" onClick={() => hasCampaign ? setConfirmNewCampaign(true) : onNewCampaign(campaignDifficulty)}>
-                    <Shield size={15} /> {hasCampaign ? "Begin a new campaign" : "Begin Chapter One"}
-                  </button>
-                )}
-              </div>
-            ) : mode === "classic" ? (
-              <div className="mc-fade space-y-5">
-                <div>
-                  <p className="cf-kicker">King&apos;s Gambit combat engine</p>
-                  <h2 className="mc-display mt-2 text-2xl text-[#f2e2bd]">Classic Chess</h2>
-                  <p className="mt-2 text-sm leading-relaxed text-[#b7a88a]">Pure legal chess. No campaign advantages, injuries, or altered rules.</p>
+                  <ClockPicker value={clock} onSelect={setClock} />
                 </div>
-                <ChoiceGrid label="Opponent" values={["easy", "medium", "hard"] as Difficulty[]} active={difficulty} onSelect={setDifficulty} />
-                <p className="-mt-3 text-xs italic text-[#9c8b6c]">{DIFFICULTY_COPY[difficulty]}</p>
-                <div>
-                  <p className="cf-kicker mb-2">Your banner</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(["w", "b"] as Faction[]).map((color) => (
-                      <button key={color} type="button" className="mc-chip flex items-center justify-center gap-2 py-2.5" data-active={playerColor === color} aria-pressed={playerColor === color} onClick={() => setPlayerColor(color)}>
-                        <Crest faction={color} size={18} active={playerColor === color} />{color === "w" ? "Ivory" : "Obsidian"}
-                      </button>
-                    ))}
-                  </div>
+              ) : mode === "hotseat" ? (
+                <div className="cf-mode-content">
+                  <PanelHeading kicker="One board · two commanders" title="Local Duel" copy="The camera passes between players while the same deterministic rules govern every move." />
+                  <ClockPicker value={clock} onSelect={setClock} />
                 </div>
-                <ClockPicker value={clock} onSelect={setClock} />
-              </div>
-            ) : mode === "hotseat" ? (
-              <div className="mc-fade space-y-5">
-                <p className="cf-kicker">One board · two commanders</p>
-                <h2 className="mc-display text-2xl text-[#f2e2bd]">Local Duel</h2>
-                <p className="text-sm italic leading-relaxed text-[#b7a88a]">The camera passes between players while the same deterministic King&apos;s Gambit rules govern every move.</p>
-                <ClockPicker value={clock} onSelect={setClock} />
-              </div>
-            ) : (
-              <div className="mc-fade space-y-5">
-                <p className="cf-kicker">Cinematic engine duel</p>
-                <h2 className="mc-display text-2xl text-[#f2e2bd]">Showcase</h2>
-                <ChoiceGrid label="Ivory engine" values={["easy", "medium", "hard"] as Difficulty[]} active={demoWhite} onSelect={setDemoWhite} />
-                <ChoiceGrid label="Obsidian engine" values={["easy", "medium", "hard"] as Difficulty[]} active={demoBlack} onSelect={setDemoBlack} />
-                <div>
-                  <p className="cf-kicker mb-2">Pace</p>
-                  <div className="grid grid-cols-4 gap-2">
-                    {DEMO_SPEEDS.map((option) => <button key={option.label} type="button" className="mc-chip py-2.5" data-active={demoSpeed === option.value} aria-pressed={demoSpeed === option.value} onClick={() => setDemoSpeed(option.value)}>{option.label}</button>)}
-                  </div>
+              ) : (
+                <div className="cf-mode-content">
+                  <PanelHeading kicker="Cinematic engine duel" title="Showcase" copy="Watch two commanders contest the board with the presentation controls held open." />
+                  <ChoiceGrid label="Ivory engine" values={["easy", "medium", "hard"]} active={demoWhite} onSelect={setDemoWhite} />
+                  <ChoiceGrid label="Obsidian engine" values={["easy", "medium", "hard"]} active={demoBlack} onSelect={setDemoBlack} />
+                  <div><p className="cf-kicker mb-2">Pace</p><div className="grid grid-cols-4 gap-2">{DEMO_SPEEDS.map((option) => <button key={option.label} type="button" className="mc-chip cf-choice-chip" data-active={demoSpeed === option.value} aria-pressed={demoSpeed === option.value} onClick={() => setDemoSpeed(option.value)}>{option.label}</button>)}</div></div>
+                  <button type="button" className="mc-chip cf-loop-choice" data-active={demoLoop} onClick={() => setDemoLoop((loop) => !loop)} aria-pressed={demoLoop}><span>Loop new duels</span><strong>{demoLoop ? "On" : "Off"}</strong></button>
                 </div>
-                <button type="button" className="mc-chip flex w-full items-center justify-between px-3 py-2.5" data-active={demoLoop} onClick={() => setDemoLoop((loop) => !loop)} aria-pressed={demoLoop}>
-                  <span>Loop new duels</span><span className="mc-display text-[0.62rem] tracking-[0.24em]">{demoLoop ? "ON" : "OFF"}</span>
-                </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
-          {mode !== "campaign" ? (
-            <button type="button" className="mc-btn mc-btn-primary mt-5 flex w-full items-center justify-center gap-2 py-3.5 text-sm" onClick={startMatch}>
-              {mode === "demo" ? <><Clapperboard size={16} /> Roll the showcase</> : <><Crown size={16} /> Take the field</>}
-            </button>
-          ) : null}
-          <button type="button" className="mc-btn mt-2 flex w-full items-center justify-center gap-2" onClick={onOpenSettings}>
-            <SettingsIcon size={15} /> Settings
-          </button>
+          <footer className="cf-menu-actions">
+            {mode !== "campaign" ? <ActionButton loading={pendingAction === "match"} onClick={startMatch}>{mode === "demo" ? "Roll the showcase" : "Take the field"}</ActionButton> : null}
+            <button type="button" className="mc-btn cf-secondary-action" onClick={onOpenSettings} disabled={pendingAction !== null}><SettingsIcon size={16} /> Settings</button>
+          </footer>
         </section>
       </div>
     </div>
   );
 }
 
+function CampaignPanel({ summary, campaignError, view, setView, difficulty, setDifficulty, confirmNew, setConfirmNew, pending, onContinue, onNew }: {
+  summary: CampaignMenuSummary | null;
+  campaignError: string | null;
+  view: CampaignView;
+  setView: (view: CampaignView) => void;
+  difficulty: CampaignDifficulty;
+  setDifficulty: (difficulty: CampaignDifficulty) => void;
+  confirmNew: boolean;
+  setConfirmNew: (value: boolean) => void;
+  pending: "continue" | "campaign" | "match" | null;
+  onContinue: () => void;
+  onNew: () => void;
+}) {
+  return (
+    <div className="cf-campaign-panel">
+      <div className="cf-artifact-heading">
+        <div className="cf-chapter-seal"><Crown size={20} /><span>I</span></div>
+        <div><p className="cf-kicker">The Chronicle of Aldermoor</p><h2 className="mc-display">The Pawn Who Would Not Die</h2></div>
+      </div>
+
+      {campaignError ? <div className="cf-save-error" role="alert"><AlertTriangle size={17} /><span><strong>Campaign record unavailable</strong>{campaignError}</span></div> : null}
+
+      {view === "continue" && summary ? (
+        <div className="cf-continue-view">
+          <div className="cf-save-dossier">
+            <CharacterPortrait characterId={summary.focusCharacter.id} name={summary.focusCharacter.name} title={summary.focusCharacter.title} kind={summary.focusCharacter.kind} status={summary.focusCharacter.status} />
+            <div className="cf-save-dossier-copy">
+              <p className="cf-kicker">{summary.missionSubtitle} · Current theatre</p>
+              <h3 className="mc-display">{summary.missionTitle}</h3>
+              <p className="cf-character-title">{summary.focusCharacter.name} · {summary.focusCharacter.title}</p>
+              <span className="cf-status-seal" data-status={summary.focusCharacter.status}>{summary.focusCharacter.status}</span>
+            </div>
+          </div>
+
+          <div className="cf-save-progress" aria-label={`${summary.completedCount} of ${summary.totalCount} missions complete`}>
+            <span><strong>{summary.completedCount}</strong> of {summary.totalCount} battles remembered</span>
+            <div>{Array.from({ length: summary.totalCount }, (_, index) => <i key={index} data-complete={index < summary.completedCount} data-current={index === summary.completedCount} />)}</div>
+          </div>
+
+          <dl className="cf-save-facts">
+            <div><dt>Consequence rule</dt><dd>{summary.difficultyLabel}</dd></div>
+            <div><dt>Last witnessed</dt><dd><time dateTime={summary.updatedAt}>{saveTimeLabel(summary.updatedAt)}</time></dd></div>
+            <div><dt>Recent memory</dt><dd>{summary.lastConsequenceLabel ?? "No battle has yet been forgotten."}</dd></div>
+            <div><dt>Gambit</dt><dd>{summary.gambitLabel ?? "No oath currently binds the formation."}</dd></div>
+          </dl>
+
+          <ActionButton loading={pending === "continue"} onClick={onContinue}>Continue the chronicle</ActionButton>
+          <button type="button" className="cf-text-action" onClick={() => setView("new")} disabled={pending !== null}>Begin another campaign</button>
+        </div>
+      ) : (
+        <div className="cf-new-campaign-view">
+          <p className="cf-panel-prose">Choose how much mercy the Chronicle grants. The rules of chess remain unchanged; only warning, memory, and consequence differ.</p>
+          <div className="cf-difficulty-grid" role="group" aria-label="Campaign consequence rules">
+            {CAMPAIGN_DIFFICULTY.map((option) => (
+              <button key={option.id} type="button" className="cf-difficulty-card" data-active={difficulty === option.id} aria-pressed={difficulty === option.id} onClick={() => setDifficulty(option.id)}>
+                <DifficultyEmblem difficulty={option.id} />
+                <span className="cf-difficulty-copy"><strong className="mc-display">{option.title}</strong><small>{option.legend}</small><em>{option.copy}</em></span>
+                <span className="cf-selected-mark" aria-hidden="true">{difficulty === option.id ? "Selected" : "Choose"}</span>
+              </button>
+            ))}
+          </div>
+
+          {confirmNew && summary ? (
+            <div className="cf-overwrite-warning" role="alert">
+              <div><AlertTriangle size={18} /><span><strong>Break the current seal?</strong><small>The existing chronicle will be replaced.</small></span></div>
+              <div className="grid grid-cols-2 gap-2"><button type="button" className="mc-btn" onClick={() => setConfirmNew(false)}>Keep it</button><ActionButton loading={pending === "campaign"} onClick={onNew}>Replace it</ActionButton></div>
+            </div>
+          ) : (
+            <ActionButton loading={pending === "campaign"} onClick={() => summary ? setConfirmNew(true) : onNew()}>Begin Chapter One</ActionButton>
+          )}
+          {summary ? <button type="button" className="cf-text-action" onClick={() => { setConfirmNew(false); setView("continue"); }} disabled={pending !== null}><ScrollText size={14} /> Return to the current chronicle</button> : null}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ActionButton({ loading, onClick, children }: { loading: boolean; onClick: () => void; children: React.ReactNode }) {
+  return <button type="button" className="mc-btn mc-btn-primary cf-primary-action" onClick={onClick} disabled={loading} aria-busy={loading}>{loading ? <LoaderCircle className="cf-spinner" size={17} /> : <Crown size={17} />}<span>{loading ? "Opening the Chronicle…" : children}</span><ChevronRight size={16} /></button>;
+}
+
+function PanelHeading({ kicker, title, copy }: { kicker: string; title: string; copy: string }) {
+  return <div><p className="cf-kicker">{kicker}</p><h2 className="mc-display cf-panel-title">{title}</h2><p className="cf-panel-prose">{copy}</p></div>;
+}
+
 function ModeButton({ icon, active, onClick, children }: { icon: React.ReactNode; active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return <button type="button" className="cf-mode-button" data-active={active} aria-pressed={active} onClick={onClick}>{icon}<span>{children}</span><ChevronRight size={14} /></button>;
+  return <button type="button" className="cf-mode-button" data-active={active} aria-pressed={active} onClick={onClick}>{icon}<span>{children}</span><ChevronRight size={15} /></button>;
 }
 
 function ChoiceGrid({ label, values, active, onSelect }: { label: string; values: Difficulty[]; active: Difficulty; onSelect: (value: Difficulty) => void }) {
-  return <div><p className="cf-kicker mb-2">{label}</p><div className="grid grid-cols-3 gap-2">{values.map((value) => <button key={value} type="button" className="mc-chip py-2.5 capitalize" data-active={active === value} aria-pressed={active === value} onClick={() => onSelect(value)}>{value}</button>)}</div></div>;
+  return <div><p className="cf-kicker mb-2">{label}</p><div className="grid grid-cols-3 gap-2">{values.map((value) => <button key={value} type="button" className="mc-chip cf-choice-chip capitalize" data-active={active === value} aria-pressed={active === value} onClick={() => onSelect(value)}>{value}</button>)}</div></div>;
 }
 
 function ClockPicker({ value, onSelect }: { value: number | null; onSelect: (value: number | null) => void }) {
-  return <div><p className="cf-kicker mb-2">Hourglass</p><div className="grid grid-cols-4 gap-2">{CLOCKS.map((option) => <button key={option.label} type="button" className="mc-chip py-2.5" data-active={value === option.value} aria-pressed={value === option.value} onClick={() => onSelect(option.value)}>{option.label}</button>)}</div></div>;
+  return <div><p className="cf-kicker mb-2">Hourglass</p><div className="grid grid-cols-4 gap-2">{CLOCKS.map((option) => <button key={option.label} type="button" className="mc-chip cf-choice-chip" data-active={value === option.value} aria-pressed={value === option.value} onClick={() => onSelect(option.value)}>{option.label}</button>)}</div></div>;
 }

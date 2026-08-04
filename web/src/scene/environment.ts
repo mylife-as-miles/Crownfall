@@ -24,6 +24,7 @@ export class CastleHall {
 
   private hemi: THREE.HemisphereLight;
   private fillLight: THREE.DirectionalLight;
+  private rimLight: THREE.DirectionalLight;
   private torches: Torch[] = [];
   private dust: THREE.Points | null = null;
   private embers: THREE.Points | null = null;
@@ -42,6 +43,7 @@ export class CastleHall {
   private windowMaterial: THREE.MeshBasicMaterial | null = null;
   private flameMaterials: THREE.MeshBasicMaterial[] = [];
   private look: ArenaLook = ARENA_LOOKS[DEFAULT_ARENA];
+  private presentationMode = false;
 
   constructor(private quality: QualityPreset, look: ArenaLook = ARENA_LOOKS[DEFAULT_ARENA]) {
     this.group.name = "castle_hall";
@@ -69,6 +71,12 @@ export class CastleHall {
     this.fillLight.position.set(8, 6, -9);
     this.group.add(this.fillLight);
 
+    this.rimLight = new THREE.DirectionalLight(0xc7d1ef, 0);
+    this.rimLight.position.set(1, 8, -8);
+    this.rimLight.target.position.set(0, 1.2, 0);
+    this.group.add(this.rimLight);
+    this.group.add(this.rimLight.target);
+
     this.buildFloor();
     this.buildColonnade();
     this.buildTorches();
@@ -88,7 +96,7 @@ export class CastleHall {
     // past the ruined wall line.
     const geometry = this.track(new THREE.CircleGeometry(20.5, 64));
     const material = this.track(
-      new THREE.MeshStandardMaterial({ map, color: 0x6a6155, roughness: 0.95, metalness: 0.02 }),
+      new THREE.MeshStandardMaterial({ map, bumpMap: map, bumpScale: 0.07, color: 0x6a6155, roughness: 0.95, metalness: 0.02 }),
     );
     this.floorMaterial = material;
     const floor = new THREE.Mesh(geometry, material);
@@ -99,8 +107,9 @@ export class CastleHall {
 
     // Dais the board rests on.
     const daisGeo = this.track(new THREE.CylinderGeometry(9.4, 10.4, 0.5, 48, 1));
+    const daisMap = this.track(marbleTexture(true));
     const daisMat = this.track(
-      new THREE.MeshStandardMaterial({ map: this.track(marbleTexture(true)), color: 0x5b5449, roughness: 0.85 }),
+      new THREE.MeshStandardMaterial({ map: daisMap, bumpMap: daisMap, bumpScale: 0.035, color: 0x5b5449, roughness: 0.85 }),
     );
     this.daisMaterial = daisMat;
     const dais = new THREE.Mesh(daisGeo, daisMat);
@@ -110,9 +119,12 @@ export class CastleHall {
   }
 
   private buildColonnade(): void {
+    const stoneMap = this.track(flagstoneTexture());
     const stone = this.track(
       new THREE.MeshStandardMaterial({
-        map: this.track(flagstoneTexture()),
+        map: stoneMap,
+        bumpMap: stoneMap,
+        bumpScale: 0.08,
         color: 0x554e44,
         roughness: 0.92,
         metalness: 0.02,
@@ -157,11 +169,14 @@ export class CastleHall {
 
     // Curtain wall: one intact stretch carrying the high windows, the rest
     // battered down to waist-height stumps so the war outside reads through.
+    const wallTexture = this.track(flagstoneTexture());
     const wallMat = this.track(
       new THREE.MeshStandardMaterial({
-        map: this.track(flagstoneTexture()),
+        map: wallTexture,
+        bumpMap: wallTexture,
+        bumpScale: 0.11,
         color: 0x2e2a26,
-        roughness: 1,
+        roughness: 0.94,
         side: THREE.DoubleSide,
       }),
     );
@@ -172,7 +187,7 @@ export class CastleHall {
     /** Arc of curtain wall centred on `centre` (same angle space as the pillars). */
     const wallArc = (centre: number, span: number, height: number): void => {
       const geometry = this.track(
-        new THREE.CylinderGeometry(17, 17.4, height, Math.max(6, Math.round(span * 12)), 1, true, Math.PI / 2 - centre - span / 2, span),
+        new THREE.CylinderGeometry(17, 17.4, height, Math.max(8, Math.round(span * 18)), 8, true, Math.PI / 2 - centre - span / 2, span),
       );
       const arc = new THREE.Mesh(geometry, wallMat);
       arc.position.y = height / 2 - 0.6;
@@ -181,8 +196,36 @@ export class CastleHall {
       this.group.add(arc);
     };
 
-    // Intact northern wall behind the windows.
-    wallArc(-Math.PI / 2, 1.9, 20);
+    // Intact northern wall behind the windows. It stays below the skyline so
+    // the courtyard reads as a ruined place, not a featureless vertical box.
+    wallArc(-Math.PI / 2, 1.9, 14.4);
+
+    // Raised masonry courses and broken crenellations give the long wall a
+    // human scale in the battle camera. These reuse the same stone material,
+    // adding silhouette and shadow detail without another texture request.
+    const courseGeo = this.track(new THREE.BoxGeometry(2.55, 0.18, 0.34));
+    for (const y of [2.2, 4.7, 7.2, 9.7, 12.2]) {
+      for (let i = -4; i <= 4; i += 1) {
+        const angle = -Math.PI / 2 + i * 0.19;
+        const course = new THREE.Mesh(courseGeo, wallMat);
+        course.position.set(Math.cos(angle) * 16.72, y, Math.sin(angle) * 16.72);
+        course.rotation.y = -angle;
+        course.castShadow = true;
+        this.group.add(course);
+      }
+    }
+    const merlonGeo = this.track(new THREE.BoxGeometry(1.25, 1.15, 0.9));
+    for (let i = -5; i <= 5; i += 1) {
+      const angle = -Math.PI / 2 + i * 0.17;
+      if (i === -2 || i === 3) continue;
+      const merlon = new THREE.Mesh(merlonGeo, wallMat);
+      merlon.position.set(Math.cos(angle) * 16.92, 14.25, Math.sin(angle) * 16.92);
+      merlon.rotation.y = -angle;
+      merlon.rotation.z = i === 5 ? 0.13 : i === -5 ? -0.1 : 0;
+      merlon.castShadow = true;
+      merlon.receiveShadow = true;
+      this.group.add(merlon);
+    }
 
     // Ruined remainder: alternating stumps and open breaches.
     const ruins: [number, number, number][] = [
@@ -197,25 +240,42 @@ export class CastleHall {
     ];
     for (const [centre, span, height] of ruins) wallArc(centre, span, height);
 
-    // Rubble heaped where the wall came down.
-    const rubbleGeo = this.track(new THREE.IcosahedronGeometry(0.9, 0));
+    // Rubble heaped where the wall came down. Three low-poly silhouettes keep
+    // the ruin readable without repeating the former oversized crystal shape.
     const rubbleMat = this.track(new THREE.MeshStandardMaterial({ color: 0x3b352d, roughness: 1 }));
     this.rubbleMaterial = rubbleMat;
-    const rubble = new THREE.InstancedMesh(rubbleGeo, rubbleMat, 54);
-    rubble.castShadow = true;
-    rubble.receiveShadow = true;
+    const rubbleGeometries = [
+      this.track(new THREE.BoxGeometry(0.95, 0.46, 0.62)),
+      this.track(new THREE.DodecahedronGeometry(0.48, 0)),
+      this.track(new THREE.IcosahedronGeometry(0.28, 1)),
+    ];
     const dummy = new THREE.Object3D();
-    for (let i = 0; i < 54; i += 1) {
-      const angle = (i / 54) * Math.PI * 2 + Math.sin(i * 3.7) * 0.05;
-      const distance = 16.4 + Math.sin(i * 2.3) * 1.6;
-      dummy.position.set(Math.cos(angle) * distance, -0.62 + Math.abs(Math.sin(i * 5.1)) * 0.4, Math.sin(angle) * distance);
-      dummy.rotation.set(i * 1.7, i * 0.9, i * 2.3);
-      dummy.scale.set(0.4 + Math.abs(Math.sin(i)) * 0.9, 0.3 + Math.abs(Math.cos(i * 1.3)) * 0.5, 0.4 + Math.abs(Math.cos(i)) * 0.9);
-      dummy.updateMatrix();
-      rubble.setMatrixAt(i, dummy.matrix);
-    }
-    rubble.instanceMatrix.needsUpdate = true;
-    this.group.add(rubble);
+
+    rubbleGeometries.forEach((geometry, variant) => {
+      const rubble = new THREE.InstancedMesh(geometry, rubbleMat, 18);
+      rubble.castShadow = true;
+      rubble.receiveShadow = true;
+
+      for (let i = 0; i < 18; i += 1) {
+        const sample = i * 3 + variant;
+        const angle = (sample / 54) * Math.PI * 2 + Math.sin(sample * 3.7) * 0.05;
+        const distance = 16.35 + Math.sin(sample * 2.3) * 1.45;
+        const scaleX = 0.42 + Math.abs(Math.sin(sample * 1.13)) * 0.5;
+        const scaleY = 0.28 + Math.abs(Math.cos(sample * 1.37)) * 0.34;
+        const scaleZ = 0.4 + Math.abs(Math.cos(sample * 0.91)) * 0.46;
+
+        dummy.position.set(Math.cos(angle) * distance, -0.53 + scaleY * 0.14, Math.sin(angle) * distance);
+        dummy.rotation.set(sample * 1.7, sample * 0.9, sample * 2.3);
+        dummy.scale.set(scaleX, scaleY, scaleZ);
+        dummy.updateMatrix();
+        rubble.setMatrixAt(i, dummy.matrix);
+        rubble.setColorAt(i, new THREE.Color().setHSL(0.095, 0.08, 0.2 + (sample % 5) * 0.012));
+      }
+
+      rubble.instanceMatrix.needsUpdate = true;
+      if (rubble.instanceColor) rubble.instanceColor.needsUpdate = true;
+      this.group.add(rubble);
+    });
 
     // High windows: emissive quads that read as openings and feed the bloom pass.
     const windowGeo = this.track(new THREE.PlaneGeometry(2.2, 4.4));
@@ -387,6 +447,7 @@ export class CastleHall {
    */
   applyArena(look: ArenaLook): void {
     this.look = look;
+    if (this.presentationMode) return;
 
     this.hemi.color.setHex(look.hemi.sky);
     this.hemi.groundColor.setHex(look.hemi.ground);
@@ -399,6 +460,9 @@ export class CastleHall {
     this.fillLight.color.setHex(look.fill.color);
     this.fillLight.intensity = look.fill.intensity;
     this.fillLight.position.set(...look.fill.position);
+
+    this.rimLight.color.setHex(look.fill.color);
+    this.rimLight.intensity = Math.max(0.36, look.fill.intensity * 0.68);
 
     this.floorMaterial?.color.setHex(look.stone.floor);
     this.daisMaterial?.color.setHex(look.stone.dais);
@@ -427,14 +491,52 @@ export class CastleHall {
     }
   }
 
+  /** Stable title-screen light and material rig, independent of last arena. */
+  setPresentationMode(active: boolean): void {
+    if (this.presentationMode === active) return;
+    this.presentationMode = active;
+    if (!active) {
+      this.applyArena(this.look);
+      return;
+    }
+
+    this.hemi.color.setHex(0x66748d);
+    this.hemi.groundColor.setHex(0x17120e);
+    this.hemi.intensity = 0.55;
+    this.keyLight.color.setHex(0xffd8aa);
+    this.keyLight.intensity = 2.2;
+    this.keyLight.position.set(-6, 11, 5);
+    this.fillLight.color.setHex(0x748bb5);
+    this.fillLight.intensity = 0.42;
+    this.fillLight.position.set(7, 5, -6);
+    this.rimLight.intensity = 1;
+    this.floorMaterial?.color.setHex(0x4b4339);
+    this.daisMaterial?.color.setHex(0x443b31);
+    this.pillarMaterial?.color.setHex(0x48423b);
+    this.wallMaterial?.color.setHex(0x2c2926);
+    this.rubbleMaterial?.color.setHex(0x433b33);
+    if (this.windowMaterial) {
+      this.windowMaterial.color.setHex(0xd7c5a3);
+      this.windowMaterial.opacity = 0.32;
+    }
+    if (this.dust) {
+      const material = this.dust.material as THREE.PointsMaterial;
+      material.color.setHex(0xbba986);
+      material.opacity = 0.12;
+    }
+    if (this.embers) (this.embers.material as THREE.PointsMaterial).opacity = 0.22;
+  }
+
   update(delta: number): void {
     this.elapsed += delta;
 
-    const torchScale = this.look.torch.intensity;
+    const torchScale = this.presentationMode ? 0.55 : this.look.torch.intensity;
     for (const torch of this.torches) {
       // Layered sines approximate flame noise without a texture lookup.
       const t = this.elapsed * 6 + torch.seed;
-      const flicker = 0.72 + Math.sin(t) * 0.12 + Math.sin(t * 2.37) * 0.09 + Math.sin(t * 5.11) * 0.06;
+      const flicker = this.presentationMode
+        ? 0.94 + Math.sin(t) * 0.035 + Math.sin(t * 2.37) * 0.018
+        : 0.72 + Math.sin(t) * 0.12 + Math.sin(t * 2.37) * 0.09 + Math.sin(t * 5.11) * 0.06;
       torch.light.intensity = torch.base * flicker * torchScale;
       const scale = 0.9 + flicker * 0.28;
       torch.flame.scale.set(scale, scale * 1.65, scale);
@@ -466,7 +568,7 @@ export class CastleHall {
       attribute.needsUpdate = true;
     }
 
-    const shaftPeak = this.look.shaft.opacity;
+    const shaftPeak = this.presentationMode ? 0.14 : this.look.shaft.opacity;
     for (const shaft of this.shafts) {
       const material = shaft.material as THREE.MeshBasicMaterial;
       material.opacity = shaftPeak * (0.78 + Math.sin(this.elapsed * 0.7 + shaft.position.x) * 0.17);

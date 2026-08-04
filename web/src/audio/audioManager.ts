@@ -3,6 +3,18 @@ import type { Faction, PieceKind } from "../core/types";
 
 type SfxName = "place" | "capture" | "check" | "fanfare";
 type BedName = "ambience" | "score" | "tension";
+export type AudioScene =
+  | "menu"
+  | "prologue"
+  | "hub"
+  | "briefing"
+  | "formation"
+  | "gambit"
+  | "battle"
+  | "consequence-win"
+  | "consequence-loss"
+  | "promotion"
+  | "finale";
 
 /** How a figure's dying voice is placed in the mix. */
 export interface DeathCryOptions {
@@ -183,6 +195,20 @@ const BED_VOLUME: Record<BedName, number> = {
   tension: 0.0,
 };
 
+const SCENE_BEDS: Record<AudioScene, Record<BedName, number>> = {
+  menu: { ambience: 0.26, score: 0.2, tension: 0 },
+  prologue: { ambience: 0.12, score: 0.24, tension: 0.03 },
+  hub: { ambience: 0.22, score: 0.16, tension: 0 },
+  briefing: { ambience: 0.2, score: 0.15, tension: 0 },
+  formation: { ambience: 0.16, score: 0.13, tension: 0 },
+  gambit: { ambience: 0.1, score: 0.12, tension: 0.14 },
+  battle: { ambience: 0.28, score: 0.22, tension: 0.04 },
+  "consequence-win": { ambience: 0.12, score: 0.28, tension: 0 },
+  "consequence-loss": { ambience: 0.1, score: 0.08, tension: 0.1 },
+  promotion: { ambience: 0.08, score: 0.16, tension: 0.08 },
+  finale: { ambience: 0.08, score: 0.2, tension: 0.12 },
+};
+
 /**
  * Web Audio mixer: three looping beds (ambience / score / tension stem) that
  * crossfade with game intensity, plus one-shot SFX. UI blips are synthesised so
@@ -202,6 +228,8 @@ export class AudioManager {
   private muted = false;
   private started = false;
   private loading: Promise<void> | null = null;
+  private lateLoading: Promise<void> | null = null;
+  private scene: AudioScene = "menu";
 
   get isMuted(): boolean {
     return this.muted;
@@ -222,16 +250,19 @@ export class AudioManager {
       this.bedBus.connect(this.master);
     }
     if (this.ctx.state === "suspended") await this.ctx.resume();
-    if (!this.loading) this.loading = this.preload();
+    if (!this.loading) this.loading = this.preloadKeys(["ambience", "score"]);
     await this.loading;
     this.startBeds();
-    // Voices only matter on a capture, so they stream in behind the music
-    // rather than holding up the first frame of the game.
-    void this.primeDeathCries();
+    // Tension and one-shots arrive after the two audible title beds.
+    if (!this.lateLoading) {
+      this.lateLoading = this.preloadKeys(["tension", "place", "capture", "check", "fanfare"]).then(() => {
+        this.attachLateBed("tension");
+      });
+    }
   }
 
-  private async preload(): Promise<void> {
-    const entries = Object.entries(AUDIO_URLS).filter(([, url]) => url.length > 0);
+  private async preloadKeys(keys: (keyof typeof AUDIO_URLS)[]): Promise<void> {
+    const entries = keys.map((key) => [key, AUDIO_URLS[key]] as const).filter(([, url]) => url.length > 0);
     await Promise.all(
       entries.map(async ([key, url]) => {
         try {
@@ -248,6 +279,18 @@ export class AudioManager {
     );
   }
 
+  private attachLateBed(name: BedName): void {
+    const bed = this.beds.get(name);
+    const buffer = this.buffers.get(name);
+    if (!bed || bed.source || !buffer || !this.ctx) return;
+    const source = this.ctx.createBufferSource();
+    source.buffer = buffer;
+    source.loop = true;
+    source.connect(bed.gain);
+    source.start(0);
+    bed.source = source;
+  }
+
   private startBeds(): void {
     if (this.started || !this.ctx || !this.master) return;
     this.started = true;
@@ -259,7 +302,8 @@ export class AudioManager {
     for (const layer of layers) {
       const buffer = this.buffers.get(layer.key);
       const gain = this.ctx.createGain();
-      gain.gain.value = BED_VOLUME[layer.name];
+      const target = SCENE_BEDS[this.scene][layer.name] ?? BED_VOLUME[layer.name];
+      gain.gain.value = target;
       gain.connect(this.bedBus ?? this.master);
       let source: AudioBufferSourceNode | null = null;
       if (buffer) {
@@ -269,16 +313,32 @@ export class AudioManager {
         source.connect(gain);
         source.start(0);
       }
-      this.beds.set(layer.name, { gain, source, target: BED_VOLUME[layer.name] });
+      this.beds.set(layer.name, { gain, source, target });
     }
+  }
+
+  setScene(scene: AudioScene): void {
+    this.scene = scene;
+    const seconds = scene === "battle" || scene.startsWith("consequence") ? 1.25 : 0.72;
+    const targets = SCENE_BEDS[scene];
+    this.fadeBed("ambience", targets.ambience, seconds);
+    this.fadeBed("score", targets.score, seconds);
+    this.fadeBed("tension", targets.tension, seconds);
+  }
+
+  campaignCue(cue: "choice" | "formation" | "gambit-accept" | "gambit-refuse" | "battle-intro" | "objective-win" | "objective-loss" | "promotion-open" | "promotion-commit" | "finale"): void {
+    if (cue === "objective-win" || cue === "finale") this.play("fanfare", cue === "finale" ? 0.58 : 0.48);
+    else if (cue === "objective-loss" || cue === "gambit-refuse") this.blip("deny");
+    else this.blip("press");
   }
 
   /** 0 = calm, 1 = check / endgame. Crossfades the tension stem. */
   setIntensity(intensity: number): void {
     if (!this.ctx) return;
     const clamped = Math.max(0, Math.min(1, intensity));
-    this.fadeBed("tension", clamped * 0.5, 1.8);
-    this.fadeBed("score", 0.34 - clamped * 0.12, 1.8);
+    const base = SCENE_BEDS[this.scene];
+    this.fadeBed("tension", Math.max(base.tension, clamped * 0.5), 1.8);
+    this.fadeBed("score", Math.max(0.06, base.score - clamped * 0.12), 1.8);
   }
 
   private fadeBed(name: BedName, value: number, seconds: number): void {
@@ -313,15 +373,6 @@ export class AudioManager {
     gain.setValueAtTime(gain.value, now);
     gain.linearRampToValueAtTime(amount, now + 0.08);
     gain.linearRampToValueAtTime(1, now + 0.08 + Math.max(0.2, seconds));
-  }
-
-  /** Warms every cry in the background once the mixer is alive. */
-  private async primeDeathCries(): Promise<void> {
-    const factions: Faction[] = ["w", "b"];
-    const kinds: PieceKind[] = ["k", "q", "b", "n", "r", "p"];
-    for (const faction of factions) {
-      await Promise.all(kinds.map((kind) => this.loadDeathCry(faction, kind)));
-    }
   }
 
   private loadDeathCry(faction: Faction, kind: PieceKind): Promise<void> {

@@ -89,6 +89,8 @@ export class PostFX {
   private cinematic = false;
   /** Showcase clarity: grain, vignette and bloom pulled back so sculpts read. */
   private clarity = false;
+  /** Stable authored title profile; never toggled by pointer activity. */
+  private menuPresentation = false;
   private elapsed = 0;
   /** Set when a pass misbehaves on this GPU — from then on we render straight. */
   private direct = false;
@@ -157,8 +159,6 @@ export class PostFX {
       this.bokehPass = bokeh;
     }
 
-    composer.addPass(new OutputPass());
-
     if (settings.grade) {
       const grade = new ShaderPass(GradeShader);
       composer.addPass(grade);
@@ -169,6 +169,10 @@ export class PostFX {
     if (settings.smaa) {
       composer.addPass(new SMAAPass());
     }
+
+    // Output conversion stays final so custom grade and antialiasing do not
+    // accidentally write display-referred values into a later linear pass.
+    composer.addPass(new OutputPass());
 
     this.composer = composer;
   }
@@ -205,8 +209,22 @@ export class PostFX {
     this.pushBloom();
   }
 
+  setMenuPresentation(active: boolean): void {
+    if (this.menuPresentation === active) return;
+    this.menuPresentation = active;
+    if (active) this.setCinematic(false);
+    this.pushGrade();
+    this.pushBloom();
+  }
+
   private pushBloom(): void {
     if (!this.bloomPass) return;
+    if (this.menuPresentation) {
+      this.bloomPass.strength = 0.18;
+      this.bloomPass.radius = 0.42;
+      this.bloomPass.threshold = 0.93;
+      return;
+    }
     const bloom = this.bloom;
     this.bloomPass.strength = this.clarity ? bloom.strength * 0.62 : bloom.strength;
     this.bloomPass.radius = this.clarity ? bloom.radius * 0.8 : bloom.radius;
@@ -216,6 +234,13 @@ export class PostFX {
   private pushGrade(): void {
     if (!this.gradePass) return;
     const uniforms = this.gradePass.uniforms as unknown as Record<string, { value: number }>;
+    if (this.menuPresentation) {
+      uniforms.uVignette.value = 0.28;
+      uniforms.uGrain.value = 0.008;
+      uniforms.uLift.value = 0.018;
+      uniforms.uStrength.value = 0.48;
+      return;
+    }
     const grade = this.grade;
     const soften = this.clarity;
     uniforms.uVignette.value = soften ? grade.vignette * 0.5 : grade.vignette;

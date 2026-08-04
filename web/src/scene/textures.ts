@@ -25,11 +25,19 @@ function toTexture(canvas: HTMLCanvasElement, repeat = 1, srgb = true): THREE.Ca
   return texture;
 }
 
-function grain(ctx: CanvasRenderingContext2D, size: number, amount: number, alpha: number): void {
+function seededRandom(seed: number): () => number {
+  let value = seed >>> 0;
+  return () => {
+    value = (value * 1664525 + 1013904223) >>> 0;
+    return value / 0x100000000;
+  };
+}
+
+function grain(ctx: CanvasRenderingContext2D, size: number, amount: number, alpha: number, random = Math.random): void {
   const image = ctx.getImageData(0, 0, size, size);
   const data = image.data;
   for (let i = 0; i < data.length; i += 4) {
-    const noise = (Math.random() - 0.5) * amount;
+    const noise = (random() - 0.5) * amount;
     data[i] = Math.max(0, Math.min(255, data[i] + noise));
     data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + noise));
     data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + noise));
@@ -44,14 +52,15 @@ export function marbleTexture(dark: boolean): THREE.CanvasTexture {
   const { canvas, ctx } = createCanvas(size);
   ctx.fillStyle = dark ? "#191a20" : "#e9e2d2";
   ctx.fillRect(0, 0, size, size);
+  const random = seededRandom(dark ? 0x0b5a17 : 0xc0ffee);
 
   // Broad tonal blotches.
   for (let i = 0; i < 26; i += 1) {
-    const x = Math.random() * size;
-    const y = Math.random() * size;
-    const r = 40 + Math.random() * 150;
+    const x = random() * size;
+    const y = random() * size;
+    const r = 40 + random() * 150;
     const gradient = ctx.createRadialGradient(x, y, 0, x, y, r);
-    const tone = dark ? 40 + Math.random() * 25 : 205 + Math.random() * 40;
+    const tone = dark ? 40 + random() * 25 : 205 + random() * 40;
     gradient.addColorStop(0, `rgba(${tone},${tone},${tone + (dark ? 6 : 0)},0.35)`);
     gradient.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = gradient;
@@ -63,16 +72,16 @@ export function marbleTexture(dark: boolean): THREE.CanvasTexture {
   // Veins: random walks with tapering width.
   const veins = dark ? 8 : 16;
   for (let v = 0; v < veins; v += 1) {
-    let x = Math.random() * size;
-    let y = Math.random() * size;
-    let angle = Math.random() * Math.PI * 2;
+    let x = random() * size;
+    let y = random() * size;
+    let angle = random() * Math.PI * 2;
     ctx.strokeStyle = dark ? "rgba(96,102,120,0.22)" : "rgba(120,116,104,0.34)";
-    ctx.lineWidth = 0.6 + Math.random() * 1.8;
+    ctx.lineWidth = 0.6 + random() * 1.8;
     ctx.beginPath();
     ctx.moveTo(x, y);
-    const steps = 60 + Math.floor(Math.random() * 60);
+    const steps = 60 + Math.floor(random() * 60);
     for (let s = 0; s < steps; s += 1) {
-      angle += (Math.random() - 0.5) * 0.7;
+      angle += (random() - 0.5) * 0.7;
       x += Math.cos(angle) * 7;
       y += Math.sin(angle) * 7;
       ctx.lineTo(x, y);
@@ -80,7 +89,7 @@ export function marbleTexture(dark: boolean): THREE.CanvasTexture {
     ctx.stroke();
   }
 
-  grain(ctx, size, dark ? 16 : 12, 1);
+  grain(ctx, size, dark ? 16 : 12, 1, random);
   return toTexture(canvas);
 }
 
@@ -88,7 +97,8 @@ export function marbleTexture(dark: boolean): THREE.CanvasTexture {
 export function flagstoneTexture(): THREE.CanvasTexture {
   const size = 512;
   const { canvas, ctx } = createCanvas(size);
-  ctx.fillStyle = "#1b1a19";
+  const random = seededRandom(0xa1de004);
+  ctx.fillStyle = "#35322e";
   ctx.fillRect(0, 0, size, size);
 
   const cell = size / 4;
@@ -97,14 +107,14 @@ export function flagstoneTexture(): THREE.CanvasTexture {
       const offset = row % 2 === 0 ? 0 : cell / 2;
       const x = (col * cell + offset) % size;
       const y = row * cell;
-      const shade = 38 + Math.random() * 26;
+      const shade = 62 + random() * 28;
       ctx.fillStyle = `rgb(${shade},${shade - 2},${shade - 5})`;
       ctx.fillRect(x + 3, y + 3, cell - 6, cell - 6);
       ctx.fillStyle = "rgba(255,255,255,0.03)";
       ctx.fillRect(x + 3, y + 3, cell - 6, 3);
     }
   }
-  grain(ctx, size, 26, 1);
+  grain(ctx, size, 20, 1, random);
   return toTexture(canvas);
 }
 

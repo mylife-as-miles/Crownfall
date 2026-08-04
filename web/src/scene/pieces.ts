@@ -310,6 +310,8 @@ export class PieceView {
   private badge: THREE.Sprite | null = null;
   private badgeWanted = true;
   private badgeOpacity = 0;
+  /** Title tableau: no team aura or floating rank label, stronger grounding. */
+  private presentationLook = false;
   /** Global fade applied by the tray / death choreography. */
   private fade = 1;
 
@@ -452,6 +454,20 @@ export class PieceView {
     if (!enabled) {
       this.badgeOpacity = 0;
       (this.badge.material as THREE.SpriteMaterial).opacity = 0;
+    }
+  }
+
+  setPresentationLook(active: boolean): void {
+    this.presentationLook = active;
+    this.glow.visible = !active && !this.slain && !this.flat;
+    if (this.shadow) {
+      this.shadow.visible = !this.slain && !this.flat;
+      (this.shadow.material as THREE.MeshBasicMaterial).opacity = (active ? 0.38 : 0.55) * this.fade;
+      this.shadow.scale.set(active ? 0.95 : 0.85, active ? 0.72 : 0.85, 1);
+    }
+    if (active) {
+      this.setHovered(false);
+      this.setSelected(false);
     }
   }
 
@@ -956,8 +972,8 @@ export class PieceView {
       }
     }
     const glowMaterial = this.glow.material as THREE.MeshBasicMaterial;
-    glowMaterial.opacity = 0.16 * value;
-    if (this.shadow) (this.shadow.material as THREE.MeshBasicMaterial).opacity = 0.55 * value;
+    glowMaterial.opacity = (this.presentationLook ? 0 : 0.16) * value;
+    if (this.shadow) (this.shadow.material as THREE.MeshBasicMaterial).opacity = (this.presentationLook ? 0.38 : 0.55) * value;
     if (this.badge) {
       (this.badge.material as THREE.SpriteMaterial).opacity = this.badgeOpacity * value;
     }
@@ -1040,8 +1056,9 @@ export class PieceView {
     }
     const glowMaterial = this.glow.material as THREE.MeshBasicMaterial;
     const settle = this.aura * this.aura;
-    const glowTarget =
-      0.16 + (this.selected ? 0.45 : this.hovered ? 0.28 : 0) + alarmPulse * 0.5 + settle * 0.55;
+    const glowTarget = this.presentationLook
+      ? 0
+      : 0.16 + (this.selected ? 0.45 : this.hovered ? 0.28 : 0) + alarmPulse * 0.5 + settle * 0.55;
     glowMaterial.opacity += (glowTarget - glowMaterial.opacity) * Math.min(1, delta * 8);
     this.glow.scale.setScalar(1 + (this.selected ? 0.16 : 0) + alarmPulse * 0.25 + settle * 0.5);
 

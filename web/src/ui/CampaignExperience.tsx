@@ -18,12 +18,13 @@ import {
   UserRound,
 } from "lucide-react";
 
+import { audio } from "../audio/audioManager";
 import type { CampaignController } from "../campaign/campaignController";
 import { CHAPTER_ONE_GAMBITS, getMission } from "../campaign/content/chapterOne";
 import type { CampaignSnapshot, HeroPiece } from "../campaign/types";
 import type { GameSnapshot, PieceKind } from "../core/types";
 import { PIECE_LABEL } from "../core/types";
-import "./crownfall.css";
+import { CharacterPortrait } from "./CharacterPortrait";
 
 interface CampaignExperienceProps {
   controller: CampaignController;
@@ -34,32 +35,44 @@ interface CampaignExperienceProps {
   onOpenSettings: () => void;
   onToggleTactical: () => void;
   tactical: boolean;
+  promotionOpen: boolean;
 }
 
-export function CampaignExperience({ controller, snapshot, game, onLaunchBattle, onReturnToTitle, onOpenSettings, onToggleTactical, tactical }: CampaignExperienceProps) {
+export function CampaignExperience({ controller, snapshot, game, onLaunchBattle, onReturnToTitle, onOpenSettings, onToggleTactical, tactical, promotionOpen }: CampaignExperienceProps) {
   const save = snapshot.save;
   const mainRef = useRef<HTMLElement>(null);
   useEffect(() => {
-    if (save?.screen !== "battle") mainRef.current?.focus();
+    if (save?.screen === "battle") return;
+    const timer = window.setTimeout(() => {
+      const heading = mainRef.current?.querySelector<HTMLElement>("h1");
+      heading?.setAttribute("tabindex", "-1");
+      heading?.focus();
+    }, 220);
+    return () => window.clearTimeout(timer);
   }, [save?.screen]);
   if (!save) return null;
   const mission = getMission(save.currentMissionId);
 
   if (save.screen === "battle") {
     const battle = save.activeBattle;
+    const missionCharacter = save.roster.cael;
+    const missionSquare = Object.entries(battle?.identityMap ?? {}).find(([, id]) => id === missionCharacter.id)?.[0] ?? "off board";
+    const resolving = game.result !== null;
+    const objectiveState = game.result?.winner === mission.playerFaction ? "secured" : resolving ? "failed" : "active";
     return (
-      <div className="cf-battle-overlay pointer-events-none absolute inset-0 z-20">
-        <div className="cf-battle-objective pointer-events-auto">
-          <p className="cf-kicker">{mission.subtitle} · {mission.enemyCommanderName}</p>
+      <div className="cf-battle-overlay pointer-events-none absolute inset-0 z-20" data-objective-state={objectiveState}>
+        <div className="cf-battle-objective pointer-events-auto" role="status" aria-live="polite" aria-atomic="true">
+          <p className="cf-kicker">{resolving ? objectiveState === "secured" ? "Objective secured" : "Objective failed" : `${mission.subtitle} · ${mission.enemyCommanderName}`}</p>
           <h2 className="mc-display text-base text-[#f2e2bd]">{mission.title}</h2>
-          <p>{mission.primaryObjective.description}</p>
+          <p>{resolving ? objectiveState === "secured" ? "The Chronicle has recorded the decisive move." : "The line broke. Its names will carry the consequence." : mission.primaryObjective.description}</p>
           <div className="cf-battle-state">
-            <span data-active={game.turn === "w"}>{game.thinking ? "The enemy is considering the line…" : game.turn === "w" ? "Your move" : "Enemy move"}</span>
+            <span data-active={game.turn === "w"}>{resolving ? "Resolving the final move…" : game.thinking ? "The enemy is considering the line…" : game.turn === "w" ? "Your move" : "Enemy move"}</span>
             <span>{battle?.moveLog.length ?? 0} {battle?.moveLog.length === 1 ? "move recorded" : "moves recorded"}</span>
           </div>
         </div>
-        <div className="cf-battle-nameplate">
-          <Eye size={14} /> Every figure on this board has a persistent identity.
+        <div className="cf-battle-character-strip">
+          <CharacterPortrait characterId={missionCharacter.id} name={missionCharacter.name} title={missionCharacter.title} kind={missionCharacter.currentKind} status={missionCharacter.status} compact />
+          <span><strong>{promotionOpen ? `${missionCharacter.name} chooses what he becomes` : `${missionCharacter.name} · ${PIECE_LABEL[missionCharacter.currentKind]}`}</strong><small>{promotionOpen ? "Q Queen · R Rook · B Bishop · N Knight" : `Current square ${missionSquare.toUpperCase()} · ${mission.primaryObjective.description}`}</small></span>
         </div>
         <div className="cf-battle-toolbar pointer-events-auto" aria-label="Campaign battle controls">
           <button type="button" onClick={onToggleTactical} aria-pressed={tactical} aria-label={tactical ? "Leave tactical view" : "Open tactical view"}><ScanLine size={16} /><span>{tactical ? "Battle view" : "Tactical"}</span></button>
@@ -86,8 +99,9 @@ export function CampaignExperience({ controller, snapshot, game, onLaunchBattle,
         </div>
       </header>
 
-      <main ref={mainRef} className="cf-campaign-stage mc-scroll" tabIndex={-1} aria-live="polite">
-        {save.screen === "prologue" ? <Prologue onChoose={(choice) => controller.recordPrologueChoice(choice)} /> : null}
+      <main ref={mainRef} className="cf-campaign-stage mc-scroll" aria-label={`${save.screen.replace("-", " ")} campaign screen`}>
+        <div key={save.screen} className="cf-flow-stage">
+        {save.screen === "prologue" ? <Prologue onChoose={(choice) => { audio.campaignCue("choice"); controller.recordPrologueChoice(choice); }} /> : null}
         {save.screen === "hub" ? <Hub save={save} mission={mission} onBrief={() => controller.openBriefing()} /> : null}
         {save.screen === "briefing" ? <Briefing mission={mission} onFormation={() => controller.openFormation()} onBack={() => controller.returnToHub()} /> : null}
         {save.screen === "formation" ? (
@@ -96,7 +110,7 @@ export function CampaignExperience({ controller, snapshot, game, onLaunchBattle,
             roster={save.roster}
             formation={save.formationDraft}
             ready={controller.formationReady()}
-            onAssign={(square, id) => controller.assignCharacter(square, id)}
+            onAssign={(square, id) => { audio.campaignCue("formation"); controller.assignCharacter(square, id); }}
             onContinue={() => controller.openGambit()}
             onBack={() => controller.openBriefing()}
           />
@@ -105,8 +119,8 @@ export function CampaignExperience({ controller, snapshot, game, onLaunchBattle,
           <Gambit
             mission={mission}
             selected={save.selectedGambitId}
-            onSelect={(id) => controller.selectGambit(id)}
-            onLaunch={onLaunchBattle}
+            onSelect={(id) => { audio.campaignCue(id ? "gambit-accept" : "gambit-refuse"); controller.selectGambit(id); }}
+            onLaunch={() => { audio.campaignCue("battle-intro"); onLaunchBattle(); }}
             onBack={() => controller.openFormation()}
           />
         ) : null}
@@ -114,10 +128,11 @@ export function CampaignExperience({ controller, snapshot, game, onLaunchBattle,
           <Consequences
             report={save.lastConsequence}
             roster={save.roster}
-            onContinue={() => controller.acceptConsequences()}
+            onContinue={() => { audio.campaignCue(save.lastConsequence?.victory ? "objective-win" : "objective-loss"); controller.acceptConsequences(); }}
           />
         ) : null}
         {save.screen === "chapter-complete" ? <ChapterComplete onTitle={onReturnToTitle} /> : null}
+        </div>
       </main>
     </div>
   );
@@ -126,26 +141,32 @@ export function CampaignExperience({ controller, snapshot, game, onLaunchBattle,
 function Prologue({ onChoose }: { onChoose: (choice: "tell-cael" | "obey-the-king") => void }) {
   return (
     <section className="cf-story-scene cf-panel-enter">
-      <div className="cf-chapter-mark">I</div>
-      <p className="cf-kicker">Aldermoor · before the opening move</p>
-      <h1 className="mc-display mt-3 max-w-3xl text-3xl leading-tight text-[#f4e3bd] sm:text-5xl">A pawn wakes with the memory of his own sacrifice.</h1>
-      <div className="mc-rule mt-5 w-48" />
-      <p className="cf-prose mt-6">
-        Cael remembers the knight crossing the line. He remembers the king calling it necessary. Most of all, he
-        remembers a vast hand of light choosing the square beneath his feet—and the impossible breath that came after death.
-      </p>
-      <blockquote>“If you can hear me, Player, do not pretend I am only a piece.”</blockquote>
-      <div className="cf-choice-stack">
-        <button type="button" className="cf-story-choice" onClick={() => onChoose("tell-cael")}>
-          <span><Eye size={17} /><strong>Tell Cael the truth</strong></span>
-          <small>Gain his trust. Deepen his anger at the crown.</small>
-          <ChevronRight size={17} />
-        </button>
-        <button type="button" className="cf-story-choice" onClick={() => onChoose("obey-the-king")}>
-          <span><Crown size={17} /><strong>Obey the king in silence</strong></span>
-          <small>Preserve royal order. Cael will remember the lie.</small>
-          <ChevronRight size={17} />
-        </button>
+      <div className="cf-prologue-portrait">
+        <CharacterPortrait characterId="cael" name="Cael" title="The Pawn Who Would Not Die" kind="p" label />
+        <span className="cf-dialogue-speaker">Cael · levy of the fifth file</span>
+      </div>
+      <div className="cf-prologue-copy">
+        <div className="cf-chapter-mark">I</div>
+        <p className="cf-kicker">Aldermoor · before the opening move</p>
+        <h1 className="mc-display mt-3 max-w-3xl text-3xl leading-tight text-[#f4e3bd] sm:text-5xl">A pawn wakes with the memory of his own sacrifice.</h1>
+        <div className="mc-rule mt-5 w-48" />
+        <p className="cf-prose mt-6">
+          Cael remembers the knight crossing the line. He remembers the king calling it necessary. Most of all, he
+          remembers a vast hand of light choosing the square beneath his feet—and the impossible breath that came after death.
+        </p>
+        <blockquote>“If you can hear me, Player, do not pretend I am only a piece.”</blockquote>
+        <div className="cf-choice-stack">
+          <button type="button" className="cf-story-choice" onClick={() => onChoose("tell-cael")}>
+            <span><Eye size={17} /><strong>Tell Cael the truth</strong></span>
+            <small>Gain his trust. Deepen his anger at the crown.</small>
+            <ChevronRight size={17} />
+          </button>
+          <button type="button" className="cf-story-choice" onClick={() => onChoose("obey-the-king")}>
+            <span><Crown size={17} /><strong>Obey the king in silence</strong></span>
+            <small>Preserve royal order. Cael will remember the lie.</small>
+            <ChevronRight size={17} />
+          </button>
+        </div>
       </div>
     </section>
   );
@@ -164,24 +185,38 @@ function Hub({ save, mission, onBrief }: { save: NonNullable<CampaignSnapshot["s
 
       <div className="cf-hub-grid">
         <article className="cf-location-card cf-location-primary">
-          <div className="cf-location-icon"><Map size={21} /></div>
-          <p className="cf-kicker">War Table · {mission.subtitle}</p>
-          <h2 className="mc-display mt-2 text-2xl text-[#f0dfb6]">{mission.title}</h2>
-          <p className="mt-2 text-sm leading-relaxed text-[#b7a88a]">{mission.description}</p>
-          <div className="cf-commander-line"><Swords size={14} /> Enemy commander: {mission.enemyCommanderName}</div>
-          <button type="button" className="mc-btn mc-btn-primary mt-5 flex items-center gap-2" onClick={onBrief}>
-            Inspect the mission <ChevronRight size={15} />
-          </button>
+          <div className="cf-war-map" aria-hidden="true">
+            <svg viewBox="0 0 620 310" preserveAspectRatio="none">
+              <path className="cf-map-coast" d="M-20 256 C83 231 85 163 166 159 C247 155 275 115 344 129 C414 143 466 104 640 44" />
+              <path className="cf-map-river" d="M34 34 C124 71 100 126 208 143 C332 163 263 224 401 247 C493 263 527 232 640 280" />
+              <path className="cf-map-route" d="M104 237 C168 203 207 184 272 170 S402 133 512 77" />
+            </svg>
+            <span className="cf-map-node cf-map-node-origin">Aldermoor</span>
+            <span className="cf-map-node cf-map-node-front">Front</span>
+            <span className="cf-map-node cf-map-node-target">Objective</span>
+            <i className="cf-map-seal"><Map size={20} /></i>
+          </div>
+          <div className="cf-location-copy">
+            <p className="cf-kicker">War Table · {mission.subtitle}</p>
+            <h2 className="mc-display mt-2 text-2xl text-[#f0dfb6]">{mission.title}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-[#c2b394]">{mission.description}</p>
+            <div className="cf-commander-line"><Swords size={14} /> Enemy commander: {mission.enemyCommanderName}</div>
+            <button type="button" className="mc-btn mc-btn-primary mt-5 flex items-center gap-2" onClick={onBrief}>
+              Inspect the mission <ChevronRight size={15} />
+            </button>
+          </div>
         </article>
 
-        <article className="cf-location-card">
-          <div className="cf-location-icon"><UserRound size={21} /></div>
-          <p className="cf-kicker">Barracks · protagonist</p>
-          <h2 className="mc-display mt-2 text-xl text-[#f0dfb6]">{cael.name}</h2>
-          <p className="text-xs uppercase tracking-[0.16em] text-[#9d8050]">{cael.title}</p>
-          <div className="cf-stat-line"><span>Loyalty</span><strong>{cael.loyalty}</strong></div>
-          <div className="cf-stat-line"><span>Morale</span><strong>{cael.morale}</strong></div>
-          <div className="mt-3 flex flex-wrap gap-2">{cael.traits.map((trait) => <span className="cf-trait" key={trait}>{trait}</span>)}</div>
+        <article className="cf-location-card cf-barracks-card">
+          <CharacterPortrait characterId={cael.id} name={cael.name} title={cael.title} kind={cael.currentKind} status={cael.status} compact />
+          <div className="cf-location-copy">
+            <p className="cf-kicker"><UserRound size={12} /> Barracks · protagonist</p>
+            <h2 className="mc-display mt-2 text-xl text-[#f0dfb6]">{cael.name}</h2>
+            <p className="text-xs uppercase tracking-[0.16em] text-[#b4935d]">{cael.title}</p>
+            <div className="cf-stat-line"><span>Loyalty</span><strong>{cael.loyalty}</strong></div>
+            <div className="cf-stat-line"><span>Morale</span><strong>{cael.morale}</strong></div>
+            <div className="mt-3 flex flex-wrap gap-2">{cael.traits.map((trait) => <span className="cf-trait" key={trait}>{trait}</span>)}</div>
+          </div>
         </article>
 
         <article className="cf-location-card">
@@ -245,7 +280,7 @@ function Formation({ mission, roster, formation, ready, onAssign, onContinue, on
 function RosterCard({ hero, selected, locked, onClick }: { hero: HeroPiece; selected: boolean; locked: boolean; onClick: () => void }) {
   return (
     <button type="button" className="cf-roster-card" data-selected={selected} onClick={onClick} aria-pressed={selected}>
-      <div className="cf-portrait" data-kind={hero.currentKind}><span>{hero.name.slice(0, 1)}</span></div>
+      <CharacterPortrait characterId={hero.id} name={hero.name} title={hero.title} kind={hero.currentKind} status={hero.status} />
       <div className="min-w-0 flex-1 text-left">
         <p className="mc-display truncate text-base text-[#ecd9ad]">{hero.name}</p>
         <p className="truncate text-xs uppercase tracking-[0.12em] text-[#8f7650]">{hero.title}</p>
@@ -301,7 +336,7 @@ function Consequences({ report, roster, onContinue }: { report: NonNullable<Camp
         {report.characterOutcomes.map((outcome) => {
           const hero = roster[outcome.characterId];
           return <article key={outcome.characterId} className="cf-outcome-card" data-status={outcome.status}>
-            <div className="cf-portrait compact" data-kind={hero.currentKind}><span>{hero.name.slice(0, 1)}</span></div>
+            <CharacterPortrait characterId={hero.id} name={hero.name} title={hero.title} kind={hero.currentKind} status={outcome.status} compact />
             <div><p className="mc-display text-base text-[#ead6aa]">{hero.name} · {outcome.title}</p><p>{outcome.explanation}</p><small>{outcome.factors.join(" · ")}{outcome.roll === null ? "" : " · Fate resolved from saved battle evidence"}</small></div>
             <strong>+{report.experienceAwards[outcome.characterId] ?? 0} XP</strong>
           </article>;

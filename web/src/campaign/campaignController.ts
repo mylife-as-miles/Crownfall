@@ -40,6 +40,7 @@ export class CampaignController extends Emitter<CampaignEvents> {
   private game: GameController | null = null;
   private disconnectGame: (() => void)[] = [];
   private finalizing = false;
+  private resolutionPresenter: ((result: GameResult) => Promise<void>) | null = null;
 
   constructor(storage: CampaignStorage = new LocalCampaignStorage()) {
     super();
@@ -57,6 +58,11 @@ export class CampaignController extends Emitter<CampaignEvents> {
 
   getGambit(id: string): GambitDefinition | null {
     return CHAPTER_ONE_GAMBITS[id] ?? null;
+  }
+
+  /** Lets the renderer finish the objective/result beat before UI consequences replace it. */
+  setResolutionPresenter(presenter: ((result: GameResult) => Promise<void>) | null): void {
+    this.resolutionPresenter = presenter;
   }
 
   newCampaign(difficulty: CampaignDifficulty): void {
@@ -240,7 +246,7 @@ export class CampaignController extends Emitter<CampaignEvents> {
     this.disconnectGame = [
       game.on("move", (event) => this.onMove(event)),
       game.on("settled", () => this.onMoveSettled()),
-      game.on("gameover", (result) => this.onGameOver(result)),
+      game.on("gameover", (result) => void this.onGameOver(result)),
     ];
     return () => this.disconnectFromGame();
   }
@@ -271,12 +277,13 @@ export class CampaignController extends Emitter<CampaignEvents> {
     else if (evaluation.state === "failed") this.game.resign();
   }
 
-  private onGameOver(result: GameResult): void {
+  private async onGameOver(result: GameResult): Promise<void> {
     const save = this.snapshot.save;
     const battle = save?.activeBattle;
     if (!save || !battle || save.screen !== "battle" || this.finalizing) return;
     this.finalizing = true;
     try {
+      if (this.resolutionPresenter) await this.resolutionPresenter(result);
       const mission = getMission(battle.missionId);
       const victory = evaluateMission(mission, battle, result).state === "complete";
       const resolved = resolveConsequences({ mission, battle, roster: save.roster, difficulty: save.difficulty, victory });

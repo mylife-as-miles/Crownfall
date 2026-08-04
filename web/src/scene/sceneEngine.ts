@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import type { GameController } from "../core/gameController";
-import type { Faction, GameSnapshot, MoveEvent, PieceKind, SquareId } from "../core/types";
+import type { Faction, GameResult, GameSnapshot, MoveEvent, PieceKind, SquareId } from "../core/types";
 import { audio, type FootstepTimbre } from "../audio/audioManager";
 import type { ArenaTheme } from "./arena";
 import { ARENA_LOOKS, DEFAULT_ARENA } from "./arena";
@@ -69,6 +69,13 @@ const SHOWCASE_SHOT: CameraShot = {
   position: new THREE.Vector3(7.1, 6.5, 8.2),
   target: new THREE.Vector3(0, 0.35, 0),
 };
+
+/** Three named silhouettes used only by the authored title tableau. */
+const MENU_TABLEAU = new Map<SquareId, { position: THREE.Vector3; facing: THREE.Vector3 }>([
+  ["e5", { position: new THREE.Vector3(0.2, 0, 0.15), facing: new THREE.Vector3(-0.15, 0, 1) }],
+  ["c3", { position: new THREE.Vector3(-1.7, 0, -0.8), facing: new THREE.Vector3(0.2, 0, 1) }],
+  ["f6", { position: new THREE.Vector3(1.75, 0, -1.15), facing: new THREE.Vector3(-0.35, 0, 1) }],
+]);
 
 /** What the follow camera looks at between moves. */
 const BOARD_FOCUS = new THREE.Vector3(0, 0.45, 0);
@@ -445,6 +452,10 @@ export class SceneEngine {
   private rankBadges = true;
   private interactive = true;
   private attract = false;
+  /** Authored title tableau; never a live or paused match. */
+  private menuPresentation = false;
+  private reducedMotion = false;
+  private campaignBattle = false;
   /** Computer-vs-computer showcase: crisp grade and a chosen camera behaviour. */
   private showcase = false;
   private showcaseCamera: ShowcaseCamera = "follow";
@@ -509,7 +520,7 @@ export class SceneEngine {
 
     this.gpu = probeGpu(this.renderer);
     console.info(`[scene] gpu: ${describeGpu(this.gpu)}`);
-    this.applyExposure(look.exposure);
+    this.applyExposure(look.exposure * (this.campaignBattle ? 1.08 : 1));
 
     this.scene.background = new THREE.Color(look.background);
     // Thinner, warmer haze than a sealed hall would use: the siege camps and
@@ -571,7 +582,9 @@ export class SceneEngine {
     this.controller.on("state", (snapshot) => this.onState(snapshot));
     this.controller.on("reset", () => this.rebuildPieces());
     this.controller.on("illegal", ({ from }) => this.rejectMove(from));
-    this.controller.on("gameover", () => void this.playEndCinematic());
+    this.controller.on("gameover", () => {
+      if (!this.campaignBattle) void this.playEndCinematic();
+    });
     this.handleResize();
   }
 
@@ -629,12 +642,15 @@ export class SceneEngine {
     this.elapsed += delta;
 
     this.tweens.update(delta);
-    this.hall.update(delta);
-    this.battlefield.update(delta, this.camera);
-    this.jungle.update(delta, this.camera);
+    if (!this.reducedMotion) {
+      this.hall.update(delta);
+      this.battlefield.update(delta, this.camera);
+      this.jungle.update(delta, this.camera);
+    }
     this.board.update(delta);
     this.effects.update(delta);
-    this.shake.update(delta);
+    if (this.reducedMotion) this.shake.offset.set(0, 0, 0);
+    else this.shake.update(delta);
 
     for (const piece of this.pieces.values()) piece.update(delta, this.elapsed);
     for (const piece of this.motion) piece.update(delta, this.elapsed);
@@ -643,7 +659,7 @@ export class SceneEngine {
 
     if (this.promotionGroup) {
       this.promotionGroup.children.forEach((child, index) => {
-        child.rotation.y = this.elapsed * 0.9 + index * 0.4;
+        child.rotation.y = this.reducedMotion ? index * 0.12 : this.elapsed * 0.9 + index * 0.4;
       });
       if (this.tactical) {
         // Lay the picker flat so the four candidates face the overhead camera.
@@ -663,7 +679,7 @@ export class SceneEngine {
     // suspends it for a few seconds.
     const orbitIdle = this.elapsed - this.lastManualCameraAt > 3.2;
     const showcaseOrbit = this.showcase && this.showcaseCamera === "orbit" && orbitIdle;
-    this.controls.autoRotate = !this.tactical && (this.attract || showcaseOrbit);
+    this.controls.autoRotate = !this.reducedMotion && !this.tactical && (this.attract || showcaseOrbit);
     this.controls.autoRotateSpeed = this.attract ? 0.45 : this.showcaseOrbitSpeed;
 
     // The follow camera writes the camera itself, so `change` events fired by
@@ -901,13 +917,23 @@ export class SceneEngine {
 
     const settings = QUALITY_SETTINGS[this.preset];
     for (const entry of this.controller.getBoard()) {
+      const tableau = this.menuPresentation ? MENU_TABLEAU.get(entry.square) : null;
+      if (this.menuPresentation && !tableau) continue;
       const view = this.factory.create(entry.kind, entry.color, {
         contactShadows: settings.contactShadows,
         idleAnimation: settings.characterAnimations,
-        rankBadge: this.rankBadges,
+        rankBadge: this.menuPresentation ? false : this.rankBadges,
       });
       if (this.tactical) view.setFlat(true);
-      view.container.position.copy(squareToWorld(entry.square));
+      if (tableau) {
+        view.container.position.copy(tableau.position);
+        view.setFacing(tableau.facing);
+        view.setPresentationLook(true);
+        view.setBadgeEnabled(false);
+      } else {
+        view.container.position.copy(squareToWorld(entry.square));
+        view.setPresentationLook(false);
+      }
       this.scene.add(view.container);
       this.pieces.set(entry.square, view);
     }
@@ -984,7 +1010,7 @@ export class SceneEngine {
     if (victim) {
       const strikeSquare = event.capture ? event.capture.square : event.to;
       // The battle beat is a camera performance — it has no meaning on the map.
-      if (this.captureCinematics && !this.tactical) {
+      if (this.captureCinematics && !this.reducedMotion && !this.tactical) {
         // The strike and the fall are the whole beat: make sure both figures
         // actually hold those clips before the fight starts.
         await this.armCombat(piece, victim);
@@ -1055,15 +1081,19 @@ export class SceneEngine {
       });
       if (this.tactical) view.setFlat(true);
       view.container.position.copy(to);
-      view.container.scale.setScalar(0.01);
+      view.container.scale.setScalar(0.94);
+      view.setOpacity(0.2);
       this.scene.add(view.container);
       this.pieces.set(event.to, view);
       this.effects.spawnBurst(to.clone().setY(0.4), FACTION_ACCENT[event.color], 40, { speed: 2.6, life: 0.8 });
       this.effects.spawnFlash(to.clone().setY(0.6), 2.4, 0.4);
       await this.tweens.to({
-        duration: 0.6,
-        easing: Ease.outBack,
-        onUpdate: (t) => view.container.scale.setScalar(Math.max(0.01, t)),
+        duration: this.reducedMotion ? 0.14 : 0.44,
+        easing: Ease.outCubic,
+        onUpdate: (t) => {
+          view.container.scale.setScalar(0.94 + t * 0.06);
+          view.setOpacity(0.2 + t * 0.8);
+        },
       });
       if (this.isStale(revision)) return;
       view.container.scale.setScalar(1);
@@ -1305,8 +1335,8 @@ export class SceneEngine {
       onUpdate: (t) => piece.setSquash(depth * t),
     });
     await this.tweens.to({
-      duration: 0.62,
-      easing: Ease.outElastic,
+      duration: this.reducedMotion ? 0.1 : 0.24,
+      easing: Ease.outCubic,
       onUpdate: (t) => piece.setSquash(depth * (1 - t)),
     });
     piece.setSquash(0);
@@ -2311,6 +2341,13 @@ export class SceneEngine {
   // ------------------------------------------------------------------- camera
 
   async moveCameraTo(shot: CameraShot, duration = 1.1): Promise<void> {
+    if (this.reducedMotion) {
+      this.camera.position.copy(shot.position);
+      this.controls.target.copy(shot.target);
+      this.camera.lookAt(shot.target);
+      this.captureFollowRig();
+      return;
+    }
     const fromPosition = this.camera.position.clone();
     const fromTarget = this.controls.target.clone();
     this.controls.enabled = false;
@@ -2328,7 +2365,7 @@ export class SceneEngine {
       this.cameraScripted = false;
       this.captureFollowRig();
     }
-    this.controls.enabled = this.interactive;
+    this.controls.enabled = this.interactive && !this.menuPresentation && !this.attract;
   }
 
   // ------------------------------------------------------------ follow camera
@@ -2446,7 +2483,7 @@ export class SceneEngine {
     (this.scene.background as THREE.Color).setHex(look.background);
     const fog = this.scene.fog as THREE.FogExp2 | null;
     if (fog) fog.density = look.fog.density;
-    this.applyExposure(look.exposure);
+    this.applyExposure(look.exposure * (this.campaignBattle ? 1.08 : 1));
     for (const piece of this.allPieces()) piece.setFlat(false);
 
     this.controls.enableRotate = true;
@@ -2581,29 +2618,37 @@ export class SceneEngine {
     this.introSkipped = false;
     this.interactive = false;
     this.controls.enabled = false;
+    if (this.reducedMotion) {
+      const shot = this.menuPresentation ? this.menuShot() : CAMERA_SHOTS.white;
+      this.camera.position.copy(shot.position);
+      this.controls.target.copy(shot.target);
+      this.introPlaying = false;
+      this.controls.enabled = false;
+      return;
+    }
     this.postfx.setCinematic(true, 7);
 
     const path: CameraShot[] = [
       { position: new THREE.Vector3(13.5, 2.1, 12.5), target: new THREE.Vector3(5, 3.2, 3.5) },
-      { position: new THREE.Vector3(8.5, 2.4, 10.5), target: new THREE.Vector3(0, 1.4, 0) },
-      { position: new THREE.Vector3(2.6, 4.2, 9.6), target: new THREE.Vector3(0, 0.6, 0) },
-      CAMERA_SHOTS.white,
+      { position: new THREE.Vector3(5.6, 3, 10.6), target: new THREE.Vector3(0, 1.2, 0) },
+      this.menuPresentation ? this.menuShot() : CAMERA_SHOTS.white,
     ];
     this.camera.position.copy(path[0].position);
     this.controls.target.copy(path[0].target);
 
     for (let i = 1; i < path.length; i += 1) {
       if (this.introSkipped) break;
-      await this.moveCameraTo(path[i], i === path.length - 1 ? 2.2 : 2.4);
+      await this.moveCameraTo(path[i], i === path.length - 1 ? 1.45 : 1.2);
       this.controls.enabled = false;
     }
 
-    this.camera.position.copy(CAMERA_SHOTS.white.position);
-    this.controls.target.copy(CAMERA_SHOTS.white.target);
+    const finalShot = this.menuPresentation ? this.menuShot() : CAMERA_SHOTS.white;
+    this.camera.position.copy(finalShot.position);
+    this.controls.target.copy(finalShot.target);
     this.postfx.setCinematic(false);
     this.introPlaying = false;
-    this.interactive = true;
-    this.controls.enabled = true;
+    this.interactive = !this.menuPresentation;
+    this.controls.enabled = this.interactive;
   }
 
   skipIntro(): void {
@@ -2612,11 +2657,11 @@ export class SceneEngine {
     this.tweens.cancelAll();
   }
 
-  private async playEndCinematic(): Promise<void> {
+  private async playEndCinematic(playAudio = true): Promise<void> {
     const snapshot = this.controller.getSnapshot();
     const result = snapshot.result;
     if (!result) return;
-    audio.play("fanfare", 0.7);
+    if (playAudio) audio.play("fanfare", 0.7);
     // The map holds its framing: no dolly, no depth of field.
     if (this.tactical) return;
 
@@ -2637,7 +2682,15 @@ export class SceneEngine {
       target: focus,
     };
     this.shake.add(0.35);
-    await this.moveCameraTo(shot, 2.4);
+    await this.moveCameraTo(shot, this.reducedMotion ? 0 : 1.35);
+  }
+
+  async playMissionResolution(result: GameResult): Promise<void> {
+    if (result.winner === "w") audio.play("fanfare", 0.62);
+    else audio.blip("deny");
+    await this.playEndCinematic(false);
+    if (!this.reducedMotion) await wait(0.78);
+    this.postfx.setCinematic(false);
   }
 
   // ---------------------------------------------------------------- promotion
@@ -3016,7 +3069,7 @@ export class SceneEngine {
     this.arena = theme;
     const look = ARENA_LOOKS[theme];
 
-    this.applyExposure(look.exposure);
+    this.applyExposure(look.exposure * (this.campaignBattle ? 1.08 : 1));
     (this.scene.background as THREE.Color).setHex(look.background);
     const fog = this.scene.fog as THREE.FogExp2 | null;
     if (fog) {
@@ -3032,7 +3085,7 @@ export class SceneEngine {
     this.postfx.setBloom(look.bloom);
 
     this.cameraLamp.color.setHex(look.lamp.color);
-    this.cameraLamp.intensity = look.lamp.intensity;
+    this.cameraLamp.intensity = look.lamp.intensity * (this.campaignBattle ? 1.5 : 1);
 
     // Re-stage the strike against the new dressing, then put the void back.
     if (this.tactical) {
@@ -3042,6 +3095,7 @@ export class SceneEngine {
     }
 
     this.applyEnvironment();
+    if (this.menuPresentation) this.setMenuPresentation(true, false);
   }
 
   /** The map currently staged. */
@@ -3122,6 +3176,27 @@ export class SceneEngine {
     this.captureCinematics = enabled;
   }
 
+  setCampaignBattle(active: boolean): void {
+    this.campaignBattle = active;
+    const look = ARENA_LOOKS[this.arena];
+    this.postfx.setClarity(active || this.showcase || this.attract);
+    if (!this.menuPresentation && !this.tactical) {
+      this.applyExposure(look.exposure * (active ? 1.08 : 1));
+      this.cameraLamp.intensity = look.lamp.intensity * (active ? 1.5 : 1);
+    }
+  }
+
+  setReducedMotion(active: boolean): void {
+    if (this.reducedMotion === active) return;
+    this.reducedMotion = active;
+    if (active) {
+      this.controls.autoRotate = false;
+      this.postfx.setCinematic(false);
+      this.shake.offset.set(0, 0, 0);
+      if (this.introPlaying) this.skipIntro();
+    }
+  }
+
   setRotateBoard(enabled: boolean): void {
     this.rotateBoard = enabled;
   }
@@ -3130,9 +3205,10 @@ export class SceneEngine {
   setRankBadges(enabled: boolean): void {
     if (this.rankBadges === enabled) return;
     this.rankBadges = enabled;
-    for (const piece of this.pieces.values()) piece.setBadgeEnabled(enabled);
-    for (const piece of this.motion) piece.setBadgeEnabled(enabled);
-    for (const piece of this.captured) piece.setBadgeEnabled(enabled);
+    const visible = enabled && !this.menuPresentation;
+    for (const piece of this.pieces.values()) piece.setBadgeEnabled(visible);
+    for (const piece of this.motion) piece.setBadgeEnabled(visible);
+    for (const piece of this.captured) piece.setBadgeEnabled(visible);
   }
 
   /**
@@ -3151,7 +3227,7 @@ export class SceneEngine {
     this.showcaseCamera = camera;
     // A showcase is watched, never squinted at: keep it sharp.
     this.postfx.setCinematic(false);
-    this.postfx.setClarity(active);
+    this.postfx.setClarity(active || this.campaignBattle);
     if (!active) {
       this.controls.autoRotate = false;
       this.focusPoint(null);
@@ -3184,7 +3260,7 @@ export class SceneEngine {
   setAttract(active: boolean): void {
     this.attract = active;
     this.postfx.setCinematic(false);
-    this.postfx.setClarity(active || this.showcase);
+    this.postfx.setClarity(active || this.showcase || this.campaignBattle);
     if (active) {
       this.controls.enabled = false;
       void this.moveCameraTo(CAMERA_SHOTS.cinematic, 2);
@@ -3193,9 +3269,68 @@ export class SceneEngine {
     }
   }
 
+  private menuShot(): CameraShot {
+    const portrait = this.camera.aspect < 0.82;
+    return portrait
+      ? { position: new THREE.Vector3(0.2, 5.7, 10.2), target: new THREE.Vector3(0, 0.85, -0.15) }
+      : { position: new THREE.Vector3(6.9, 4.2, 9.4), target: new THREE.Vector3(0, 0.9, -0.25) };
+  }
+
+  /**
+   * A fixed title tableau with its own cast, camera, materials and light rig.
+   * It intentionally does not run a chess match behind the interface.
+   */
+  setMenuPresentation(active: boolean, moveCamera = true): void {
+    if (this.menuPresentation === active && !active) return;
+    this.menuPresentation = active;
+    const look = ARENA_LOOKS[this.arena];
+    this.attract = false;
+    this.controls.autoRotate = false;
+    this.clearSelection();
+    this.board.clearHighlights();
+    this.board.setHover(null);
+    this.board.setShroud(null);
+    this.board.setPresentationMode(active);
+    this.hall.setPresentationMode(active);
+    this.postfx.setClarity(!active && (this.campaignBattle || this.showcase || this.attract));
+    this.postfx.setMenuPresentation(active);
+
+    if (active) {
+      this.battlefield.group.visible = false;
+      this.jungle.group.visible = false;
+      this.applyExposure(0.96);
+      (this.scene.background as THREE.Color).setHex(0x08090c);
+      const fog = this.scene.fog as THREE.FogExp2 | null;
+      if (fog) {
+        fog.color.setHex(0x111319);
+        fog.density = 0.0115;
+      }
+      this.cameraLamp.color.setHex(0xffe0b6);
+      this.cameraLamp.intensity = 0.12;
+      this.controls.enabled = false;
+      if (moveCamera && !this.introPlaying) void this.moveCameraTo(this.menuShot(), 1.2);
+    } else {
+      this.battlefield.applyArena(look);
+      this.battlefield.group.visible = true;
+      this.jungle.applyArena(look);
+      this.applyExposure(look.exposure * (this.campaignBattle ? 1.08 : 1));
+      (this.scene.background as THREE.Color).setHex(look.background);
+      const fog = this.scene.fog as THREE.FogExp2 | null;
+      if (fog) {
+        fog.color.setHex(look.fog.color);
+        fog.density = look.fog.density;
+      }
+      this.cameraLamp.color.setHex(look.lamp.color);
+      this.cameraLamp.intensity = look.lamp.intensity * (this.campaignBattle ? 1.5 : 1);
+      this.controls.enabled = this.interactive && !this.introPlaying;
+    }
+
+    this.rebuildPieces();
+  }
+
   setInteractive(interactive: boolean): void {
     this.interactive = interactive;
-    this.controls.enabled = interactive && !this.introPlaying && !this.attract;
+    this.controls.enabled = interactive && !this.introPlaying && !this.attract && !this.menuPresentation;
     if (!interactive) {
       this.clearSelection();
       this.hoveredPiece?.setHovered(false);
@@ -3211,7 +3346,53 @@ export class SceneEngine {
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height, false);
     this.postfx.setSize(width, height);
+    if (this.menuPresentation && !this.cameraScripted && !this.introPlaying) {
+      const shot = this.menuShot();
+      this.camera.position.copy(shot.position);
+      this.controls.target.copy(shot.target);
+      this.camera.lookAt(shot.target);
+    }
   };
+
+  /** Keyboard counterpart to pointer hover, kept separate from selection. */
+  setKeyboardCursor(square: SquareId): void {
+    if (!this.interactive || this.promotionGroup) return;
+    this.board.setHover(square);
+  }
+
+  activateKeyboardSquare(square: SquareId): void {
+    if (!this.interactive || this.promotionGroup) return;
+    const snapshot = this.controller.getSnapshot();
+    if (snapshot.status !== "playing" || !this.controller.isHumanTurn()) return;
+    const piece = this.pieces.get(square);
+    if (this.selected && square !== this.selected) {
+      if (this.legalTargets.has(square)) {
+        void this.commitMove(this.selected, square);
+        return;
+      }
+      if (piece && piece.color === snapshot.turn) this.selectWithTap(square, piece);
+      else {
+        void this.rejectMove(this.selected);
+        this.clearSelection();
+      }
+      return;
+    }
+    if (this.selected === square) {
+      this.clearSelection();
+      return;
+    }
+    if (piece && piece.color === snapshot.turn) this.selectWithTap(square, piece);
+  }
+
+  cancelKeyboardSelection(): void {
+    this.clearSelection();
+  }
+
+  chooseKeyboardPromotion(kind: PieceKind): void {
+    if (!this.promotionResolve || !PROMOTION_CHOICES.includes(kind)) return;
+    audio.blip("press");
+    this.promotionResolve(kind);
+  }
 
   private onManualCamera = (): void => {
     this.lastManualCameraAt = this.elapsed;

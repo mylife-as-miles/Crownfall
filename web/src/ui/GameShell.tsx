@@ -1,27 +1,33 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent } from "react";
 
-import { audio } from "../audio/audioManager";
+import { audio, type AudioScene } from "../audio/audioManager";
 import { CampaignController } from "../campaign/campaignController";
+import { selectCampaignMenuSummary } from "../campaign/menuSummary";
 import type { CampaignDifficulty } from "../campaign/types";
 import { useCampaignSnapshot } from "../campaign/useCampaignSnapshot";
 import { GameController } from "../core/gameController";
-import type { LedgerMove } from "../core/types";
+import { PIECE_LABEL, type LedgerMove, type PieceKind, type SquareId } from "../core/types";
 import { Clapperboard } from "lucide-react";
 import { ARENA_LOOKS, DEFAULT_ARENA, type ArenaTheme } from "../scene/arena";
 import { detectQualityPreset, type QualityPreset } from "../scene/quality";
-import { SceneEngine, type CameraPreset, type ShowcaseCamera } from "../scene/sceneEngine";
-import { CampaignExperience } from "./CampaignExperience";
-import { GameOverModal } from "./GameOverModal";
-import { Hud } from "./Hud";
+import type { CameraPreset, SceneEngine, ShowcaseCamera } from "../scene/sceneEngine";
 import { MainMenu, type MatchConfig } from "./MainMenu";
-import { SettingsPanel, type GameSettings } from "./SettingsPanel";
+import type { GameSettings } from "./SettingsPanel";
 import { useGameSnapshot } from "./useGameSnapshot";
+import "./crownfall.css";
 import "./medieval.css";
+
+const CampaignExperience = lazy(() =>
+  import("./CampaignExperience").then((module) => ({ default: module.CampaignExperience })),
+);
+const GameOverModal = lazy(() => import("./GameOverModal").then((module) => ({ default: module.GameOverModal })));
+const Hud = lazy(() => import("./Hud").then((module) => ({ default: module.Hud })));
+const SettingsPanel = lazy(() => import("./SettingsPanel").then((module) => ({ default: module.SettingsPanel })));
 
 type Phase = "loading" | "menu" | "playing" | "campaign";
 
-const ATTRACT_DELAY_MS = 30_000;
 const RENDER_PREFS_KEY = "kg.render";
+const MENU_PRESENTATION_FEN = "7k/8/5n2/4P3/8/2K5/8/8 w - - 0 1";
 
 interface RenderPrefs {
   safeMode: boolean;
@@ -60,12 +66,15 @@ function saveRenderPrefs(prefs: RenderPrefs): void {
 export function GameShell() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const engineRef = useRef<SceneEngine | null>(null);
-  const attractTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const controller = useMemo(() => new GameController(), []);
   const snapshot = useGameSnapshot(controller);
   const campaign = useMemo(() => new CampaignController(), []);
   const campaignSnapshot = useCampaignSnapshot(campaign);
+  const campaignMenuSummary = useMemo(
+    () => selectCampaignMenuSummary(campaignSnapshot.save),
+    [campaignSnapshot.save],
+  );
 
   const detected = useMemo<QualityPreset>(() => detectQualityPreset(), []);
   const initialRender = useMemo<RenderPrefs>(() => loadRenderPrefs(), []);
@@ -85,7 +94,6 @@ export function GameShell() {
   const [progress, setProgress] = useState(0);
   const [showSettings, setShowSettings] = useState(false);
   const [introPlaying, setIntroPlaying] = useState(false);
-  const [attract, setAttract] = useState(false);
   const [promotionOpen, setPromotionOpen] = useState(false);
   const [fps, setFps] = useState(0);
   const [contextLost, setContextLost] = useState(false);
@@ -94,10 +102,16 @@ export function GameShell() {
   const [tactical, setTactical] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [boardCursor, setBoardCursor] = useState<SquareId>("e2");
+  const [boardAnnouncement, setBoardAnnouncement] = useState("Board ready. Use the arrow keys to explore squares.");
   /** Showcase recording: strips every panel so the capture is board-only. */
   const [cinema, setCinema] = useState(false);
   /** How the camera behaves during a showcase duel: held, orbiting or following. */
   const [showcaseCamera, setShowcaseCamera] = useState<ShowcaseCamera>("follow");
+  const [reducedMotion, setReducedMotion] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  const initialReducedMotion = useRef(reducedMotion);
 
   // ------------------------------------------------------------ boot the scene
   useEffect(() => {
@@ -113,9 +127,13 @@ export function GameShell() {
       return;
     }
 
-    let engine: SceneEngine;
-    try {
-      engine = new SceneEngine(
+    let engine: SceneEngine | null = null;
+    let cancelled = false;
+
+    void import("../scene/sceneEngine").then(async ({ SceneEngine: SceneEngineConstructor }) => {
+      if (cancelled) return;
+      try {
+        engine = new SceneEngineConstructor(
         canvas,
         controller,
         {
@@ -139,31 +157,46 @@ export function GameShell() {
         },
         detected,
         DEFAULT_ARENA,
-      );
-    } catch (error) {
-      console.error("[ui] could not start the renderer", error);
-      setUnsupported(true);
-      return;
-    }
+        );
+      } catch (error) {
+        console.error("[ui] could not start the renderer", error);
+        setUnsupported(true);
+        return;
+      }
 
-    engineRef.current = engine;
-    engine.setInteractive(false);
-    engine.setSafeMode(initialRender.safeMode);
-    engine.setBrightness(initialRender.brightness);
-    setGpu(engine.getGpuSummary());
-    engine.start();
+      if (cancelled || !engine) {
+        engine?.dispose();
+        return;
+      }
+      const activeEngine = engine;
+      engineRef.current = activeEngine;
+      controller.start({ mode: "hotseat", difficulty: "easy", playerColor: "w", clockMinutes: null, startingFen: MENU_PRESENTATION_FEN });
+      activeEngine.setInteractive(false);
+      activeEngine.setMenuPresentation(true, false);
+      activeEngine.setReducedMotion(initialReducedMotion.current);
+      activeEngine.setSafeMode(initialRender.safeMode);
+      activeEngine.setBrightness(initialRender.brightness);
+      campaign.setResolutionPresenter((result) => activeEngine.playMissionResolution(result));
+      setGpu(activeEngine.getGpuSummary());
+      activeEngine.start();
 
-    void engine.load().then(async () => {
+      await activeEngine.load();
+      if (cancelled) return;
       setIntroPlaying(true);
-      await engine.playIntro();
-      setIntroPlaying(false);
+      await activeEngine.playIntro();
+      if (!cancelled) setIntroPlaying(false);
+    }).catch((error: unknown) => {
+      console.error("[ui] could not load the renderer", error);
+      if (!cancelled) setUnsupported(true);
     });
 
     return () => {
+      cancelled = true;
       engineRef.current = null;
-      engine.dispose();
+      campaign.setResolutionPresenter(null);
+      engine?.dispose();
     };
-  }, [controller, detected, initialRender]);
+  }, [campaign, controller, detected, initialRender]);
 
   useEffect(() => campaign.connectGame(controller), [campaign, controller]);
   useEffect(
@@ -174,16 +207,30 @@ export function GameShell() {
     [campaign, controller],
   );
 
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = (): void => setReducedMotion(media.matches);
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    engineRef.current?.setReducedMotion(reducedMotion);
+  }, [reducedMotion]);
+
   // ----------------------------------------------------- audio unlock on input
   useEffect(() => {
     const unlock = (): void => {
       void audio.unlock();
     };
+    const unlockFromKeyboard = (event: KeyboardEvent): void => {
+      if (event.key === "Enter" || event.key === " ") unlock();
+    };
     window.addEventListener("pointerdown", unlock, { once: true });
-    window.addEventListener("keydown", unlock, { once: true });
+    window.addEventListener("keydown", unlockFromKeyboard);
     return () => {
       window.removeEventListener("pointerdown", unlock);
-      window.removeEventListener("keydown", unlock);
+      window.removeEventListener("keydown", unlockFromKeyboard);
     };
   }, []);
 
@@ -202,46 +249,37 @@ export function GameShell() {
     saveRenderPrefs({ safeMode: settings.safeMode, brightness: settings.brightness });
   }, [settings]);
 
-  // ------------------------------------------------------------- attract mode
-  const stopAttract = useCallback(() => {
-    if (attractTimer.current) {
-      clearTimeout(attractTimer.current);
-      attractTimer.current = null;
+  useEffect(() => {
+    let scene: AudioScene = phase === "menu" ? "menu" : "battle";
+    const screen = campaignSnapshot.save?.screen;
+    if (phase === "campaign" && screen) {
+      if (promotionOpen) scene = "promotion";
+      else if (screen === "consequence") scene = campaignSnapshot.save?.lastConsequence?.victory ? "consequence-win" : "consequence-loss";
+      else if (screen === "chapter-complete") scene = "finale";
+      else if (screen === "battle") scene = "battle";
+      else if (screen === "gambit") scene = "gambit";
+      else if (screen === "formation") scene = "formation";
+      else if (screen === "briefing") scene = "briefing";
+      else if (screen === "hub") scene = "hub";
+      else scene = "prologue";
     }
-    if (!attract) return;
-    setAttract(false);
-    controller.stop();
-    engineRef.current?.setAttract(false);
-    engineRef.current?.resync();
-  }, [attract, controller]);
-
-  const scheduleAttract = useCallback(() => {
-    if (attractTimer.current) clearTimeout(attractTimer.current);
-    attractTimer.current = setTimeout(() => {
-      if (phase !== "menu" || showSettings) return;
-      setAttract(true);
-      engineRef.current?.setAttract(true);
-      controller.start({ mode: "attract", difficulty: "medium", playerColor: "w", clockMinutes: null });
-    }, ATTRACT_DELAY_MS);
-  }, [controller, phase, showSettings]);
+    audio.setScene(scene);
+  }, [campaignSnapshot.save?.lastConsequence?.victory, campaignSnapshot.save?.screen, phase, promotionOpen]);
 
   useEffect(() => {
-    if (phase !== "menu" || attract || introPlaying) return;
-    scheduleAttract();
-    return () => {
-      if (attractTimer.current) clearTimeout(attractTimer.current);
-    };
-  }, [phase, attract, introPlaying, scheduleAttract]);
+    if (promotionOpen) audio.campaignCue("promotion-open");
+  }, [promotionOpen]);
 
   // ------------------------------------------------------------------ actions
   const startMatch = useCallback(
     (config: MatchConfig) => {
-      stopAttract();
       void audio.unlock();
       audio.blip("press");
       const engine = engineRef.current;
       const showcase = config.mode === "demo";
       engine?.setAttract(false);
+      engine?.setMenuPresentation(false);
+      engine?.setCampaignBattle(false);
       engine?.setInteractive(true);
       // A showcase brings its own framing (and its own crisp grade) with it.
       engine?.setShowcase(showcase, showcaseCamera);
@@ -257,7 +295,7 @@ export function GameShell() {
       });
       setPhase("playing");
     },
-    [controller, showcaseCamera, stopAttract],
+    [controller, showcaseCamera],
   );
 
   const startCampaignBattle = useCallback(() => {
@@ -270,11 +308,14 @@ export function GameShell() {
     audio.blip("press");
     const engine = engineRef.current;
     engine?.setAttract(false);
+    engine?.setMenuPresentation(false);
+    engine?.setCampaignBattle(true);
     engine?.setShowcase(false);
     engine?.setTacticalView(false);
     engine?.setInteractive(true);
     engine?.setCameraPreset("white");
     if (["dawn", "dusk", "frost", "jungle"].includes(mission.battlefieldId)) {
+      engine?.setArena(mission.battlefieldId as ArenaTheme);
       setSettings((current) => ({ ...current, arena: mission.battlefieldId as ArenaTheme }));
     }
     controller.start(options);
@@ -283,51 +324,55 @@ export function GameShell() {
 
   const beginCampaign = useCallback(
     (difficulty: CampaignDifficulty) => {
-      stopAttract();
       controller.stop();
       campaign.newCampaign(difficulty);
       const engine = engineRef.current;
       engine?.setAttract(false);
+      engine?.setMenuPresentation(false);
+      engine?.setCampaignBattle(false);
       engine?.setShowcase(false);
       engine?.setInteractive(false);
       engine?.setCameraPreset("cinematic");
       setPhase("campaign");
     },
-    [campaign, controller, stopAttract],
+    [campaign, controller],
   );
 
   const continueCampaign = useCallback(() => {
-    stopAttract();
     controller.stop();
     if (!campaign.continueCampaign()) return;
     setPhase("campaign");
     const loaded = campaign.getSnapshot().save;
     if (loaded?.screen === "battle" && loaded.activeBattle) startCampaignBattle();
     else {
+      engineRef.current?.setMenuPresentation(false);
+      engineRef.current?.setCampaignBattle(false);
       engineRef.current?.setShowcase(false);
       engineRef.current?.setInteractive(false);
       engineRef.current?.setCameraPreset("cinematic");
     }
-  }, [campaign, controller, startCampaignBattle, stopAttract]);
+  }, [campaign, controller, startCampaignBattle]);
 
   const returnToMenu = useCallback(() => {
-    controller.stop();
+    controller.start({ mode: "hotseat", difficulty: "easy", playerColor: "w", clockMinutes: null, startingFen: MENU_PRESENTATION_FEN });
     const engine = engineRef.current;
     engine?.setTacticalView(false);
     engine?.setInteractive(false);
     engine?.setShowcase(false);
-    engine?.setCameraPreset("cinematic");
+    engine?.setCampaignBattle(false);
+    engine?.setMenuPresentation(true);
     setCinema(false);
     setPhase("menu");
   }, [controller]);
 
   const returnCampaignToMenu = useCallback(() => {
-    controller.stop();
+    controller.start({ mode: "hotseat", difficulty: "easy", playerColor: "w", clockMinutes: null, startingFen: MENU_PRESENTATION_FEN });
     const engine = engineRef.current;
     engine?.setTacticalView(false);
     engine?.setInteractive(false);
     engine?.setShowcase(false);
-    engine?.setCameraPreset("cinematic");
+    engine?.setCampaignBattle(false);
+    engine?.setMenuPresentation(true);
     setPhase("menu");
   }, [controller]);
 
@@ -425,6 +470,53 @@ export function GameShell() {
     engineRef.current?.previewMove(move ? { from: move.from, to: move.to } : null);
   }, []);
 
+  const handleBoardKeyDown = useCallback((event: ReactKeyboardEvent<HTMLCanvasElement>) => {
+    const engine = engineRef.current;
+    if (!engine) return;
+    if (promotionOpen) {
+      const promotionKeys: Partial<Record<string, PieceKind>> = { q: "q", r: "r", b: "b", n: "n" };
+      const choice = promotionKeys[event.key.toLowerCase()];
+      if (choice) {
+        event.preventDefault();
+        engine.chooseKeyboardPromotion(choice);
+        setBoardAnnouncement(`${PIECE_LABEL[choice]} chosen for promotion.`);
+      }
+      return;
+    }
+
+    if (event.key === "Escape") {
+      engine.cancelKeyboardSelection();
+      setBoardAnnouncement("Selection cleared.");
+      return;
+    }
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      engine.activateKeyboardSquare(boardCursor);
+      const piece = controller.pieceAt(boardCursor);
+      const detail = piece ? `${piece.color === "w" ? "Ivory" : "Obsidian"} ${PIECE_LABEL[piece.kind]}` : "empty square";
+      setBoardAnnouncement(`${boardCursor.toUpperCase()}, ${detail}, activated.`);
+      return;
+    }
+
+    const delta: Partial<Record<string, [number, number]>> = {
+      ArrowLeft: [-1, 0],
+      ArrowRight: [1, 0],
+      ArrowUp: [0, 1],
+      ArrowDown: [0, -1],
+    };
+    const move = delta[event.key];
+    if (!move) return;
+    event.preventDefault();
+    const files = "abcdefgh";
+    const file = Math.min(7, Math.max(0, files.indexOf(boardCursor[0]) + move[0]));
+    const rank = Math.min(8, Math.max(1, Number(boardCursor[1]) + move[1]));
+    const next = `${files[file]}${rank}` as SquareId;
+    setBoardCursor(next);
+    engine.setKeyboardCursor(next);
+    const piece = controller.pieceAt(next);
+    setBoardAnnouncement(`${next.toUpperCase()}, ${piece ? `${piece.color === "w" ? "Ivory" : "Obsidian"} ${PIECE_LABEL[piece.kind]}` : "empty"}.`);
+  }, [boardCursor, controller, promotionOpen]);
+
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
       if (event.key === "Escape") setShowSettings(false);
@@ -452,15 +544,26 @@ export function GameShell() {
     <div
       className="mc-root fixed inset-0 select-none overflow-hidden bg-[#05060a]"
       data-arena={settings.arena}
-      style={{ "--mc-vignette": ARENA_LOOKS[settings.arena].screenVignette } as CSSProperties}
+      data-phase={phase}
+      style={{ "--mc-vignette": phase === "menu" ? 0 : ARENA_LOOKS[settings.arena].screenVignette } as CSSProperties}
     >
       <div className="mc-canvas-wrap">
-        <canvas ref={canvasRef} />
+        <canvas
+          ref={canvasRef}
+          tabIndex={phase === "playing" || (phase === "campaign" && campaignSnapshot.save?.screen === "battle") ? 0 : -1}
+          role="application"
+          aria-label="Crownfall chessboard"
+          aria-describedby="cf-board-instructions"
+          onKeyDown={handleBoardKeyDown}
+        />
       </div>
+      <p id="cf-board-instructions" className="sr-only">Use arrow keys to explore the board. Press Enter or Space to select a piece and confirm a destination. Press Escape to clear selection. During promotion, press Q, R, B, or N.</p>
+      <div className="sr-only" aria-live="polite" aria-atomic="true">{boardAnnouncement}</div>
       <div className="mc-vignette" />
 
       {/* Overlay layer */}
       <div className="pointer-events-none absolute inset-0">
+        <Suspense fallback={null}>
         {phase === "loading" && !unsupported ? <LoadingScreen progress={progress} /> : null}
 
         {unsupported ? (
@@ -480,25 +583,33 @@ export function GameShell() {
             onStart={startMatch}
             onNewCampaign={beginCampaign}
             onContinueCampaign={continueCampaign}
-            hasCampaign={campaignSnapshot.hasSave}
+            campaignSummary={campaignMenuSummary}
             campaignError={campaignSnapshot.loadError ?? campaignSnapshot.saveError}
             onOpenSettings={() => setShowSettings(true)}
-            attract={attract}
-            onInteract={stopAttract}
           />
         ) : null}
 
         {phase === "campaign" ? (
-          <CampaignExperience
-            controller={campaign}
-            snapshot={campaignSnapshot}
-            game={snapshot}
-            onLaunchBattle={startCampaignBattle}
-            onReturnToTitle={returnCampaignToMenu}
-            onOpenSettings={() => setShowSettings(true)}
-            onToggleTactical={handleToggleTactical}
-            tactical={tactical}
-          />
+          <Suspense
+            fallback={(
+              <div className="cf-campaign-loading" role="status" aria-live="polite">
+                <span className="cf-spinner" aria-hidden="true" />
+                <span>Opening the chapter&hellip;</span>
+              </div>
+            )}
+          >
+            <CampaignExperience
+              controller={campaign}
+              snapshot={campaignSnapshot}
+              game={snapshot}
+              onLaunchBattle={startCampaignBattle}
+              onReturnToTitle={returnCampaignToMenu}
+              onOpenSettings={() => setShowSettings(true)}
+              onToggleTactical={handleToggleTactical}
+              tactical={tactical}
+              promotionOpen={promotionOpen}
+            />
+          </Suspense>
         ) : null}
 
         {phase === "playing" && !cinema ? (
@@ -601,6 +712,7 @@ export function GameShell() {
             </div>
           </div>
         ) : null}
+        </Suspense>
       </div>
     </div>
   );
