@@ -4,7 +4,7 @@
   "sources": {
     "ui": {
       "path": "src/App.tsx",
-      "sha256": "d184f6681e34188471a9170a488a9989e576ccd0684ee7e3de95d9a0690dfd5f"
+      "sha256": "e32282c0393612d4fae294431cd9d2f76c9a4561e2a801429605ece526ac8e0b"
     },
     "document": {
       "path": "index.html",
@@ -30,14 +30,19 @@
       {
         "label": "HOME",
         "panel": null,
-        "accessible_label": "Home",
-        "screen": "home"
+        "screen": "home",
+        "accessible_label": "Home"
       },
       {
         "label": "PLAY",
         "panel": null,
-        "accessible_label": "Play",
-        "screen": "play"
+        "screen": "play",
+        "accessible_label": "Play"
+      },
+      {
+        "label": "SHOWCASE",
+        "panel": "showcase",
+        "accessible_label": "Showcase"
       },
       {
         "label": "SETTINGS",
@@ -228,6 +233,14 @@
         "label": "Back to Play",
         "opens": "play"
       }
+    },
+    "showcase": {
+      "heading": "Showcase",
+      "paragraph": "Showcase matches are not connected to this menu.",
+      "action": {
+        "label_template": "Back to {Home|Play}",
+        "opens": "Originating Home or Play screen"
+      }
     }
   },
   "menu_footer": {
@@ -302,8 +315,9 @@
     "The separate web game supports Classic versus AI, local two-player hotseat and one campaign chapter. Online is explicitly unavailable; no backend is implemented here.",
     "Particle quality and ambient motion affect presentation. Volume persists a preference without connected audio.",
     "Home retains the supplied three labels and images, with honest unavailable-state dialogs for profiles, chronicles and the herald feed.",
-    "Only Home, Play and Settings tabs exist. Home/Play selections and Settings origin are preserved.",
-    "Play retains four 197 by 298 pixel cards, 4px gaps and the same artwork order and typography at1280 by720."
+    "Home, Play, Showcase and Settings are the four top navigation tabs. Home/Play selections and Settings origin are preserved.",
+    "Play retains four 197 by 298 pixel cards, 4px gaps and the same artwork order and typography at1280 by720.",
+    "Showcase opens an honest information preview without starting a match. Q/E and controller bumpers cycle the four tabs; typing in Settings controls does not switch tabs."
   ],
   "card_copy_intent": "Cards identify intended chess modes. Activation dialogs clearly disclose that this standalone menu does not launch gameplay or matchmaking; there is no STORY mode label.",
   "home_tiles": [

@@ -123,6 +123,8 @@ try {
     assert.equal(layout.tiles.length, 3);
     assert.ok(layout.tiles.every((tile) => tile.titleFits && tile.visible));
     assert.equal(layout.pageOverflow, false);
+    assert.equal(layout.navigation.length, 6);
+    assert.deepEqual(layout.navigation.slice(1, -1).map((button) => button.label), ["Home", "Play", "Showcase", "Settings"]);
     for (let a = 0; a < layout.navigation.length; a++) for (let b = a + 1; b < layout.navigation.length; b++) {
       const first = layout.navigation[a], second = layout.navigation[b];
       assert.ok(first.right <= second.x + 0.5 || second.right <= first.x + 0.5 || first.bottom <= second.y + 0.5 || second.bottom <= first.y + 0.5, `Home nav hit boxes overlap: ${first.label}/${second.label}`);
@@ -136,14 +138,14 @@ try {
     near(feature.right + layout.gap, upper.x, "column gap");
     near(upper.bottom + layout.gap, lower.y, "row gap");
     if (viewport.width === 1280) {
-      near(layout.grid.width, 660, "Home grid width"); near(layout.grid.height, 434, "Home grid height"); near(layout.gap, 4, "Home grid gap");
+      near(layout.grid.width, 600, "Home grid width"); near(layout.grid.height, 434, "Home grid height"); near(layout.gap, 4, "Home grid gap");
       near(feature.width, 298, "feature width"); near(feature.height, 434, "feature height");
-      near(upper.width, 358, "upper width"); near(upper.height, 215, "upper height");
-      near(lower.width, 358, "lower width"); near(lower.height, 215, "lower height");
+      near(upper.width, 298, "upper width"); near(upper.height, 215, "upper height");
+      near(lower.width, 298, "lower width"); near(lower.height, 215, "lower height");
     }
     layouts.push({ viewport, ...layout });
   }
-  record("660×434 Home grid keeps My Legacy at 298×434 and widens both right tiles to 358×215 with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports");
+  record("Restored 600×434 Home grid matches 298×434 + stacked 298×215 tiles with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports");
   await page.setViewportSize({ width: 1280, height: 720 });
   for (const [key, name] of [["ArrowRight", "Chronicles"], ["ArrowDown", "Herald Board"], ["ArrowLeft", "My Legacy"], ["ArrowRight", "Herald Board"], ["ArrowUp", "Chronicles"], ["ArrowUp", "Chronicles"], ["ArrowRight", "Chronicles"], ["ArrowLeft", "My Legacy"], ["ArrowUp", "My Legacy"], ["ArrowDown", "My Legacy"], ["End", "Herald Board"], ["ArrowDown", "Herald Board"], ["Home", "My Legacy"]]) {
     await page.keyboard.press(key);
@@ -158,6 +160,14 @@ try {
     assert.match(text, /unavailable in this build/);
     assert.equal(await page.locator("dialog button").count(), 2, "Home dialog offers close/back only, with no unsupported launch");
     dialogs.push({ title: name, text });
+  };
+  const showcaseDialog = async () => {
+    await page.getByRole("heading", { name: "Showcase", exact: true }).waitFor();
+    const text = await page.locator("dialog").innerText();
+    assert.match(text, /Showcase matches are not connected/);
+    assert.equal(await page.locator("dialog button").count(), 2);
+    assert.equal(await page.locator("dialog input, dialog form").count(), 0);
+    dialogs.push({ title: "Showcase", text });
   };
   await page.getByRole("button", { name: "Chronicles", exact: true }).hover();
   await selected("Chronicles");
@@ -175,6 +185,17 @@ try {
   }
   await page.mouse.move(0, 0);
   record("Pointer hover→Enter and clicks open each truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news");
+
+  await page.getByRole("tab", { name: "Showcase", exact: true }).click();
+  await showcaseDialog();
+  assert.equal(await page.locator(".home-grid").count(), 1);
+  assert.equal(await page.locator(".game-cards").count(), 0);
+  await page.getByRole("button", { name: /Back to Home/ }).click();
+  await closed();
+  await activeTab("Home");
+  await selected("Herald Board", false);
+  assert.notEqual(await page.evaluate(() => document.activeElement?.tagName), "BODY");
+  record("Showcase is an honest close/back preview and returns to its originating Home selection");
 
   await page.getByRole("tab", { name: "Settings", exact: true }).click();
   await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
@@ -217,11 +238,29 @@ try {
   await pad(1, async () => { await activeTab("Play"); await selected("Chapters"); });
   await pad(4, async () => { await activeTab("Home"); await selected("Herald Board"); });
   await pad(4, () => page.getByRole("heading", { name: "Settings", exact: true }).waitFor());
+  await pad(4, showcaseDialog);
   await pad(1, async () => { await closed(); await activeTab("Home"); await selected("Herald Board"); });
   await pad(5, async () => { await activeTab("Play"); await selected("Chapters"); });
+  await pad(5, showcaseDialog);
+  await pad(1, async () => { await closed(); await activeTab("Play"); await selected("Chapters"); });
   await pad(4, async () => { await activeTab("Home"); await selected("Herald Board"); });
-  record("Simulated standard controller supports all four D-pad directions, remembered-row/clamp behavior, A/B dialogs, Home Back and bumper transitions with preserved Home/Play selections");
+  record("Simulated standard controller supports all four D-pad directions, remembered-row/clamp behavior, A/B dialogs, Home Back and four-tab bumper transitions through Showcase with preserved Home/Play selections");
   await page.keyboard.press("e");
+  await activeTab("Play");
+  await selected("Chapters");
+  await page.keyboard.press("e");
+  await showcaseDialog();
+  await activeTab("Showcase");
+  await page.keyboard.press("e");
+  await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
+  await activeTab("Settings");
+  await page.getByLabel("Particle quality", { exact: false }).focus();
+  await page.keyboard.press("q");
+  await activeTab("Settings");
+  await page.keyboard.press("e");
+  await activeTab("Settings");
+  await page.keyboard.press("Escape");
+  await closed();
   await activeTab("Play");
   await selected("Chapters");
   await page.keyboard.press("q");
@@ -229,11 +268,14 @@ try {
   await selected("Herald Board");
   await page.keyboard.press("q");
   await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
-  await page.keyboard.press("Escape");
+  await page.keyboard.press("q");
+  await showcaseDialog();
+  await activeTab("Showcase");
+  await page.getByRole("button", { name: /Back to Home/ }).click();
   await closed();
   await activeTab("Home");
   await selected("Herald Board");
-  record("Q/E tab shortcuts preserve Home/Play selections and Settings returns to its Home context");
+  record("Q/E cycles all four tabs through open information dialogs, ignores focused selects and preserves originating Home/Play context");
   assert.deepEqual(errors, []);
   record("No JavaScript or console errors");
 } catch (error) {

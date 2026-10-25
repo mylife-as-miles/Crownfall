@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "source": "Production actual GLB and supplied artwork; wider right tiles with unchanged left and stack height",
+  "source": "Current production actual GLB: restored Home widths and four-tab navigation",
   "results": [
     {
       "viewport": {
@@ -11,7 +11,7 @@
       "grid": {
         "x": 105.328125,
         "y": 159.984375,
-        "width": 660,
+        "width": 600,
         "height": 434
       },
       "tiles": [
@@ -22,33 +22,36 @@
           "width": 298,
           "height": 434,
           "imageLoaded": true,
-          "fit": "cover",
-          "titleSize": "18.6666px"
+          "fit": "cover"
         },
         {
           "label": "Chronicles",
           "x": 407.328125,
           "y": 159.984375,
-          "width": 358,
+          "width": 298,
           "height": 215,
           "imageLoaded": true,
-          "fit": "contain",
-          "titleSize": "18.6666px"
+          "fit": "contain"
         },
         {
           "label": "Herald Board",
           "x": 407.328125,
           "y": 378.984375,
-          "width": 358,
+          "width": 298,
           "height": 215,
           "imageLoaded": true,
-          "fit": "cover",
-          "titleSize": "18.6666px"
+          "fit": "cover"
         }
       ],
       "actualModelLoaded": true,
       "activeAnimation": "Idle",
       "pageOverflow": false,
+      "tabs": [
+        "HOME",
+        "PLAY",
+        "SHOWCASE",
+        "SETTINGS"
+      ],
       "errors": []
     },
     {
@@ -60,7 +63,7 @@
       "grid": {
         "x": 158,
         "y": 239.984375,
-        "width": 990,
+        "width": 900,
         "height": 651
       },
       "tiles": [
@@ -71,33 +74,36 @@
           "width": 447,
           "height": 651,
           "imageLoaded": true,
-          "fit": "cover",
-          "titleSize": "27.9999px"
+          "fit": "cover"
         },
         {
           "label": "Chronicles",
           "x": 611,
           "y": 239.984375,
-          "width": 537,
+          "width": 447,
           "height": 322.5,
           "imageLoaded": true,
-          "fit": "contain",
-          "titleSize": "27.9999px"
+          "fit": "contain"
         },
         {
           "label": "Herald Board",
           "x": 611,
           "y": 568.484375,
-          "width": 537,
+          "width": 447,
           "height": 322.5,
           "imageLoaded": true,
-          "fit": "cover",
-          "titleSize": "27.9999px"
+          "fit": "cover"
         }
       ],
       "actualModelLoaded": true,
       "activeAnimation": "Idle",
       "pageOverflow": false,
+      "tabs": [
+        "HOME",
+        "PLAY",
+        "SHOWCASE",
+        "SETTINGS"
+      ],
       "errors": []
     },
     {
@@ -109,7 +115,7 @@
       "grid": {
         "x": 129.953125,
         "y": 86.65625,
-        "width": 360.484375,
+        "width": 327.71875,
         "height": 235.078125
       },
       "tiles": [
@@ -120,33 +126,36 @@
           "width": 162.765625,
           "height": 235.078125,
           "imageLoaded": true,
-          "fit": "cover",
-          "titleSize": "11px"
+          "fit": "cover"
         },
         {
           "label": "Chronicles",
           "x": 294.890625,
           "y": 86.65625,
-          "width": 195.546875,
+          "width": 162.78125,
           "height": 116.453125,
           "imageLoaded": true,
-          "fit": "contain",
-          "titleSize": "11px"
+          "fit": "contain"
         },
         {
           "label": "Herald Board",
           "x": 294.890625,
           "y": 205.28125,
-          "width": 195.546875,
+          "width": 162.78125,
           "height": 116.453125,
           "imageLoaded": true,
-          "fit": "cover",
-          "titleSize": "11px"
+          "fit": "cover"
         }
       ],
       "actualModelLoaded": true,
       "activeAnimation": "Idle",
       "pageOverflow": false,
+      "tabs": [
+        "HOME",
+        "PLAY",
+        "SHOWCASE",
+        "SETTINGS"
+      ],
       "errors": []
     }
   ]

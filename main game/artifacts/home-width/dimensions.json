@@ -218,5 +218,7 @@
       },
       "rightWidthIncreasePx": 32.765625
     }
-  ]
+  ],
+  "historical": true,
+  "scope": "Superseded width-increase/three-tab evidence. Current Home widths are restored and four-tab navigation is intentional."
 }

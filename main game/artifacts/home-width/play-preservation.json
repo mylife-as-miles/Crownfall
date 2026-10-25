@@ -1,7 +1,7 @@
 {
   "passed": true,
   "baselineCommit": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
-  "scope": "Play labels intentionally changed. Creature, navigation, card frames and image center regions match baseline exactly; image hashes/focal policies and dimensions are verified separately.",
+  "scope": "Superseded width-increase/three-tab evidence. Current Home widths are restored and four-tab navigation is intentional.",
   "results": [
     {
       "viewport": {
@@ -30,5 +30,6 @@
       "comparedPixelCount": 286628,
       "excludedBands": "Top and bottom 30% of each card, encompassing changed heading/subtitle/description text and shadows."
     }
-  ]
+  ],
+  "historical": true
 }

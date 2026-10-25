@@ -4,12 +4,13 @@
   "checks": [
     "Default Play retains its four original-size cards, current wording and no carousel",
     "All three final Home titles and exact supplied-image delivery hashes load; Chronicles preserves its map with contain",
-    "660×434 Home grid keeps My Legacy at 298×434 and widens both right tiles to 358×215 with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports",
+    "Restored 600×434 Home grid matches 298×434 + stacked 298×215 tiles with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports",
     "Keyboard spatial movement, remembered right row, clamped outer edges and Home/End retain one selected tab stop and actual focus",
     "Pointer hover→Enter and clicks open each truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news",
+    "Showcase is an honest close/back preview and returns to its originating Home selection",
     "Home→Settings returns to Home selection; Home Back returns to preserved Play selection/geometry; Play confirmation returns to Home with focus",
-    "Simulated standard controller supports all four D-pad directions, remembered-row/clamp behavior, A/B dialogs, Home Back and bumper transitions with preserved Home/Play selections",
-    "Q/E tab shortcuts preserve Home/Play selections and Settings returns to its Home context",
+    "Simulated standard controller supports all four D-pad directions, remembered-row/clamp behavior, A/B dialogs, Home Back and four-tab bumper transitions through Showcase with preserved Home/Play selections",
+    "Q/E cycles all four tabs through open information dialogs, ignores focused selects and preserves originating Home/Play context",
     "No JavaScript or console errors"
   ],
   "layouts": [
@@ -47,35 +48,44 @@
           "bottom": 109.859375
         },
         {
-          "label": "Settings",
+          "label": "Showcase",
           "x": 317.03125,
+          "y": 77.609375,
+          "width": 114.359375,
+          "height": 32.25,
+          "right": 431.390625,
+          "bottom": 109.859375
+        },
+        {
+          "label": "Settings",
+          "x": 467.984375,
           "y": 77.609375,
           "width": 97.734375,
           "height": 32.25,
-          "right": 414.765625,
+          "right": 565.71875,
           "bottom": 109.859375
         },
         {
           "label": "Next menu tab",
-          "x": 439.90625,
+          "x": 605.9375,
           "y": 86.53125,
           "width": 22.015625,
           "height": 14.390625,
-          "right": 461.921875,
+          "right": 627.953125,
           "bottom": 100.921875
         }
       ],
       "grid": {
         "x": 105.328125,
         "y": 160,
-        "width": 660,
+        "width": 600,
         "height": 434,
-        "right": 765.328125,
+        "right": 705.328125,
         "bottom": 594
       },
       "gap": 4,
-      "scrollWidth": 660,
-      "clientWidth": 660,
+      "scrollWidth": 600,
+      "clientWidth": 600,
       "pageOverflow": false,
       "tiles": [
         {
@@ -93,9 +103,9 @@
           "label": "Chronicles",
           "x": 407.328125,
           "y": 160,
-          "width": 358,
+          "width": 298,
           "height": 215,
-          "right": 765.328125,
+          "right": 705.328125,
           "bottom": 375,
           "titleFits": true,
           "visible": true
@@ -104,9 +114,9 @@
           "label": "Herald Board",
           "x": 407.328125,
           "y": 379,
-          "width": 358,
+          "width": 298,
           "height": 215,
-          "right": 765.328125,
+          "right": 705.328125,
           "bottom": 594,
           "titleFits": true,
           "visible": true
@@ -147,35 +157,44 @@
           "bottom": 164.796875
         },
         {
-          "label": "Settings",
+          "label": "Showcase",
           "x": 475.5625,
+          "y": 116.421875,
+          "width": 171.59375,
+          "height": 48.375,
+          "right": 647.15625,
+          "bottom": 164.796875
+        },
+        {
+          "label": "Settings",
+          "x": 701.984375,
           "y": 116.421875,
           "width": 146.640625,
           "height": 48.375,
-          "right": 622.203125,
+          "right": 848.625,
           "bottom": 164.796875
         },
         {
           "label": "Next menu tab",
-          "x": 659.890625,
+          "x": 908.921875,
           "y": 129.8125,
           "width": 33.015625,
           "height": 21.59375,
-          "right": 692.90625,
+          "right": 941.9375,
           "bottom": 151.40625
         }
       ],
       "grid": {
         "x": 158,
         "y": 240,
-        "width": 990,
+        "width": 900,
         "height": 651,
-        "right": 1148,
+        "right": 1058,
         "bottom": 891
       },
       "gap": 6,
-      "scrollWidth": 990,
-      "clientWidth": 990,
+      "scrollWidth": 900,
+      "clientWidth": 900,
       "pageOverflow": false,
       "tiles": [
         {
@@ -193,9 +212,9 @@
           "label": "Chronicles",
           "x": 611,
           "y": 240,
-          "width": 537,
+          "width": 447,
           "height": 322.5,
-          "right": 1148,
+          "right": 1058,
           "bottom": 562.5,
           "titleFits": true,
           "visible": true
@@ -204,9 +223,9 @@
           "label": "Herald Board",
           "x": 611,
           "y": 568.5,
-          "width": 537,
+          "width": 447,
           "height": 322.5,
-          "right": 1148,
+          "right": 1058,
           "bottom": 891,
           "titleFits": true,
           "visible": true
@@ -247,35 +266,44 @@
           "bottom": 59.5
         },
         {
-          "label": "Settings",
+          "label": "Showcase",
           "x": 245.5625,
+          "y": 42.03125,
+          "width": 62.421875,
+          "height": 17.46875,
+          "right": 307.984375,
+          "bottom": 59.5
+        },
+        {
+          "label": "Settings",
+          "x": 328.015625,
           "y": 42.03125,
           "width": 53.34375,
           "height": 17.46875,
-          "right": 298.90625,
+          "right": 381.359375,
           "bottom": 59.5
         },
         {
           "label": "Next menu tab",
-          "x": 312.703125,
+          "x": 403.375,
           "y": 46.859375,
           "width": 12.015625,
           "height": 7.796875,
-          "right": 324.71875,
+          "right": 415.390625,
           "bottom": 54.65625
         }
       ],
       "grid": {
         "x": 129.953125,
         "y": 86.65625,
-        "width": 360.484375,
+        "width": 327.71875,
         "height": 235.078125,
-        "right": 490.4375,
+        "right": 457.671875,
         "bottom": 321.734375
       },
       "gap": 2.18481,
-      "scrollWidth": 360,
-      "clientWidth": 360,
+      "scrollWidth": 328,
+      "clientWidth": 328,
       "pageOverflow": false,
       "tiles": [
         {
@@ -293,9 +321,9 @@
           "label": "Chronicles",
           "x": 294.890625,
           "y": 86.65625,
-          "width": 195.546875,
+          "width": 162.78125,
           "height": 116.453125,
-          "right": 490.4375,
+          "right": 457.671875,
           "bottom": 203.109375,
           "titleFits": true,
           "visible": true
@@ -304,9 +332,9 @@
           "label": "Herald Board",
           "x": 294.890625,
           "y": 205.28125,
-          "width": 195.546875,
+          "width": 162.78125,
           "height": 116.453125,
-          "right": 490.4375,
+          "right": 457.671875,
           "bottom": 321.734375,
           "titleFits": true,
           "visible": true
@@ -332,8 +360,28 @@
       "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack"
     },
     {
+      "title": "Showcase",
+      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Home\n>\nB\nBack"
+    },
+    {
       "title": "Herald Board",
       "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack"
+    },
+    {
+      "title": "Showcase",
+      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Home\n>\nB\nBack"
+    },
+    {
+      "title": "Showcase",
+      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Play\n>\nB\nBack"
+    },
+    {
+      "title": "Showcase",
+      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Play\n>\nB\nBack"
+    },
+    {
+      "title": "Showcase",
+      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Home\n>\nB\nBack"
     }
   ],
   "errors": []

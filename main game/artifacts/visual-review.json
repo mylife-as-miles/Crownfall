@@ -1,6 +1,6 @@
 {
-  "revision": "Wider Home right tiles and updated Play mode previews",
-  "latestReviewScope": "Home width and Play mode labels",
+  "revision": "Restored Home tile widths and Home / Play / Showcase / Settings navigation",
+  "latestReviewScope": "Home width restoration and shared four-entry navigation",
   "score": 9.2,
   "scoreScope": "Home; current Play assessment is separately 9.3",
   "scoreOutOf": 10,
@@ -10,7 +10,7 @@
   },
   "reviewer": "independent visual critic agent",
   "homeReview": {
-    "scope": "Current Home review after increasing only both right tile widths; Play mode-label review is separate.",
+    "scope": "Current Home after restoring original right-tile widths and adding the shared Showcase navigation entry.",
     "score": 9.2,
     "scoreOutOf": 10,
     "assessmentType": "Independent subjective comparison of the supplied Home layout reference, actual supplied image subjects, and final actual-GLB browser captures. Not a pixel-match score or a claim that unavailable destination systems are implemented.",
@@ -20,7 +20,7 @@
       "height": 540,
       "privateLocalReferenceOnly": true,
       "imageIncludedInRepository": false,
-      "notes": "Tall-left/stacked-right reference hierarchy retained. Latest authorized width change deliberately makes each right tile wider than the reference; no reference characters or placeholder copy imported."
+      "notes": "Tall-left/stacked-right reference hierarchy and original equal column widths restored. No reference characters or placeholder copy imported."
     },
     "reviewedScreenshots": [
       "artifacts/home/home-1280x720.png",
@@ -30,7 +30,7 @@
     "layoutAt1280": {
       "gridX": 105.328125,
       "gridY": 160,
-      "gridWidth": 660,
+      "gridWidth": 600,
       "gridHeight": 434,
       "gap": 4,
       "leftTile": {
@@ -40,12 +40,12 @@
       },
       "upperRightTile": {
         "title": "Chronicles",
-        "width": 358,
+        "width": 298,
         "height": 215
       },
       "lowerRightTile": {
         "title": "Herald Board",
-        "width": 358,
+        "width": 298,
         "height": 215
       },
       "equalOuterHeights": true,
@@ -56,13 +56,13 @@
         "category": "Reference layout and visual hierarchy",
         "maximum": 3.0,
         "score": 2.95,
-        "notes": "Tall left tile and equal stacked right tiles retain the reference hierarchy. Latest requested right widths are 358px rather than 298px at 1280, with left size, outer heights, gaps and positions unchanged. Wider right stack remains balanced with the existing creature."
+        "notes": "Tall left tile and equal stacked right tiles again use the original equal-width columns: 298px each at 1280, with total 600x434 grid and 4px gaps. Home tab/amber tile selection and the four-entry navigation remain readable at all three viewports."
       },
       {
         "category": "Actual supplied artwork and useful framing",
         "maximum": 2.0,
         "score": 1.85,
-        "notes": "Actual portrait king/throne, full map and sorcerer/portal remain recognizable. Herald Board gains useful horizontal context from the wider cover area. Chronicles keeps the same height-constrained complete map, so wider sidebars are expected under unchanged contain framing. No image regeneration or focal-policy adjustment."
+        "notes": "Actual king/throne portrait, complete four-region map and sorcerer/portal are distinct and recognizable. Chronicles retains contain framing with narrow sidebars; small baked-in map label overlap remains acceptable. Herald Board returns to its original centered-cover context. No image changes."
       },
       {
         "category": "Titles, readability and honest destination states",
@@ -123,8 +123,8 @@
       ],
       "framing": {
         "My Legacy": "Centered cover; king and throne retained.",
-        "Chronicles": "Contain; complete source map retained at the 215px card height, with approximately 35px sidebars per side in the 358px-wide 1280 design tile.",
-        "Herald Board": "Centered cover; wider tile reveals more horizontal portal/sorcerer scene context."
+        "Chronicles": "Contain; full source map retained with approximately 5px sidebars at the original 298px-wide by 215px-high 1280 design size.",
+        "Herald Board": "Original centered cover; sorcerer, portal and floating rune stones retained."
       }
     },
     "destinationDisclosures": {
@@ -139,8 +139,8 @@
       "modalCopyFit": "artifacts/copy-fit-verification.json",
       "copyInventory": "artifacts/menu-copy.json",
       "notes": "Critic independently inspected source artwork, all three Home renders and unavailable-state source wording. Keyboard/controller/pointer focus and geometry assertions are supported by the separate passing Home verification artifact.",
-      "playRegression": "artifacts/home-width/play-preservation.json",
-      "widthComparison": "artifacts/home-width/dimensions.json"
+      "restoredGeometry": "artifacts/home/render-verification.json",
+      "sharedNavigationLayout": "artifacts/layout-verification.json"
     },
     "iterationHistory": [
       {
@@ -168,6 +168,16 @@
         ],
         "score": 9.2,
         "findings": "Right tiles increased 298\u2192358px, left and stacked heights/gaps unchanged. All titles fit at desktop and landscape sizes; creature face/crown stay clear. Chronicles full-map sidebars widen by design; Herald Board shows more scene context. No further adjustment requested."
+      },
+      {
+        "iteration": "Restore original right widths and add Showcase nav",
+        "screenshots": [
+          "artifacts/home/home-1280x720.png",
+          "artifacts/home/home-1920x1080.png",
+          "artifacts/home/home-844x390.png"
+        ],
+        "score": 9.2,
+        "findings": "All three fresh actual-GLB Home captures restore 600x434 geometry with 298x215 right tiles. Shared Home/Play/Showcase/Settings navigation fits without title collision. Supplied images and creature are unchanged. Showcase is a truthful unconnected informational dialog. No further visual changes requested."
       }
     ],
     "limits": [
@@ -176,42 +186,25 @@
       "Reference characters and placeholder copy are intentionally excluded; actual user imagery and existing sorcerer are retained.",
       "The 9.2 score is subjective visual assessment of Home, distinct from Play's retained 9.3 assessment."
     ],
-    "verdict": "Retains the subjective 9.2/10 Home assessment after the requested wider right tiles. No blocking balance, title-fit or creature-clearance issue identified.",
-    "preservedPlayEvidence": {
-      "report": "artifacts/home-width/play-preservation.json",
-      "passed": true,
-      "baselineCommit": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
-      "scope": "Play text intentionally changed. Creature, navigation, card frames and image-center pixels match baseline outside excluded card text bands; full-frame pixel identity is not claimed.",
-      "excludedBands": "Top and bottom 30% of each card, including changed text and shadows.",
-      "verifiedViewports": [
-        "1280x720",
-        "1920x1080",
-        "844x390"
-      ],
-      "additionalChecks": "Actual image hashes, focal policies and card dimensions independently checked by layout/artwork verification."
-    },
-    "widthChange": {
-      "evidence": "artifacts/home-width/dimensions.json",
-      "baselineCommit": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
-      "rightWidthBefore": 298,
-      "rightWidthAfter": 358,
-      "rightWidthIncreasePx": 60,
-      "rightWidthIncreasePercent": 20.13422818791946,
-      "unchangedLeftSize": [
+    "verdict": "Retains the subjective 9.2/10 Home assessment for restored original widths and readable four-entry shared navigation. No blocking issue.",
+    "widthRestoration": {
+      "currentGridWidth": 600,
+      "currentLeftSize": [
         298,
         434
       ],
-      "unchangedRightHeight": 215,
-      "unchangedGap": 4,
-      "beforeScreenshots": [
-        "artifacts/home-width/before-1280x720.png",
-        "artifacts/home-width/before-844x390.png"
-      ]
+      "currentRightSize": [
+        298,
+        215
+      ],
+      "gap": 4,
+      "restoredCSSBaseline": "fb4738b",
+      "notes": "Latest user reversal removes only the right-tile width enlargement. Original widths are restored; current Play modes, supplied images, text, creature and other changes remain."
     }
   },
   "playReview": {
-    "revision": "Classic / Local Duel / Chapters / Online Duel mode previews",
-    "scope": "Current Play screen after deliberate mode-label and preview-flow changes; original card geometry, actual artwork, typography and creature remain.",
+    "revision": "Classic / Local Duel / Chapters / Online Duel with four-entry shared navigation",
+    "scope": "Current mode-preview Play screen; four-card geometry/art and approved creature retained, navigation intentionally adds Showcase.",
     "score": 9.3,
     "scoreOutOf": 10,
     "assessmentType": "Independent subjective visual and wording assessment of the new mode labels in actual-GLB desktop and phone-landscape screenshots. Not a claim that gameplay is integrated or that full-frame Play pixels are unchanged.",
@@ -252,6 +245,7 @@
     "navigation": [
       "Home",
       "Play",
+      "Showcase",
       "Settings"
     ],
     "headingTypography": {
@@ -281,7 +275,7 @@
         "category": "Fixed four-card composition",
         "maximum": 2.5,
         "score": 2.4,
-        "notes": "All four modes fit the existing 197x298 row at 1280 with 4px gaps and no carousel. Selected Local Duel remains in the same second-card position. Desktop and landscape preserve complete cards."
+        "notes": "All four modes retain the fixed 197x298 row with 4px gaps at 1280 and no carousel. Default Local Duel remains selected. Home/Play/Showcase/Settings headings fit at desktop and landscape sizes."
       },
       {
         "category": "Actual supplied artwork and focal crops",
@@ -305,7 +299,7 @@
         "category": "Lighting, particles and atmospheric cohesion",
         "maximum": 2.0,
         "score": 1.8,
-        "notes": "Existing warm gold fog, teal model and particles remain coherent with the supplied images. Matching non-text pixel evidence supports preservation outside the deliberately changed copy bands."
+        "notes": "Existing warm gold fog, teal model and particles remain coherent with supplied images. Current navigation pixels intentionally change; no full-frame or old non-text-band identity claim is made for this revision."
       }
     ],
     "copyAudit": {
@@ -386,7 +380,14 @@
       "obsoleteFlowRemoved": "Old New/Resume/Load save-preview actions and save metadata UI are removed; only menu preferences persist.",
       "settings": "Particle quality and motion describe actual effects. Audio is explicitly a saved preference with no connected audio.",
       "sourceEvidence": "artifacts/menu-copy.json",
-      "modalFitEvidence": "artifacts/copy-fit-verification.json"
+      "modalFitEvidence": "artifacts/copy-fit-verification.json",
+      "showcase": {
+        "heading": "Showcase",
+        "paragraph": "Showcase matches are not connected to this menu.",
+        "onlyAction": "Back to the originating Home or Play screen.",
+        "screenshot": "artifacts/home-restore/showcase-preview-1280.png",
+        "notes": "Honest informational preview; no fabricated running demo or match launch."
+      }
     },
     "suppliedArtwork": {
       "evidence": "artifacts/card-artwork.json",
@@ -513,19 +514,6 @@
       "interpretation": "All sampled crown, face-proxy and eye-proxy clearances are positive across the reviewed aspects. Sampled worst desktop images also visually retain the crown and visible eye above the cards.",
       "limits": "Dense sampled geometric evidence, not a continuous mathematical guarantee or semantic face/ring detector. Applies to the menu Idle clip and tested ambient extrema."
     },
-    "preservationEvidence": {
-      "report": "artifacts/home-width/play-preservation.json",
-      "passed": true,
-      "baselineCommit": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
-      "scope": "Play text intentionally changed. Creature, navigation, card frames and image-center pixels match baseline outside excluded card text bands; full-frame pixel identity is not claimed.",
-      "excludedBands": "Top and bottom 30% of each card, including changed text and shadows.",
-      "verifiedViewports": [
-        "1280x720",
-        "1920x1080",
-        "844x390"
-      ],
-      "additionalChecks": "Actual image hashes, focal policies and card dimensions independently checked by layout/artwork verification."
-    },
     "currentEvidence": {
       "menu": "artifacts/verification.json",
       "layout": "artifacts/layout-verification.json",
@@ -533,8 +521,8 @@
       "copy": "artifacts/copy-fit-verification.json",
       "modeInventory": "artifacts/menu-copy.json",
       "artwork": "artifacts/card-artwork.json",
-      "nonTextPixels": "artifacts/home-width/play-preservation.json",
-      "model": "artifacts/model-verification.json"
+      "model": "artifacts/model-verification.json",
+      "fourEntryNavigation": "artifacts/layout-verification.json"
     },
     "iterationHistory": [
       {
@@ -546,16 +534,45 @@
         ],
         "score": 9.3,
         "findings": "All mode titles and concise descriptions fit at desktop and landscape sizes. Default Local Duel amber state is clear. Exact source wording and preview disclosures independently inspected. No further visual or wording adjustment requested."
+      },
+      {
+        "iteration": "Four-entry shared navigation",
+        "screenshots": [
+          "artifacts/final-1280x720.png",
+          "artifacts/final-1920x1080.png",
+          "artifacts/final-landscape-844x390.png"
+        ],
+        "score": 9.3,
+        "findings": "Current Classic/Local Duel/Chapters/Online Duel cards remain clear in fresh 1280/1920/844 captures. Showcase label, relocated Settings and RB fit. Showcase source wording and actual dialog screenshot accurately disclose unconnected matches. No visual change requested."
       }
     ],
     "remainingLimits": [
       "Modes describe intended destinations; actual gameplay integration is absent and disclosed on activation.",
       "Supporting text remains small on phone landscape.",
       "Source image cover crops omit panoramic context.",
-      "Play copy deliberately differs from the baseline. Preservation evidence excludes top/bottom 30% text bands; full-frame identity is not claimed.",
-      "The 9.3 score is subjective visual judgment, not a performance benchmark."
+      "The 9.3 score is subjective visual judgment, not a performance benchmark.",
+      "Navigation intentionally gains Showcase and shifts Settings/RB. Historical pixel-preservation reports predating the four-entry nav are not current evidence."
     ],
-    "verdict": "Retains the subjective 9.3/10 Play assessment for the new mode labels and honest preview flows. No blocking text-fit or visual issue identified."
+    "verdict": "Retains the subjective 9.3/10 mode-preview Play assessment with readable four-entry navigation. Gameplay integration remains absent and disclosed; no blocking visual or wording issue."
   },
-  "verdict": "Wider Home meets 9.2/10 and updated mode-preview Play meets 9.3/10. Both scores are subjective. Existing artwork/geometry/model are preserved; Play copy intentionally changes and all unavailable gameplay destinations are disclosed."
+  "verdict": "Restored Home remains 9.2/10; current mode-preview Play remains 9.3/10. Four shared navigation labels are clear at desktop and landscape sizes, and Showcase honestly discloses its unavailable match destination. Scores are subjective; no blocking issue.",
+  "sharedNavigationReview": {
+    "labels": [
+      "Home",
+      "Play",
+      "Showcase",
+      "Settings"
+    ],
+    "reviewedScreenshots": [
+      "artifacts/home/home-1280x720.png",
+      "artifacts/home/home-1920x1080.png",
+      "artifacts/home/home-844x390.png",
+      "artifacts/final-1280x720.png",
+      "artifacts/final-1920x1080.png",
+      "artifacts/final-landscape-844x390.png"
+    ],
+    "showcaseDialog": "artifacts/home-restore/showcase-preview-1280.png",
+    "sourceInventory": "artifacts/menu-copy.json",
+    "finding": "All four labels fit Home and Play at 1280,1920 and844px landscape widths. Showcase is explicitly unconnected and returns to the originating screen. Current mode labels, actual images and approved creature are retained."
+  }
 }

@@ -18,17 +18,22 @@ try {
     viewport: { width: 1280, height: 720 },
     reducedMotion: "reduce",
   });
+  page.setDefaultTimeout(10000);
   await page.addInitScript(() => {
     window.__pressedButtons = [];
+    window.__padReads = 0;
     Object.defineProperty(navigator, "getGamepads", {
       configurable: true,
-      value: () => [{
+      value: () => {
+        window.__padReads++;
+        return [{
         connected: true,
         axes: [0, 0],
         buttons: Array.from({ length: 17 }, (_, index) => ({
           pressed: window.__pressedButtons.includes(index),
         })),
-      }],
+      }];
+      },
     });
   });
   page.on("pageerror", (error) => errors.push(error.message));
@@ -76,6 +81,10 @@ try {
         };
       }));
       return {
+        navigation: [...document.querySelectorAll(".main-nav button")].map((button) => {
+          const { x, y, width, height } = button.getBoundingClientRect();
+          return { label: button.getAttribute("aria-label"), x, y, right: x + width, bottom: y + height };
+        }),
         rowWidth: rect.width,
         scrollableWidth: row.scrollWidth - row.clientWidth,
         scrollSnapType: getComputedStyle(row).scrollSnapType,
@@ -87,6 +96,12 @@ try {
       };
     });
     assert.equal(state.cards.length, 4);
+    assert.equal(state.navigation.length, 6);
+    assert.deepEqual(state.navigation.slice(1, -1).map((button) => button.label), ["Home", "Play", "Showcase", "Settings"]);
+    for (let a = 0; a < state.navigation.length; a++) for (let b = a + 1; b < state.navigation.length; b++) {
+      const first = state.navigation[a], second = state.navigation[b];
+      assert.ok(first.right <= second.x + 0.5 || second.right <= first.x + 0.5 || first.bottom <= second.y + 0.5 || second.bottom <= first.y + 0.5, `Play nav hit boxes overlap: ${first.label}/${second.label}`);
+    }
     assert.ok(state.cards.every((card) => card.visible && card.textFits && card.headingFits));
     assert.ok(state.cards.every((card) => card.image.width === 2048 && card.image.height === 1143));
     assert.ok(state.scrollableWidth <= 1);
@@ -108,7 +123,12 @@ try {
 
   const selected = async (name) => {
     const card = page.getByRole("button", { name, exact: true });
-    await page.waitForFunction((label) => document.activeElement?.getAttribute("aria-label") === label, name);
+    try {
+      await page.waitForFunction((label) => document.activeElement?.getAttribute("aria-label") === label, name);
+    } catch (error) {
+      console.error("Focus diagnostic", await page.evaluate(() => ({ focus: document.activeElement?.outerHTML, dialogOpen: document.querySelector("dialog").open, selected: [...document.querySelectorAll('.game-card[aria-pressed="true"]')].map((card) => card.getAttribute("aria-label")) })));
+      throw error;
+    }
     assert.equal(await card.getAttribute("aria-pressed"), "true");
   };
   await page.keyboard.press("Home");
@@ -123,8 +143,10 @@ try {
 
   const pad = async (button, name) => {
     await page.waitForTimeout(400);
-    await page.evaluate((index) => { window.__pressedButtons = [index]; }, button);
+    const priorReads = await page.evaluate((index) => { window.__pressedButtons = [index]; return window.__padReads; }, button);
     try {
+      await page.waitForFunction((reads) => window.__padReads > reads, priorReads);
+      await page.evaluate(() => { window.__pressedButtons = []; });
       if (name) await selected(name);
       else if (button === 0) await page.getByRole("heading", { name: "Online Duel" }).waitFor();
       else await page.waitForFunction(() => !document.querySelector("dialog").open);

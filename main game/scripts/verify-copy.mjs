@@ -37,6 +37,11 @@ try {
       assert.equal(await page.locator("dialog input, dialog form, dialog .save-slot").count(), 0);
       assert.equal(await page.locator("dialog button").count(), 2);
     }
+    if (state === "showcase") {
+      assert.match(result.text, /Showcase matches are not connected/);
+      assert.equal(await page.locator("dialog button").count(), 2);
+      assert.equal(await page.locator("dialog input, dialog form").count(), 0);
+    }
     results.push({ viewport, state, ...result });
     if (!domOnly && ((viewport.width === 1280 && ["legacy", "online"].includes(state)) || (viewport.width === 844 && state === "settings"))) {
       await page.locator("dialog").screenshot({ path: `artifacts/copy/${state}-${viewport.width}.png` });
@@ -62,6 +67,7 @@ try {
       ["local", "button", "Local Duel"],
       ["chapters", "button", "Chapters"],
       ["online", "button", "Online Duel"],
+      ["showcase", "tab", "Showcase"],
       ["settings", "tab", "Settings"],
       ["back", "button", "Back"],
     ]) {
@@ -72,7 +78,7 @@ try {
     }
 
   }
-  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, domOnly, scope: "Four mode previews, three Home panels, Settings and Back at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.", results }, null, 2) + "\n");
+  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, domOnly, scope: "Four mode previews, three Home panels, Showcase, Settings and Back at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.", results }, null, 2) + "\n");
   console.log(`PASS ${results.length} modal copy states: no horizontal overflow or clipped text; truthful Home and mode-preview copy; desktop and landscape.`);
 } finally {
   await browser.close();

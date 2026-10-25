@@ -1,7 +1,7 @@
 {
   "passed": true,
   "domOnly": true,
-  "scope": "Four mode previews, three Home panels, Settings and Back at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.",
+  "scope": "Four mode previews, three Home panels, Showcase, Settings and Back at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.",
   "results": [
     {
       "viewport": {
@@ -76,6 +76,17 @@
       },
       "state": "online",
       "text": "×\nCROWNFALL\nOnline Duel\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "showcase",
+      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Play\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -175,6 +186,17 @@
       },
       "state": "online",
       "text": "×\nCROWNFALL\nOnline Duel\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "showcase",
+      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Play\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []

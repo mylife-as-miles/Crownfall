@@ -13,6 +13,7 @@ type Panel =
   | "legacy"
   | "chronicles"
   | "herald"
+  | "showcase"
   | "settings"
   | "quit"
   | null;
@@ -67,6 +68,7 @@ const cards = [
 const tabs: { label: string; panel: Panel; aria: string }[] = [
   { label: "HOME", panel: null, aria: "Home" },
   { label: "PLAY", panel: null, aria: "Play" },
+  { label: "SHOWCASE", panel: "showcase", aria: "Showcase" },
   { label: "SETTINGS", panel: "settings", aria: "Settings" },
 ];
 const homeDirections: Partial<Record<string, HomeDirection>> = {
@@ -189,10 +191,15 @@ export default function App() {
       }
       if (
         event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLSelectElement ||
-        panel
+        event.target instanceof HTMLSelectElement
       )
         return;
+      if (event.key.toLowerCase() === "q" || event.key.toLowerCase() === "e") {
+        event.preventDefault();
+        changeTab(event.key.toLowerCase() === "e" ? 1 : -1);
+        return;
+      }
+      if (panel) return;
       const direction = homeDirections[event.key];
       if (screen === "home" && direction) {
         event.preventDefault();
@@ -207,10 +214,6 @@ export default function App() {
         event.preventDefault();
         if (screen === "home") selectHome(event.key === "Home" ? 0 : HOME_CONTENT.length - 1);
         else selectCard(event.key === "Home" ? 0 : cards.length - 1);
-      }
-      if (event.key.toLowerCase() === "q" || event.key.toLowerCase() === "e") {
-        event.preventDefault();
-        changeTab(event.key.toLowerCase() === "e" ? 1 : -1);
       }
       if (
         event.key === "Enter" &&
@@ -399,6 +402,15 @@ export default function App() {
                 </p>
                 <button className="primary-action" onClick={closePanel}>
                   Back to Home <span aria-hidden="true">&gt;</span>
+                </button>
+              </>
+            )}
+            {panel === "showcase" && (
+              <>
+                <h1 id="dialog-heading">Showcase</h1>
+                <p>Showcase matches are not connected to this menu.</p>
+                <button className="primary-action" onClick={closePanel}>
+                  Back to {screen === "home" ? "Home" : "Play"} <span aria-hidden="true">&gt;</span>
                 </button>
               </>
             )}

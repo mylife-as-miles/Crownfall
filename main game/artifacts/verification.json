@@ -3,7 +3,7 @@
   "domOnly": true,
   "checks": [
     "Default Play/Local Duel selection and reference card positioning",
-    "Home/Play/Settings navigation, tab shortcuts and Back return to the correct screen",
+    "Home/Play/Showcase/Settings navigation, open-dialog tab shortcuts and Back return to the correct screen",
     "Four mode labels, bold amber/gray typography, original geometry and supplied-artwork fingerprints are correct",
     "Arrow navigation, focused Enter activation, Escape and modal closure work for the new modes",
     "All four mode previews truthfully disclose unavailable gameplay and offer no launch or demo-save form",

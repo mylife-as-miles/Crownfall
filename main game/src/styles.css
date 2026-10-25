@@ -157,15 +157,15 @@ a {
   margin-left: 0;
   margin-right: 0;
   position: absolute;
-  left: 29.53cqw;
+  left: 42.5cqw;
 }
 .main-nav {
-  width: 31.25cqw;
+  width: 44.22cqw;
 }
 .nav-links {
   position: absolute;
   left: 5.16cqw;
-  width: 22.5cqw;
+  width: 36.72cqw;
   gap: 0;
 }
 .nav-item {
@@ -184,6 +184,9 @@ a {
 }
 .nav-item:nth-child(3) {
   left: 14.77cqw;
+}
+.nav-item:nth-child(4) {
+  left: 26.5625cqw;
 }
 .game-cards {
   position: absolute;

@@ -47,12 +47,16 @@ try {
   assert.ok(bounds && Math.abs(bounds.x - 340) < 2 && Math.abs(bounds.y - 211) < 2, JSON.stringify(bounds));
   record("Default Play/Local Duel selection and reference card positioning");
 
-  assert.deepEqual(await page.getByRole("tab").evaluateAll((elements) => elements.map((element) => element.getAttribute("aria-label"))), ["Home", "Play", "Settings"]);
+  assert.deepEqual(await page.getByRole("tab").evaluateAll((elements) => elements.map((element) => element.getAttribute("aria-label"))), ["Home", "Play", "Showcase", "Settings"]);
   assert.equal(await page.locator(".nav-notification").count(), 0);
   await page.keyboard.press("q");
   await page.getByRole("region", { name: "Home options", exact: true }).waitFor();
   assert.equal(await page.locator("dialog").evaluate((element) => element.open), false);
   await page.getByRole("tab", { name: "Play", exact: true }).click();
+  await page.keyboard.press("e");
+  await page.getByRole("heading", { name: "Showcase", exact: true }).waitFor();
+  assert.match(await page.locator("dialog").innerText(), /Showcase matches are not connected/);
+  assert.equal(await page.locator("dialog button").count(), 2);
   await page.keyboard.press("e");
   await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
   assert.match(await page.locator("dialog").innerText(), /audio is not connected/);
@@ -63,7 +67,7 @@ try {
   await page.getByRole("region", { name: "Home options", exact: true }).waitFor();
   await page.keyboard.press("Escape");
   await page.getByRole("region", { name: "Play options", exact: true }).waitFor();
-  record("Home/Play/Settings navigation, tab shortcuts and Back return to the correct screen");
+  record("Home/Play/Showcase/Settings navigation, open-dialog tab shortcuts and Back return to the correct screen");
 
   const cardBounds = await page.locator(".game-card").evaluateAll((elements) => elements.map((element) => {
     const { x, y, width, height } = element.getBoundingClientRect();

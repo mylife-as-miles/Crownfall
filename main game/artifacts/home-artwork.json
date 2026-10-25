@@ -66,10 +66,10 @@
         "objectPosition": "50% 50%",
         "background": "#1b1914",
         "cardDesignSize": {
-          "width": 358,
+          "width": 298,
           "height": 215
         },
-        "rationale": "Contain preserves the complete four-region map. The wider 358\u00d7215 tile adds dark side gutters without cropping source context."
+        "rationale": "Contain preserves the complete four-region map with narrow dark side gutters at the restored 298\u00d7215 size."
       },
       "displayFitApplied": true
     },
@@ -102,10 +102,10 @@
         "objectPosition": "50% 50%",
         "background": "#1b1914",
         "cardDesignSize": {
-          "width": 358,
+          "width": 298,
           "height": 215
         },
-        "rationale": "Centered cover retains the sorcerer and portal; the wider tile reveals more of the unchanged source image."
+        "rationale": "The original centered cover framing is restored, retaining the sorcerer and portal."
       },
       "displayFitApplied": true
     }
