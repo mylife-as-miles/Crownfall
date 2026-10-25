@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import {
+  nextRenderTimestamp,
+  normalizeFrameLimit,
+  normalizeRenderScale,
+  scaledPixelRatio,
+} from "./effects/render-controls";
+import type { FrameLimit } from "./effects/render-controls";
 import "./effects/atmosphere.css";
 
 export type EffectsQuality = "low" | "medium" | "high";
@@ -99,15 +106,30 @@ function Feather({ className }: { className: string }) {
 export default function Atmosphere({
   quality = "high",
   reducedMotion: requestedReducedMotion = false,
+  renderScale = 100,
+  frameLimit = 0,
 }: {
   quality?: EffectsQuality;
   reducedMotion?: boolean;
+  renderScale?: number;
+  frameLimit?: FrameLimit;
 }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [systemReducedMotion, setSystemReducedMotion] = useState(
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
   const reducedMotion = requestedReducedMotion || systemReducedMotion;
+  const renderScaleRef = useRef(normalizeRenderScale(renderScale));
+  const frameLimitRef = useRef(normalizeFrameLimit(frameLimit));
+  const resizeControlRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    const scale = normalizeRenderScale(renderScale);
+    const changed = renderScaleRef.current !== scale;
+    renderScaleRef.current = scale;
+    frameLimitRef.current = normalizeFrameLimit(frameLimit);
+    if (changed) resizeControlRef.current?.();
+  }, [renderScale, frameLimit]);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -130,7 +152,7 @@ export default function Atmosphere({
       return;
     }
     renderer.setClearColor(0x000000, 0);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(scaledPixelRatio(window.devicePixelRatio, renderScaleRef.current));
     renderer.domElement.setAttribute("aria-hidden", "true");
     mount.appendChild(renderer.domElement);
     const scene = new THREE.Scene();
@@ -184,25 +206,34 @@ export default function Atmosphere({
     scene.add(new THREE.Points(geometry, material));
     const resize = () => {
       const { width, height } = mount.getBoundingClientRect();
+      if (!width || !height) return;
+      const pixelRatio = scaledPixelRatio(window.devicePixelRatio, renderScaleRef.current);
+      if (renderer.getPixelRatio() !== pixelRatio) renderer.setPixelRatio(pixelRatio);
       renderer.setSize(width, height);
       material.uniforms.uScale.value =
         Math.max(0.55, height / 714) * renderer.getPixelRatio();
       renderer.render(scene, camera);
     };
+    resizeControlRef.current = resize;
     const observer = new ResizeObserver(resize);
     observer.observe(mount);
     resize();
     let frame = 0;
     const start = performance.now();
+    let lastRendered = start;
     const render = (now: number) => {
       frame = requestAnimationFrame(render);
       if (document.hidden) return;
+      const timestamp = nextRenderTimestamp(now, lastRendered, frameLimitRef.current);
+      if (timestamp === null) return;
+      lastRendered = timestamp;
       material.uniforms.uTime.value = (now - start) / 1000;
       renderer.render(scene, camera);
     };
     if (!reducedMotion) frame = requestAnimationFrame(render);
     return () => {
       cancelAnimationFrame(frame);
+      if (resizeControlRef.current === resize) resizeControlRef.current = null;
       observer.disconnect();
       geometry.dispose();
       material.dispose();

@@ -1,0 +1,51 @@
+.controls-detail .controls-binding-list {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #c4c0b6 transparent;
+}
+.controls-detail .controls-binding-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 55% 45%;
+  text-align: left;
+  border: 0;
+  cursor: pointer;
+}
+.controls-binding-row .controls-binding-value {
+  justify-self: stretch;
+  text-align: center;
+  font-family: "Barlow", Arial, sans-serif;
+  font-weight: 500;
+}
+.controls-detail .controls-binding-row:nth-child(even) {
+  background: rgba(35, 31, 25, .45);
+}
+.controls-detail .controls-binding-row.is-capturing .controls-binding-value {
+  outline: 1px solid #db8b28;
+  outline-offset: 0.3cqw;
+  color: #db8b28;
+}
+.controls-detail .controls-binding-row:focus-visible {
+  outline-offset: -2px;
+}
+.controls-detail .settings-detail-info .controls-binding-instructions {
+  margin-top: 2.5cqh;
+}
+.controls-detail .settings-detail-info .controls-binding-status {
+  margin-top: 2.5cqh;
+  color: #dba55a;
+  min-height: 4em;
+}
+.settings-footer-key {
+  display: inline-grid;
+  place-items: center;
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 50%;
+  margin-right: 0.35em;
+  color: #201409;
+  background: #a35f21;
+  font-family: Arial, sans-serif;
+  font-size: 0.85em;
+  font-weight: 700;
+}

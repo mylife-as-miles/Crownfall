@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
+import { openCategory, setMotion } from "./settings-helpers.mjs";
 
 // A small fixture verifies alternate assets alongside the actual supplied GLB.
 const vertices = new Float32Array([-0.6, -1, 0, 0.6, -1, 0, 0, 1, 0]);
@@ -194,20 +195,16 @@ try {
     if (request.url().includes("crownfall-sorcerer.glb"))
       modelRequests.push(request.url());
   });
-  await page.getByRole("tab", { name: "Settings", exact: true }).click();
-  await page.getByLabel("Ambient motion", { exact: false }).uncheck();
+  await setMotion(page, false);
   await page.locator(".atmosphere--still").waitFor({ state: "attached" });
-  await page
-    .getByLabel("Particle quality", { exact: false })
-    .selectOption("low");
+  await openCategory(page, "Video");
+  await page.getByRole("combobox", { name: /^Particle Quality$/i }).selectOption("low");
   assert.equal(
     await page.locator(".mote-field canvas").count(),
     0,
     "Low quality releases the particle renderer",
   );
-  await page
-    .getByLabel("Particle quality", { exact: false })
-    .selectOption("high");
+  await page.getByRole("combobox", { name: /^Particle Quality$/i }).selectOption("high");
   assert.equal(
     await page.locator(".mote-field canvas").count(),
     1,
@@ -218,6 +215,22 @@ try {
     1,
     "the app motion setting remains effective independently of OS preference",
   );
+  const originalSize = await canvas.evaluate((element) => ({ width: element.width, height: element.height }));
+  const scaleInput = page.getByRole("slider", { name: /^Resolution Scale$/i });
+  await scaleInput.focus();
+  await scaleInput.press("Home");
+  await page.waitForFunction(({ width, height }) => {
+    const canvas = document.querySelector(".creature-model canvas");
+    return Math.abs(canvas.width - width / 2) <= 1 && Math.abs(canvas.height - height / 2) <= 1;
+  }, originalSize);
+  await page.getByRole("combobox", { name: /^Frame Rate Limit$/i }).selectOption("60");
+  assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem("crownfall.main-game.preferences")).frameLimit), 60);
+  await scaleInput.focus();
+  await scaleInput.press("End");
+  await page.waitForFunction(({ width, height }) => {
+    const canvas = document.querySelector(".creature-model canvas");
+    return canvas.width === width && canvas.height === height;
+  }, originalSize);
   assert.equal(
     await canvas.getAttribute("data-test-identity"),
     "loaded-real-model",
@@ -230,7 +243,7 @@ try {
   assert.equal(
     modelRequests.length,
     0,
-    "motion and quality controls do not reload the GLB",
+    "motion, quality, render scale and frame limit controls do not reload the GLB",
   );
   assert.deepEqual(
     failures,
@@ -238,7 +251,7 @@ try {
     "all fallback and settings paths finish without runtime errors",
   );
   console.log(
-    "PASS: motion/quality changes retain the decoded GLB and Low releases particle WebGL",
+    "PASS: motion/quality/render-scale/frame-limit changes retain the GLB; 50% scale halves its canvas; Low releases particles",
   );
 
   await page.goto(`${origin}/?model=none`, { waitUntil: "networkidle" });
@@ -259,7 +272,7 @@ try {
           "Invalid glTF retains the illustration fallback",
           "Actual compressed GLB loads and selects the named Idle clip",
           "Actual Idle visibly animates; OS reduced motion freezes its rendered pose",
-          "Motion/quality controls retain the renderer and decoded model without another GLB request",
+          "Motion/quality/render scale/frame limit controls retain the renderer without another GLB request; 50% scale halves its canvas",
           "Low releases the independent particle renderer",
           "Explicit illustration preview uses no character WebGL context",
         ],

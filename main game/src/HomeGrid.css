@@ -1,8 +1,3 @@
-.main-nav--home .nav-item:nth-child(2) {
-  left: 7.8125cqw;
-  width: auto;
-}
-
 .home-grid {
   --home-accent: #bf791a;
   position: absolute;

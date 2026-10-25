@@ -19,6 +19,18 @@ Each tile opens a clear unavailable-state dialog. The menu does not implement le
 
 `src/home-content.ts` configures the three content slots, image fit and supported actions. The original JPEGs are preserved byte-for-byte outside Git under `/workspace/crownfall-home-originals/`. Separate full-resolution WebP delivery copies are in `public/assets/home/`; mapping, hashes and display fits are in `artifacts/home-artwork.json`. The private Page and reference image remain unchanged and outside the repository.
 
+## Settings
+
+Settings opens a six-tile hub: General, Controls, Input, Video, Audio and Credits. At 1280 × 720 the contiguous grid is 900 × 438 pixels, with 300 × 219 tiles. The four top navigation buttons keep 24-pixel gaps regardless of selection. Detail pages use a scrollable options list, selected amber row, a description column and a blurred scene, matching the supplied references. Back returns from a detail page to its selected category, then to the originating Home or Play screen.
+
+General offers English (the only available translation), ambient motion and control prompts. Controls edits the actual menu keyboard bindings, checks conflicts, reserves Tab for focus, supports capture cancellation and restores defaults. Escape always works as a fallback back action. Input shows the standard controller mapping and connection status: left stick/D-pad navigation, A select, B back, LB/RB tabs, Y reset editable settings. The controller diagram describes menu actions rather than unimplemented character controls.
+
+Video changes the actual particle density, internal scene resolution (50–100%), and scene frame limit (unlimited/30/60/120). Overall Quality applies a preset to resolution and particles; separately edited values display Custom. Fullscreen uses the browser Fullscreen API when permitted; screen resolution follows the browser viewport. Fixed browser settings and absent engine features are read-only with explanations. Text and card artwork stay at full CSS resolution. Changing render scale, frame limit or motion retains the decoded creature and renderer.
+
+Audio retains a local Master Volume preference, with its current lack of audible effect stated in the description. Music, SFX and dialogue playback are unavailable. Credits describes the supplied assets, technology and included licenses. Preferences migrate from the previous three-field format and persist locally when browser storage is available. Reset Defaults affects only the current settings category; it does not erase unrelated browser data. Hiding control prompts retains the actual Back/Select/Reset buttons.
+
+Fresh screenshots and settings verification are in `artifacts/settings/`. Run `node scripts/verify-settings.mjs` for settings interactions and `node scripts/capture-settings.mjs` for screenshots with the supplied GLB. Physical controller hardware and physical-device GPU performance are not established by browser simulation.
+
 ## Environment artwork
 
 The four cards use the user's supplied JPEGs in attachment order. The originals were retrieved from the private ChatGPT Page through authorized file reads, materialized under `/workspace/crownfall-card-originals/`, and verified against the supplied byte counts and source SHA-256 values before conversion. Originals are preserved outside the Git checkout; only separate optimized WebP delivery copies are used by the app. The private Page and its sharing settings are unchanged.
@@ -56,9 +68,11 @@ node scripts/verify-layout.mjs
 node scripts/verify-home.mjs
 node scripts/verify-copy.mjs
 node scripts/verify-model.mjs
+node scripts/verify-settings.mjs
+node scripts/verify-render-controls.mjs
 node scripts/verify-framing.mjs
 ```
 
-Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Current screenshots and verification results are saved in `artifacts/`. Copy checks cover 20 modal states at desktop and landscape sizes, including all four mode previews, without horizontal clipping. The visual critic reviews actual browser screenshots; scores are subjective and distinct from automated functionality checks. The current layout is the restored four-visible-card row. Files in `artifacts/carousel/` and archived visual reviews document the superseded carousel iteration; its recording predates the final creature transform. Software WebGL verification does not establish physical-device GPU performance.
+Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Current screenshots and verification results are saved in `artifacts/`. Copy checks cover the remaining preview dialogs and settings detail pages at desktop and landscape sizes, including all four mode previews, without horizontal clipping. The visual critic reviews actual browser screenshots; scores are subjective and distinct from automated functionality checks. The current layout is the restored four-visible-card row. Files in `artifacts/carousel/` and archived visual reviews document the superseded carousel iteration; its recording predates the final creature transform. Software WebGL verification does not establish physical-device GPU performance.
 
 `verify-framing.mjs` requires the Vite development server (`CROWNFALL_FRAMING_URL`, default `http://localhost:5173`). It intercepts the development module only inside its Playwright session to seek exact Idle poses and project actual skinned vertices. It writes no production debug hooks. The probe checks authored Idle key times and midpoints against independent ambient sway/yaw extremes, with geometric crown/face/eye proxies and calibration images. Dense sampled bounds are supporting evidence rather than a continuous mathematical guarantee or semantic face detection.

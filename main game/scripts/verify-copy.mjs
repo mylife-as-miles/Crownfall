@@ -68,7 +68,6 @@ try {
       ["chapters", "button", "Chapters"],
       ["online", "button", "Online Duel"],
       ["showcase", "tab", "Showcase"],
-      ["settings", "tab", "Settings"],
       ["back", "button", "Back"],
     ]) {
       await page.getByRole(role, { name, exact: true }).click();
@@ -78,7 +77,7 @@ try {
     }
 
   }
-  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, domOnly, scope: "Four mode previews, three Home panels, Showcase, Settings and Back at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.", results }, null, 2) + "\n");
+  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, domOnly, scope: "Four mode previews, three Home panels, Showcase and Back (Settings page content is verified separately) at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.", results }, null, 2) + "\n");
   console.log(`PASS ${results.length} modal copy states: no horizontal overflow or clipped text; truthful Home and mode-preview copy; desktop and landscape.`);
 } finally {
   await browser.close();

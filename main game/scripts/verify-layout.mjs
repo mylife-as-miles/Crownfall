@@ -27,7 +27,7 @@ try {
       value: () => {
         window.__padReads++;
         return [{
-        connected: true,
+        connected: true, mapping: "standard", index: 0,
         axes: [0, 0],
         buttons: Array.from({ length: 17 }, (_, index) => ({
           pressed: window.__pressedButtons.includes(index),

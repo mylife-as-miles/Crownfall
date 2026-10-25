@@ -1,0 +1,125 @@
+{
+  "captures": [
+    {
+      "path": "artifacts/settings/play-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/settings/home-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/settings/grid-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/settings/general-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/settings/controls-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/settings/input-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/settings/video-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/settings/audio-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/settings/credits-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/settings/grid-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/settings/grid-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/settings/general-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/settings/controls-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/settings/input-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/settings/video-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/settings/audio-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/settings/credits-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    }
+  ],
+  "errors": [],
+  "rendering": "Actual supplied GLB, static reduced-motion pose, high particles, default 100% render scale"
+}

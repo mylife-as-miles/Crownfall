@@ -1,0 +1,57 @@
+.settings-grid {
+  position: absolute;
+  z-index: 4;
+  left: 8.28125cqw;
+  top: 21.944444cqh;
+  width: 70.3125cqw;
+  height: 60.833333cqh;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  border: 1px solid rgba(177, 165, 139, .19);
+}
+.settings-tile {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(177, 165, 139, .16);
+  border-radius: 0;
+  color: #a29c8e;
+  background-color: rgba(10, 9, 7, .45);
+  background-image: linear-gradient(120deg, rgba(8, 7, 5, .9), rgba(8, 7, 5, .02)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='%23c0b6a0' opacity='.15'%3E%3Cpath fill-rule='evenodd' d='M11 1a10 10 0 1 1 0 20 10 10 0 0 1 0-20m-2 3v5H4v4h5v5h4v-5h5V9h-5V4zM33 1a10 10 0 1 1 0 20 10 10 0 0 1 0-20m-2 3v5h-5v4h5v5h4v-5h5V9h-5V4zM11 23a10 10 0 1 1 0 20 10 10 0 0 1 0-20m-2 3v5H4v4h5v5h4v-5h5v-4h-5v-5zM33 23a10 10 0 1 1 0 20 10 10 0 0 1 0-20m-2 3v5h-5v4h5v5h4v-5h5v-4h-5v-5z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: cover, 3.4375cqw 3.4375cqw;
+  text-align: left;
+  transition: color .15s, background-color .15s, box-shadow .15s;
+}
+.settings-tile:hover { color: #ccc3af; }
+.settings-tile.is-selected {
+  color: #d99320;
+  border-color: #c88917;
+  box-shadow: inset 0 0 0 .12cqw #c88917, 0 0 .32cqw #c8891766;
+  background-color: rgba(117, 68, 7, .16);
+}
+.settings-tile:focus-visible { outline-offset: -.25cqw; }
+.settings-tile-title {
+  position: absolute;
+  top: 3.194444cqh;
+  left: 1.484375cqw;
+  font-family: Arial, sans-serif;
+  font-size: clamp(12px, 1.45cqw, 28px);
+  line-height: 1.2;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.settings-tile-icon {
+  position: absolute;
+  top: 8.35cqh;
+  left: 7.5cqw;
+  width: 8.4375cqw;
+  height: 15cqh;
+  fill: currentColor;
+  opacity: .77;
+}
+.settings-tile.is-selected .settings-tile-icon { opacity: 1; }
+.settings-icon-cutout { fill: #171610; }
+@media (prefers-reduced-motion: reduce) { .settings-tile { transition: none; } }

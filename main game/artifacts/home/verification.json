@@ -33,45 +33,45 @@
           "label": "Home",
           "x": 127.984375,
           "y": 77.609375,
-          "width": 96.21875,
+          "width": 96,
           "height": 32.25,
-          "right": 224.203125,
+          "right": 223.984375,
           "bottom": 109.859375
         },
         {
           "label": "Play",
-          "x": 227.984375,
+          "x": 247.984375,
           "y": 77.609375,
-          "width": 48.53125,
+          "width": 86.015625,
           "height": 32.25,
-          "right": 276.515625,
+          "right": 334,
           "bottom": 109.859375
         },
         {
           "label": "Showcase",
-          "x": 317.03125,
+          "x": 358,
           "y": 77.609375,
-          "width": 114.359375,
+          "width": 156,
           "height": 32.25,
-          "right": 431.390625,
+          "right": 514,
           "bottom": 109.859375
         },
         {
           "label": "Settings",
-          "x": 467.984375,
+          "x": 538,
           "y": 77.609375,
-          "width": 97.734375,
+          "width": 138,
           "height": 32.25,
-          "right": 565.71875,
+          "right": 676,
           "bottom": 109.859375
         },
         {
           "label": "Next menu tab",
-          "x": 605.9375,
+          "x": 699.9375,
           "y": 86.53125,
           "width": 22.015625,
           "height": 14.390625,
-          "right": 627.953125,
+          "right": 721.953125,
           "bottom": 100.921875
         }
       ],
@@ -142,45 +142,45 @@
           "label": "Home",
           "x": 191.984375,
           "y": 116.421875,
-          "width": 144.34375,
+          "width": 144,
           "height": 48.375,
-          "right": 336.328125,
+          "right": 335.984375,
           "bottom": 164.796875
         },
         {
           "label": "Play",
-          "x": 341.984375,
+          "x": 371.984375,
           "y": 116.421875,
-          "width": 72.796875,
+          "width": 129.015625,
           "height": 48.375,
-          "right": 414.78125,
+          "right": 501,
           "bottom": 164.796875
         },
         {
           "label": "Showcase",
-          "x": 475.5625,
+          "x": 537,
           "y": 116.421875,
-          "width": 171.59375,
+          "width": 234,
           "height": 48.375,
-          "right": 647.15625,
+          "right": 771,
           "bottom": 164.796875
         },
         {
           "label": "Settings",
-          "x": 701.984375,
+          "x": 807,
           "y": 116.421875,
-          "width": 146.640625,
+          "width": 207,
           "height": 48.375,
-          "right": 848.625,
+          "right": 1014,
           "bottom": 164.796875
         },
         {
           "label": "Next menu tab",
-          "x": 908.921875,
+          "x": 1049.921875,
           "y": 129.8125,
           "width": 33.015625,
           "height": 21.59375,
-          "right": 941.9375,
+          "right": 1082.9375,
           "bottom": 151.40625
         }
       ],
@@ -251,45 +251,45 @@
           "label": "Home",
           "x": 142.3125,
           "y": 42.03125,
-          "width": 52.53125,
+          "width": 52.421875,
           "height": 17.46875,
-          "right": 194.84375,
+          "right": 194.734375,
           "bottom": 59.5
         },
         {
           "label": "Play",
-          "x": 196.921875,
+          "x": 207.828125,
           "y": 42.03125,
-          "width": 26.484375,
+          "width": 46.96875,
           "height": 17.46875,
-          "right": 223.40625,
+          "right": 254.796875,
           "bottom": 59.5
         },
         {
           "label": "Showcase",
-          "x": 245.5625,
+          "x": 267.890625,
           "y": 42.03125,
-          "width": 62.421875,
+          "width": 85.203125,
           "height": 17.46875,
-          "right": 307.984375,
+          "right": 353.09375,
           "bottom": 59.5
         },
         {
           "label": "Settings",
-          "x": 328.015625,
+          "x": 366.1875,
           "y": 42.03125,
-          "width": 53.34375,
+          "width": 75.375,
           "height": 17.46875,
-          "right": 381.359375,
+          "right": 441.5625,
           "bottom": 59.5
         },
         {
           "label": "Next menu tab",
-          "x": 403.375,
+          "x": 454.71875,
           "y": 46.859375,
           "width": 12.015625,
           "height": 7.796875,
-          "right": 415.390625,
+          "right": 466.734375,
           "bottom": 54.65625
         }
       ],
@@ -369,7 +369,7 @@
     },
     {
       "title": "Showcase",
-      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Home\n>\nB\nBack"
+      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Settings\n>\nB\nBack"
     },
     {
       "title": "Showcase",
@@ -381,7 +381,7 @@
     },
     {
       "title": "Showcase",
-      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Home\n>\nB\nBack"
+      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Settings\n>\nB\nBack"
     }
   ],
   "errors": []

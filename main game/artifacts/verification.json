@@ -8,7 +8,7 @@
     "Arrow navigation, focused Enter activation, Escape and modal closure work for the new modes",
     "All four mode previews truthfully disclose unavailable gameplay and offer no launch or demo-save form",
     "Mode activation and reload have no local-demo-save creation, restoration or overwrite side effects",
-    "Quality and motion preferences persist; Low releases the particle renderer",
+    "Quality and motion preferences persist across detail pages/reload; Low releases the particle renderer",
     "Mode navigation wraps correctly; Home/End select the endpoints without an added Host or Story card",
     "OS reduced motion is honored independently of saved preferences",
     "No JavaScript or console errors during the menu flow"

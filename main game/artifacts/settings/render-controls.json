@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "scope": "Deterministic cadence and pixel-ratio boundaries; actual GPU speed is device-dependent.",
+  "cadence": [
+    {
+      "refreshHz": 60,
+      "cap": "unlimited",
+      "framesInTwoSeconds": 120,
+      "expected": 120
+    },
+    {
+      "refreshHz": 60,
+      "cap": 30,
+      "framesInTwoSeconds": 60,
+      "expected": 60
+    },
+    {
+      "refreshHz": 60,
+      "cap": 60,
+      "framesInTwoSeconds": 120,
+      "expected": 120
+    },
+    {
+      "refreshHz": 60,
+      "cap": 120,
+      "framesInTwoSeconds": 120,
+      "expected": 120
+    },
+    {
+      "refreshHz": 120,
+      "cap": "unlimited",
+      "framesInTwoSeconds": 240,
+      "expected": 240
+    },
+    {
+      "refreshHz": 120,
+      "cap": 30,
+      "framesInTwoSeconds": 60,
+      "expected": 60
+    },
+    {
+      "refreshHz": 120,
+      "cap": 60,
+      "framesInTwoSeconds": 120,
+      "expected": 120
+    },
+    {
+      "refreshHz": 120,
+      "cap": 120,
+      "framesInTwoSeconds": 240,
+      "expected": 240
+    },
+    {
+      "refreshHz": 144,
+      "cap": "unlimited",
+      "framesInTwoSeconds": 288,
+      "expected": 288
+    },
+    {
+      "refreshHz": 144,
+      "cap": 30,
+      "framesInTwoSeconds": 60,
+      "expected": 60
+    },
+    {
+      "refreshHz": 144,
+      "cap": 60,
+      "framesInTwoSeconds": 120,
+      "expected": 120
+    },
+    {
+      "refreshHz": 144,
+      "cap": 120,
+      "framesInTwoSeconds": 240,
+      "expected": 240
+    }
+  ],
+  "pixelRatioChecks": "Default DPR clamp, 50% scaling, finite bounds and unlimited fallback pass."
+}

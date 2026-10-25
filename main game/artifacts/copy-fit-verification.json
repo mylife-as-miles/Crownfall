@@ -1,7 +1,7 @@
 {
   "passed": true,
   "domOnly": true,
-  "scope": "Four mode previews, three Home panels, Showcase, Settings and Back at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.",
+  "scope": "Four mode previews, three Home panels, Showcase and Back (Settings page content is verified separately) at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.",
   "results": [
     {
       "viewport": {
@@ -87,17 +87,6 @@
       },
       "state": "showcase",
       "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Play\n>\nB\nBack",
-      "horizontalOverflow": false,
-      "verticalScrollAvailable": false,
-      "offenders": []
-    },
-    {
-      "viewport": {
-        "width": 1280,
-        "height": 720
-      },
-      "state": "settings",
-      "text": "×\nCROWNFALL\nSettings\n\nAdjust menu effects. Preferences save automatically.\n\nParticle quality\nTeal sparks and drifting embers\nLow\nMedium\nHigh\nAmbient volume\nSaved setting; audio is not connected\nAmbient motion\nCreature and background animation\nBack to Play\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -199,17 +188,6 @@
       "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Play\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
-      "offenders": []
-    },
-    {
-      "viewport": {
-        "width": 844,
-        "height": 390
-      },
-      "state": "settings",
-      "text": "×\nCROWNFALL\nSettings\n\nAdjust menu effects. Preferences save automatically.\n\nParticle quality\nTeal sparks and drifting embers\nLow\nMedium\nHigh\nAmbient volume\nSaved setting; audio is not connected\nAmbient motion\nCreature and background animation\nBack to Play\n>\nB\nBack",
-      "horizontalOverflow": false,
-      "verticalScrollAvailable": true,
       "offenders": []
     },
     {

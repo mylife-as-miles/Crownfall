@@ -1,0 +1,76 @@
+.input-diagram-wrap {
+  position: absolute;
+  top: 18cqh;
+  left: 7cqw;
+  width: 85cqw;
+  height: 58cqh;
+}
+.input-diagram {
+  display: block;
+  width: 100%;
+  height: calc(100% - 7cqh);
+  overflow: visible;
+  font-family: "Barlow", Arial, sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+}
+.controller-outline {
+  stroke: #aaa394;
+  stroke-width: 2;
+  opacity: 0.7;
+}
+.controller-button-letters {
+  fill: #b9b0a0;
+  font-size: 22px;
+}
+.controller-callout-lines {
+  stroke: #8b8375;
+  stroke-width: 1.3;
+  opacity: 0.55;
+}
+.controller-callout-labels {
+  fill: #d0c9bc;
+}
+.controller-callout-action {
+  fill: #b6ad9e;
+  font-size: 15px;
+}
+.controller-callout-secondary {
+  fill: #9c9487;
+  font-size: 14px;
+}
+.controller-button-a {
+  fill: #a8bd79;
+  font-weight: 600;
+}
+.controller-button-b {
+  fill: #d29565;
+  font-weight: 600;
+}
+.controller-button-y {
+  fill: #d6b673;
+  font-weight: 600;
+}
+.input-connection-status,
+.input-controller-name {
+  margin: 0.8cqh 0 0;
+  text-align: center;
+  font-size: clamp(10px, 1.1cqw, 18px);
+  color: #b9af9f;
+}
+.input-controller-name {
+  max-width: 72cqw;
+  margin-inline: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #898274;
+  font-size: clamp(9px, 0.95cqw, 16px);
+}
+@media (max-height: 450px) and (orientation: landscape) {
+  .input-diagram-wrap { top: 15cqh; height: 64cqh; }
+  .input-diagram { height: calc(100% - 8cqh); font-size: 24px; }
+  .controller-callout-action { font-size: 22px; }
+  .controller-callout-secondary { font-size: 21px; }
+  .controller-button-letters { font-size: 26px; }
+}

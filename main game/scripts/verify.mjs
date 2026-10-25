@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
+import { grid, openCategory, leaveSettings, setMotion } from "./settings-helpers.mjs";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
 const domOnly = process.env.CROWNFALL_DOM_ONLY === "1";
@@ -58,8 +59,8 @@ try {
   assert.match(await page.locator("dialog").innerText(), /Showcase matches are not connected/);
   assert.equal(await page.locator("dialog button").count(), 2);
   await page.keyboard.press("e");
-  await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
-  assert.match(await page.locator("dialog").innerText(), /audio is not connected/);
+  await grid(page).waitFor();
+  assert.equal(await page.locator("dialog").evaluate((dialog) => dialog.open), false);
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Back", exact: true }).click();
   await page.getByRole("heading", { name: "Return to Home?", exact: true }).waitFor();
@@ -141,17 +142,18 @@ try {
   assert.equal(await page.evaluate((key) => localStorage.getItem(key), saveKey), legacySave, "mode previews neither create nor overwrite legacy save data");
   record("Mode activation and reload have no local-demo-save creation, restoration or overwrite side effects");
 
-  await page.getByRole("tab", { name: "Settings", exact: true }).click();
-  await page.getByLabel("Particle quality", { exact: false }).selectOption("low");
-  await page.getByLabel("Ambient motion", { exact: false }).uncheck();
-  await page.getByRole("button", { name: /Back to Play/ }).click();
+  await openCategory(page, "Video");
+  await page.getByRole("combobox", { name: /^Particle Quality$/i }).selectOption("low");
+  await setMotion(page, false);
+  await leaveSettings(page);
   await page.waitForFunction(() => !document.querySelector(".mote-field canvas"));
   await page.reload();
-  await page.getByRole("tab", { name: "Settings", exact: true }).click();
-  assert.equal(await page.locator("#effect-quality").inputValue(), "low");
-  assert.equal(await page.locator("#motion-toggle").isChecked(), false);
-  await page.keyboard.press("Escape");
-  record("Quality and motion preferences persist; Low releases the particle renderer");
+  await openCategory(page, "Video");
+  assert.equal(await page.getByRole("combobox", { name: /^Particle Quality$/i }).inputValue(), "low");
+  await openCategory(page, "General");
+  assert.equal(await page.getByRole("switch", { name: /^Ambient Motion$/i }).getAttribute("aria-checked"), "false");
+  await leaveSettings(page);
+  record("Quality and motion preferences persist across detail pages/reload; Low releases the particle renderer");
 
   assert.equal(await page.getByRole("button", { name: "Host", exact: true }).count(), 0);
   await page.getByRole("button", { name: "Online Duel", exact: true }).focus();
@@ -175,10 +177,8 @@ try {
     await page.screenshot({ path: "artifacts/final-1920x1080.png" });
     record("Actual-model reference desktop and 1920px browser renders");
   }
-  await page.getByRole("tab", { name: "Settings", exact: true }).click();
-  await page.getByLabel("Ambient motion", { exact: false }).check();
-  assert.equal(await page.locator("#motion-toggle").isChecked(), true);
-  await page.getByRole("button", { name: /Back to Play/ }).click();
+  await setMotion(page, true);
+  await leaveSettings(page);
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.waitForFunction(() => !document.querySelector(".atmosphere--still"));
   await page.emulateMedia({ reducedMotion: "reduce" });

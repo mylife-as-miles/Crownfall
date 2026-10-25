@@ -5,12 +5,21 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { CREATURE_MODEL_URL } from "./effects/creature-config";
+import {
+  nextRenderTimestamp,
+  normalizeFrameLimit,
+  normalizeRenderScale,
+  scaledPixelRatio,
+} from "./effects/render-controls";
+import type { FrameLimit } from "./effects/render-controls";
 import "./effects/atmosphere.css";
 
 interface CreatureStageProps {
   reducedMotion?: boolean;
   modelUrl?: string;
   fallbackSrc?: string;
+  renderScale?: number;
+  frameLimit?: FrameLimit;
 }
 
 function disposeModel(root: THREE.Object3D) {
@@ -35,6 +44,8 @@ export default function CreatureStage({
   reducedMotion = false,
   modelUrl,
   fallbackSrc = `${import.meta.env.BASE_URL}assets/creature.webp`,
+  renderScale = 100,
+  frameLimit = 0,
 }: CreatureStageProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
@@ -45,6 +56,9 @@ export default function CreatureStage({
   const motionDisabled = reducedMotion || systemReducedMotion;
   const motionDisabledRef = useRef(motionDisabled);
   const motionControlRef = useRef<((paused: boolean) => void) | null>(null);
+  const renderScaleRef = useRef(normalizeRenderScale(renderScale));
+  const frameLimitRef = useRef(normalizeFrameLimit(frameLimit));
+  const resizeControlRef = useRef<(() => void) | null>(null);
   const requestedSource =
     modelUrl ?? new URLSearchParams(window.location.search).get("model");
   const source =
@@ -63,6 +77,14 @@ export default function CreatureStage({
   }, [motionDisabled]);
 
   useEffect(() => {
+    const scale = normalizeRenderScale(renderScale);
+    const changed = renderScaleRef.current !== scale;
+    renderScaleRef.current = scale;
+    frameLimitRef.current = normalizeFrameLimit(frameLimit);
+    if (changed) resizeControlRef.current?.();
+  }, [renderScale, frameLimit]);
+
+  useEffect(() => {
     setLoaded(false);
     setActiveAnimation(null);
     const mount = mountRef.current;
@@ -78,7 +100,7 @@ export default function CreatureStage({
     } catch {
       return;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(scaledPixelRatio(window.devicePixelRatio, renderScaleRef.current));
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -125,10 +147,13 @@ export default function CreatureStage({
     let mixer: THREE.AnimationMixer | null = null;
     let frame = 0;
     let previous = performance.now();
+    let lastRendered = previous;
     const start = previous;
     const resize = () => {
       const { width, height } = mount.getBoundingClientRect();
       if (!width || !height) return;
+      const pixelRatio = scaledPixelRatio(window.devicePixelRatio, renderScaleRef.current);
+      if (renderer.getPixelRatio() !== pixelRatio) renderer.setPixelRatio(pixelRatio);
       renderer.setSize(width, height);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
@@ -139,6 +164,7 @@ export default function CreatureStage({
         0.47;
       renderer.render(scene, camera);
     };
+    resizeControlRef.current = resize;
     const observer = new ResizeObserver(resize);
     observer.observe(mount);
     resize();
@@ -146,6 +172,9 @@ export default function CreatureStage({
       frame = 0;
       if (!active || !model || motionDisabledRef.current) return;
       frame = requestAnimationFrame(render);
+      const timestamp = nextRenderTimestamp(now, lastRendered, frameLimitRef.current);
+      if (timestamp === null) return;
+      lastRendered = timestamp;
       const delta = Math.min((now - previous) / 1000, 0.05);
       previous = now;
       if (document.hidden) return;
@@ -161,6 +190,7 @@ export default function CreatureStage({
       cancelAnimationFrame(frame);
       frame = 0;
       previous = performance.now();
+      lastRendered = previous;
       if (!paused && model) frame = requestAnimationFrame(render);
     };
     motionControlRef.current = setMotionPaused;
@@ -209,6 +239,7 @@ export default function CreatureStage({
       active = false;
       if (motionControlRef.current === setMotionPaused)
         motionControlRef.current = null;
+      if (resizeControlRef.current === resize) resizeControlRef.current = null;
       cancelAnimationFrame(frame);
       observer.disconnect();
       mixer?.stopAllAction();

@@ -1,12 +1,13 @@
 {
-  "revision": "Restored Home tile widths and Home / Play / Showcase / Settings navigation",
-  "latestReviewScope": "Home width restoration and shared four-entry navigation",
-  "score": 9.2,
-  "scoreScope": "Home; current Play assessment is separately 9.3",
+  "revision": "Reference-style six-category Settings hub and detail pages added",
+  "latestReviewScope": "Settings",
+  "score": 9.1,
+  "scoreScope": "Settings only; prior approved Home and Play assessments remain distinct.",
   "scoreOutOf": 10,
   "screenScores": {
     "Home": 9.2,
-    "Play": 9.3
+    "Play": 9.3,
+    "Settings": 9.1
   },
   "reviewer": "independent visual critic agent",
   "homeReview": {
@@ -140,7 +141,8 @@
       "copyInventory": "artifacts/menu-copy.json",
       "notes": "Critic independently inspected source artwork, all three Home renders and unavailable-state source wording. Keyboard/controller/pointer focus and geometry assertions are supported by the separate passing Home verification artifact.",
       "restoredGeometry": "artifacts/home/render-verification.json",
-      "sharedNavigationLayout": "artifacts/layout-verification.json"
+      "sharedNavigationLayout": "artifacts/layout-verification.json",
+      "settingsRevisionPreservation": "artifacts/settings/preservation.json"
     },
     "iterationHistory": [
       {
@@ -522,7 +524,8 @@
       "modeInventory": "artifacts/menu-copy.json",
       "artwork": "artifacts/card-artwork.json",
       "model": "artifacts/model-verification.json",
-      "fourEntryNavigation": "artifacts/layout-verification.json"
+      "fourEntryNavigation": "artifacts/layout-verification.json",
+      "settingsRevisionPreservation": "artifacts/settings/preservation.json"
     },
     "iterationHistory": [
       {
@@ -555,7 +558,7 @@
     ],
     "verdict": "Retains the subjective 9.3/10 mode-preview Play assessment with readable four-entry navigation. Gameplay integration remains absent and disclosed; no blocking visual or wording issue."
   },
-  "verdict": "Restored Home remains 9.2/10; current mode-preview Play remains 9.3/10. Four shared navigation labels are clear at desktop and landscape sizes, and Showcase honestly discloses its unavailable match destination. Scores are subjective; no blocking issue.",
+  "verdict": "Settings meets 9.1/10 after actual screenshot/reference review. Approved Home 9.2 and Play 9.3 remain separate; latest shared navigation spacing is intentional. Scores are subjective and functional verification is recorded separately.",
   "sharedNavigationReview": {
     "labels": [
       "Home",
@@ -573,6 +576,166 @@
     ],
     "showcaseDialog": "artifacts/home-restore/showcase-preview-1280.png",
     "sourceInventory": "artifacts/menu-copy.json",
-    "finding": "All four labels fit Home and Play at 1280,1920 and844px landscape widths. Showcase is explicitly unconnected and returns to the originating screen. Current mode labels, actual images and approved creature are retained."
+    "finding": "All four labels fit Home and Play at 1280,1920 and844px landscape widths. Showcase is explicitly unconnected and returns to the originating screen. Current mode labels, actual images and approved creature are retained.",
+    "latestSpacing": "Fixed-width navigation boxes with24px gaps at 1280, as requested for the Settings revision. Category/reference labels do not replace approved Home/Play/Showcase/Settings names."
+  },
+  "settingsReview": {
+    "scope": "New six-category Settings hub and reference-style detail screens. Home and Play assessments remain separate.",
+    "score": 9.1,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective reference-to-screenshot visual assessment, plus source inspection of browser capability disclosures. Not a pixel-identical reproduction, hardware frame-rate benchmark, or substitute for functional verification.",
+    "references": {
+      "privateLocalAttachmentsOnly": true,
+      "imagesIncludedInRepository": false,
+      "categoryGrid": "279170.jpg",
+      "generalLanguage": "279176.jpg",
+      "videoAndGraphics": [
+        "279171.jpg",
+        "279172.jpg"
+      ],
+      "keybindings": "279173.jpg",
+      "controllerDiagram": "279174.jpg",
+      "audio": "279175.jpg",
+      "credits": "Uses the same detail-page visual language; no invented dedicated reference image."
+    },
+    "reviewedScreenshots": [
+      "artifacts/settings/grid-1280x720.png",
+      "artifacts/settings/grid-1920x1080.png",
+      "artifacts/settings/grid-844x390.png",
+      "artifacts/settings/general-1280x720.png",
+      "artifacts/settings/general-844x390.png",
+      "artifacts/settings/controls-1280x720.png",
+      "artifacts/settings/controls-844x390.png",
+      "artifacts/settings/input-1280x720.png",
+      "artifacts/settings/input-844x390.png",
+      "artifacts/settings/video-1280x720.png",
+      "artifacts/settings/video-844x390.png",
+      "artifacts/settings/audio-1280x720.png",
+      "artifacts/settings/audio-844x390.png",
+      "artifacts/settings/credits-1280x720.png",
+      "artifacts/settings/credits-844x390.png"
+    ],
+    "supplementalNativeScrollbarInspection": {
+      "image": "/tmp/settings-scrollbar-native.png",
+      "finding": "Actual native white scrollbar is visible after capture stops suppressing scrollbars. Initial absence came from Playwright default --hide-scrollbars. No custom decorative scroll cue is retained.",
+      "latestSourceInspection": "Optimized-texture wording and square/thin native scrollbar styling inspected in source. Final production Video-only screenshot refresh is handled by the parent capture workflow."
+    },
+    "hubGeometryAt1280": {
+      "x": 106,
+      "y": 158,
+      "width": 900,
+      "height": 438,
+      "columns": 3,
+      "rows": 2,
+      "categories": [
+        "General",
+        "Controls",
+        "Input",
+        "Video",
+        "Audio",
+        "Credits"
+      ],
+      "notes": "Contiguous narrow-seam tiles with top-left labels, centered icons, repeated circled-plus texture and amber selection. Approved actual sorcerer retained behind the translucent grid."
+    },
+    "detailLayoutAt1280": {
+      "listX": 106,
+      "listTop": 150,
+      "listWidth": 544,
+      "descriptionX": 787.2,
+      "descriptionTop": 150,
+      "descriptionWidth": 294.4,
+      "fontSize": 16,
+      "notes": "Left aligned setting/value rows with charcoal selected band and amber selected text; right description column; strongly defocused existing scene; footer Back/Reset/adjust prompts. Native scroll exposes longer lists."
+    },
+    "rubric": [
+      {
+        "category": "Six-tile hub hierarchy and reference likeness",
+        "maximum": 2.5,
+        "score": 2.25,
+        "notes": "Three-by-two hierarchy, category order, selected amber state and large General gear align with reference. Pattern density/icon silhouettes remain approximate, but all tiles are clear at desktop and landscape sizes."
+      },
+      {
+        "category": "Detail columns, rows, selection and overflow",
+        "maximum": 2.5,
+        "score": 2.35,
+        "notes": "Left rows/right description, muted bands, amber selection, typography rhythm and defocused background are close. Corrected General and Video initial selections now agree with right descriptions. Native scrollbar exposes overflow in longer Video and Controls lists."
+      },
+      {
+        "category": "Typography and desktop/landscape readability",
+        "maximum": 1.5,
+        "score": 1.38,
+        "notes": "Labels, values, descriptions and footer prompts fit. Larger landscape Input labels resolve their initial tiny rendering. Short landscape lists scroll where necessary rather than causing page overflow. Some supporting text remains small."
+      },
+      {
+        "category": "Controller and keybinding presentation",
+        "maximum": 1.5,
+        "score": 1.32,
+        "notes": "Thin outlined standard controller and restrained leader labels match the reference treatment. Labels describe menu navigation/select/back/reset rather than unsupported gameplay actions. Keybinding rows clearly identify menu actions and capture instructions."
+      },
+      {
+        "category": "Palette, blur and scene cohesion",
+        "maximum": 1.0,
+        "score": 0.88,
+        "notes": "Warm dark surfaces, gray/amber controls and defocused actual sorcerer retain the existing scene identity. Cyan ambient color and some texture/icon differences remain compared with the generic reference."
+      },
+      {
+        "category": "Honest browser controls and attribution copy",
+        "maximum": 1.0,
+        "score": 0.92,
+        "notes": "Language is English-only; device/sync/unsupported effects and disconnected audio are disclosed. Resolution scale/frame-limit/particle controls are scoped to the menu scene. Texture copy now says supplied optimized textures. Credits use actual supplied assets and project technologies rather than invented contributors."
+      }
+    ],
+    "sourceDisclosureAudit": {
+      "result": "Pass for visible wording and source descriptions; runtime operation is verified separately.",
+      "general": "English only; local preferences and OS reduced-motion precedence explicitly described.",
+      "controls": "Bindings apply to Crownfall menu actions. Capture/conflict/reset behavior is handled by separate functional tests.",
+      "input": "Standard controller layout, real connection status and unassigned buttons are disclosed; no fake remapping or gameplay Jump/Run actions.",
+      "video": "Browser resolution/fullscreen limits, automatic resolution not implemented, browser-controlled vertical sync, fixed anti-aliasing and unavailable engine effects are explicit. Supplied optimized textures have no alternate quality tiers.",
+      "audio": "Master Volume stores a preference and explicitly has no audible effect. Device output is browser/OS managed; SFX/music/dialogue are unavailable.",
+      "credits": "Supplied artwork/sorcerer and actual React/TypeScript/Three.js/Barlow/license attribution only."
+    },
+    "iterationHistory": [
+      {
+        "iteration": "Initial actual-GLB screenshot review",
+        "score": 8.8,
+        "findings": "Initial General gear too small, stationary pointer produced selected-row/description mismatch on open, landscape controller labels too small, and capture suppressed the native scrollbar."
+      },
+      {
+        "iteration": "Corrected selection, gear and landscape labels",
+        "score": 9.1,
+        "findings": "Refreshed General and Video first-row selections agree with descriptions, large General gear matches reference presence, controller labels are readable on landscape. No redesign required."
+      },
+      {
+        "iteration": "Final native-overflow and truthful-copy check",
+        "score": 9.1,
+        "findings": "Removed Playwright hide-scrollbars capture flag and inspected native white-thumb confirmation. Source wording corrected to supplied optimized textures. No more visual polish requested. All production captures were refreshed after these narrow fixes, with native scrollbars visible."
+      }
+    ],
+    "evidence": {
+      "actualGLBCaptures": "artifacts/settings/screenshots.json",
+      "functionalBehavior": "artifacts/settings/verification.json",
+      "scenePreservation": "artifacts/settings/preservation.json",
+      "source": [
+        "src/SettingsGrid.tsx",
+        "src/SettingsGrid.css",
+        "src/SettingsDetail.tsx",
+        "src/SettingsDetail.css"
+      ],
+      "notes": "Visual critic independently inspected the actual screenshot set and disclosure source. Passing or failing runtime checks belong to the separate verification artifacts, which the parent workflow finalizes; this visual score does not assert unobserved runtime success."
+    },
+    "approvedDifferences": [
+      "Existing user-supplied sorcerer remains rather than importing the reference mannequin.",
+      "Descriptions reflect browser capabilities and current menu scope, replacing engine-only placeholder controls and unsupported languages/gameplay actions.",
+      "Shared navigation now uses fixed-width boxes and 24px gaps at 1280.",
+      "Credits follow the same detail language with factual project attribution.",
+      "Desktop and phone-landscape layouts remain the supported presentation."
+    ],
+    "limits": [
+      "Icon silhouettes and repeating pattern density are approximations rather than exact source artwork.",
+      "Some landscape supporting text is small; long lists use native vertical scrolling.",
+      "Browser/OS capabilities govern fullscreen, devices, synchronization and display output; disconnected audio is disclosed.",
+      "The 9.1 score is subjective visual judgment, not proof of functional correctness or hardware performance."
+    ],
+    "verdict": "Meets the subjective 9/10 visual target for Settings after the focused fixes. No blocking visual issue or further redesign requested."
   }
 }

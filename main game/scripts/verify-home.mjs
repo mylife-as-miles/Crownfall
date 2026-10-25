@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
+import { grid, openCategory, leaveSettings } from "./settings-helpers.mjs";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
 const target = new URL(origin);
@@ -33,12 +34,14 @@ try {
       configurable: true,
       value: () => {
         window.__homePadReads++;
+        const pressed = [...window.__homePadButtons];
+        window.__homePadButtons = [];
         return [{
           connected: true, index: 0, mapping: "standard", axes: [0, 0],
           buttons: Array.from({ length: 17 }, (_, index) => ({
-            pressed: window.__homePadButtons.includes(index),
-            touched: window.__homePadButtons.includes(index),
-            value: window.__homePadButtons.includes(index) ? 1 : 0,
+            pressed: pressed.includes(index),
+            touched: pressed.includes(index),
+            value: pressed.includes(index) ? 1 : 0,
           })),
         }];
       },
@@ -55,7 +58,7 @@ try {
     assert.equal(await button.getAttribute("aria-pressed"), "true");
     if (focus) await page.waitForFunction((label) => document.activeElement?.getAttribute("aria-label") === label, name);
   };
-  const activeTab = async (name) => assert.equal(await page.getByRole("tab", { name, exact: true }).getAttribute("aria-selected"), "true");
+  const activeTab = async (name) => assert.equal(await page.locator(`.main-nav [role="tab"][aria-label="${name}"]`).getAttribute("aria-selected"), "true");
   const closed = async () => page.waitForFunction(() => !document.querySelector("dialog").open);
   const inspectPlay = async () => {
     const play = await page.locator(".game-cards").evaluate((row) => ({
@@ -198,9 +201,8 @@ try {
   record("Showcase is an honest close/back preview and returns to its originating Home selection");
 
   await page.getByRole("tab", { name: "Settings", exact: true }).click();
-  await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
-  await page.getByRole("button", { name: /Back to Home/ }).click();
-  await closed();
+  await grid(page).waitFor();
+  await page.keyboard.press("Escape");
   await activeTab("Home");
   await selected("Herald Board", false);
   assert.notEqual(await page.evaluate(() => document.activeElement?.tagName), "BODY", "Settings closes without losing focus to the document body");
@@ -224,8 +226,11 @@ try {
     const previousReads = await page.evaluate((index) => { window.__homePadButtons = [index]; return window.__homePadReads; }, button);
     try {
       await page.waitForFunction((reads) => window.__homePadReads > reads, previousReads);
-      await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      await page.evaluate(() => { window.__homePadButtons = []; });
       await after();
+    } catch (error) {
+      console.error("Home controller diagnostic", await page.evaluate(() => ({ activeTab: document.querySelector('.main-nav [aria-selected="true"]')?.getAttribute("aria-label"), dialogOpen: document.querySelector("dialog").open, heading: document.querySelector("dialog h1")?.textContent, focused: document.activeElement?.outerHTML, grid: !!document.querySelector(".settings-grid"), detail: !!document.querySelector(".settings-detail") })));
+      throw error;
     } finally {
       await page.evaluate(() => { window.__homePadButtons = []; });
     }
@@ -237,9 +242,10 @@ try {
   await pad(1, async () => { await closed(); await selected("Herald Board"); });
   await pad(1, async () => { await activeTab("Play"); await selected("Chapters"); });
   await pad(4, async () => { await activeTab("Home"); await selected("Herald Board"); });
-  await pad(4, () => page.getByRole("heading", { name: "Settings", exact: true }).waitFor());
+  await pad(4, () => grid(page).waitFor());
   await pad(4, showcaseDialog);
-  await pad(1, async () => { await closed(); await activeTab("Home"); await selected("Herald Board"); });
+  await pad(1, async () => { await closed(); await activeTab("Settings"); await grid(page).waitFor(); });
+  await pad(1, async () => { await activeTab("Home"); await selected("Herald Board"); });
   await pad(5, async () => { await activeTab("Play"); await selected("Chapters"); });
   await pad(5, showcaseDialog);
   await pad(1, async () => { await closed(); await activeTab("Play"); await selected("Chapters"); });
@@ -252,27 +258,29 @@ try {
   await showcaseDialog();
   await activeTab("Showcase");
   await page.keyboard.press("e");
-  await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
+  await grid(page).waitFor();
+  await openCategory(page, "Video");
   await activeTab("Settings");
-  await page.getByLabel("Particle quality", { exact: false }).focus();
+  await page.getByRole("combobox", { name: /^Particle Quality$/i }).focus();
   await page.keyboard.press("q");
   await activeTab("Settings");
   await page.keyboard.press("e");
   await activeTab("Settings");
-  await page.keyboard.press("Escape");
-  await closed();
+  await leaveSettings(page);
   await activeTab("Play");
   await selected("Chapters");
   await page.keyboard.press("q");
   await activeTab("Home");
   await selected("Herald Board");
   await page.keyboard.press("q");
-  await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
+  await grid(page).waitFor();
   await page.keyboard.press("q");
   await showcaseDialog();
   await activeTab("Showcase");
-  await page.getByRole("button", { name: /Back to Home/ }).click();
+  await page.getByRole("button", { name: /Back to Settings/ }).click();
   await closed();
+  await grid(page).waitFor();
+  await page.keyboard.press("Escape");
   await activeTab("Home");
   await selected("Herald Board");
   record("Q/E cycles all four tabs through open information dialogs, ignores focused selects and preserves originating Home/Play context");
