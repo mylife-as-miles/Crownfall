@@ -68,9 +68,9 @@ try {
   );
   assert.equal(await page.locator(".nav-notification").count(), 0);
   await page.keyboard.press("q");
-  await page.getByRole("heading", { name: "Crownfall", exact: true }).waitFor();
-  assert.match(await page.locator("dialog").innerText(), /does not launch\s+the chess campaign/);
-  await page.getByRole("button", { name: /Open Play/ }).click();
+  await page.getByRole("region", { name: "Home options", exact: true }).waitFor();
+  assert.equal(await page.locator("dialog").evaluate((element) => element.open), false);
+  await page.getByRole("tab", { name: "Play", exact: true }).click();
   await page.keyboard.press("e");
   await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
   assert.match(await page.locator("dialog").innerText(), /audio is not connected/);
@@ -78,9 +78,10 @@ try {
   await page.getByRole("button", { name: "Back", exact: true }).click();
   await page.getByRole("heading", { name: "Return to Home?", exact: true }).waitFor();
   await page.getByRole("button", { name: /Go to Home/ }).click();
-  await page.getByRole("heading", { name: "Crownfall", exact: true }).waitFor();
+  await page.getByRole("region", { name: "Home options", exact: true }).waitFor();
   await page.keyboard.press("Escape");
-  results.push("Home/Play/Settings replace placeholders; tab shortcuts and Back lead to honest destinations");
+  await page.getByRole("region", { name: "Play options", exact: true }).waitFor();
+  results.push("Home/Play/Settings navigation, tab shortcuts and Back return to the correct screen");
 
   const cardBounds = await page.locator(".game-card").evaluateAll((elements) =>
     elements.map((element) => {

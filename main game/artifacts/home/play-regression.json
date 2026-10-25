@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "baselineCommit": "23b984a48fa5b5a248b9a28eda6b4dd95b36e0f7",
+  "method": "Full-frame matched reduced-motion Idle0 production renders with same resize path.",
+  "results": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "fullFramePixelsUnchanged": true,
+      "baselineSha256": "3ba66f955591a96586160a4925222b22f12c5268fd51d62f28eff0059e89ccf5",
+      "currentSha256": "3ba66f955591a96586160a4925222b22f12c5268fd51d62f28eff0059e89ccf5"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "fullFramePixelsUnchanged": true,
+      "baselineSha256": "59e35767166ab65a73f7d91f92305bc34118fb8af90958f16ceebffe28944ca5",
+      "currentSha256": "59e35767166ab65a73f7d91f92305bc34118fb8af90958f16ceebffe28944ca5"
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "fullFramePixelsUnchanged": true,
+      "baselineSha256": "e103c63711d5c62fd9985e596daa0fdd20a51030e250d61925684ab5f887b8ba",
+      "currentSha256": "e103c63711d5c62fd9985e596daa0fdd20a51030e250d61925684ab5f887b8ba"
+    }
+  ]
+}

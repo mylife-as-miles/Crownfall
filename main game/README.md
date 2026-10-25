@@ -1,6 +1,6 @@
 # Crownfall main game menu
 
-A separate React + TypeScript + Vite app for the supplied menu references, with all four cards visible together at 1280 × 720. Run from this folder:
+A separate React + TypeScript + Vite app for the supplied menu references, with a three-tile Home screen and four-card Play screen. Run from this folder:
 
 ```sh
 npm ci
@@ -9,7 +9,15 @@ npm run dev
 
 Open `http://localhost:5173`. `npm run build` checks TypeScript and produces `dist/`. `npm run preview` serves that build.
 
-The layout targets desktop and landscape phones. The creature sits behind the cards as requested. Four cards (New Gambit, Resume Gambit, Load Gambit, Browse Gambits), top navigation, keyboard and controller navigation, dialogs, settings, and device-local demo saves work. Arrow keys select cards and wrap around the four options; Home/End selects the first/last card. Enter activates; Escape goes back; Q/E switches sections. Browse Gambits clearly shows that online play is unavailable. Home identifies Crownfall as A King’s Gambit Story; Play and Settings are the other two tabs. The preview saves a player name and date locally, and its dialogs state that gameplay and audio are not connected. The original chess game remains in `../web`; this new menu does not yet start that game. Settings persist on this browser. Low quality disables shader particles; ambient motion and the OS reduced motion preference stop animation.
+The layout targets desktop and landscape phones. The creature sits behind the cards as requested. Four cards (New Gambit, Resume Gambit, Load Gambit, Browse Gambits), top navigation, keyboard and controller navigation, dialogs, settings, and device-local demo saves work. Arrow keys select cards and wrap around the four options; Home/End selects the first/last card. Enter activates; Escape goes back; Q/E switches sections. Browse Gambits clearly shows that online play is unavailable. Home, Play and Settings are the three tabs. Home is a separate screen with the supplied My Legacy, Chronicles and Herald Board artwork. The preview saves a player name and date locally, and its dialogs state that gameplay and audio are not connected. The original chess game remains in `../web`; this new menu does not yet start that game. Settings persist on this browser. Low quality disables shader particles; ambient motion and the OS reduced motion preference stop animation.
+
+## Home screen
+
+Home uses one 298 × 434 tile on the left and two 298 × 215 tiles stacked on the right, with four-pixel gaps, at 1280 × 720. The full grid is 600 × 434 pixels. My Legacy is the tall tile, Chronicles is upper right, and Herald Board is lower right. The supplied king and portal images use centered cover crops; Chronicles contains the complete four-region map, retaining its context. Only the exact supplied titles appear on the tiles. There are no invented descriptions, statistics, story entries or news feeds.
+
+Each tile opens a clear unavailable-state dialog. The menu does not implement legacy profiles, chronicles or a herald feed. Home selection and the last right-hand row are remembered across navigation. Left/right moves between columns; up/down moves between the stacked tiles. Home/End selects the first/last tile. Keyboard, pointer and controller selection keep focus aligned. Settings returns to its originating screen. Back from Home returns to Play; Back from Play retains the Home confirmation.
+
+`src/home-content.ts` configures the three content slots, image fit and supported actions. The original JPEGs are preserved byte-for-byte outside Git under `/workspace/crownfall-home-originals/`. Separate full-resolution WebP delivery copies are in `public/assets/home/`; mapping, hashes and display fits are in `artifacts/home-artwork.json`. The private Page and reference image remain unchanged and outside the repository.
 
 ## Environment artwork
 
@@ -45,11 +53,12 @@ With the dev server running:
 ```sh
 npm test
 node scripts/verify-layout.mjs
+node scripts/verify-home.mjs
 node scripts/verify-copy.mjs
 node scripts/verify-model.mjs
 node scripts/verify-framing.mjs
 ```
 
-Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Current screenshots and verification results are saved in `artifacts/`. Copy checks cover 20 modal states at desktop and landscape sizes, including empty, saved and replacement-save wording, without horizontal clipping. The visual critic reviews actual browser screenshots; scores are subjective and distinct from automated functionality checks. The current layout is the restored four-visible-card row. Files in `artifacts/carousel/` and archived visual reviews document the superseded carousel iteration; its recording predates the final creature transform. Software WebGL verification does not establish physical-device GPU performance.
+Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Current screenshots and verification results are saved in `artifacts/`. Copy checks cover 24 modal states at desktop and landscape sizes, including empty, saved and replacement-save wording, without horizontal clipping. The visual critic reviews actual browser screenshots; scores are subjective and distinct from automated functionality checks. The current layout is the restored four-visible-card row. Files in `artifacts/carousel/` and archived visual reviews document the superseded carousel iteration; its recording predates the final creature transform. Software WebGL verification does not establish physical-device GPU performance.
 
 `verify-framing.mjs` requires the Vite development server (`CROWNFALL_FRAMING_URL`, default `http://localhost:5173`). It intercepts the development module only inside its Playwright session to seek exact Idle poses and project actual skinned vertices. It writes no production debug hooks. The probe checks authored Idle key times and midpoints against independent ambient sway/yaw extremes, with geometric crown/face/eye proxies and calibration images. Dense sampled bounds are supporting evidence rather than a continuous mathematical guarantee or semantic face detection.

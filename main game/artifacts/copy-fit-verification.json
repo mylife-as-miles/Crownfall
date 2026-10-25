@@ -7,8 +7,30 @@
         "width": 1280,
         "height": 720
       },
-      "state": "home",
-      "text": "×\nCROWNFALL\nCrownfall\n\nA King’s Gambit Story.\n\n♔\nEvery sacrifice has a name.\nCINEMATIC CHESS\n\nThis menu preview stores a local demo save. It does not launch the chess campaign.\n\nOpen Play\n>\nB\nBack",
+      "state": "legacy",
+      "text": "×\nCROWNFALL\nMy Legacy\n\nLegacy profiles are unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "chronicles",
+      "text": "×\nCROWNFALL\nChronicles\n\nChronicles are unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "herald",
+      "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -117,10 +139,32 @@
         "width": 844,
         "height": 390
       },
-      "state": "home",
-      "text": "×\nCROWNFALL\nCrownfall\n\nA King’s Gambit Story.\n\n♔\nEvery sacrifice has a name.\nCINEMATIC CHESS\n\nThis menu preview stores a local demo save. It does not launch the chess campaign.\n\nOpen Play\n>\nB\nBack",
+      "state": "legacy",
+      "text": "×\nCROWNFALL\nMy Legacy\n\nLegacy profiles are unavailable in this build.\n\nBack to Home\n>\nB\nBack",
       "horizontalOverflow": false,
-      "verticalScrollAvailable": true,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "chronicles",
+      "text": "×\nCROWNFALL\nChronicles\n\nChronicles are unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "herald",
+      "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
       "offenders": []
     },
     {

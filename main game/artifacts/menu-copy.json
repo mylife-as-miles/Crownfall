@@ -4,7 +4,7 @@
   "sources": {
     "ui": {
       "path": "src/App.tsx",
-      "sha256": "9defa7c0949606761f53591e162de423698b05ac7f7460a2d0fc2ea787b01eb3"
+      "sha256": "d3db338aa022d762b51482c1f5903264237d5ce4716934d7debbde985c47654e"
     },
     "document": {
       "path": "index.html",
@@ -17,6 +17,10 @@
     "canonical_game_document": {
       "path": "../web/index.html",
       "sha256": "824e084338c018e0c2df6d3968e48714a4f79c2a9057865dd262b64f2698e0e1"
+    },
+    "home_content": {
+      "path": "src/home-content.ts",
+      "sha256": "0c942fc9ac7999a4ef66e9e68c31f27b3f37c6f600b116eb25de043366a02b05"
     }
   },
   "navigation": {
@@ -25,13 +29,15 @@
     "tabs": [
       {
         "label": "HOME",
-        "panel": "home",
-        "accessible_label": "Home"
+        "panel": null,
+        "accessible_label": "Home",
+        "screen": "home"
       },
       {
         "label": "PLAY",
         "panel": null,
-        "accessible_label": "Play"
+        "accessible_label": "Play",
+        "screen": "play"
       },
       {
         "label": "SETTINGS",
@@ -100,21 +106,6 @@
     "primary_action_suffix_html_entity": "&gt;"
   },
   "modals": {
-    "home": {
-      "heading": "Crownfall",
-      "paragraph": "A King’s Gambit Story.",
-      "identity": {
-        "symbol": "♔",
-        "symbol_aria_hidden": true,
-        "statement": "Every sacrifice has a name.",
-        "category": "CINEMATIC CHESS"
-      },
-      "note": "This menu preview stores a local demo save. It does not launch the chess campaign.",
-      "action": {
-        "label": "Open Play",
-        "opens": "play"
-      }
-    },
     "new": {
       "heading": "New Gambit",
       "paragraph": "Choose a name for your Crownfall demo save.",
@@ -228,8 +219,8 @@
         }
       ],
       "action": {
-        "label": "Back to Play",
-        "opens": "play"
+        "label_template": "Back to {Home|Play}",
+        "opens": "The screen from which Settings was opened."
       }
     },
     "quit": {
@@ -246,6 +237,30 @@
           "opens": "home"
         }
       ]
+    },
+    "legacy": {
+      "heading": "My Legacy",
+      "paragraph": "Legacy profiles are unavailable in this build.",
+      "action": {
+        "label": "Back to Home",
+        "opens": "home"
+      }
+    },
+    "chronicles": {
+      "heading": "Chronicles",
+      "paragraph": "Chronicles are unavailable in this build.",
+      "action": {
+        "label": "Back to Home",
+        "opens": "home"
+      }
+    },
+    "herald": {
+      "heading": "Herald Board",
+      "paragraph": "The herald board is unavailable in this build.",
+      "action": {
+        "label": "Back to Home",
+        "opens": "home"
+      }
     }
   },
   "menu_footer": {
@@ -341,7 +356,31 @@
     "Home, Play and Settings are the only tabs. Placeholder EXAMPLE and community tabs and their notification badge are removed.",
     "Back opens a Home confirmation. It does not close the browser or delete the save.",
     "Gambit is the user-requested menu label; the preview does not expose or simulate the canonical campaign oath mechanic.",
-    "All four fixed 197 by 298 pixel cards remain visible at 1280 by 720, with four-pixel gaps and an 800-pixel row. This inventory does not change layout or artwork."
+    "All four fixed 197 by 298 pixel cards remain visible at 1280 by 720, with four-pixel gaps and an 800-pixel row. This inventory does not change layout or artwork.",
+    "Home is a separate three-tile screen using the exact supplied titles and artwork. Tile activations display unavailable-state information only, without profile statistics, lore entries, news feeds or gameplay launches."
   ],
-  "card_copy_intent": "Player-facing destination intentions, as requested; activation dialogs disclose local demo saves, absent gameplay integration and unavailable online play. No unsupported launch action is offered."
+  "card_copy_intent": "Player-facing destination intentions, as requested; activation dialogs disclose local demo saves, absent gameplay integration and unavailable online play. No unsupported launch action is offered.",
+  "home_tiles": [
+    {
+      "title": "My Legacy",
+      "position": "Tall left",
+      "description": null,
+      "eyebrow": null,
+      "action": "legacy"
+    },
+    {
+      "title": "Chronicles",
+      "position": "Upper right",
+      "description": null,
+      "eyebrow": null,
+      "action": "chronicles"
+    },
+    {
+      "title": "Herald Board",
+      "position": "Lower right",
+      "description": null,
+      "eyebrow": null,
+      "action": "herald"
+    }
+  ]
 }

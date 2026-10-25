@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "steps": [
+    "Play",
+    "Home",
+    "Settings",
+    "Home",
+    "Play"
+  ],
+  "rendererRetained": true,
+  "additionalGLBRequests": 0,
+  "activeAnimation": "Idle"
+}

@@ -31,7 +31,7 @@ try {
     assert.deepEqual(result.offenders, [], `${state}: clipped text`);
     assert.doesNotMatch(result.text, /EXAMPLE|Fallen Crown|journey|other worlds/i);
     results.push({ viewport, state, ...result });
-    if ((viewport.width === 1280 && ["home", "browse"].includes(state)) || (viewport.width === 844 && state === "settings")) {
+    if ((viewport.width === 1280 && ["legacy", "browse"].includes(state)) || (viewport.width === 844 && state === "settings")) {
       await page.locator("dialog").screenshot({ path: `artifacts/copy/${state}-${viewport.width}.png` });
     }
   };
@@ -42,8 +42,15 @@ try {
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     await page.evaluate(() => document.fonts.ready);
+    await page.getByRole("tab", { name: "Home", exact: true }).click();
+    for (const [state, name] of [["legacy", "My Legacy"], ["chronicles", "Chronicles"], ["herald", "Herald Board"]]) {
+      await page.getByRole("button", { name, exact: true }).click();
+      await page.waitForFunction(() => document.querySelector("dialog").open);
+      await inspect(state, viewport);
+      await page.keyboard.press("Escape");
+    }
+    await page.getByRole("tab", { name: "Play", exact: true }).click();
     for (const [state, role, name] of [
-      ["home", "tab", "Home"],
       ["new", "button", "New Gambit"],
       ["resume-empty", "button", "Resume Gambit"],
       ["load-empty", "button", "Load Gambit"],
