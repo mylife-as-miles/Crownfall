@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Atmosphere from "./Atmosphere";
 import CreatureStage from "./CreatureStage";
+import CardCarousel, { type CardCarouselHandle } from "./CardCarousel";
 import "./styles.css";
 
 type Panel =
@@ -122,6 +123,8 @@ export default function App() {
   const [notice, setNotice] = useState<string>("");
   const dialog = useRef<HTMLDialogElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const carousel = useRef<CardCarouselHandle>(null);
+  const gamepadInputAt = useRef(0);
 
   const closePanel = useCallback(() => {
     setPanel(null);
@@ -129,13 +132,10 @@ export default function App() {
     setNotice("");
   }, []);
   const selectCard = useCallback((index: number) => {
-    const next = (index + cards.length) % cards.length;
+    const next = Math.max(0, Math.min(index, cards.length - 1));
     setSelected(next);
     cardRefs.current[next]?.focus({ preventScroll: true });
-    cardRefs.current[next]?.scrollIntoView({
-      block: "nearest",
-      inline: "nearest",
-    });
+    carousel.current?.reveal(next);
   }, []);
   const changeTab = useCallback((direction: number) => {
     setActiveTab((current) => {
@@ -181,6 +181,10 @@ export default function App() {
         event.preventDefault();
         selectCard(selected + (event.key === "ArrowRight" ? 1 : -1));
       }
+      if (event.key === "Home" || event.key === "End") {
+        event.preventDefault();
+        selectCard(event.key === "Home" ? 0 : cards.length - 1);
+      }
       if (event.key.toLowerCase() === "q" || event.key.toLowerCase() === "e") {
         event.preventDefault();
         changeTab(event.key.toLowerCase() === "e" ? 1 : -1);
@@ -199,25 +203,24 @@ export default function App() {
 
   useEffect(() => {
     let frame: number;
-    let nextInput = 0;
     const poll = (time: number) => {
       const pad = navigator.getGamepads?.()[0];
-      if (pad && time > nextInput) {
+      if (pad && time > gamepadInputAt.current) {
         const left = pad.buttons[14]?.pressed || pad.axes[0] < -0.55;
         const right = pad.buttons[15]?.pressed || pad.axes[0] > 0.55;
         if (left || right) {
           if (!panel) selectCard(selected + (right ? 1 : -1));
-          nextInput = time + 230;
+          gamepadInputAt.current = time + 230;
         } else if (pad.buttons[0]?.pressed) {
           if (!panel) activate(selected);
-          nextInput = time + 350;
+          gamepadInputAt.current = time + 350;
         } else if (pad.buttons[1]?.pressed) {
           if (panel) closePanel();
           else setPanel("quit");
-          nextInput = time + 350;
+          gamepadInputAt.current = time + 350;
         } else if (pad.buttons[4]?.pressed || pad.buttons[5]?.pressed) {
           changeTab(pad.buttons[5]?.pressed ? 1 : -1);
-          nextInput = time + 250;
+          gamepadInputAt.current = time + 250;
         }
       }
       frame = requestAnimationFrame(poll);
@@ -301,35 +304,15 @@ export default function App() {
           </button>
         </nav>
 
-        <section className="game-cards" aria-label="Play options">
-          {cards.map((card, index) => (
-            <button
-              key={card.id}
-              ref={(el) => {
-                cardRefs.current[index] = el;
-              }}
-              tabIndex={selected === index ? 0 : -1}
-              className={`game-card card-${card.id} ${selected === index ? "is-selected" : ""}`}
-              aria-label={
-                card.title === "LOAD GAME"
-                  ? "Load game"
-                  : card.title.charAt(0) + card.title.slice(1).toLowerCase()
-              }
-              aria-pressed={selected === index}
-              onPointerEnter={() => setSelected(index)}
-              onFocus={() => setSelected(index)}
-              onClick={() => activate(index)}
-            >
-              <span className="card-art" aria-hidden="true" />
-              <span className="card-shade" aria-hidden="true" />
-              <span className="card-heading">
-                <span className="card-title">{card.title}</span>
-                <span className="card-subtitle">{card.subtitle}</span>
-              </span>
-              <span className="card-description">{card.description}</span>
-            </button>
-          ))}
-        </section>
+        <CardCarousel
+          ref={carousel}
+          items={cards}
+          selected={selected}
+          onSelect={setSelected}
+          onActivate={activate}
+          cardRefs={cardRefs}
+          reducedMotion={!preferences.motion}
+        />
 
         <footer className="controller-hints" aria-label="Menu controls">
           <button aria-label="Select" onClick={() => activate(selected)}>

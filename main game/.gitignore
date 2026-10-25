@@ -2,3 +2,7 @@ node_modules/
 dist/
 *.tsbuildinfo
 playwright-report/
+artifacts/carousel/*-raw.webm
+artifacts/carousel/recording-*.png
+artifacts/carousel/video-frames/*
+!artifacts/carousel/video-frames/final-0[135].jpg

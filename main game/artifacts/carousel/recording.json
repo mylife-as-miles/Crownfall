@@ -1,0 +1,30 @@
+{
+  "mode": "actual uploaded GLB; Idle clip; low particle quality; ambient motion enabled",
+  "deviceScaleFactor": 0.35,
+  "videoSize": {
+    "width": 640,
+    "height": 360
+  },
+  "recordingStartedAt": 1792935045082,
+  "sequenceStartedAt": 1792935063158,
+  "sequenceEndedAt": 1792935073169,
+  "rawDurationSeconds": 27.84,
+  "trimmedPrefixSeconds": 17.829,
+  "sequenceDurationSeconds": 10.011,
+  "milestones": [
+    {
+      "window": "New / Resume / Load game",
+      "elapsedMs": 0
+    },
+    {
+      "window": "Resume / Load game / Browse",
+      "elapsedMs": 4398
+    },
+    {
+      "window": "New / Resume / Load game",
+      "elapsedMs": 8510
+    }
+  ],
+  "limitations": "Software WebGL and reduced device pixel ratio. Clip demonstrates both real-model windows; frame pacing is not a GPU performance benchmark. FFmpeg removes only the loading prefix; no interpolation is applied.",
+  "captureStartAfterFirstScreenshot": true
+}

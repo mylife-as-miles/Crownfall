@@ -119,9 +119,7 @@ try {
       "each card loads its assigned supplied-image delivery copy",
     );
   }
-  results.push(
-    "Four supplied landscape images load across the enlarged 1003px card row",
-  );
+  results.push("Four supplied images load in order in the three-card carousel");
 
   await page.keyboard.press("ArrowRight");
   assert.equal(
@@ -185,11 +183,19 @@ try {
   await page.keyboard.press("ArrowRight");
   assert.equal(
     await page
+      .getByRole("button", { name: "Browse", exact: true })
+      .getAttribute("aria-pressed"),
+    "true",
+  );
+  await page.keyboard.press("Home");
+  await page.keyboard.press("ArrowLeft");
+  assert.equal(
+    await page
       .getByRole("button", { name: "New", exact: true })
       .getAttribute("aria-pressed"),
     "true",
   );
-  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("End");
   assert.equal(
     await page
       .getByRole("button", { name: "Browse", exact: true })
@@ -197,7 +203,7 @@ try {
     "true",
   );
   results.push(
-    "Host is absent and keyboard navigation wraps through all four cards",
+    "Host is absent; card navigation stops at endpoints and Home/End reveal all four options",
   );
 
   await page.evaluate(() => localStorage.clear());

@@ -1,56 +1,118 @@
 {
   "passed": true,
-  "viewport": {
-    "width": 844,
-    "height": 390
-  },
-  "cards": [
+  "results": [
     {
-      "label": "New",
-      "x": 148.34375,
-      "y": 114.296875,
-      "width": 134.90625,
-      "height": 202.03125,
-      "headingFont": 12,
-      "supportingFont": 7,
-      "textFits": true,
-      "crop": "15% 50%"
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "window": "first",
+      "screenshot": "artifacts/carousel/844x390-first.png",
+      "scrollLeft": 0,
+      "maxScroll": 138,
+      "scrollportWidth": 414.1875,
+      "scrollportHeight": 206.03125,
+      "cards": [
+        {
+          "label": "New",
+          "x": 148.34375,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Resume",
+          "x": 285.96875,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Load game",
+          "x": 423.59375,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Browse",
+          "x": 561.21875,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": false,
+          "partial": false,
+          "textFits": true
+        }
+      ],
+      "controlsOverlapFooter": false,
+      "actualModelLoaded": true
     },
     {
-      "label": "Resume",
-      "x": 285.96875,
-      "y": 114.296875,
-      "width": 134.90625,
-      "height": 202.03125,
-      "headingFont": 12,
-      "supportingFont": 7,
-      "textFits": true,
-      "crop": "82% 50%"
-    },
-    {
-      "label": "Load game",
-      "x": 423.59375,
-      "y": 114.296875,
-      "width": 134.90625,
-      "height": 202.03125,
-      "headingFont": 12,
-      "supportingFont": 7,
-      "textFits": true,
-      "crop": "58% 50%"
-    },
-    {
-      "label": "Browse",
-      "x": 561.21875,
-      "y": 114.296875,
-      "width": 134.90625,
-      "height": 202.03125,
-      "headingFont": 12,
-      "supportingFont": 7,
-      "textFits": true,
-      "crop": "64% 50%"
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "window": "last",
+      "screenshot": "artifacts/carousel/844x390-last.png",
+      "scrollLeft": 138,
+      "maxScroll": 138,
+      "scrollportWidth": 414.1875,
+      "scrollportHeight": 206.03125,
+      "cards": [
+        {
+          "label": "New",
+          "x": 10.34375,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": false,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Resume",
+          "x": 147.96875,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Load game",
+          "x": 285.59375,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Browse",
+          "x": 423.21875,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        }
+      ],
+      "controlsOverlapFooter": false,
+      "actualModelLoaded": true
     }
   ],
-  "screenshot": "artifacts/final-landscape-844x390.png",
-  "actualModelLoaded": true,
   "errors": []
 }

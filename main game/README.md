@@ -1,6 +1,6 @@
 # Crownfall main game menu
 
-A separate React + TypeScript + Vite app for the supplied menu references, with a four-card row at 1280 × 720. Run from this folder:
+A separate React + TypeScript + Vite app for the supplied menu references, with four cards in a three-visible horizontal carousel at 1280 × 720. Run from this folder:
 
 ```sh
 npm ci
@@ -9,7 +9,7 @@ npm run dev
 
 Open `http://localhost:5173`. `npm run build` checks TypeScript and produces `dist/`. `npm run preview` serves that build.
 
-The layout targets desktop and landscape phones. The creature sits behind the cards as requested. Four cards (New, Resume, Load Game, Browse), top navigation, keyboard and controller navigation, dialogs, settings, and device-local demo saves work. Arrow keys select cards; Enter activates; Escape goes back; Q/E switches sections. Browse clearly shows that online sessions are not available. The original chess game remains in `../web`; this new menu does not yet start that game. Settings persist on this browser. Low quality disables shader particles; ambient motion and the OS reduced motion preference stop animation.
+The layout targets desktop and landscape phones. The creature sits behind the cards as requested. Four cards (New, Resume, Load Game, Browse), top navigation, keyboard and controller navigation, dialogs, settings, and device-local demo saves work. Arrow keys select cards and stop at the first/last option; Home/End jumps to either endpoint. Enter activates; Escape goes back; Q/E switches sections. Browse clearly shows that online sessions are not available. The original chess game remains in `../web`; this new menu does not yet start that game. Settings persist on this browser. Low quality disables shader particles; ambient motion and the OS reduced motion preference stop animation.
 
 ## Environment artwork
 
@@ -24,7 +24,9 @@ The four cards use the user's supplied JPEGs in attachment order. The originals 
 
 All four source images are 2048 × 1143. Delivery copies retain those dimensions and are stored at `public/assets/environments/card-{new,resume,load,browse}.webp`. The images are cropped by CSS to their focal points; no regenerated artwork is substituted. `artifacts/card-artwork.json` records the mapping, source/delivery checksums and focal positions. Library identifiers and the private Page references remain in the executor-local originals' provenance file rather than the public repository.
 
-The enlarged row contains exactly four cards and spans 1003 pixels: cards measure 247 × 373 pixels at 1280 × 720, with five-pixel gaps. This is about 25% larger in each dimension than the previous 197 × 298 cards. Titles, supporting text and spacing are enlarged while remaining live HTML above the image layer.
+The carousel keeps all four semantic cards in the DOM and shows three whole cards at each settled position: New / Resume / Load Game first, then Resume / Load Game / Browse. Card dimensions remain 247 × 373 pixels at 1280 × 720, with five-pixel gaps. The three-card content window is 751 pixels wide; small focus gutters make the measured scrollport about 756 pixels. The total four-card content is 1003 pixels wide, so the endpoint travel is 252 pixels. Titles and supporting text remain live HTML above the image layer.
+
+Native horizontal scrolling and CSS snapping handle trackpads and touch swipes. Shift+mouse-wheel scrolls horizontally inside the carousel; ordinary vertical wheel input remains available to the page. The previous/next arrows and range indicator sit under the row on a dark backplate. Arrow controls retain focus at endpoints. Keyboard and controller navigation reveal the focused card, and resizing preserves the endpoint or focused option. OS and app reduced-motion settings make programmatic card navigation immediate.
 
 ## Creature asset
 
@@ -44,7 +46,8 @@ With the dev server running:
 
 ```sh
 npm test
+npm run test:carousel
 node scripts/verify-model.mjs
 ```
 
-Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Screenshots and verification results are saved in `artifacts/`. The visual critic evaluates actual browser screenshots against the reference; visual scores are subjective and distinct from automated functionality checks.
+Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Screenshots and verification results are saved in `artifacts/`. The visual critic evaluates actual browser screenshots and carousel motion evidence; visual scores are subjective and distinct from automated functionality checks. `artifacts/carousel/` contains first/last desktop and landscape screenshots, scroll traces, the dedicated carousel verification report, and a short browser recording. Video capture uses Playwright’s supporting binaries (`npx playwright install chromium` if missing), plus FFmpeg and ffprobe on PATH. Software WebGL in the execution environment limits recording frame pacing; isolated native-scroll traces verify intermediate positions without treating the recording as a hardware frame-rate benchmark.

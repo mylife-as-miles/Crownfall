@@ -1,59 +1,117 @@
 {
   "passed": true,
-  "source": "Actual supplied JPEG delivery copies",
+  "mode": "Four semantic cards; three visible at rest",
   "results": [
     {
       "viewport": {
         "width": 1280,
         "height": 720
       },
+      "window": "first",
+      "screenshot": "artifacts/carousel/1280x720-first.png",
+      "scrollLeft": 0,
+      "maxScroll": 252,
+      "scrollportWidth": 756.109375,
+      "scrollportHeight": 378.109375,
       "cards": [
         {
           "label": "New",
-          "x": 139,
-          "y": 211.03125,
+          "x": 138.984375,
+          "y": 211.015625,
           "width": 247,
           "height": 373,
-          "headingFont": 20,
-          "supportingFont": 9.472,
-          "textFits": true,
-          "crop": "15% 50%"
+          "visible": true,
+          "partial": false,
+          "textFits": true
         },
         {
           "label": "Resume",
-          "x": 391,
-          "y": 211.03125,
+          "x": 390.984375,
+          "y": 211.015625,
           "width": 247,
           "height": 373,
-          "headingFont": 20,
-          "supportingFont": 9.472,
-          "textFits": true,
-          "crop": "82% 50%"
+          "visible": true,
+          "partial": false,
+          "textFits": true
         },
         {
           "label": "Load game",
-          "x": 643,
-          "y": 211.03125,
+          "x": 642.984375,
+          "y": 211.015625,
           "width": 247,
           "height": 373,
-          "headingFont": 20,
-          "supportingFont": 9.472,
-          "textFits": true,
-          "crop": "58% 50%"
+          "visible": true,
+          "partial": false,
+          "textFits": true
         },
         {
           "label": "Browse",
-          "x": 895,
-          "y": 211.03125,
+          "x": 894.984375,
+          "y": 211.015625,
           "width": 247,
           "height": 373,
-          "headingFont": 20,
-          "supportingFont": 9.472,
-          "textFits": true,
-          "crop": "64% 50%"
+          "visible": false,
+          "partial": false,
+          "textFits": true
         }
       ],
-      "screenshot": "artifacts/final-1280x720.png",
+      "controlsOverlapFooter": false,
+      "actualModelLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "window": "last",
+      "screenshot": "artifacts/carousel/1280x720-last.png",
+      "scrollLeft": 252,
+      "maxScroll": 252,
+      "scrollportWidth": 756.109375,
+      "scrollportHeight": 378.109375,
+      "cards": [
+        {
+          "label": "New",
+          "x": -113.015625,
+          "y": 211.015625,
+          "width": 247,
+          "height": 373,
+          "visible": false,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Resume",
+          "x": 138.984375,
+          "y": 211.015625,
+          "width": 247,
+          "height": 373,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Load game",
+          "x": 390.984375,
+          "y": 211.015625,
+          "width": 247,
+          "height": 373,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Browse",
+          "x": 642.984375,
+          "y": 211.015625,
+          "width": 247,
+          "height": 373,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        }
+      ],
+      "controlsOverlapFooter": false,
       "actualModelLoaded": true
     },
     {
@@ -61,53 +119,111 @@
         "width": 1920,
         "height": 1080
       },
+      "window": "first",
+      "screenshot": "artifacts/carousel/1920x1080-first.png",
+      "scrollLeft": 0,
+      "maxScroll": 378,
+      "scrollportWidth": 1134.171875,
+      "scrollportHeight": 567.171875,
       "cards": [
         {
           "label": "New",
           "x": 208.5,
-          "y": 316.546875,
+          "y": 316.53125,
           "width": 370.5,
           "height": 559.5,
-          "headingFont": 30,
-          "supportingFont": 14.208,
-          "textFits": true,
-          "crop": "15% 50%"
+          "visible": true,
+          "partial": false,
+          "textFits": true
         },
         {
           "label": "Resume",
           "x": 586.5,
-          "y": 316.546875,
+          "y": 316.53125,
           "width": 370.5,
           "height": 559.5,
-          "headingFont": 30,
-          "supportingFont": 14.208,
-          "textFits": true,
-          "crop": "82% 50%"
+          "visible": true,
+          "partial": false,
+          "textFits": true
         },
         {
           "label": "Load game",
           "x": 964.5,
-          "y": 316.546875,
+          "y": 316.53125,
           "width": 370.5,
           "height": 559.5,
-          "headingFont": 30,
-          "supportingFont": 14.208,
-          "textFits": true,
-          "crop": "58% 50%"
+          "visible": true,
+          "partial": false,
+          "textFits": true
         },
         {
           "label": "Browse",
           "x": 1342.5,
-          "y": 316.546875,
+          "y": 316.53125,
           "width": 370.5,
           "height": 559.5,
-          "headingFont": 30,
-          "supportingFont": 14.208,
-          "textFits": true,
-          "crop": "64% 50%"
+          "visible": false,
+          "partial": false,
+          "textFits": true
         }
       ],
-      "screenshot": "artifacts/final-1920x1080.png",
+      "controlsOverlapFooter": false,
+      "actualModelLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "window": "last",
+      "screenshot": "artifacts/carousel/1920x1080-last.png",
+      "scrollLeft": 378,
+      "maxScroll": 378,
+      "scrollportWidth": 1134.171875,
+      "scrollportHeight": 567.171875,
+      "cards": [
+        {
+          "label": "New",
+          "x": -169.5,
+          "y": 316.53125,
+          "width": 370.5,
+          "height": 559.5,
+          "visible": false,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Resume",
+          "x": 208.5,
+          "y": 316.53125,
+          "width": 370.5,
+          "height": 559.5,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Load game",
+          "x": 586.5,
+          "y": 316.53125,
+          "width": 370.5,
+          "height": 559.5,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Browse",
+          "x": 964.5,
+          "y": 316.53125,
+          "width": 370.5,
+          "height": 559.5,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        }
+      ],
+      "controlsOverlapFooter": false,
       "actualModelLoaded": true
     },
     {
@@ -115,6 +231,12 @@
         "width": 844,
         "height": 390
       },
+      "window": "first",
+      "screenshot": "artifacts/carousel/844x390-first.png",
+      "scrollLeft": 0,
+      "maxScroll": 138,
+      "scrollportWidth": 414.1875,
+      "scrollportHeight": 206.03125,
       "cards": [
         {
           "label": "New",
@@ -122,10 +244,9 @@
           "y": 114.296875,
           "width": 134.90625,
           "height": 202.03125,
-          "headingFont": 12,
-          "supportingFont": 7,
-          "textFits": true,
-          "crop": "15% 50%"
+          "visible": true,
+          "partial": false,
+          "textFits": true
         },
         {
           "label": "Resume",
@@ -133,10 +254,9 @@
           "y": 114.296875,
           "width": 134.90625,
           "height": 202.03125,
-          "headingFont": 12,
-          "supportingFont": 7,
-          "textFits": true,
-          "crop": "82% 50%"
+          "visible": true,
+          "partial": false,
+          "textFits": true
         },
         {
           "label": "Load game",
@@ -144,10 +264,9 @@
           "y": 114.296875,
           "width": 134.90625,
           "height": 202.03125,
-          "headingFont": 12,
-          "supportingFont": 7,
-          "textFits": true,
-          "crop": "58% 50%"
+          "visible": true,
+          "partial": false,
+          "textFits": true
         },
         {
           "label": "Browse",
@@ -155,13 +274,68 @@
           "y": 114.296875,
           "width": 134.90625,
           "height": 202.03125,
-          "headingFont": 12,
-          "supportingFont": 7,
-          "textFits": true,
-          "crop": "64% 50%"
+          "visible": false,
+          "partial": false,
+          "textFits": true
         }
       ],
-      "screenshot": "artifacts/final-landscape-844x390.png",
+      "controlsOverlapFooter": false,
+      "actualModelLoaded": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "window": "last",
+      "screenshot": "artifacts/carousel/844x390-last.png",
+      "scrollLeft": 138,
+      "maxScroll": 138,
+      "scrollportWidth": 414.1875,
+      "scrollportHeight": 206.03125,
+      "cards": [
+        {
+          "label": "New",
+          "x": 10.34375,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": false,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Resume",
+          "x": 147.96875,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Load game",
+          "x": 285.59375,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        },
+        {
+          "label": "Browse",
+          "x": 423.21875,
+          "y": 114.296875,
+          "width": 134.90625,
+          "height": 202.03125,
+          "visible": true,
+          "partial": false,
+          "textFits": true
+        }
+      ],
+      "controlsOverlapFooter": false,
       "actualModelLoaded": true
     }
   ],

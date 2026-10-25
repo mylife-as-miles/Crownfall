@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview --host 0.0.0.0",
-    "test": "node scripts/verify.mjs"
+    "test": "node scripts/verify.mjs",
+    "test:carousel": "node scripts/verify-carousel.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",
