@@ -113,6 +113,8 @@ export default function CreatureStage({
       .detectSupport(renderer);
     const loader = new GLTFLoader().setDRACOLoader(draco).setKTX2Loader(ktx2);
     const pivot = new THREE.Group();
+    const verticalAnchor = 0.055;
+    pivot.position.y = verticalAnchor;
     // Turn toward the cards and lean the whole animated rig, including all arms.
     const facing = -0.47;
     pivot.rotation.order = "ZYX";
@@ -151,7 +153,7 @@ export default function CreatureStage({
         mixer?.update(delta * 0.7);
         const time = (now - start) / 1000;
         pivot.rotation.y = facing + Math.sin(time * 0.22) * 0.018;
-        pivot.position.y = Math.sin(time * 0.6) * 0.012;
+        pivot.position.y = verticalAnchor + Math.sin(time * 0.6) * 0.012;
       }
       renderer.render(scene, camera);
     };

@@ -1,5 +1,5 @@
 {
-  "revision": "Final fixed four-card Gambit menu with creature uniformly enlarged 5% from approved baseline",
+  "revision": "Final fixed four-card Gambit menu with creature raised slightly for clearer face visibility",
   "reviewer": "independent visual critic agent",
   "reference": "public/assets/reference.jpg",
   "reviewedScreenshot": "artifacts/final-1280x720.png",
@@ -35,7 +35,7 @@
       "category": "Creature direction, framing and coordinated arm tilt",
       "maximum": 2.0,
       "score": 1.85,
-      "notes": "The actual creature is uniformly 5% larger than the immediately approved 5.408-height baseline, now 5.6784, with a lower -.96 vertical anchor preserving crown clearance. Eye remains fully visible above the cards at 1280,1920 and844px landscape views. Existing leftward yaw, world-space lean, coordinated four-arm pose and Idle rig remain unchanged. No blocking framing issue observed."
+      "notes": "The actual creature is raised only by +0.055 parent world-Y units at the approved 5.6784 normalized height. Face/eye and lower orbital ring are more exposed above the card row. Desktop and landscape screenshots retain crown clearance; dense sampled Idle/ambient-extrema proxy bounds are positive at all three aspects. Approved yaw/lean, coordinated arm pose, rig and animation are unchanged."
     },
     {
       "category": "Lighting, particles and atmospheric cohesion",
@@ -88,6 +88,20 @@
       ],
       "score": 9.3,
       "findings": "Final -.96 anchor reviewed after rejecting an initially top-clipped placement. Exact 5% uniform enlargement reads as a modest presence increase. Crown and eye remain safe, approved pose is preserved, and cards/copy/typography/art are unchanged. Existing 9.3 assessment retained."
+    },
+    {
+      "iteration": "Final narrow upward creature-anchor adjustment",
+      "beforeScreenshots": [
+        "artifacts/creature-height/before-1280x720.png",
+        "artifacts/creature-height/before-844x390.png"
+      ],
+      "afterScreenshots": [
+        "artifacts/final-1280x720.png",
+        "artifacts/final-1920x1080.png",
+        "artifacts/final-landscape-844x390.png"
+      ],
+      "score": 9.3,
+      "findings": "Raising parent world Y by 0.055 improves face/lower-ring exposure without changing size or pose. Critic withheld final approval until dense Idle/ambient-extrema sampling completed; all sampled crown/face-proxy/eye-proxy clearances are positive. Calibration and sampled-worst screenshots independently inspected. No further adjustment needed; score retained."
     }
   ],
   "model": {
@@ -118,14 +132,16 @@
     "Exactly four 197x298 cards, actual supplied images, focal crops, creature transform and atmosphere remain unchanged.",
     "Modal descriptions honestly state that the menu stores demo setup metadata, gameplay and online play are not connected, and the saved audio preference has no connected audio.",
     "Desktop and phone landscape composition only; no portrait redesign.",
-    "Latest narrow adjustment uniformly enlarges only the creature by exactly 5% from normalized height 5.408 to 5.6784, with vertical anchor -.82 to -.96 for crown clearance; no yaw, lean, rig, copy, layout, style or artwork change."
+    "Latest narrow adjustment uniformly enlarges only the creature by exactly 5% from normalized height 5.408 to 5.6784, with vertical anchor -.82 to -.96 for crown clearance; no yaw, lean, rig, copy, layout, style or artwork change.",
+    "Latest narrow adjustment adds +0.055 world units to the parent vertical anchor so the face and lower orbit ring show more clearly, preserving the approved 5.6784 height, -.96 model center, yaw/lean, arms, cards, text and artwork."
   ],
   "remainingLimits": [
     "Supporting copy remains very small on phone landscape; long modal content uses vertical scrolling in short viewports.",
     "Card wording describes the intended full-game destinations. Current preview actions only create/view demo setup metadata or navigate; they do not start or restore chess gameplay. Online play and audio remain unconnected and are disclosed in activation/settings dialogs.",
     "Portrait crops and actual creature materials differ from the original illustration; exact screenshot reproduction is not claimed.",
     "The private typography reference is retained locally and is not included as an image in the repository.",
-    "The 9.3 score is subjective visual judgment for the current copy/typography revision; prior designs are historical."
+    "The 9.3 score is subjective visual judgment for the current copy/typography revision; prior designs are historical.",
+    "Idle framing clearances are supported by dense authored-key/midpoint and ambient-extrema samples of geometric proxy regions, not a continuous or semantic-detection guarantee."
   ],
   "historicalReviews": [
     "artifacts/visual-review-four-card.json",
@@ -136,7 +152,7 @@
     "artifacts/visual-review-three-visible-carousel.json",
     "artifacts/visual-review-fixed-row-before-copy-type.json"
   ],
-  "verdict": "Retains the subjective 9.3/10 assessment after the exact 5% creature enlargement. Larger presence is modest, crown and eye remain clear at desktop and phone-landscape sizes, approved leftward pose is preserved, and no blocking framing issue is identified.",
+  "verdict": "Retains the subjective 9.3/10 assessment after the slight upward creature shift. Face and lower orbit ring are clearer above the cards; crown remains visible in screenshots and all dense sampled Idle bounds. Approved scale/pose and menu remain unchanged; no blocking framing issue identified.",
   "cardCount": 4,
   "cards": [
     "New Gambit",
@@ -203,31 +219,37 @@
     "artifacts/final-landscape-844x390.png"
   ],
   "creatureTransform": {
-    "baselineCommit": "f500b2c",
-    "normalizedHeightBefore": 5.408,
+    "baselineCommit": "3b3f594",
+    "normalizedHeightBefore": 5.6784,
     "normalizedHeightAfter": 5.6784,
-    "scaleIncreasePercent": 5,
-    "scaleRatio": 1.05,
+    "scaleIncreasePercentThisRevision": 0,
+    "approvedPriorScaleIncrease": {
+      "before": 5.408,
+      "after": 5.6784,
+      "percent": 5
+    },
     "yawBeforeRadians": -0.47,
     "yawAfterRadians": -0.47,
     "worldRollBeforeRadians": 0.045,
     "worldRollAfterRadians": 0.045,
     "rotationOrder": "ZYX",
-    "centerYBefore": -0.82,
-    "centerYAfter": -0.96,
-    "verticalAnchorDelta": -0.14,
-    "method": "Uniform model scale with a small vertical framing adjustment. Approved yaw/lean, all four arm poses, rig, Idle animation, materials and menu layout are unchanged."
+    "modelCenterYBefore": -0.96,
+    "modelCenterYAfter": -0.96,
+    "parentVerticalAnchorBefore": 0,
+    "parentVerticalAnchorAfter": 0.055,
+    "parentVerticalAnchorDelta": 0.055,
+    "ambientSwayYAmplitude": 0.012,
+    "method": "Only an additive parent world-Y anchor is raised; existing ambient Y sway remains additive. Scale, model center, approved yaw/lean, rig, all four arm poses, Idle clip, materials, cards and artwork are unchanged."
   },
   "creatureComparison": {
-    "purpose": "Narrow matched-pose size and framing comparison against the immediately approved baseline, not a new pose or broad design review.",
-    "beforeDesktop": "artifacts/creature-size/before-1280x720.png",
+    "purpose": "Narrow matched-pose face/ring visibility and crown-clearance comparison after raising the parent anchor by 0.055 world units.",
+    "beforeDesktop": "artifacts/creature-height/before-1280x720.png",
     "afterDesktop": "artifacts/final-1280x720.png",
-    "beforeLandscape": "artifacts/creature-size/before-844x390.png",
+    "beforeLandscape": "artifacts/creature-height/before-844x390.png",
     "afterLandscape": "artifacts/final-landscape-844x390.png",
     "additionalAfter": "artifacts/final-1920x1080.png",
     "matchedPose": "Idle at time 0 with OS reduced motion",
-    "exactRelativeScale": "5.6784 / 5.408 = 1.05, exactly 5% above baseline",
-    "findings": "Modestly larger head, torso and arms; clear crown top margin and fully visible eye above the card row at all three reviewed viewports. Approved leftward yaw and world-space lean remain unchanged. Extra outer-arm/robe cropping is consistent with the requested uniform enlargement. No further adjustment requested."
+    "findings": "Eye/face sits farther above the card tops and the lower orbital-ring edge is more exposed. Static crown margin remains visible at desktop and phone-landscape sizes. Approved size, leftward yaw/lean and coordinated arms are preserved."
   },
   "currentEvidence": {
     "menuVerification": "artifacts/verification.json",
@@ -241,7 +263,8 @@
       "artifacts/copy/home-1280.png",
       "artifacts/copy/browse-1280.png",
       "artifacts/copy/settings-844.png"
-    ]
+    ],
+    "idleFraming": "artifacts/creature-height/idle-framing.json"
   },
   "navigation": [
     "Home",
@@ -321,5 +344,60 @@
     "matchedPose": "Idle at time 0 with OS reduced motion",
     "interpretation": "The held-constant carousel layout in this matched pair predates the latest restored small-card row. Use the pair only to isolate creature scale, turn, lean and arm tilt. Current UI is represented by the final screenshots above.",
     "findings": "Eye and orbital rings turn toward the cards; subtle top-left lean and matching arm tilt read naturally. Final lower placement restores crown clearance; no additional transform change needed."
+  },
+  "previousCreatureSizeComparison": {
+    "purpose": "Narrow matched-pose size and framing comparison against the immediately approved baseline, not a new pose or broad design review.",
+    "beforeDesktop": "artifacts/creature-size/before-1280x720.png",
+    "afterDesktop": "artifacts/final-1280x720.png",
+    "beforeLandscape": "artifacts/creature-size/before-844x390.png",
+    "afterLandscape": "artifacts/final-landscape-844x390.png",
+    "additionalAfter": "artifacts/final-1920x1080.png",
+    "matchedPose": "Idle at time 0 with OS reduced motion",
+    "exactRelativeScale": "5.6784 / 5.408 = 1.05, exactly 5% above baseline",
+    "findings": "Modestly larger head, torso and arms; clear crown top margin and fully visible eye above the card row at all three reviewed viewports. Approved leftward yaw and world-space lean remain unchanged. Extra outer-arm/robe cropping is consistent with the requested uniform enlargement. No further adjustment requested."
+  },
+  "creatureIdleFramingEvidence": {
+    "report": "artifacts/creature-height/idle-framing.json",
+    "calibrationOverlay": "artifacts/creature-height/proxy-calibration-1280.png",
+    "reviewedSampledWorstImages": [
+      "artifacts/creature-height/sampled-worst-crown-1280.png",
+      "artifacts/creature-height/sampled-worst-eye-1280.png"
+    ],
+    "authoredTimesCount": 74,
+    "sampledTimesCount": 147,
+    "ambientCombinationsPerTime": 9,
+    "sampledPosesPerAspect": 1323,
+    "method": "Actual decoded/skinned GLB vertex projections from authored Idle key times and midpoints, combined with independent ambient Y/yaw extrema. Geometric rest-space crown/face/eye proxy regions calibrated by screenshot overlay. No product debug edits.",
+    "sampledMinimumClearancesPx": [
+      {
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "crownTopMargin": 11.284,
+        "faceProxyAboveCardTop": 2.425,
+        "eyeProxyAboveCardTop": 17.294
+      },
+      {
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        },
+        "crownTopMargin": 16.926,
+        "faceProxyAboveCardTop": 3.638,
+        "eyeProxyAboveCardTop": 25.94
+      },
+      {
+        "viewport": {
+          "width": 844,
+          "height": 390
+        },
+        "crownTopMargin": 6.112,
+        "faceProxyAboveCardTop": 1.302,
+        "eyeProxyAboveCardTop": 9.356
+      }
+    ],
+    "interpretation": "All sampled crown, face-proxy and eye-proxy clearances are positive across the reviewed aspects. Sampled worst desktop images also visually retain the crown and visible eye above the cards.",
+    "limits": "Dense sampled geometric evidence, not a continuous mathematical guarantee or semantic face/ring detector. Applies to the menu Idle clip and tested ambient extrema."
   }
 }
