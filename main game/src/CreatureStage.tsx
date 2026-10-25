@@ -178,11 +178,11 @@ export default function CreatureStage({
           model = null;
           return;
         }
-        const scale = 5.408 / size.y;
+        const scale = 5.6784 / size.y;
         model.scale.multiplyScalar(scale);
         model.position.sub(center.multiplyScalar(scale));
         // Compensate for the larger rig so the crown keeps its breathing room.
-        model.position.y -= 0.82;
+        model.position.y -= 0.96;
         pivot.add(model);
         if (gltf.animations.length) {
           mixer = new THREE.AnimationMixer(model);

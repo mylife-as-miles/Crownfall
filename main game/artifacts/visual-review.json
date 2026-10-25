@@ -1,5 +1,5 @@
 {
-  "revision": "Final approved Gambit destination copy with unchanged compact typography and fixed four-card layout",
+  "revision": "Final fixed four-card Gambit menu with creature uniformly enlarged 5% from approved baseline",
   "reviewer": "independent visual critic agent",
   "reference": "public/assets/reference.jpg",
   "reviewedScreenshot": "artifacts/final-1280x720.png",
@@ -35,7 +35,7 @@
       "category": "Creature direction, framing and coordinated arm tilt",
       "maximum": 2.0,
       "score": 1.85,
-      "notes": "The actual creature is subtly larger, turns and leans toward the cards, and all arms follow naturally through the parent transform. Crown and eye have clear space in the reviewed screenshots. Face and orbital rings remain visible above the row; shoulder, arm and robe remain visible around it. No bone-level pose distortion observed."
+      "notes": "The actual creature is uniformly 5% larger than the immediately approved 5.408-height baseline, now 5.6784, with a lower -.96 vertical anchor preserving crown clearance. Eye remains fully visible above the cards at 1280,1920 and844px landscape views. Existing leftward yaw, world-space lean, coordinated four-arm pose and Idle rig remain unchanged. No blocking framing issue observed."
     },
     {
       "category": "Lighting, particles and atmospheric cohesion",
@@ -74,6 +74,20 @@
       ],
       "score": 9.3,
       "findings": "Independently inspected all three refreshed screenshots and exact source/inventory wording. Short approved card text and empty Browse body fit cleanly. Explicit New/Resume/Load activation disclosures remain, including the new Load inability-to-restore sentence. No styling or layout change; prior 9.3 assessment retained."
+    },
+    {
+      "iteration": "Final narrow 5% creature-size adjustment",
+      "beforeScreenshots": [
+        "artifacts/creature-size/before-1280x720.png",
+        "artifacts/creature-size/before-844x390.png"
+      ],
+      "afterScreenshots": [
+        "artifacts/final-1280x720.png",
+        "artifacts/final-1920x1080.png",
+        "artifacts/final-landscape-844x390.png"
+      ],
+      "score": 9.3,
+      "findings": "Final -.96 anchor reviewed after rejecting an initially top-clipped placement. Exact 5% uniform enlargement reads as a modest presence increase. Crown and eye remain safe, approved pose is preserved, and cards/copy/typography/art are unchanged. Existing 9.3 assessment retained."
     }
   ],
   "model": {
@@ -103,7 +117,8 @@
     "Card-heading typography changes only to compact bold size/weight and amber/gray availability states based on the new private reference.",
     "Exactly four 197x298 cards, actual supplied images, focal crops, creature transform and atmosphere remain unchanged.",
     "Modal descriptions honestly state that the menu stores demo setup metadata, gameplay and online play are not connected, and the saved audio preference has no connected audio.",
-    "Desktop and phone landscape composition only; no portrait redesign."
+    "Desktop and phone landscape composition only; no portrait redesign.",
+    "Latest narrow adjustment uniformly enlarges only the creature by exactly 5% from normalized height 5.408 to 5.6784, with vertical anchor -.82 to -.96 for crown clearance; no yaw, lean, rig, copy, layout, style or artwork change."
   ],
   "remainingLimits": [
     "Supporting copy remains very small on phone landscape; long modal content uses vertical scrolling in short viewports.",
@@ -121,7 +136,7 @@
     "artifacts/visual-review-three-visible-carousel.json",
     "artifacts/visual-review-fixed-row-before-copy-type.json"
   ],
-  "verdict": "Retains the subjective 9.3/10 assessment: approved concise Gambit destination copy fits the unchanged four-card composition at desktop and phone-landscape sizes, with prototype-only behavior disclosed on activation. No blocking visual or wording issue identified.",
+  "verdict": "Retains the subjective 9.3/10 assessment after the exact 5% creature enlargement. Larger presence is modest, crown and eye remain clear at desktop and phone-landscape sizes, approved leftward pose is preserved, and no blocking framing issue is identified.",
   "cardCount": 4,
   "cards": [
     "New Gambit",
@@ -188,24 +203,31 @@
     "artifacts/final-landscape-844x390.png"
   ],
   "creatureTransform": {
-    "normalizedHeightBefore": 5.2,
-    "normalizedHeightAfter": 5.408,
-    "scaleIncreasePercent": 4,
-    "yawBeforeRadians": -0.34,
+    "baselineCommit": "f500b2c",
+    "normalizedHeightBefore": 5.408,
+    "normalizedHeightAfter": 5.6784,
+    "scaleIncreasePercent": 5,
+    "scaleRatio": 1.05,
+    "yawBeforeRadians": -0.47,
     "yawAfterRadians": -0.47,
-    "worldRollBeforeRadians": 0,
+    "worldRollBeforeRadians": 0.045,
     "worldRollAfterRadians": 0.045,
     "rotationOrder": "ZYX",
-    "centerYBefore": -0.625,
-    "centerYAfter": -0.82,
-    "method": "Parent transform only; four arms follow the same rig; no bone overrides or animation clip changes."
+    "centerYBefore": -0.82,
+    "centerYAfter": -0.96,
+    "verticalAnchorDelta": -0.14,
+    "method": "Uniform model scale with a small vertical framing adjustment. Approved yaw/lean, all four arm poses, rig, Idle animation, materials and menu layout are unchanged."
   },
   "creatureComparison": {
-    "before": "artifacts/creature-direction/before-first.png",
-    "after": "artifacts/creature-direction/after-first.png",
+    "purpose": "Narrow matched-pose size and framing comparison against the immediately approved baseline, not a new pose or broad design review.",
+    "beforeDesktop": "artifacts/creature-size/before-1280x720.png",
+    "afterDesktop": "artifacts/final-1280x720.png",
+    "beforeLandscape": "artifacts/creature-size/before-844x390.png",
+    "afterLandscape": "artifacts/final-landscape-844x390.png",
+    "additionalAfter": "artifacts/final-1920x1080.png",
     "matchedPose": "Idle at time 0 with OS reduced motion",
-    "interpretation": "The held-constant carousel layout in this matched pair predates the latest restored small-card row. Use the pair only to isolate creature scale, turn, lean and arm tilt. Current UI is represented by the final screenshots above.",
-    "findings": "Eye and orbital rings turn toward the cards; subtle top-left lean and matching arm tilt read naturally. Final lower placement restores crown clearance; no additional transform change needed."
+    "exactRelativeScale": "5.6784 / 5.408 = 1.05, exactly 5% above baseline",
+    "findings": "Modestly larger head, torso and arms; clear crown top margin and fully visible eye above the card row at all three reviewed viewports. Approved leftward yaw and world-space lean remain unchanged. Extra outer-arm/robe cropping is consistent with the requested uniform enlargement. No further adjustment requested."
   },
   "currentEvidence": {
     "menuVerification": "artifacts/verification.json",
@@ -292,5 +314,12 @@
         "description": ""
       }
     ]
+  },
+  "previousCreatureDirectionComparison": {
+    "before": "artifacts/creature-direction/before-first.png",
+    "after": "artifacts/creature-direction/after-first.png",
+    "matchedPose": "Idle at time 0 with OS reduced motion",
+    "interpretation": "The held-constant carousel layout in this matched pair predates the latest restored small-card row. Use the pair only to isolate creature scale, turn, lean and arm tilt. Current UI is represented by the final screenshots above.",
+    "findings": "Eye and orbital rings turn toward the cards; subtle top-left lean and matching arm tilt read naturally. Final lower placement restores crown clearance; no additional transform change needed."
   }
 }

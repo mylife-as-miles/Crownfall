@@ -1,0 +1,84 @@
+{
+  "revision": "Additional modest creature size increase after approved Crownfall copy and typography",
+  "beforeCommit": "f500b2ca7be4bad54c919995b5867f2e601407be",
+  "relativeUniformScaleIncreasePercent": 5,
+  "normalizedHeightBefore": 5.408,
+  "normalizedHeightAfter": 5.6784,
+  "cumulativeIncreaseFromOriginal5_2Percent": 9.2,
+  "verticalAnchor": {
+    "before": -0.82,
+    "after": -0.96,
+    "delta": -0.14,
+    "purpose": "Minimal downward compensation for crown/face clearance after scaling."
+  },
+  "preserved": {
+    "yawRadians": -0.47,
+    "worldRollRadians": 0.045,
+    "rotationOrder": "ZYX",
+    "rig": "All four arms and original joints retained",
+    "animation": "Named Idle and existing reduced-motion pause/resume unchanged",
+    "cards": "Same four 197\u00d7298 cards at1280, 4px gaps and 800px row; latest approved text, typography and supplied artwork untouched",
+    "cameraLightingParticles": "Unchanged"
+  },
+  "comparison": {
+    "pose": "Idle at time zero with OS reduced motion for matched screenshots",
+    "beforeDesktop": "before-1280x720.png",
+    "beforeLandscape": "before-844x390.png",
+    "afterDesktop": "../final-1280x720.png",
+    "afterLandscape": "../final-landscape-844x390.png"
+  },
+  "verificationEvidence": [
+    "../layout-verification.json",
+    "../model-verification.json",
+    "../visual-review.json"
+  ],
+  "limits": [
+    "Uniform model scale increased5%; perspective can change individual projected dimensions by a slightly different amount.",
+    "Actual performance on physical devices remains unbenchmarked."
+  ],
+  "cardPixelComparison": {
+    "method": "Matched reduced-motion Idle0 screenshots; card interiors exclude borders and outer shadows.",
+    "results": [
+      {
+        "label": "New Gambit",
+        "interiorCrop": [
+          141,
+          213,
+          334,
+          507
+        ],
+        "pixelsUnchanged": true
+      },
+      {
+        "label": "Resume Gambit",
+        "interiorCrop": [
+          342,
+          213,
+          535,
+          507
+        ],
+        "pixelsUnchanged": true
+      },
+      {
+        "label": "Load Gambit",
+        "interiorCrop": [
+          543,
+          213,
+          736,
+          507
+        ],
+        "pixelsUnchanged": true
+      },
+      {
+        "label": "Browse Gambits",
+        "interiorCrop": [
+          744,
+          213,
+          937,
+          507
+        ],
+        "pixelsUnchanged": true
+      }
+    ]
+  }
+}
