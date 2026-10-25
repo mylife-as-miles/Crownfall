@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { openCategory, setMotion } from "./settings-helpers.mjs";
+import { waitForBootReady } from "./boot-helpers.mjs";
 
 // A small fixture verifies alternate assets alongside the actual supplied GLB.
 const vertices = new Float32Array([-0.6, -1, 0, 0.6, -1, 0, 0, 1, 0]);
@@ -75,6 +76,7 @@ try {
   await page.goto(`${origin}/?model=/models/test.gltf`, {
     waitUntil: "networkidle",
   });
+  await waitForBootReady(page);
   await page.locator(".creature-model--loaded").waitFor();
   assert.equal(
     await page.locator(".creature-illustration--hidden").count(),
@@ -129,6 +131,7 @@ try {
   await page.goto(`${origin}/?model=/models/invalid.gltf`, {
     waitUntil: "networkidle",
   });
+  await waitForBootReady(page, { continueOnFailure: true });
   assert.equal(
     await page.locator(".creature-model--loaded").count(),
     0,
@@ -143,6 +146,7 @@ try {
 
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(origin, { waitUntil: "networkidle" });
+  await waitForBootReady(page);
   await page.locator(".atmosphere--still").waitFor({ state: "attached" });
   await page.locator(".creature-model--loaded").waitFor();
   assert.equal(
@@ -255,6 +259,7 @@ try {
   );
 
   await page.goto(`${origin}/?model=none`, { waitUntil: "networkidle" });
+  await waitForBootReady(page);
   assert.equal(await page.locator(".creature-model canvas").count(), 0);
   assert.equal(await page.locator(".creature-illustration--hidden").count(), 0);
   console.log(

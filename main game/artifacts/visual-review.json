@@ -1,14 +1,15 @@
 {
-  "revision": "Standalone Showcase flow, themed native scrolling and coordinated menu transitions",
-  "latestReviewScope": "Showcase, native scrollbar theme and menu motion",
-  "score": 9.1,
-  "scoreScope": "Latest menu-motion design assessment only. Screen and scrollbar scores remain separate; this is not an aggregate score or a performance benchmark.",
+  "revision": "Crownfall cinematic loading screen with real asset preparation and menu handoff",
+  "latestReviewScope": "Loading screen and boot handoff",
+  "score": 9.2,
+  "scoreScope": "Loading screen only. Prior screen and interaction scores remain separate; this is not an aggregate or hardware performance score.",
   "scoreOutOf": 10,
   "screenScores": {
     "Home": 9.2,
     "Play": 9.3,
     "Settings": 9.1,
-    "Showcase": 9.2
+    "Showcase": 9.2,
+    "Loading": 9.2
   },
   "reviewer": "independent visual critic agent",
   "homeReview": {
@@ -564,7 +565,7 @@
     ],
     "verdict": "Retains the subjective 9.3/10 mode-preview Play assessment with readable four-entry navigation. Gameplay integration remains absent and disclosed; no blocking visual or wording issue."
   },
-  "verdict": "Latest changes meet the subjective 9/10 visual target: Showcase 9.2, native scrollbar theme 9.3 and menu-motion design 9.1. Home 9.2, Play 9.3 and Settings 9.1 remain separate assessments. No blocking visual issue or further redesign requested. Actual software-rendered recording is evidence of composition and settled states, not hardware frame pacing or an AAA certification.",
+  "verdict": "Loading meets the subjective 9/10 visual target at 9.2 after actual preparation, unknown-length, recovery and menu-handoff review. Previous Home, Play, Showcase, Settings, scrollbar and menu-motion scores remain distinct. No blocking visual issue or further polish requested.",
   "sharedNavigationReview": {
     "labels": [
       "Home",
@@ -950,5 +951,142 @@
       "The score assesses motion design and cohesion, not a claim of AAA production quality."
     ],
     "verdict": "Meets 9.1/10 for restrained, coordinated menu-motion design. No blocking visual issue or further polish requested; hardware smoothness remains outside this software capture assessment."
+  },
+  "loadingReview": {
+    "scope": "Current Crownfall loading presentation, actual resource-preparation states and release into the existing menu.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective composition, typography, state clarity and handoff-design assessment from actual browser captures, decoded recording frames and source inspection. Not a pixel-match, load-time or physical GPU frame-pacing benchmark.",
+    "reviewedScreenshots": [
+      "artifacts/loading/loading-1280x720.png",
+      "artifacts/loading/loading-1920x1080.png",
+      "artifacts/loading/loading-844x390.png",
+      "artifacts/loading/unknown-length-1280x720.png",
+      "artifacts/loading/recovery-1280x720.png",
+      "artifacts/loading/recovery-844x390.png",
+      "artifacts/loading/menu-ready-1280x720.png"
+    ],
+    "artDirection": {
+      "sourceArtwork": "public/assets/environments/card-resume.webp",
+      "originalUserImage": "288939.jpg",
+      "integrityEvidence": "artifacts/card-artwork.json",
+      "finding": "Actual supplied blue-gateway environment carries the composition. A dark left field supports a large Crownfall wordmark and restrained crown/orbit seal, while cool portal depth remains legible on the right. Bronze progress, sparse teal/gold motes and fine corner details match the approved menu palette.",
+      "inspiration": "https://carleaf.artstation.com/",
+      "inspirationScope": "Composition inspiration only. No external portfolio artwork imported, no supplied image regeneration or retouching."
+    },
+    "rubric": [
+      {
+        "category": "Composition and theme",
+        "maximum": 3,
+        "score": 2.8,
+        "notes": "Strong left-brand/right-portal balance, restrained ornament and coherent dark teal/bronze palette. Supplied scene retains recognizable depth rather than becoming a flat backdrop."
+      },
+      {
+        "category": "Brand hierarchy and typography",
+        "maximum": 2,
+        "score": 1.9,
+        "notes": "Crown/orbit seal and condensed Crownfall wordmark form a clear hierarchy. Intended font settlement now controls the styled wordmark reveal, with reserved layout and no wide-to-condensed swap inside the styled loading view."
+      },
+      {
+        "category": "Progress, status and recovery clarity",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Known transfer shows actual bytes, unknown length uses an indeterminate rail, and degraded readiness explicitly offers Retry or Continue with an illustrated sorcerer. Preparation work is not represented by a fake timer."
+      },
+      {
+        "category": "Motion and ready-menu handoff design",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Slow orbit, subtle landscape drift and sparse motes suit the screen. Ready state releases into the complete existing Play composition; model readiness and under-cover opacity avoid a half-visible final sorcerer. Capture cannot establish physical smoothness."
+      },
+      {
+        "category": "Desktop and phone-landscape presentation",
+        "maximum": 1,
+        "score": 0.9,
+        "notes": "Brand, status, progress and recovery actions fit at 1280,1920 and844 landscape. Phone-landscape supporting copy is compact but readable. No portrait layout introduced."
+      }
+    ],
+    "preparationSemantics": {
+      "knownTransferCapture": "Actual delivered 4,217,336-byte GLB streamed at a real 1MiB boundary before completion. Visible 1.0 / 4.0 MB status refers to that transfer.",
+      "progressMeaning": "The rail represents menu-preparation units: decoded artwork, fonts, model transfer and first render. It is not a combined application-byte percentage. Failed resources settle into an explicitly disclosed degraded state.",
+      "unknownLength": "No fabricated byte total or numeric percentage is presented. Full-width faint indeterminate gradient replaces the earlier scaled stub and avoids implying backwards preparation.",
+      "readyGate": "Actual decoded artwork/font work and model first-render or explained fallback settlement determine readiness. Menu input remains blocked while the loading gate is active.",
+      "minimumWait": "No artificial minimum loading time. The normal exit is a short visual transition; OS or saved reduced motion bypasses its delay.",
+      "slowWork": "A slow-load notice can offer Continue while preparation finishes. The notice does not claim that pending work is complete."
+    },
+    "reviewedVisibleStates": {
+      "normal": "Loading the sorcerer · 1.0 / 4.0 MB",
+      "unknownLength": "Loading the sorcerer, with an indeterminate rail.",
+      "recovery": "The menu is ready with an illustrated sorcerer.",
+      "recoveryActions": [
+        "Retry loading",
+        "Continue to menu"
+      ],
+      "ready": "The board awaits",
+      "menu": "Four approved Classic / Local Duel / Chapters / Online Duel cards and the actual supplied sorcerer are present after handoff."
+    },
+    "recordingReview": {
+      "file": "artifacts/loading/loading-handoff.webm",
+      "metadata": "artifacts/loading/captures.json",
+      "finalFrame": "artifacts/loading/recording-final-frame.png",
+      "durationSeconds": 12.12,
+      "viewport": [
+        960,
+        540
+      ],
+      "conditions": "Actual supplied GLB, Low particles, 50 percent scene resolution and 30fps scene cap for software WebGL capture. Full untrimmed recording.",
+      "method": "Decoded actual frames through the complete recording and a denser encoded 8.00–8.56s handoff sequence; encoded positions are inspection references, not load-time measurements.",
+      "observations": [
+        "Crest and status remain visible while the intended wordmark font is pending. The condensed brand appears after actual type readiness.",
+        "Actual transfer status advances into preparation and ready copy; the final menu contains a fully visible actual GLB rather than a persistent blank or half-opacity final character.",
+        "Stable final Play is visible through the recording tail, preserving the approved card geometry, artwork and creature framing."
+      ],
+      "limit": "Software recording repeats or skips intermediate samples and does not resolve every frame of the 360ms exit. It supports composition, readiness and complete final-state assessment, not physical-device smoothness or a frame-rate guarantee."
+    },
+    "focusedCorrectionsBeforeApproval": [
+      "Unknown-length rail changed from a scaled stub to a faint full-width indeterminate gradient.",
+      "Critical type is preloaded; styled wordmark space is reserved and revealed only after actual intended-font settlement or a real failure fallback.",
+      "Only the illustration-to-model opacity transition under the loading cover is suppressed so the model is fully visible before release. Later menu/fallback recovery motion remains separate."
+    ],
+    "evidence": {
+      "actualSuppliedModelCaptures": "artifacts/loading/captures.json",
+      "loadingFunctional": "artifacts/loading/verification.json",
+      "functionalStatusAtReview": "Separate loading suite passes ten groups using a real HTTP-streamed lightweight valid GLB fixture plus controlled artwork/font failures. Heavy supplied-model captures are separate evidence.",
+      "actualModelRegression": "artifacts/model-verification.json",
+      "source": [
+        "src/LoadingScreen.tsx",
+        "src/LoadingScreen.css",
+        "src/useBootLoading.ts",
+        "src/loading-types.ts",
+        "src/CreatureStage.tsx",
+        "src/App.tsx"
+      ],
+      "notes": "Visual critic independently inspected normal three-viewport captures, unknown-length and desktop/landscape recovery states, source status/progress semantics, and decoded final actual-GLB handoff recording. Runtime assertions remain distinct from the visual score."
+    },
+    "iterationHistory": [
+      {
+        "iteration": "Isolated desktop and landscape composition",
+        "score": 9.2,
+        "provisional": true,
+        "finding": "Theme, brand, artwork balance and status placement clear the visual target; fixture progress was not accepted as real boot evidence."
+      },
+      {
+        "iteration": "Actual boot-state and cold-handoff inspection",
+        "finding": "Real known/unknown transfer and recovery states fit. Cold styled wordmark font swap and under-cover model fade were identified and corrected before final approval."
+      },
+      {
+        "iteration": "Final type-ready and fully visible model handoff",
+        "score": 9.2,
+        "provisional": false,
+        "finding": "Final 12.12s actual-model recording reaches stable complete Play. Source and separate functional evidence cover real readiness, fallback, Retry/Continue and reduced motion. No further polish requested."
+      }
+    ],
+    "limits": [
+      "Score is subjective loading-screen quality and theme cohesion, not exact reproduction of an ArtStation page or any source artwork.",
+      "Status copy is compact on phone landscape, and background cover/drift intentionally omits a small amount of outer image context.",
+      "Preparation rail measures resource-preparation units rather than combined bytes; only the explicit model transfer count is a byte measure.",
+      "Software-rendered capture is not a physical GPU smoothness, frame-pacing or load-speed benchmark."
+    ],
+    "verdict": "Meets 9.2/10 for the actual loading presentation and ready-menu handoff design. No blocking visual issue or additional redesign requested."
   }
 }

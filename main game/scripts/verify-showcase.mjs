@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { grid, openCategory, leaveSettings } from "./settings-helpers.mjs";
 import { waitForMenuIdle } from "./motion-helpers.mjs";
+import { waitForBootReady } from "./boot-helpers.mjs";
 
 const target = new URL(process.env.CROWNFALL_TEST_URL || "http://localhost:5173");
 target.searchParams.set("model", "none");
@@ -52,6 +53,7 @@ try {
     assert.equal(page.url(), target.href);
   };
   await page.goto(target.href);
+  await waitForBootReady(page);
   await page.evaluate(() => document.fonts.ready);
   await page.keyboard.press("ArrowRight"); await focusName("Chapters");
   await open(); await activeTab("Showcase");

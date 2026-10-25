@@ -1,3 +1,4 @@
+import { waitForBootReady } from "./boot-helpers.mjs";
 import { chromium } from 'playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
@@ -18,6 +19,7 @@ const key = code => page.keyboard.press(code);
 try {
  await page.goto(process.env.CROWNFALL_TEST_URL || 'http://localhost:4173');
  await page.locator('.creature-model--loaded').waitFor({ timeout: 90000 });
+ await waitForBootReady(page);
  await page.evaluate(() => document.fonts.ready);
  await pause(1200); start = Date.now();
  await step('Home screen entrance', () => tab('Home'));

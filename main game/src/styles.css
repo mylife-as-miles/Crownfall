@@ -53,6 +53,11 @@ a {
   background: #100d08;
   overflow: hidden;
 }
+.menu-content { display: contents; }
+.menu-shell:not([data-boot-state="ready"]) .creature-model,
+.menu-shell:not([data-boot-state="ready"]) .creature-illustration {
+  transition: none;
+}
 .menu-stage {
   position: relative;
   width: 100vw;

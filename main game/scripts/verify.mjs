@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { grid, openCategory, leaveSettings, setMotion } from "./settings-helpers.mjs";
+import { waitForBootReady } from "./boot-helpers.mjs";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
 const domOnly = process.env.CROWNFALL_DOM_ONLY === "1";
@@ -33,6 +34,7 @@ try {
     if (message.type() === "error") errors.push(message.text());
   });
   await page.goto(target.href);
+  await waitForBootReady(page);
   await page.evaluate(() => document.fonts.ready);
   if (!domOnly) {
     await page.locator(".creature-model--loaded").waitFor({ timeout: 60000 });
@@ -136,6 +138,7 @@ try {
   const legacySave = JSON.stringify({ name: "Existing record", chapter: "Legacy demo", updatedAt: "2026-01-01T00:00:00.000Z" });
   await page.evaluate(({ key, value }) => localStorage.setItem(key, value), { key: saveKey, value: legacySave });
   await page.reload();
+  await waitForBootReady(page);
   await page.getByRole("button", { name: "Classic", exact: true }).click();
   await page.getByRole("heading", { name: "Classic", exact: true }).waitFor();
   await page.keyboard.press("Escape");
@@ -148,6 +151,7 @@ try {
   await leaveSettings(page);
   await page.waitForFunction(() => !document.querySelector(".mote-field canvas"));
   await page.reload();
+  await waitForBootReady(page);
   await openCategory(page, "Video");
   assert.equal(await page.getByRole("combobox", { name: /^Particle Quality$/i }).inputValue(), "low");
   await openCategory(page, "General");
@@ -169,6 +173,7 @@ try {
   await page.evaluate(() => localStorage.clear());
   await page.mouse.move(0, 0);
   await page.reload();
+  await waitForBootReady(page);
   if (!domOnly) {
     await page.locator(".creature-model--loaded").waitFor({ timeout: 60000 });
     await page.waitForTimeout(800);

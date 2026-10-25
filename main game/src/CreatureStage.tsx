@@ -12,6 +12,7 @@ import {
   scaledPixelRatio,
 } from "./effects/render-controls";
 import type { FrameLimit } from "./effects/render-controls";
+import type { CreatureLoadState } from "./loading-types";
 import "./effects/atmosphere.css";
 
 interface CreatureStageProps {
@@ -20,9 +21,12 @@ interface CreatureStageProps {
   fallbackSrc?: string;
   renderScale?: number;
   frameLimit?: FrameLimit;
+  onLoadState?: (state: CreatureLoadState) => void;
+  loadAttempt?: number;
 }
 
-function disposeModel(root: THREE.Object3D) {
+function disposeModel(root: THREE.Object3D | null | undefined) {
+  if (!root) return;
   const textures = new Set<THREE.Texture>();
   root.traverse((object) => {
     if (!(object instanceof THREE.Mesh)) return;
@@ -46,6 +50,8 @@ export default function CreatureStage({
   fallbackSrc = `${import.meta.env.BASE_URL}assets/creature.webp`,
   renderScale = 100,
   frameLimit = 0,
+  onLoadState,
+  loadAttempt = 0,
 }: CreatureStageProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
@@ -59,10 +65,15 @@ export default function CreatureStage({
   const renderScaleRef = useRef(normalizeRenderScale(renderScale));
   const frameLimitRef = useRef(normalizeFrameLimit(frameLimit));
   const resizeControlRef = useRef<(() => void) | null>(null);
+  const loadStateCallbackRef = useRef(onLoadState);
   const requestedSource =
     modelUrl ?? new URLSearchParams(window.location.search).get("model");
   const source =
     requestedSource === "none" ? null : (requestedSource ?? CREATURE_MODEL_URL);
+
+  useEffect(() => {
+    loadStateCallbackRef.current = onLoadState;
+  }, [onLoadState]);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -88,172 +99,293 @@ export default function CreatureStage({
     setLoaded(false);
     setActiveAnimation(null);
     const mount = mountRef.current;
-    if (!mount || !source) return;
     let active = true;
-    let renderer: THREE.WebGLRenderer;
-    try {
-      renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true,
-        powerPreference: "high-performance",
-      });
-    } catch {
-      return;
+    const disposers: (() => void)[] = [];
+    const cleanup = () => {
+      active = false;
+      for (const dispose of disposers.splice(0).reverse()) dispose();
+    };
+    const emit = (state: CreatureLoadState) => {
+      if (active) loadStateCallbackRef.current?.(state);
+    };
+    const fallback = (reason: string) => {
+      if (!active) return;
+      setLoaded(false);
+      setActiveAnimation(null);
+      emit({ status: "fallback", phase: "illustration", error: reason });
+      cleanup();
+    };
+    if (!source) {
+      emit({ status: "fallback", phase: "illustration" });
+      return cleanup;
     }
-    renderer.setPixelRatio(scaledPixelRatio(window.devicePixelRatio, renderScaleRef.current));
-    renderer.setClearColor(0x000000, 0);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.72;
-    renderer.domElement.setAttribute("aria-hidden", "true");
-    mount.appendChild(renderer.domElement);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(36, 1280 / 714, 0.05, 100);
-    camera.position.set(0, 0, 6.5);
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    const room = new RoomEnvironment();
-    const environment = pmrem.fromScene(room, 0.04);
-    scene.environment = environment.texture;
-    scene.environmentIntensity = 0.38;
-    room.dispose();
-    pmrem.dispose();
-    const hemisphere = new THREE.HemisphereLight("#c8d5be", "#241a0a", 0.45);
-    const gold = new THREE.DirectionalLight("#fff0d5", 1.7);
-    gold.position.set(-3, 6, 5);
-    const teal = new THREE.DirectionalLight("#63edce", 1.5);
-    teal.position.set(4, 3, -2);
-    const fill = new THREE.PointLight("#3ac4b0", 0.8, 12, 2);
-    fill.position.set(1, 1, 4);
-    scene.add(hemisphere, gold, teal, fill);
-    const draco = new DRACOLoader().setDecoderPath(
-      `${import.meta.env.BASE_URL}decoders/draco/`,
-    );
-    const ktx2 = new KTX2Loader()
-      .setTranscoderPath(
-        "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/libs/basis/",
-      )
-      .detectSupport(renderer);
-    const loader = new GLTFLoader().setDRACOLoader(draco).setKTX2Loader(ktx2);
-    const pivot = new THREE.Group();
-    const verticalAnchor = 0.055;
-    pivot.position.y = verticalAnchor;
-    // Turn toward the cards and lean the whole animated rig, including all arms.
-    const facing = -0.47;
-    pivot.rotation.order = "ZYX";
-    pivot.rotation.y = facing;
-    pivot.rotation.z = 0.045;
-    scene.add(pivot);
-    let model: THREE.Group | null = null;
-    let mixer: THREE.AnimationMixer | null = null;
-    let frame = 0;
-    let previous = performance.now();
-    let lastRendered = previous;
-    const start = previous;
-    const resize = () => {
-      const { width, height } = mount.getBoundingClientRect();
-      if (!width || !height) return;
-      const pixelRatio = scaledPixelRatio(window.devicePixelRatio, renderScaleRef.current);
-      if (renderer.getPixelRatio() !== pixelRatio) renderer.setPixelRatio(pixelRatio);
-      renderer.setSize(width, height);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      pivot.position.x =
-        Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) *
-        camera.position.z *
-        camera.aspect *
-        0.47;
-      renderer.render(scene, camera);
-    };
-    resizeControlRef.current = resize;
-    const observer = new ResizeObserver(resize);
-    observer.observe(mount);
-    resize();
-    const render = (now: number) => {
-      frame = 0;
-      if (!active || !model || motionDisabledRef.current) return;
-      frame = requestAnimationFrame(render);
-      const timestamp = nextRenderTimestamp(now, lastRendered, frameLimitRef.current);
-      if (timestamp === null) return;
-      lastRendered = timestamp;
-      const delta = Math.min((now - previous) / 1000, 0.05);
-      previous = now;
-      if (document.hidden) return;
-      if (!motionDisabledRef.current) {
-        mixer?.update(delta * 0.7);
-        const time = (now - start) / 1000;
-        pivot.rotation.y = facing + Math.sin(time * 0.22) * 0.018;
-        pivot.position.y = verticalAnchor + Math.sin(time * 0.6) * 0.012;
+    if (!mount) {
+      fallback(
+        "The character display is unavailable. Using the illustrated character.",
+      );
+      return cleanup;
+    }
+    emit({ status: "loading", phase: "download" });
+    try {
+      let renderer: THREE.WebGLRenderer;
+      try {
+        renderer = new THREE.WebGLRenderer({
+          alpha: true,
+          antialias: true,
+          powerPreference: "high-performance",
+        });
+      } catch {
+        fallback(
+          "3D graphics are unavailable. Using the illustrated character.",
+        );
+        return cleanup;
       }
-      renderer.render(scene, camera);
-    };
-    const setMotionPaused = (paused: boolean) => {
-      cancelAnimationFrame(frame);
-      frame = 0;
-      previous = performance.now();
-      lastRendered = previous;
-      if (!paused && model) frame = requestAnimationFrame(render);
-    };
-    motionControlRef.current = setMotionPaused;
-    loader.load(
-      source,
-      (gltf) => {
+      disposers.push(() => {
+        renderer.dispose();
+        renderer.domElement.remove();
+      });
+      renderer.setPixelRatio(
+        scaledPixelRatio(window.devicePixelRatio, renderScaleRef.current),
+      );
+      renderer.setClearColor(0x000000, 0);
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 0.72;
+      renderer.domElement.setAttribute("aria-hidden", "true");
+      mount.appendChild(renderer.domElement);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(36, 1280 / 714, 0.05, 100);
+      camera.position.set(0, 0, 6.5);
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      const room = new RoomEnvironment();
+      let environment: THREE.WebGLRenderTarget;
+      try {
+        environment = pmrem.fromScene(room, 0.04);
+      } finally {
+        room.dispose();
+        pmrem.dispose();
+      }
+      disposers.push(() => environment.dispose());
+      scene.environment = environment.texture;
+      scene.environmentIntensity = 0.38;
+      const hemisphere = new THREE.HemisphereLight("#c8d5be", "#241a0a", 0.45);
+      const gold = new THREE.DirectionalLight("#fff0d5", 1.7);
+      gold.position.set(-3, 6, 5);
+      const teal = new THREE.DirectionalLight("#63edce", 1.5);
+      teal.position.set(4, 3, -2);
+      const fill = new THREE.PointLight("#3ac4b0", 0.8, 12, 2);
+      fill.position.set(1, 1, 4);
+      scene.add(hemisphere, gold, teal, fill);
+      const draco = new DRACOLoader().setDecoderPath(
+        `${import.meta.env.BASE_URL}decoders/draco/`,
+      );
+      disposers.push(() => draco.dispose());
+      const ktx2 = new KTX2Loader()
+        .setTranscoderPath(
+          "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/libs/basis/",
+        )
+        .detectSupport(renderer);
+      disposers.push(() => ktx2.dispose());
+      const loader = new GLTFLoader().setDRACOLoader(draco).setKTX2Loader(ktx2);
+      let downloadBytes: Pick<CreatureLoadState, "loadedBytes" | "totalBytes"> =
+        {};
+      const parse = loader.parse.bind(loader);
+      loader.parse = (data, path, onParsed, onError) => {
         if (!active) {
-          disposeModel(gltf.scene);
+          onError?.(
+            new ErrorEvent("error", {
+              message: "Character loading was cancelled.",
+            }),
+          );
           return;
         }
-        model = gltf.scene;
-        const bounds = new THREE.Box3().setFromObject(model);
-        const size = bounds.getSize(new THREE.Vector3());
-        const center = bounds.getCenter(new THREE.Vector3());
-        if (!Number.isFinite(size.y) || size.y <= 0) {
-          disposeModel(model);
-          model = null;
-          return;
-        }
-        const scale = 5.6784 / size.y;
-        model.scale.multiplyScalar(scale);
-        model.position.sub(center.multiplyScalar(scale));
-        // Compensate for the larger rig so the crown keeps its breathing room.
-        model.position.y -= 0.96;
-        pivot.add(model);
-        if (gltf.animations.length) {
-          mixer = new THREE.AnimationMixer(model);
-          const idle =
-            gltf.animations.find((clip) => /idle/i.test(clip.name)) ??
-            gltf.animations[0];
-          mixer.clipAction(idle).play();
-          mixer.update(0);
-          setActiveAnimation(idle.name);
+        emit({ status: "loading", phase: "decode", ...downloadBytes });
+        parse(data, path, onParsed, onError);
+      };
+      const pivot = new THREE.Group();
+      const verticalAnchor = 0.055;
+      pivot.position.y = verticalAnchor;
+      // Turn toward the cards and lean the whole animated rig, including all arms.
+      const facing = -0.47;
+      pivot.rotation.order = "ZYX";
+      pivot.rotation.y = facing;
+      pivot.rotation.z = 0.045;
+      scene.add(pivot);
+      let model: THREE.Group | null = null;
+      let mixer: THREE.AnimationMixer | null = null;
+      let frame = 0;
+      let previous = performance.now();
+      let lastRendered = previous;
+      const start = previous;
+      const resize = () => {
+        if (!active) return;
+        const { width, height } = mount.getBoundingClientRect();
+        if (!width || !height) return;
+        const pixelRatio = scaledPixelRatio(
+          window.devicePixelRatio,
+          renderScaleRef.current,
+        );
+        if (renderer.getPixelRatio() !== pixelRatio)
+          renderer.setPixelRatio(pixelRatio);
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        pivot.position.x =
+          Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) *
+          camera.position.z *
+          camera.aspect *
+          0.47;
+        renderer.render(scene, camera);
+      };
+      resizeControlRef.current = resize;
+      disposers.push(() => {
+        if (resizeControlRef.current === resize)
+          resizeControlRef.current = null;
+      });
+      const observer = new ResizeObserver(resize);
+      disposers.push(() => observer.disconnect());
+      observer.observe(mount);
+      resize();
+      const render = (now: number) => {
+        frame = 0;
+        if (!active || !model || motionDisabledRef.current) return;
+        frame = requestAnimationFrame(render);
+        const timestamp = nextRenderTimestamp(
+          now,
+          lastRendered,
+          frameLimitRef.current,
+        );
+        if (timestamp === null) return;
+        lastRendered = timestamp;
+        const delta = Math.min((now - previous) / 1000, 0.05);
+        previous = now;
+        if (document.hidden) return;
+        if (!motionDisabledRef.current) {
+          mixer?.update(delta * 0.7);
+          const time = (now - start) / 1000;
+          pivot.rotation.y = facing + Math.sin(time * 0.22) * 0.018;
+          pivot.position.y = verticalAnchor + Math.sin(time * 0.6) * 0.012;
         }
         renderer.render(scene, camera);
-        setLoaded(true);
-        setMotionPaused(motionDisabledRef.current);
-      },
-      undefined,
-      () => {
-        // An unavailable or unsupported model leaves the illustrated character visible.
-        if (active) setLoaded(false);
-      },
-    );
-    return () => {
-      active = false;
-      if (motionControlRef.current === setMotionPaused)
-        motionControlRef.current = null;
-      if (resizeControlRef.current === resize) resizeControlRef.current = null;
-      cancelAnimationFrame(frame);
-      observer.disconnect();
-      mixer?.stopAllAction();
-      if (model) {
-        mixer?.uncacheRoot(model);
-        disposeModel(model);
-      }
-      draco.dispose();
-      ktx2.dispose();
-      environment.dispose();
-      renderer.dispose();
-      renderer.domElement.remove();
-    };
-  }, [source]);
+      };
+      const setMotionPaused = (paused: boolean) => {
+        cancelAnimationFrame(frame);
+        frame = 0;
+        previous = performance.now();
+        lastRendered = previous;
+        if (!paused && model) frame = requestAnimationFrame(render);
+      };
+      motionControlRef.current = setMotionPaused;
+      disposers.push(() => {
+        if (motionControlRef.current === setMotionPaused)
+          motionControlRef.current = null;
+        if (resizeControlRef.current === resize)
+          resizeControlRef.current = null;
+        cancelAnimationFrame(frame);
+        mixer?.stopAllAction();
+        if (model) {
+          mixer?.uncacheRoot(model);
+          disposeModel(model);
+        }
+      });
+      emit({ status: "loading", phase: "download" });
+      loader.load(
+        source,
+        (gltf) => {
+          if (!active) {
+            disposeModel(gltf.scene);
+            return;
+          }
+          try {
+            model = gltf.scene;
+            const bounds = new THREE.Box3().setFromObject(model);
+            const size = bounds.getSize(new THREE.Vector3());
+            const center = bounds.getCenter(new THREE.Vector3());
+            if (
+              ![size.x, size.y, size.z, center.x, center.y, center.z].every(
+                Number.isFinite,
+              ) ||
+              size.y <= 0
+            ) {
+              disposeModel(model);
+              model = null;
+              fallback(
+                "The character file has no usable geometry. Using the illustrated character.",
+              );
+              return;
+            }
+            const scale = 5.6784 / size.y;
+            model.scale.multiplyScalar(scale);
+            model.position.sub(center.multiplyScalar(scale));
+            // Compensate for the larger rig so the crown keeps its breathing room.
+            model.position.y -= 0.96;
+            pivot.add(model);
+            if (gltf.animations.length) {
+              mixer = new THREE.AnimationMixer(model);
+              const idle =
+                gltf.animations.find((clip) => /idle/i.test(clip.name)) ??
+                gltf.animations[0];
+              mixer.clipAction(idle).play();
+              mixer.update(0);
+              setActiveAnimation(idle.name);
+            }
+            emit({ status: "loading", phase: "render", ...downloadBytes });
+            if (!active) return;
+            renderer.render(scene, camera);
+            if (renderer.getContext().isContextLost()) {
+              fallback(
+                "The graphics connection was interrupted. Using the illustrated character.",
+              );
+              return;
+            }
+            if (renderer.info.render.calls === 0) {
+              fallback(
+                "The character file has no visible renderable geometry. Using the illustrated character.",
+              );
+              return;
+            }
+            setLoaded(true);
+            emit({ status: "ready", phase: "render", ...downloadBytes });
+            setMotionPaused(motionDisabledRef.current);
+          } catch {
+            fallback(
+              "The character could not be prepared or rendered. Using the illustrated character.",
+            );
+          }
+        },
+        (event) => {
+          if (
+            !active ||
+            !event.lengthComputable ||
+            !Number.isFinite(event.total) ||
+            event.total <= 0 ||
+            !Number.isFinite(event.loaded)
+          )
+            return;
+          downloadBytes = {
+            loadedBytes: event.loaded,
+            totalBytes: event.total,
+          };
+          emit({
+            status: "loading",
+            phase: event.loaded >= event.total ? "decode" : "download",
+            ...downloadBytes,
+          });
+        },
+        () => {
+          fallback(
+            "The character file could not be downloaded or decoded. Using the illustrated character.",
+          );
+        },
+      );
+      return cleanup;
+    } catch {
+      fallback(
+        "3D graphics could not be initialized. Using the illustrated character.",
+      );
+      return cleanup;
+    }
+  }, [source, loadAttempt]);
 
   return (
     <div

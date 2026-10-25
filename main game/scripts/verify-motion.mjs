@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { grid, openCategory, leaveSettings, setMotion } from "./settings-helpers.mjs";
 import { waitForMenuIdle, waitForDialogClosed } from "./motion-helpers.mjs";
+import { waitForBootReady } from "./boot-helpers.mjs";
 
 const target = new URL(process.env.CROWNFALL_TEST_URL || "http://localhost:5173");
 target.searchParams.set("model", "none");
@@ -78,6 +79,7 @@ try {
     await waitForMenuIdle(page);
   };
   await page.goto(target.href);
+  await waitForBootReady(page);
   await page.evaluate(() => document.fonts.ready);
   await page.evaluate(() => { window.__motionSceneNodes = [document.querySelector(".creature-stage"), document.querySelector(".atmosphere")]; });
   assert.equal(await page.locator(".menu-transition").count(), 1);

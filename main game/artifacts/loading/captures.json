@@ -1,0 +1,65 @@
+{
+  "captures": [
+    {
+      "path": "artifacts/loading/loading-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/loading/loading-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/loading/loading-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/loading/menu-ready-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/loading/unknown-length-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/loading/recovery-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/loading/recovery-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    }
+  ],
+  "errors": [],
+  "modelBytes": 4217336,
+  "progress": "Actual supplied GLB streamed at a real 1MiB boundary before completion; no synthetic percentage. Unknown-length and missing-model states use actual corresponding responses.",
+  "recording": {
+    "file": "artifacts/loading/loading-handoff.webm",
+    "viewport": {
+      "width": 960,
+      "height": 540
+    },
+    "renderer": "Actual supplied GLB, Low particles, 50% scene resolution,30fps cap for software capture. Full untrimmed video; physical GPU performance is unbenchmarked."
+  },
+  "artDirectionReference": "https://carleaf.artstation.com/ (composition inspiration only; no external artwork imported)"
+}

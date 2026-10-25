@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Atmosphere from "./Atmosphere";
 import CreatureStage from "./CreatureStage";
 import HomeGrid from "./HomeGrid";
+import LoadingScreen from "./LoadingScreen";
+import useBootLoading from "./useBootLoading";
 import MenuTransition from "./MenuTransition";
 import Showcase, { type ShowcaseView } from "./Showcase";
 import { SettingsGrid, SETTINGS_CATEGORIES } from "./SettingsGrid";
@@ -114,6 +116,11 @@ export default function App() {
   const [panel, setPanel] = useState<Panel>(null);
   const [preferences, setPreferences] = useState<Preferences>(getPreferences);
   const reducedMotion = !preferences.motion || systemReducedMotion;
+  const boot = useBootLoading(reducedMotion);
+  const continueBoot = boot.continueToMenu;
+  const retryBoot = boot.retry;
+  const bootKeys = useRef(new Set<string>());
+  const bootPadBlocked = useRef(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const lastPanel = useRef<Panel>(null);
   const showcaseRef = useRef<SettingsPageHandle>(null);
@@ -162,11 +169,13 @@ export default function App() {
     selectSettings(nextRow * 3 + nextColumn);
   }, [settingsSelected, selectSettings]);
   const activateSettings = useCallback((index: number) => {
+    if (boot.blocking) return;
     setSettingsSelected(index);
     setTransitionDirection(1);
     setSettingsCategory(SETTINGS_CATEGORIES[index]);
-  }, []);
+  }, [boot.blocking]);
   const openTab = useCallback((index: number, direction?: number) => {
+    if (boot.blocking) return;
     setTransitionDirection(direction ?? (index >= activeTab ? 1 : -1));
     setActiveTab(index);
     setPanel(null);
@@ -183,25 +192,29 @@ export default function App() {
       setScreen("settings");
       setSettingsCategory(null);
     }
-  }, [screen, activeTab]);
+  }, [screen, activeTab, boot.blocking]);
   const changeTab = useCallback((direction: number) => {
     openTab((activeTab + direction + tabs.length) % tabs.length, direction);
   }, [activeTab, openTab]);
   const changeShowcaseView = useCallback((view: ShowcaseView) => {
+    if (boot.blocking) return;
     setTransitionDirection(view === "overview" ? -1 : 1);
     setShowcaseView(view);
-  }, []);
+  }, [boot.blocking]);
   const activate = useCallback((index: number) => {
+    if (boot.blocking) return;
     setSelected(index);
     setPanel(cards[index].id);
-  }, []);
+  }, [boot.blocking]);
   const activateHome = useCallback((index: number) => {
+    if (boot.blocking) return;
     const item = HOME_CONTENT[index];
     if (!item?.action || !item.title || !item.imageSrc) return;
     setHomeSelected(index);
     setPanel(item.action);
-  }, []);
+  }, [boot.blocking]);
   const back = useCallback(() => {
+    if (boot.blocking) return;
     if (panel) { closePanel(); return; }
     setTransitionDirection(-1);
     if (screen === "showcase") {
@@ -219,15 +232,16 @@ export default function App() {
     else if (screen === "settings") openTab(settingsOrigin.current === "home" ? 0 : 1);
     else if (screen === "home") openTab(1);
     else setPanel("quit");
-  }, [panel, screen, settingsCategory, showcaseView, closePanel, openTab]);
+  }, [panel, screen, settingsCategory, showcaseView, closePanel, openTab, boot.blocking]);
   const activateSelected = useCallback(() => {
+    if (boot.blocking) return;
     if (screen === "home") activateHome(homeSelected);
     else if (screen === "showcase") showcaseRef.current?.activate();
     else if (screen === "settings") {
       if (settingsCategory) detailRef.current?.activate();
       else activateSettings(settingsSelected);
     } else activate(selected);
-  }, [screen, homeSelected, settingsCategory, settingsSelected, selected, activateHome, activateSettings, activate]);
+  }, [screen, homeSelected, settingsCategory, settingsSelected, selected, activateHome, activateSettings, activate, boot.blocking]);
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -243,6 +257,7 @@ export default function App() {
   }, [panel]);
 
   useEffect(() => {
+    if (boot.blocking) return;
     if (previousScreen.current === screen && previousCategory.current === settingsCategory && previousShowcaseView.current === showcaseView && !restoreFocus.current) return;
     previousScreen.current = screen;
     previousCategory.current = settingsCategory;
@@ -253,7 +268,7 @@ export default function App() {
     if (screen === "settings" && settingsCategory) { detailRef.current?.focus(); return; }
     const target = screen === "home" ? homeRefs.current[homeSelected] : screen === "settings" ? settingsRefs.current[settingsSelected] : cardRefs.current[selected];
     target?.focus({ preventScroll: true });
-  }, [screen, settingsCategory, showcaseView, panel, homeSelected, settingsSelected, selected]);
+  }, [screen, settingsCategory, showcaseView, panel, homeSelected, settingsSelected, selected, boot.blocking]);
 
   useEffect(() => {
     try {
@@ -265,6 +280,8 @@ export default function App() {
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
+      if (boot.blocking) { bootKeys.current.add(event.code); return; }
+      if (bootKeys.current.has(event.code)) return;
       const action = (Object.entries(preferences.bindings) as [BindingAction, string][]).find(([, code]) => code === event.code)?.[0];
       if (event.code === "Escape" || action === "back") {
         event.preventDefault();
@@ -303,14 +320,32 @@ export default function App() {
         activateSelected();
       }
     };
+    const onKeyUp = (event: KeyboardEvent) => { bootKeys.current.delete(event.code); };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [preferences.bindings, panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectHome, selectSettings, selectCard]);
+    window.addEventListener("keyup", onKeyUp);
+    return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("keyup", onKeyUp); };
+  }, [preferences.bindings, panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectHome, selectSettings, selectCard, boot.blocking]);
 
   useEffect(() => {
     let frame: number;
     const poll = (time: number) => {
       const pad = Array.from(navigator.getGamepads?.() || []).find((item) => item?.connected && item.mapping === "standard");
+      if (boot.blocking) {
+        bootPadBlocked.current = !!pad && (pad.buttons.some(button => button.pressed) || pad.axes.some(axis => Math.abs(axis) > .55));
+        if (pad && time > gamepadInputAt.current) {
+          if (boot.canContinue && pad.buttons[0]?.pressed) { continueBoot(); gamepadInputAt.current = time + 500; }
+          else if (boot.degraded && pad.buttons[3]?.pressed) { retryBoot(); gamepadInputAt.current = time + 500; }
+        }
+        frame = requestAnimationFrame(poll);
+        return;
+      }
+      if (bootPadBlocked.current && pad) {
+        if (pad.buttons.some(button => button.pressed) || pad.axes.some(axis => Math.abs(axis) > .55)) {
+          frame = requestAnimationFrame(poll);
+          return;
+        }
+        bootPadBlocked.current = false;
+      }
       if (pad && time > gamepadInputAt.current) {
         const left = pad.buttons[14]?.pressed || pad.axes[0] < -0.55;
         const right = pad.buttons[15]?.pressed || pad.axes[0] > 0.55;
@@ -343,14 +378,14 @@ export default function App() {
     };
     frame = requestAnimationFrame(poll);
     return () => cancelAnimationFrame(frame);
-  }, [panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectCard]);
+  }, [panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectCard, boot.blocking, boot.canContinue, boot.degraded, continueBoot, retryBoot]);
 
   const displayedPanel = panel || lastPanel.current;
   const activeMode = cards.find((mode) => mode.id === displayedPanel);
   const viewKey = screen === "settings" ? `settings:${settingsCategory || "grid"}` : screen === "showcase" ? `showcase:${showcaseView}` : screen;
 
   return (
-    <main className={`menu-shell ${preferences.motion ? "" : "reduce-motion"} ${screen === "settings" ? "is-settings" : ""} ${screen === "settings" && settingsCategory ? "settings-detail-open" : ""} ${preferences.showHints ? "" : "hide-control-hints"}`}>
+    <main data-boot-state={boot.visible ? boot.leaving ? "leaving" : boot.degraded ? "degraded" : "loading" : "ready"} className={`menu-shell ${preferences.motion ? "" : "reduce-motion"} ${screen === "settings" ? "is-settings" : ""} ${screen === "settings" && settingsCategory ? "settings-detail-open" : ""} ${preferences.showHints ? "" : "hide-control-hints"}`}>
       <div className="menu-stage">
         <div className="scene-wash" aria-hidden="true" />
         <Atmosphere
@@ -359,7 +394,8 @@ export default function App() {
           renderScale={preferences.renderScale}
           frameLimit={preferences.frameLimit}
         />
-        <CreatureStage reducedMotion={!preferences.motion} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} />
+        <CreatureStage reducedMotion={!preferences.motion} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} onLoadState={boot.onModelState} loadAttempt={boot.attempt} />
+        <div className="menu-content" inert={boot.blocking} aria-hidden={boot.blocking || undefined}>
         <nav className={`main-nav${screen === "home" ? " main-nav--home" : ""}`} aria-label="Main menu" inert={screen === "settings" && !!settingsCategory}>
           <button
             className="shoulder-button"
@@ -536,6 +572,18 @@ export default function App() {
             </div>
           </div>
         </dialog>
+        </div>
+        {boot.visible && <LoadingScreen
+          progress={boot.progress}
+          status={boot.status}
+          ready={boot.ready}
+          leaving={boot.leaving}
+          reducedMotion={reducedMotion}
+          typeReady={boot.typeReady}
+          degraded={boot.degraded}
+          onRetry={boot.degraded ? boot.retry : undefined}
+          onContinue={boot.canContinue ? boot.continueToMenu : undefined}
+        />}
       </div>
     </main>
   );

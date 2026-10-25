@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { grid, openCategory, leaveSettings, setMotion } from "./settings-helpers.mjs";
+import { waitForBootReady } from "./boot-helpers.mjs";
 
 const target = new URL(process.env.CROWNFALL_TEST_URL || "http://localhost:5173");
 target.searchParams.set("model", "none");
@@ -49,6 +50,7 @@ try {
     } finally { await page.evaluate(() => { window.__settingsPadButtons = []; }); }
   };
   await page.goto(target.href);
+  await waitForBootReady(page);
   await page.evaluate(() => document.fonts.ready);
   const migrated = await prefs();
   assert.equal(migrated.showHints, true); assert.equal(migrated.renderScale, 100); assert.equal(migrated.frameLimit, 0);
@@ -130,6 +132,7 @@ try {
   for (const id of ["audio-device", "sfx-volume", "music-volume", "dialogue-volume", "music"]) assert.equal(await row(id).locator("input,select,button").count(), 0);
   await leaveSettings(page);
   await page.reload();
+  await waitForBootReady(page);
   const stored = await prefs();
   assert.equal(stored.quality, "medium"); assert.equal(stored.renderScale, 85); assert.equal(stored.frameLimit, 60); assert.equal(stored.volume, 40); assert.equal(stored.showHints, false);
   await openCategory(page, "Video");
@@ -154,7 +157,7 @@ try {
   await page.keyboard.press("d"); await focusName("Local Duel");
   await page.keyboard.press("ArrowRight"); await focusName("Local Duel");
   await page.keyboard.press("d"); await focusName("Chapters");
-  await page.reload(); assert.equal((await prefs()).bindings.right, "KeyD");
+  await page.reload(); await waitForBootReady(page); assert.equal((await prefs()).bindings.right, "KeyD");
   await page.keyboard.press("Home"); await page.keyboard.press("d"); await focusName("Local Duel");
   await openCategory(page, "Controls"); await rightBinding().click();
   await pad(1, () => page.waitForFunction(() => document.querySelector('[role="status"]').textContent.includes("Binding unchanged")));

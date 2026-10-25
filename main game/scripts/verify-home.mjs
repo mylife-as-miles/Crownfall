@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { grid, openCategory, leaveSettings } from "./settings-helpers.mjs";
+import { waitForBootReady } from "./boot-helpers.mjs";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
 const target = new URL(origin);
@@ -78,6 +79,7 @@ try {
   };
 
   await page.goto(target.href);
+  await waitForBootReady(page);
   await page.evaluate(() => document.fonts.ready);
   await activeTab("Play");
   const initialPlay = await inspectPlay();

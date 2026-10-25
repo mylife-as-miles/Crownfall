@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
+import { waitForBootReady } from "./boot-helpers.mjs";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
 const domOnly = process.env.CROWNFALL_DOM_ONLY === "1";
@@ -43,6 +44,7 @@ try {
     if (message.type() === "error") errors.push(message.text());
   });
   await page.goto(target.href);
+  await waitForBootReady(page);
   await page.evaluate(() => document.fonts.ready);
   if (!domOnly) {
     await page.locator(".creature-model--loaded").waitFor({ timeout: 60000 });

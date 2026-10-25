@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
+import { waitForBootReady } from "./boot-helpers.mjs";
 
 const directory = "artifacts/creature-height";
 await mkdir(directory, { recursive: true });
@@ -86,6 +87,7 @@ try {
     await route.fulfill({ response, body: source.replace(marker, `${marker}\n${instrumentation}`) });
   });
   await page.goto(process.env.CROWNFALL_FRAMING_URL || "http://localhost:5173");
+  await waitForBootReady(page);
   await page.locator(".creature-model--loaded").waitFor({ timeout: 60000 });
   const setup = await page.evaluate(() => window.__framingSetup());
   assert.ok(setup.counts.every(({ counts }) => counts.crown > 10 && counts.face > 10 && counts.eye > 10));

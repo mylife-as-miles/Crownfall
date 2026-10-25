@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
+import { waitForBootReady } from "./boot-helpers.mjs";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
 const domOnly = process.env.CROWNFALL_DOM_ONLY === "1";
@@ -48,6 +49,7 @@ try {
     await page.goto(`${origin}/?model=none`);
     await page.evaluate(() => localStorage.clear());
     await page.reload();
+    await waitForBootReady(page);
     await page.evaluate(() => document.fonts.ready);
     await page.getByRole("tab", { name: "Home", exact: true }).click();
     for (const [state, name] of [["legacy", "My Legacy"], ["chronicles", "Chronicles"], ["herald", "Herald Board"]]) {

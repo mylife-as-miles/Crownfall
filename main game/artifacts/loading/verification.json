@@ -1,0 +1,214 @@
+{
+  "passed": true,
+  "scope": "Real HTTP-streamed lightweight valid GLB fixture, controlled image/font failures and model=none menu boot. The supplied heavy GLB is verified separately by the coordinating agent.",
+  "target": "http://localhost:4173",
+  "fixtureBytes": 131160,
+  "checks": [
+    "Initial seven images and fonts gate the full menu; loading blocks keyboard/gamepad actions, fits desktop/landscape and enables navigation only after readiness",
+    "Known-length progress follows real streamed bytes; complete download waits for texture decode and first rendered mesh; preferences retain the same renderer without model reload or boot restart",
+    "A chunked response with no Content-Length stays indeterminate and reaches the real rendered ready state without a fabricated byte percentage",
+    "A missing GLB settles into an explained illustrated fallback with Retry/Continue; explicit Retry makes one fresh successful attempt and releases the gate",
+    "Keyboard activation of Continue uses the illustration and enters the menu without silently retrying or hanging",
+    "A pending transfer offers optional Continue after its slow-load notice without claiming completion; later background readiness keeps the menu and selection intact (timeout advanced with browser clock)",
+    "A failed image request settles through an explicit fallback path and leaves readable reachable menu controls without an unhandled error",
+    "A failed font request settles through an explicit fallback path and leaves readable reachable menu controls without an unhandled error",
+    "Cached intentional model=none boot completes without an artificial minimum wait; both OS and saved reduced motion skip the loading exit delay",
+    "No unexpected JavaScript or console errors; heavy supplied character model and visual recording are intentionally outside this fixture suite"
+  ],
+  "states": [
+    {
+      "label": "delayed Home artwork and fonts",
+      "state": "loading",
+      "status": "Preparing artwork and type",
+      "value": "36",
+      "busy": "true",
+      "modelReady": false,
+      "selectedTab": "Play",
+      "selectedCard": "Local Duel",
+      "dialogOpen": false
+    },
+    {
+      "label": "blocked keyboard and controller during boot",
+      "state": "loading",
+      "status": "Preparing artwork and type",
+      "value": "82",
+      "busy": "true",
+      "modelReady": false,
+      "selectedTab": "Play",
+      "selectedCard": "Local Duel",
+      "dialogOpen": false
+    },
+    {
+      "label": "artwork ready, fonts still pending",
+      "state": "loading",
+      "status": "Preparing artwork and type",
+      "value": "82",
+      "busy": "true",
+      "modelReady": false,
+      "selectedTab": "Play",
+      "selectedCard": "Local Duel",
+      "dialogOpen": false
+    },
+    {
+      "label": "normal coordinated loading exit",
+      "exits": [
+        {
+          "state": "ready",
+          "menuInert": true
+        },
+        {
+          "state": "leaving",
+          "menuInert": true
+        }
+      ]
+    },
+    {
+      "label": "known-length partial model download",
+      "state": "loading",
+      "status": "Loading the sorcerer · 0.0 / 0.1 MB",
+      "value": "66",
+      "busy": "true",
+      "modelReady": false,
+      "selectedTab": "Play",
+      "selectedCard": "Local Duel",
+      "dialogOpen": false
+    },
+    {
+      "label": "known-length additional real bytes",
+      "state": "loading",
+      "status": "Loading the sorcerer · 0.1 / 0.1 MB",
+      "value": "86",
+      "busy": "true",
+      "modelReady": false,
+      "selectedTab": "Play",
+      "selectedCard": "Local Duel",
+      "dialogOpen": false
+    },
+    {
+      "label": "model bytes complete, texture still pending",
+      "state": "loading",
+      "status": "Preparing the sorcerer",
+      "value": "91",
+      "busy": "true",
+      "modelReady": false,
+      "selectedTab": "Play",
+      "selectedCard": "Local Duel",
+      "dialogOpen": false
+    },
+    {
+      "label": "normal first-frame handoff opacity",
+      "model": 1,
+      "illustration": 0
+    },
+    {
+      "label": "chunked response without Content-Length",
+      "state": "loading",
+      "status": "Loading the sorcerer",
+      "value": null,
+      "busy": "true",
+      "modelReady": false,
+      "selectedTab": "Play",
+      "selectedCard": "Local Duel",
+      "dialogOpen": false
+    },
+    {
+      "label": "unavailable character file",
+      "state": "degraded",
+      "status": "The menu is ready with an illustrated sorcerer.",
+      "value": "100",
+      "busy": "false",
+      "modelReady": false,
+      "selectedTab": "Play",
+      "selectedCard": "Local Duel",
+      "dialogOpen": false
+    },
+    {
+      "label": "slow transfer with optional Continue",
+      "state": "loading",
+      "status": "Still preparing the menu. You can continue while it finishes.",
+      "value": "66",
+      "busy": "true",
+      "modelReady": false,
+      "selectedTab": "Play",
+      "selectedCard": "Local Duel",
+      "dialogOpen": false
+    },
+    {
+      "label": "cached OS reduced-motion reload",
+      "elapsedMs": 3092
+    },
+    {
+      "label": "cached saved preference reduced-motion reload",
+      "elapsedMs": 1472
+    }
+  ],
+  "layouts": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 720,
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720
+      },
+      "overflow": false,
+      "clipped": []
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "x": 0,
+      "y": 0,
+      "width": 1920,
+      "height": 1080,
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080
+      },
+      "overflow": false,
+      "clipped": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "x": 72.421875,
+      "y": 0,
+      "width": 699.140625,
+      "height": 390,
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390
+      },
+      "overflow": false,
+      "clipped": []
+    }
+  ],
+  "errors": [],
+  "expectedNetworkErrors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED",
+    "Failed to load resource: net::ERR_FAILED"
+  ]
+}

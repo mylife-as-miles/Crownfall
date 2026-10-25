@@ -27,21 +27,21 @@
     {
       "label": "normal Home entry focus/accessibility",
       "key": "home",
-      "state": "running",
+      "state": "idle",
       "focus": "My Legacy",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 1,
+      "ghostChildren": 0,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0,
-          "transform": "matrix(1, 0, 0, 1, -10, 0)"
+          "opacity": 1,
+          "transform": "none"
         }
       ],
-      "activeAnimations": 5
+      "activeAnimations": 0
     },
     {
       "label": "settled Home",
@@ -136,7 +136,7 @@
           "transform": "none"
         }
       ],
-      "activeAnimations": 1
+      "activeAnimations": 0
     },
     {
       "label": "interrupted Play",
@@ -179,21 +179,21 @@
     {
       "label": "interrupted Play",
       "key": "play",
-      "state": "idle",
+      "state": "running",
       "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 0,
+      "ghostChildren": 1,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 1,
-          "transform": "none"
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 6
     },
     {
       "label": "rapid navigation settled",
@@ -236,8 +236,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.327095,
-          "transform": "matrix(1, 0, 0, 1, 6.72905, 0)"
+          "opacity": 0.327279,
+          "transform": "matrix(1, 0, 0, 1, 6.72721, 0)"
         }
       ],
       "activeAnimations": 3
@@ -259,45 +259,45 @@
           "transform": "none"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 1
     },
     {
       "label": "Controls detail entry",
       "key": "settings:controls",
-      "state": "idle",
+      "state": "running",
       "focus": "Move left: ←. Change binding",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 0,
+      "ghostChildren": 1,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 1,
-          "transform": "none"
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
         }
       ],
-      "activeAnimations": 1
+      "activeAnimations": 3
     },
     {
       "label": "Audio detail entry",
       "key": "settings:audio",
-      "state": "idle",
+      "state": "running",
       "focus": "Audio Device: System default, read only",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 0,
+      "ghostChildren": 1,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 1,
-          "transform": "none"
+          "opacity": 0.328115,
+          "transform": "matrix(1, 0, 0, 1, 6.71885, 0)"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 3
     },
     {
       "label": "1280px Home in motion",
@@ -312,8 +312,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.326425,
-          "transform": "matrix(1, 0, 0, 1, -6.73575, 0)"
+          "opacity": 0.325403,
+          "transform": "matrix(1, 0, 0, 1, -6.74597, 0)"
         }
       ],
       "activeAnimations": 5
@@ -340,21 +340,21 @@
     {
       "label": "1280px Play in motion",
       "key": "play",
-      "state": "idle",
+      "state": "running",
       "focus": "Online Duel",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 0,
+      "ghostChildren": 1,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 1,
-          "transform": "none"
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 6
     },
     {
       "label": "1280px Play settled",
@@ -388,8 +388,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.327998,
-          "transform": "matrix(1, 0, 0, 1, 6.72002, 0)"
+          "opacity": 0.326509,
+          "transform": "matrix(1, 0, 0, 1, 6.73491, 0)"
         }
       ],
       "activeAnimations": 5
@@ -416,21 +416,21 @@
     {
       "label": "1280px Settings in motion",
       "key": "settings:grid",
-      "state": "idle",
+      "state": "running",
       "focus": "Audio",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 0,
+      "ghostChildren": 1,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 1,
-          "transform": "none"
+          "opacity": 0.32671,
+          "transform": "matrix(1, 0, 0, 1, 6.7329, 0)"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 9
     },
     {
       "label": "1280px Settings settled",
@@ -502,8 +502,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.325286,
-          "transform": "matrix(1, 0, 0, 1, 6.74714, 0)"
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
         }
       ],
       "activeAnimations": 6
@@ -578,8 +578,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0,
-          "transform": "matrix(1, 0, 0, 1, 10, 0)"
+          "opacity": 0.326609,
+          "transform": "matrix(1, 0, 0, 1, 6.73391, 0)"
         }
       ],
       "activeAnimations": 9
@@ -692,8 +692,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0,
-          "transform": "matrix(1, 0, 0, 1, 10, 0)"
+          "opacity": 0.326944,
+          "transform": "matrix(1, 0, 0, 1, 6.73056, 0)"
         }
       ],
       "activeAnimations": 5
@@ -730,11 +730,11 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.328232,
-          "transform": "matrix(1, 0, 0, 1, 6.71769, 0)"
+          "opacity": 0.996333,
+          "transform": "matrix(1, 0, 0, 1, 0.0366729, 0)"
         }
       ],
-      "activeAnimations": 9
+      "activeAnimations": 7
     },
     {
       "label": "844px Settings settled",

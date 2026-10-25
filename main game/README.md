@@ -11,6 +11,16 @@ Open `http://localhost:5173`. `npm run build` checks TypeScript and produces `di
 
 The layout targets desktop and landscape phones. The creature sits behind the menu as requested. Play offers CLASSIC, LOCAL DUEL, CHAPTERS and ONLINE DUEL in the supplied artwork order. Each card opens a matching mode preview, with integration limits stated inside the dialog. No gameplay or matchmaking launches here, and the former demo-save creation/resume UI is removed; existing browser data is left untouched. Home, Play, Showcase and Settings form the top navigation. Showcase provides cinematic-library, arena-artwork and future replay-archive paths; menu context and selection are preserved. Arrow keys select Play cards and wrap; Home/End chooses the first/last card. Enter activates, Escape goes back, and Q/E switches sections. Settings persist on this browser. Low quality disables shader particles; ambient motion and OS reduced motion stop animation.
 
+## Loading and readiness
+
+Crownfall opens with the supplied portal environment, an original crown/orbit seal, restrained motes and the King’s Gambit wordmark. The wordmark waits for its real font before appearing, avoiding a fallback-font width jump. A small branded HTML shell covers the interval before the application JavaScript starts.
+
+The menu mounts behind an inert loading overlay. Artwork must decode, the font group must settle, and the sorcerer must finish transfer, decoding, rig/Idle setup and its first successful rendered frame before the automatic reveal. The progress rail reports resource-preparation units; the transfer status reports actual known model bytes. Unknown-size transfers use an indeterminate rail. There is no simulated percentage or artificial minimum loading time. The 360ms exit is visual motion only; OS and in-app reduced motion make it immediate.
+
+Asset failures show Retry/Continue controls. A failed model can retry without changing preferences or silently restarting the menu; it can also continue with the illustration. Failed artwork/fonts retry through a fresh document so their actual UI resources are retried too. Long transfers offer an optional Continue after 12 seconds; choosing it does not claim completion, and the existing model may finish in the background. Loading input cannot activate menu options; held keys/controller buttons must be released before they can activate the newly revealed menu.
+
+`artifacts/loading/` contains actual supplied-GLB loading captures, unknown-size/recovery states and an untrimmed handoff recording. The capture streams the real file at a 1MiB boundary to make a reproducible loading state; it does not fabricate its progress. The recording discloses lower scene rendering settings for software capture. `verify-loading.mjs` separately exercises controlled lightweight GLB, texture, artwork and font fixtures. ArtStation was consulted for composition inspiration; no additional external artwork was imported.
+
 ## Home screen
 
 Home uses one 298 × 434 tile on the left and two 298 × 215 tiles stacked on the right, with four-pixel gaps, at 1280 × 720. The full grid is 600 × 434 pixels. My Legacy is the tall tile, Chronicles is upper right, and Herald Board is lower right. The supplied king and portal images use centered cover crops; Chronicles contains the complete four-region map, retaining its context. Only the exact supplied titles appear on the tiles. There are no invented descriptions, statistics, story entries or news feeds.
@@ -77,6 +87,7 @@ node scripts/verify-home.mjs
 node scripts/verify-copy.mjs
 node scripts/verify-model.mjs
 node scripts/verify-settings.mjs
+node scripts/verify-loading.mjs
 node scripts/verify-showcase.mjs
 node scripts/verify-motion.mjs
 node scripts/verify-render-controls.mjs

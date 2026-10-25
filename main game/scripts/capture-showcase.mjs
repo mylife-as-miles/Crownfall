@@ -1,3 +1,4 @@
+import { waitForBootReady } from "./boot-helpers.mjs";
 import { chromium } from 'playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 const directory = 'artifacts/showcase';
@@ -10,6 +11,7 @@ try {
  await page.addInitScript(() => localStorage.setItem('crownfall.main-game.preferences', JSON.stringify({ quality: 'high', motion: false, volume: 65 })));
  await page.goto(process.env.CROWNFALL_TEST_URL || 'http://localhost:4173');
  await page.locator('.creature-model--loaded').waitFor({ timeout: 90000 });
+ await waitForBootReady(page);
  await page.evaluate(() => document.fonts.ready);
  await page.getByRole('tab', { name: 'Showcase', exact: true }).click();
  const shot = async (view, viewport) => {
