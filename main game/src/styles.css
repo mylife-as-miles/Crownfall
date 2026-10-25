@@ -153,31 +153,19 @@ a {
   font-weight: 500;
   padding: 0 1.46cqw;
 }
-.nav-notification {
-  position: absolute;
-  left: calc(100% + 0.4cqw);
-  top: 0.15cqh;
-  color: #251205;
-  background: #c36e24;
-  line-height: 1.75cqh;
-  height: 1.75cqh;
-  font-weight: 600;
-  font-size: 1cqw;
-  width: 0.55cqw;
-}
 .shoulder-next {
   margin-left: 0;
   margin-right: 0;
   position: absolute;
-  left: 50.86cqw;
+  left: 29.53cqw;
 }
 .main-nav {
-  width: 52.58cqw;
+  width: 31.25cqw;
 }
 .nav-links {
   position: absolute;
   left: 5.16cqw;
-  width: 42cqw;
+  width: 22.5cqw;
   gap: 0;
 }
 .nav-item {
@@ -197,12 +185,6 @@ a {
 .nav-item:nth-child(3) {
   left: 14.77cqw;
 }
-.nav-item:nth-child(4) {
-  left: 24.53cqw;
-}
-.nav-item:nth-child(5) {
-  left: 35.39cqw;
-}
 .game-cards {
   position: absolute;
   z-index: 2;
@@ -214,6 +196,7 @@ a {
   height: 41.39cqh;
 }
 .game-card {
+  --card-accent: #bf791a;
   position: relative;
   display: block;
   isolation: isolate;
@@ -235,7 +218,7 @@ a {
 .game-card.is-selected {
   filter: brightness(1.12);
   box-shadow:
-    0 0 0 0.13cqw #bf791a,
+    0 0 0 0.13cqw var(--card-accent),
     0 0 0.5cqw #dc8d2055;
   z-index: 1;
 }
@@ -301,10 +284,18 @@ a {
 }
 .card-title {
   font-family: "Barlow", Arial, sans-serif;
-  font-size: max(1.5625cqw, 12px);
-  line-height: 1.15;
-  font-weight: 300;
-  letter-spacing: 0.005cqw;
+  font-size: max(1.458333cqw, 11px);
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #b5b2ac;
+}
+.game-card.is-selected .card-title {
+  color: var(--card-accent);
+}
+.game-card:disabled .card-title,
+.game-card[aria-disabled="true"] .card-title {
+  color: #817d73;
 }
 .card-subtitle {
   font-size: max(0.68cqw, 7px);
@@ -572,23 +563,6 @@ a {
   font-size: 9px;
   letter-spacing: 2px;
   color: #8e7852;
-}
-.controls-list {
-  font-size: 12px;
-  margin: 28px 0;
-}
-.controls-list > div {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #79603c2b;
-}
-.controls-list dt {
-  color: #bc935c;
-}
-.controls-list dd {
-  margin: 0;
-  color: #9b907b;
 }
 .settings-fields {
   margin-top: 26px;

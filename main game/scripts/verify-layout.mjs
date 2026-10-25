@@ -56,11 +56,17 @@ try {
         art.src = getComputedStyle(card.querySelector(".card-art")).backgroundImage.slice(5, -2);
         await art.decode();
         const text = card.querySelector(".card-description");
+        const heading = card.querySelector(".card-heading");
+        const title = card.querySelector(".card-title");
+        const subtitle = card.querySelector(".card-subtitle");
+        const headingBox = heading.getBoundingClientRect();
+        const textBox = text.getBoundingClientRect();
         return {
           label: card.getAttribute("aria-label"),
           x: box.x, y: box.y, width: box.width, height: box.height,
           visible: box.left >= rect.left - 1 && box.right <= rect.right + 1 && box.top >= 0 && box.bottom <= innerHeight,
           textFits: text.scrollHeight <= text.clientHeight + 1 && text.scrollWidth <= text.clientWidth + 1,
+          headingFits: [title, subtitle].every((element) => element.scrollWidth <= element.clientWidth + 1) && headingBox.bottom < textBox.top && headingBox.left >= box.left && headingBox.right <= box.right,
           image: { width: art.naturalWidth, height: art.naturalHeight },
         };
       }));
@@ -76,7 +82,7 @@ try {
       };
     });
     assert.equal(state.cards.length, 4);
-    assert.ok(state.cards.every((card) => card.visible && card.textFits));
+    assert.ok(state.cards.every((card) => card.visible && card.textFits && card.headingFits));
     assert.ok(state.cards.every((card) => card.image.width === 2048 && card.image.height === 1143));
     assert.ok(state.scrollableWidth <= 1);
     assert.equal(state.scrollSnapType, "none");
@@ -96,13 +102,13 @@ try {
     assert.equal(await card.getAttribute("aria-pressed"), "true");
   };
   await page.keyboard.press("Home");
-  await selected("New");
+  await selected("New Gambit");
   await page.keyboard.press("ArrowLeft");
-  await selected("Browse");
+  await selected("Browse Gambits");
   await page.keyboard.press("ArrowRight");
-  await selected("New");
+  await selected("New Gambit");
   await page.keyboard.press("End");
-  await selected("Browse");
+  await selected("Browse Gambits");
   checks.push("Keyboard wraps both ends, Home/End work, and selected card retains actual focus after resize");
 
   const pad = async (button, name) => {
@@ -110,19 +116,19 @@ try {
     await page.evaluate((index) => { window.__pressedButtons = [index]; }, button);
     try {
       if (name) await selected(name);
-      else if (button === 0) await page.getByRole("heading", { name: "Beyond the veil." }).waitFor();
+      else if (button === 0) await page.getByRole("heading", { name: "Browse Gambits" }).waitFor();
       else await page.waitForFunction(() => !document.querySelector("dialog").open);
     } finally {
       await page.evaluate(() => { window.__pressedButtons = []; });
     }
   };
-  await pad(15, "New");
-  await pad(14, "Browse");
-  await pad(14, "Load game");
-  await pad(15, "Browse");
+  await pad(15, "New Gambit");
+  await pad(14, "Browse Gambits");
+  await pad(14, "Load Gambit");
+  await pad(15, "Browse Gambits");
   await pad(0);
   await pad(1);
-  await selected("Browse");
+  await selected("Browse Gambits");
   checks.push("Simulated standard gamepad D-pad wraps and focuses cards; A/B open and close Browse with focus restored");
   assert.deepEqual(errors, []);
   checks.push("No JavaScript or console errors");

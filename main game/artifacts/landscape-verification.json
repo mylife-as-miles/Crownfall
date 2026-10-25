@@ -17,52 +17,56 @@
       "activeAnimation": "Idle",
       "cards": [
         {
-          "label": "New",
+          "label": "New Gambit",
           "x": 148.34375,
           "y": 114.296875,
           "width": 107.59375,
           "height": 161.40625,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Resume",
+          "label": "Resume Gambit",
           "x": 258.109375,
           "y": 114.296875,
           "width": 107.59375,
           "height": 161.40625,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Load game",
+          "label": "Load Gambit",
           "x": 367.875,
           "y": 114.296875,
           "width": 107.59375,
           "height": 161.40625,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Browse",
+          "label": "Browse Gambits",
           "x": 477.640625,
           "y": 114.296875,
           "width": 107.59375,
           "height": 161.40625,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143

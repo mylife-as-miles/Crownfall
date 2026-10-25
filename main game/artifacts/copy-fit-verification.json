@@ -1,0 +1,226 @@
+{
+  "passed": true,
+  "scope": "All modal copy in empty/saved/replacement states at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.",
+  "results": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "home",
+      "text": "×\nCROWNFALL\nCrownfall\n\nA King’s Gambit Story.\n\n♔\nEvery sacrifice has a name.\nCINEMATIC CHESS\n\nThis menu preview stores a local demo save. It does not launch the chess campaign.\n\nOpen Play\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "new",
+      "text": "×\nCROWNFALL\nNew Gambit\n\nChoose a name for your Crownfall demo save.\n\nYOUR NAME\n\nThis preview saves your setup. It does not start a chess game.\n\nCreate demo save\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "resume-empty",
+      "text": "×\nCROWNFALL\nNo saved gambit yet\n\nCreate a new gambit to save a setup on this device.\n\nThis preview does not restore a chess position or launch gameplay.\n\nNew Gambit\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "load-empty",
+      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne demo save slot, stored on this device.\n\nNo saved gambit yet.\nCreate a new gambit to add a demo save.\nNew Gambit\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "browse",
+      "text": "×\nCROWNFALL\nBrowse Gambits\n\nOnline play is not connected in this preview.\n\nNo online matches available.\nThis menu supports local demo saves only.\nBack to Play\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "settings",
+      "text": "×\nCROWNFALL\nSettings\n\nAdjust menu effects. Preferences save automatically.\n\nParticle quality\nTeal sparks and drifting embers\nLow\nMedium\nHigh\nAmbient volume\nSaved setting; audio is not connected\nAmbient motion\nCreature and background animation\nBack to Play\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "back",
+      "text": "×\nCROWNFALL\nReturn to Home?\n\nYour local demo save stays on this device.\n\nStay in Play\nGo to Home\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "resume-saved",
+      "text": "×\nCROWNFALL\nResume Gambit\n\nCopy Check · Local demo save\n\n♜\nCrownfall · Demo save\nCopy Check · Saved 10/25/2026\n\nThis preview does not restore a chess position or launch gameplay.\n\nBack to Play\n>\n\nDemo save created on this device.\n\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "load-saved",
+      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne demo save slot, stored on this device.\n\n♜\nCrownfall · Demo save\nCopy Check · 10/25/2026\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "new-replace",
+      "text": "×\nCROWNFALL\nNew Gambit\n\nChoose a name for your Crownfall demo save.\n\nThis replaces the demo save on this device.\n\nYOUR NAME\n\nThis preview saves your setup. It does not start a chess game.\n\nCreate demo save\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "home",
+      "text": "×\nCROWNFALL\nCrownfall\n\nA King’s Gambit Story.\n\n♔\nEvery sacrifice has a name.\nCINEMATIC CHESS\n\nThis menu preview stores a local demo save. It does not launch the chess campaign.\n\nOpen Play\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": true,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "new",
+      "text": "×\nCROWNFALL\nNew Gambit\n\nChoose a name for your Crownfall demo save.\n\nYOUR NAME\n\nThis preview saves your setup. It does not start a chess game.\n\nCreate demo save\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": true,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "resume-empty",
+      "text": "×\nCROWNFALL\nNo saved gambit yet\n\nCreate a new gambit to save a setup on this device.\n\nThis preview does not restore a chess position or launch gameplay.\n\nNew Gambit\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "load-empty",
+      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne demo save slot, stored on this device.\n\nNo saved gambit yet.\nCreate a new gambit to add a demo save.\nNew Gambit\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": true,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "browse",
+      "text": "×\nCROWNFALL\nBrowse Gambits\n\nOnline play is not connected in this preview.\n\nNo online matches available.\nThis menu supports local demo saves only.\nBack to Play\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": true,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "settings",
+      "text": "×\nCROWNFALL\nSettings\n\nAdjust menu effects. Preferences save automatically.\n\nParticle quality\nTeal sparks and drifting embers\nLow\nMedium\nHigh\nAmbient volume\nSaved setting; audio is not connected\nAmbient motion\nCreature and background animation\nBack to Play\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": true,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "back",
+      "text": "×\nCROWNFALL\nReturn to Home?\n\nYour local demo save stays on this device.\n\nStay in Play\nGo to Home\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "resume-saved",
+      "text": "×\nCROWNFALL\nResume Gambit\n\nCopy Check · Local demo save\n\n♜\nCrownfall · Demo save\nCopy Check · Saved 10/25/2026\n\nThis preview does not restore a chess position or launch gameplay.\n\nBack to Play\n>\n\nDemo save created on this device.\n\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": true,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "load-saved",
+      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne demo save slot, stored on this device.\n\n♜\nCrownfall · Demo save\nCopy Check · 10/25/2026\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "new-replace",
+      "text": "×\nCROWNFALL\nNew Gambit\n\nChoose a name for your Crownfall demo save.\n\nThis replaces the demo save on this device.\n\nYOUR NAME\n\nThis preview saves your setup. It does not start a chess game.\n\nCreate demo save\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": true,
+      "offenders": []
+    }
+  ]
+}

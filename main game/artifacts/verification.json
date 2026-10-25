@@ -1,7 +1,8 @@
 {
   "passed": true,
   "checks": [
-    "Default Play/Resume selection and reference card positioning",
+    "Default Play/Resume Gambit selection and reference card positioning",
+    "Home/Play/Settings replace placeholders; tab shortcuts and Back lead to honest destinations",
     "Four supplied images load in order in the fixed four-card row",
     "Arrow navigation, focused Enter activation, Escape and modal closure",
     "Create local demo save and load it after a reload",

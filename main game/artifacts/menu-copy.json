@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "purpose": "Exact visible and accessible menu copy inventory. State descriptions and functional boundaries are evidence notes, not additional UI copy.",
+  "sources": {
+    "ui": {
+      "path": "src/App.tsx",
+      "sha256": "a138e4209875c026ee8533ff5f9680ba1dda8737a5e53065ca01fbe14d934492"
+    },
+    "document": {
+      "path": "index.html",
+      "sha256": "e7e52f6a7c3921a1f97aae59724d2152f0bc17300db2f46263fab8f90c528404"
+    },
+    "canonical_readme": {
+      "path": "../README.md",
+      "sha256": "2f69f50e0fc2fb863c3642f569887040058b59f42d36d6183d699a805a5bace7"
+    },
+    "canonical_game_document": {
+      "path": "../web/index.html",
+      "sha256": "824e084338c018e0c2df6d3968e48714a4f79c2a9057865dd262b64f2698e0e1"
+    }
+  },
+  "navigation": {
+    "accessible_label": "Main menu",
+    "tablist_accessible_label": "Sections",
+    "tabs": [
+      {
+        "label": "HOME",
+        "panel": "home",
+        "accessible_label": "Home"
+      },
+      {
+        "label": "PLAY",
+        "panel": null,
+        "accessible_label": "Play"
+      },
+      {
+        "label": "SETTINGS",
+        "panel": "settings",
+        "accessible_label": "Settings"
+      }
+    ],
+    "previous": {
+      "visible_key": "LB",
+      "accessible_label": "Previous menu tab"
+    },
+    "next": {
+      "visible_key": "RB",
+      "accessible_label": "Next menu tab"
+    },
+    "removed_placeholder_tabs": [
+      "EXAMPLE",
+      "EXAMPLE"
+    ],
+    "notification_badge_present": false
+  },
+  "cards": [
+    {
+      "id": "new",
+      "title": "NEW GAMBIT",
+      "label": "New Gambit",
+      "subtitle": "Name your gambit.",
+      "description": "Create a local Crownfall demo save. Gameplay is not connected yet."
+    },
+    {
+      "id": "resume",
+      "title": "RESUME GAMBIT",
+      "label": "Resume Gambit",
+      "subtitle": "Your latest saved gambit.",
+      "description": "Review the demo save stored on this device."
+    },
+    {
+      "id": "load",
+      "title": "LOAD GAMBIT",
+      "label": "Load Gambit",
+      "subtitle": "Open your saved gambit.",
+      "description": "One local demo save slot is available on this device."
+    },
+    {
+      "id": "browse",
+      "title": "BROWSE GAMBITS",
+      "label": "Browse Gambits",
+      "subtitle": "Online play unavailable.",
+      "description": "Online matches are not connected to this menu."
+    }
+  ],
+  "cards_accessible_group": "Play options",
+  "common_dialog": {
+    "eyebrow": "CROWNFALL",
+    "close": {
+      "visible_symbol": "×",
+      "accessible_label": "Close dialog"
+    },
+    "footer": {
+      "key": "B",
+      "label": "Back"
+    },
+    "primary_action_suffix_symbol": ">",
+    "save_slot_prefix_symbol": "♜",
+    "primary_action_suffix_aria_hidden": true,
+    "primary_action_suffix_html_entity": "&gt;"
+  },
+  "modals": {
+    "home": {
+      "heading": "Crownfall",
+      "paragraph": "A King’s Gambit Story.",
+      "identity": {
+        "symbol": "♔",
+        "symbol_aria_hidden": true,
+        "statement": "Every sacrifice has a name.",
+        "category": "CINEMATIC CHESS"
+      },
+      "note": "This menu preview stores a local demo save. It does not launch the chess campaign.",
+      "action": {
+        "label": "Open Play",
+        "opens": "play"
+      }
+    },
+    "new": {
+      "heading": "New Gambit",
+      "paragraph": "Choose a name for your Crownfall demo save.",
+      "existing_save_note": "This replaces the demo save on this device.",
+      "field": {
+        "label": "Your name",
+        "default_value": "Player",
+        "empty_value_fallback": "Player",
+        "maximum_length": 32
+      },
+      "note": "This preview saves your setup. It does not start a chess game.",
+      "action": {
+        "label": "Create demo save",
+        "opens": "resume"
+      }
+    },
+    "resume": {
+      "saved": {
+        "heading": "Resume Gambit",
+        "paragraph_template": "{name} · Local demo save",
+        "save_slot": {
+          "title": "Crownfall · Demo save",
+          "details_template": "{name} · Saved {localizedDate}"
+        },
+        "action": {
+          "label": "Back to Play",
+          "opens": "play"
+        }
+      },
+      "empty": {
+        "heading": "No saved gambit yet",
+        "paragraph": "Create a new gambit to save a setup on this device.",
+        "action": {
+          "label": "New Gambit",
+          "opens": "new"
+        }
+      },
+      "note_in_both_states": "This preview does not restore a chess position or launch gameplay."
+    },
+    "load": {
+      "heading": "Load Gambit",
+      "paragraph": "One demo save slot, stored on this device.",
+      "saved": {
+        "save_slot_button": {
+          "title": "Crownfall · Demo save",
+          "details_template": "{name} · {localizedDate}",
+          "trailing_symbol": ">",
+          "opens": "resume",
+          "trailing_symbol_aria_hidden": true,
+          "trailing_symbol_html_entity": "&gt;"
+        }
+      },
+      "empty": {
+        "message": "No saved gambit yet.",
+        "helper": "Create a new gambit to add a demo save.",
+        "action": {
+          "label": "New Gambit",
+          "opens": "new"
+        }
+      }
+    },
+    "browse": {
+      "heading": "Browse Gambits",
+      "paragraph": "Online play is not connected in this preview.",
+      "empty": {
+        "message": "No online matches available.",
+        "helper": "This menu supports local demo saves only."
+      },
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
+    },
+    "settings": {
+      "heading": "Settings",
+      "paragraph": "Adjust menu effects. Preferences save automatically.",
+      "fields": [
+        {
+          "id": "effect-quality",
+          "label": "Particle quality",
+          "helper": "Teal sparks and drifting embers",
+          "options": [
+            {
+              "value": "low",
+              "label": "Low"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "high",
+              "label": "High"
+            }
+          ],
+          "default_value": "high"
+        },
+        {
+          "id": "ambient-volume",
+          "label": "Ambient volume",
+          "helper": "Saved setting; audio is not connected",
+          "minimum": 0,
+          "maximum": 100,
+          "default_value": 65
+        },
+        {
+          "id": "motion-toggle",
+          "label": "Ambient motion",
+          "helper": "Creature and background animation",
+          "default_checked": true
+        }
+      ],
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
+    },
+    "quit": {
+      "entry_label": "Back",
+      "heading": "Return to Home?",
+      "paragraph": "Your local demo save stays on this device.",
+      "actions": [
+        {
+          "label": "Stay in Play",
+          "opens": "play"
+        },
+        {
+          "label": "Go to Home",
+          "opens": "home"
+        }
+      ]
+    }
+  },
+  "menu_footer": {
+    "accessible_label": "Menu controls",
+    "actions": [
+      {
+        "key": "A",
+        "label": "Select",
+        "accessible_label": "Select",
+        "behavior": "Open the selected card dialog."
+      },
+      {
+        "key": "B",
+        "label": "Back",
+        "accessible_label": "Back",
+        "behavior": "Open the Return to Home? dialog."
+      }
+    ]
+  },
+  "save_notices": [
+    {
+      "text": "Demo save created on this device.",
+      "condition": "A local save is found after creation."
+    },
+    {
+      "text": "Demo save kept for this session.",
+      "condition": "No persisted save is found, or checking browser storage throws."
+    },
+    {
+      "text": "Demo save kept for this session. Browser storage is unavailable.",
+      "condition": "Source sets this message when the storage write throws; the final status check can replace it in the same action."
+    }
+  ],
+  "stored_save_label": "Crownfall · Demo save",
+  "template_values": {
+    "name": "save.name: trimmed player input, falling back to Player.",
+    "localizedDate": "new Date(save.updatedAt).toLocaleDateString(); follows the browser locale."
+  },
+  "document": {
+    "language": "en",
+    "title": "Crownfall — A King's Gambit Story",
+    "meta": {
+      "charset": "UTF-8",
+      "viewport": "width=device-width, initial-scale=1.0",
+      "theme-color": "#16120c",
+      "description": "Crownfall — A King's Gambit Story. A cinematic chess menu preview with local demo saves."
+    }
+  },
+  "canon_evidence": [
+    {
+      "path": "../README.md",
+      "line": 1,
+      "exact_text": "# Crownfall — A King's Gambit Story",
+      "supports": "Product identity."
+    },
+    {
+      "path": "../README.md",
+      "line": 3,
+      "exact_text": "A cinematic 3D chess game in the browser.",
+      "supports": "Cinematic chess vocabulary."
+    },
+    {
+      "path": "../README.md",
+      "line": 20,
+      "exact_text": "The Pawn Who Would Not Die",
+      "supports": "The existing chess campaign has its own named chapter; this menu does not invent or claim to launch a chapter."
+    },
+    {
+      "path": "../README.md",
+      "line": 34,
+      "exact_text": "local-first and single-player; online play, a backend, more chapters, expanded maps, and",
+      "supports": "Online features are future scope in the canonical game."
+    },
+    {
+      "path": "../web/index.html",
+      "line": 6,
+      "exact_text": "Crownfall — A King's Gambit Story",
+      "supports": "Document title identity."
+    },
+    {
+      "path": "../web/index.html",
+      "line": 7,
+      "exact_text": "A story-driven tactical chess RPG where every sacrifice has a name and every survivor remembers.",
+      "supports": "Home identity statement Every sacrifice has a name."
+    }
+  ],
+  "functional_boundaries": [
+    "This separate menu preview does not launch the chess game or campaign in ../web.",
+    "New creates one device-local demo save containing name, chapter label and timestamp; it replaces the previous slot.",
+    "Resume and Load display demo-save metadata; neither restores a chess position, moves or campaign progress.",
+    "Browse has an unavailable state only. There is no online match list, lobby, multiplayer, hosting or replay feature in this menu.",
+    "Particle quality and ambient motion affect menu presentation. Ambient volume persists a preference but is not connected to audio.",
+    "Home, Play and Settings are the only tabs. Placeholder EXAMPLE and community tabs and their notification badge are removed.",
+    "Back opens a Home confirmation. It does not close the browser or delete the save.",
+    "Gambit is the user-requested menu label; the preview does not expose or simulate the canonical campaign oath mechanic.",
+    "All four fixed 197 by 298 pixel cards remain visible at 1280 by 720, with four-pixel gaps and an 800-pixel row. This inventory does not change layout or artwork."
+  ]
+}

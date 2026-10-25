@@ -9,8 +9,6 @@ type Panel =
   | "load"
   | "browse"
   | "home"
-  | "examples"
-  | "community"
   | "settings"
   | "quit"
   | null;
@@ -28,37 +26,39 @@ const initialPreferences: Preferences = {
 const cards = [
   {
     id: "new",
-    title: "NEW",
-    subtitle: "Start a fresh game.",
+    title: "NEW GAMBIT",
+    label: "New Gambit",
+    subtitle: "Name your gambit.",
     description:
-      "This button opens the way forward. A new story is ready to be written.",
+      "Create a local Crownfall demo save. Gameplay is not connected yet.",
   },
   {
     id: "resume",
-    title: "RESUME",
-    subtitle: "Continue with your game from your last session.",
+    title: "RESUME GAMBIT",
+    label: "Resume Gambit",
+    subtitle: "Your latest saved gambit.",
     description:
-      "This button picks up where a story goes. Return to the world you left behind. The choices that you made, the battles you survived, and the fate of a kingdom are waiting.",
+      "Review the demo save stored on this device.",
   },
   {
     id: "load",
-    title: "LOAD GAME",
-    subtitle: "Select which save file you would like to play.",
+    title: "LOAD GAMBIT",
+    label: "Load Gambit",
+    subtitle: "Open your saved gambit.",
     description:
-      "There is no save in loading systems. Your story is written in the world.",
+      "One local demo save slot is available on this device.",
   },
   {
     id: "browse",
-    title: "BROWSE",
-    subtitle: "Search for any online Games.",
-    description: "Discover other worlds. Find your next adventure.",
+    title: "BROWSE GAMBITS",
+    label: "Browse Gambits",
+    subtitle: "Online play unavailable.",
+    description: "Online matches are not connected to this menu.",
   },
 ] as const;
 const tabs: { label: string; panel: Panel; aria: string }[] = [
   { label: "HOME", panel: "home", aria: "Home" },
   { label: "PLAY", panel: null, aria: "Play" },
-  { label: "EXAMPLE", panel: "examples", aria: "Explore game examples" },
-  { label: "EXAMPLE", panel: "community", aria: "Explore community examples" },
   { label: "SETTINGS", panel: "settings", aria: "Settings" },
 ];
 
@@ -118,7 +118,7 @@ export default function App() {
   const [panel, setPanel] = useState<Panel>(null);
   const [save, setSave] = useState<SaveGame | null>(getSave);
   const [preferences, setPreferences] = useState<Preferences>(getPreferences);
-  const [characterName, setCharacterName] = useState<string>("The Wanderer");
+  const [playerName, setPlayerName] = useState<string>("Player");
   const [notice, setNotice] = useState<string>("");
   const dialog = useRef<HTMLDialogElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -226,17 +226,17 @@ export default function App() {
     return () => cancelAnimationFrame(frame);
   }, [panel, selected, activate, changeTab, closePanel, selectCard]);
 
-  function startJourney() {
+  function createDemoSave() {
     const next: SaveGame = {
-      name: characterName.trim() || "The Wanderer",
-      chapter: "Chapter I · The Fallen Crown",
+      name: playerName.trim() || "Player",
+      chapter: "Crownfall · Demo save",
       updatedAt: new Date().toISOString(),
     };
     try {
       localStorage.setItem(saveKey, JSON.stringify(next));
     } catch {
       setNotice(
-        "Your journey is available for this session. Browser storage is unavailable.",
+        "Demo save kept for this session. Browser storage is unavailable.",
       );
     }
     setSave(next);
@@ -244,11 +244,11 @@ export default function App() {
     try {
       setNotice(
         localStorage.getItem(saveKey)
-          ? "Your journey has been saved on this device."
-          : "Your journey is available for this session.",
+          ? "Demo save created on this device."
+          : "Demo save kept for this session.",
       );
     } catch {
-      setNotice("Your journey is available for this session.");
+      setNotice("Demo save kept for this session.");
     }
   }
 
@@ -284,11 +284,6 @@ export default function App() {
                 }}
               >
                 {tab.label}
-                {index === 3 && (
-                  <span className="nav-notification" aria-label="New content">
-                    !
-                  </span>
-                )}
               </button>
             ))}
           </div>
@@ -311,11 +306,7 @@ export default function App() {
               type="button"
               tabIndex={selected === index ? 0 : -1}
               className={`game-card card-${card.id} ${selected === index ? "is-selected" : ""}`}
-              aria-label={
-                card.title === "LOAD GAME"
-                  ? "Load game"
-                  : card.title.charAt(0) + card.title.slice(1).toLowerCase()
-              }
+              aria-label={card.label}
               aria-pressed={selected === index}
               onPointerMove={(event) => {
                 if (
@@ -344,11 +335,11 @@ export default function App() {
             </span>
             <span>Select</span>
           </button>
-          <button aria-label="Quit" onClick={() => setPanel("quit")}>
+          <button aria-label="Back" onClick={() => setPanel("quit")}>
             <span className="controller-key" aria-hidden="true">
               B
             </span>
-            <span>Quit</span>
+            <span>Back</span>
           </button>
         </footer>
         <div className="film-grain" aria-hidden="true" />
@@ -376,42 +367,45 @@ export default function App() {
             <span className="dialog-eyebrow">CROWNFALL</span>
             {panel === "new" && (
               <>
-                <h1 id="dialog-heading">A new beginning.</h1>
-                <p>Every kingdom has a story. This one begins with you.</p>
+                <h1 id="dialog-heading">New Gambit</h1>
+                <p>Choose a name for your Crownfall demo save.</p>
                 {save && (
                   <p className="dialog-note">
-                    Starting a new journey will replace your saved journey.
+                    This replaces the demo save on this device.
                   </p>
                 )}
-                <label className="field-label" htmlFor="character-name">
+                <label className="field-label" htmlFor="player-name">
                   Your name
                 </label>
                 <input
-                  id="character-name"
-                  value={characterName}
+                  id="player-name"
+                  value={playerName}
                   maxLength={32}
-                  onChange={(event) => setCharacterName(event.target.value)}
+                  onChange={(event) => setPlayerName(event.target.value)}
                 />
-                <button className="primary-action" onClick={startJourney}>
-                  Begin journey <span>↗</span>
+                <p className="dialog-note">
+                  This preview saves your setup. It does not start a chess game.
+                </p>
+                <button className="primary-action" onClick={createDemoSave}>
+                  Create demo save <span aria-hidden="true">&gt;</span>
                 </button>
               </>
             )}
             {panel === "resume" && (
               <>
                 <h1 id="dialog-heading">
-                  {save ? "Your journey awaits." : "Your story is unwritten."}
+                  {save ? "Resume Gambit" : "No saved gambit yet"}
                 </h1>
                 <p>
                   {save
-                    ? `${save.name}, the kingdom remembers.`
-                    : "Begin a new journey to create your first save."}
+                    ? `${save.name} · Local demo save`
+                    : "Create a new gambit to save a setup on this device."}
                 </p>
                 {save && (
                   <div className="save-slot">
                     <span className="save-mark">♜</span>
                     <div>
-                      <strong>{save.chapter}</strong>
+                      <strong>Crownfall · Demo save</strong>
                       <small>
                         {save.name} · Saved{" "}
                         {new Date(save.updatedAt).toLocaleDateString()}
@@ -420,23 +414,21 @@ export default function App() {
                   </div>
                 )}
                 <p className="dialog-note">
-                  {save
-                    ? "The game world will be connected here as development continues."
-                    : "Progress is stored locally on this device."}
+                  This preview does not restore a chess position or launch gameplay.
                 </p>
                 <button
                   className="primary-action"
                   onClick={() => (save ? closePanel() : setPanel("new"))}
                 >
-                  {save ? "Return to menu" : "Start a new journey"}
-                  <span>↗</span>
+                  {save ? "Back to Play" : "New Gambit"}
+                  <span aria-hidden="true">&gt;</span>
                 </button>
               </>
             )}
             {panel === "load" && (
               <>
-                <h1 id="dialog-heading">Load a journey.</h1>
-                <p>Pick up where you left off.</p>
+                <h1 id="dialog-heading">Load Gambit</h1>
+                <p>One demo save slot, stored on this device.</p>
                 {save ? (
                   <button
                     className="save-slot save-button"
@@ -444,18 +436,18 @@ export default function App() {
                   >
                     <span className="save-mark">♜</span>
                     <span>
-                      <strong>{save.chapter}</strong>
+                      <strong>Crownfall · Demo save</strong>
                       <small>
                         {save.name} ·{" "}
                         {new Date(save.updatedAt).toLocaleDateString()}
                       </small>
                     </span>
-                    <span>→</span>
+                    <span aria-hidden="true">&gt;</span>
                   </button>
                 ) : (
                   <div className="empty-state">
-                    No saved journeys yet.
-                    <small>Your first adventure is waiting.</small>
+                    No saved gambit yet.
+                    <small>Create a new gambit to add a demo save.</small>
                   </div>
                 )}
                 {!save && (
@@ -463,82 +455,51 @@ export default function App() {
                     className="primary-action"
                     onClick={() => setPanel("new")}
                   >
-                    New journey <span>↗</span>
+                    New Gambit <span aria-hidden="true">&gt;</span>
                   </button>
                 )}
               </>
             )}
             {panel === "browse" && (
               <>
-                <h1 id="dialog-heading">Beyond the veil.</h1>
-                <p>Other worlds will open in time.</p>
+                <h1 id="dialog-heading">Browse Gambits</h1>
+                <p>Online play is not connected in this preview.</p>
                 <div className="empty-state">
-                  The gates are still closed.
-                  <small>Online games are not available yet.</small>
+                  No online matches available.
+                  <small>This menu supports local demo saves only.</small>
                 </div>
                 <button className="primary-action" onClick={closePanel}>
-                  Return to your world <span>↗</span>
+                  Back to Play <span aria-hidden="true">&gt;</span>
                 </button>
               </>
             )}
             {panel === "home" && (
               <>
-                <h1 id="dialog-heading">The crown awaits.</h1>
-                <p>A kingdom on the edge. A story yet to be told.</p>
+                <h1 id="dialog-heading">Crownfall</h1>
+                <p>A King’s Gambit Story.</p>
                 <div className="chapter-line">
-                  <span>I</span>
-                  <strong>The Fallen Crown</strong>
-                  <small>CHAPTER ONE</small>
+                  <span aria-hidden="true">♔</span>
+                  <strong>Every sacrifice has a name.</strong>
+                  <small>CINEMATIC CHESS</small>
                 </div>
-                <button className="primary-action" onClick={closePanel}>
-                  Enter the menu <span>↗</span>
-                </button>
-              </>
-            )}
-            {(panel === "examples" || panel === "community") && (
-              <>
-                <h1 id="dialog-heading">
-                  {panel === "examples"
-                    ? "The training grounds."
-                    : "Worlds beyond yours."}
-                </h1>
-                <p>
-                  {panel === "examples"
-                    ? "Get familiar with the controls before your journey."
-                    : "Discover what is coming to Crownfall."}
+                <p className="dialog-note">
+                  This menu preview stores a local demo save. It does not launch
+                  the chess campaign.
                 </p>
-                <dl className="controls-list">
-                  <div>
-                    <dt>← / →</dt>
-                    <dd>Choose a journey</dd>
-                  </div>
-                  <div>
-                    <dt>Enter / A</dt>
-                    <dd>Select</dd>
-                  </div>
-                  <div>
-                    <dt>Q / E · LB / RB</dt>
-                    <dd>Switch menu tabs</dd>
-                  </div>
-                  <div>
-                    <dt>Escape / B</dt>
-                    <dd>Return</dd>
-                  </div>
-                </dl>
                 <button className="primary-action" onClick={closePanel}>
-                  Ready to play <span>↗</span>
+                  Open Play <span aria-hidden="true">&gt;</span>
                 </button>
               </>
             )}
             {panel === "settings" && (
               <>
-                <h1 id="dialog-heading">Shape your world.</h1>
-                <p>A few small details. A world of difference.</p>
+                <h1 id="dialog-heading">Settings</h1>
+                <p>Adjust menu effects. Preferences save automatically.</p>
                 <div className="settings-fields">
                   <label htmlFor="effect-quality">
                     <span>
                       Particle quality
-                      <small>Ambient magic and drifting embers</small>
+                      <small>Teal sparks and drifting embers</small>
                     </span>
                     <select
                       id="effect-quality"
@@ -558,7 +519,7 @@ export default function App() {
                   <label htmlFor="ambient-volume">
                     <span>
                       Ambient volume
-                      <small>Ready for the world's soundscape</small>
+                      <small>Saved setting; audio is not connected</small>
                     </span>
                     <input
                       id="ambient-volume"
@@ -577,7 +538,7 @@ export default function App() {
                   <label htmlFor="motion-toggle">
                     <span>
                       Ambient motion
-                      <small>Creature idle and floating particles</small>
+                      <small>Creature and background animation</small>
                     </span>
                     <input
                       id="motion-toggle"
@@ -593,17 +554,17 @@ export default function App() {
                   </label>
                 </div>
                 <button className="primary-action" onClick={closePanel}>
-                  Save & return <span>↗</span>
+                  Back to Play <span aria-hidden="true">&gt;</span>
                 </button>
               </>
             )}
             {panel === "quit" && (
               <>
-                <h1 id="dialog-heading">Leave the kingdom?</h1>
-                <p>Your saved journey will be here when you return.</p>
+                <h1 id="dialog-heading">Return to Home?</h1>
+                <p>Your local demo save stays on this device.</p>
                 <div className="dialog-actions">
                   <button className="secondary-action" onClick={closePanel}>
-                    Stay a little longer
+                    Stay in Play
                   </button>
                   <button
                     className="primary-action"
@@ -612,7 +573,7 @@ export default function App() {
                       setActiveTab(0);
                     }}
                   >
-                    Return home <span>↗</span>
+                    Go to Home <span aria-hidden="true">&gt;</span>
                   </button>
                 </div>
               </>

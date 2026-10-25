@@ -49,18 +49,38 @@ try {
   );
   assert.equal(
     await page
-      .getByRole("button", { name: "Resume", exact: true })
+      .getByRole("button", { name: "Resume Gambit", exact: true })
       .getAttribute("aria-pressed"),
     "true",
   );
   const bounds = await page
-    .getByRole("button", { name: "Resume", exact: true })
+    .getByRole("button", { name: "Resume Gambit", exact: true })
     .boundingBox();
   assert.ok(
     bounds && Math.abs(bounds.x - 340) < 2 && Math.abs(bounds.y - 211) < 2,
     JSON.stringify(bounds),
   );
-  results.push("Default Play/Resume selection and reference card positioning");
+  results.push("Default Play/Resume Gambit selection and reference card positioning");
+
+  assert.deepEqual(
+    await page.getByRole("tab").evaluateAll((elements) => elements.map((element) => element.getAttribute("aria-label"))),
+    ["Home", "Play", "Settings"],
+  );
+  assert.equal(await page.locator(".nav-notification").count(), 0);
+  await page.keyboard.press("q");
+  await page.getByRole("heading", { name: "Crownfall", exact: true }).waitFor();
+  assert.match(await page.locator("dialog").innerText(), /does not launch\s+the chess campaign/);
+  await page.getByRole("button", { name: /Open Play/ }).click();
+  await page.keyboard.press("e");
+  await page.getByRole("heading", { name: "Settings", exact: true }).waitFor();
+  assert.match(await page.locator("dialog").innerText(), /audio is not connected/);
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "Back", exact: true }).click();
+  await page.getByRole("heading", { name: "Return to Home?", exact: true }).waitFor();
+  await page.getByRole("button", { name: /Go to Home/ }).click();
+  await page.getByRole("heading", { name: "Crownfall", exact: true }).waitFor();
+  await page.keyboard.press("Escape");
+  results.push("Home/Play/Settings replace placeholders; tab shortcuts and Back lead to honest destinations");
 
   const cardBounds = await page.locator(".game-card").evaluateAll((elements) =>
     elements.map((element) => {
@@ -71,7 +91,7 @@ try {
   assert.equal(
     cardBounds.length,
     4,
-    "four cards: New, Resume, Load Game, Browse",
+    "four cards: New Gambit, Resume Gambit, Load Gambit, Browse Gambits",
   );
   for (const [index, rect] of cardBounds.entries()) {
     assert.ok(Math.abs(rect.x - (139 + index * 201)) < 1, JSON.stringify(rect));
@@ -133,12 +153,12 @@ try {
   await page.keyboard.press("ArrowRight");
   assert.equal(
     await page
-      .getByRole("button", { name: "Load game", exact: true })
+      .getByRole("button", { name: "Load Gambit", exact: true })
       .getAttribute("aria-pressed"),
     "true",
   );
   await page.keyboard.press("Enter");
-  await page.getByRole("heading", { name: "Load a journey." }).waitFor();
+  await page.getByRole("heading", { name: "Load Gambit" }).waitFor();
   await page.keyboard.press("Escape");
   assert.equal(
     await page.locator("dialog").evaluate((element) => element.open),
@@ -148,15 +168,17 @@ try {
     "Arrow navigation, focused Enter activation, Escape and modal closure",
   );
 
-  await page.getByRole("button", { name: "New", exact: true }).click();
+  await page.getByRole("button", { name: "New Gambit", exact: true }).click();
   await page.getByLabel("Your name", { exact: true }).fill("Visual Tester");
-  await page.getByRole("button", { name: /Begin journey/ }).click();
-  await page.getByRole("heading", { name: "Your journey awaits." }).waitFor();
+  await page.getByRole("button", { name: /Create demo save/ }).click();
+  await page.getByRole("heading", { name: "Resume Gambit" }).waitFor();
   assert.match(await page.locator("dialog").innerText(), /Visual Tester/);
   await page.keyboard.press("Escape");
   await page.reload();
-  await page.getByRole("button", { name: "Load game", exact: true }).click();
+  await page.getByRole("button", { name: "Load Gambit", exact: true }).click();
   assert.match(await page.locator("dialog").innerText(), /Visual Tester/);
+  assert.match(await page.locator("dialog").innerText(), /Crownfall · Demo save/);
+  assert.doesNotMatch(await page.locator("dialog").innerText(), /Fallen Crown|journey/);
   await page.keyboard.press("Escape");
   results.push("Create local demo save and load it after a reload");
 
@@ -165,7 +187,7 @@ try {
     .getByLabel("Particle quality", { exact: false })
     .selectOption("low");
   await page.getByLabel("Ambient motion", { exact: false }).uncheck();
-  await page.getByRole("button", { name: /Save & return/ }).click();
+  await page.getByRole("button", { name: /Back to Play/ }).click();
   await page.waitForFunction(
     () => !document.querySelector(".mote-field canvas"),
   );
@@ -178,9 +200,9 @@ try {
     "Quality and motion preferences persist; Low removes WebGL particles",
   );
 
-  await page.getByRole("button", { name: "Browse", exact: true }).click();
-  await page.getByRole("heading", { name: "Beyond the veil." }).waitFor();
-  assert.match(await page.locator("dialog").innerText(), /not available yet/);
+  await page.getByRole("button", { name: "Browse Gambits", exact: true }).click();
+  await page.getByRole("heading", { name: "Browse Gambits" }).waitFor();
+  assert.match(await page.locator("dialog").innerText(), /Online play is not connected/);
   await page.keyboard.press("Escape");
   results.push("Browse opens an honest unavailable state");
 
@@ -188,11 +210,11 @@ try {
     await page.getByRole("button", { name: "Host", exact: true }).count(),
     0,
   );
-  await page.getByRole("button", { name: "Browse", exact: true }).focus();
+  await page.getByRole("button", { name: "Browse Gambits", exact: true }).focus();
   await page.keyboard.press("ArrowRight");
   assert.equal(
     await page
-      .getByRole("button", { name: "New", exact: true })
+      .getByRole("button", { name: "New Gambit", exact: true })
       .getAttribute("aria-pressed"),
     "true",
   );
@@ -200,14 +222,14 @@ try {
   await page.keyboard.press("ArrowLeft");
   assert.equal(
     await page
-      .getByRole("button", { name: "Browse", exact: true })
+      .getByRole("button", { name: "Browse Gambits", exact: true })
       .getAttribute("aria-pressed"),
     "true",
   );
   await page.keyboard.press("End");
   assert.equal(
     await page
-      .getByRole("button", { name: "Browse", exact: true })
+      .getByRole("button", { name: "Browse Gambits", exact: true })
       .getAttribute("aria-pressed"),
     "true",
   );

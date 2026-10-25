@@ -17,52 +17,56 @@
       "activeAnimation": "Idle",
       "cards": [
         {
-          "label": "New",
+          "label": "New Gambit",
           "x": 139,
           "y": 211.03125,
           "width": 196.984375,
           "height": 298,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Resume",
+          "label": "Resume Gambit",
           "x": 339.984375,
           "y": 211.03125,
           "width": 196.984375,
           "height": 298,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Load game",
+          "label": "Load Gambit",
           "x": 540.96875,
           "y": 211.03125,
           "width": 196.984375,
           "height": 298,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Browse",
+          "label": "Browse Gambits",
           "x": 741.953125,
           "y": 211.03125,
           "width": 196.984375,
           "height": 298,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
@@ -85,52 +89,56 @@
       "activeAnimation": "Idle",
       "cards": [
         {
-          "label": "New",
+          "label": "New Gambit",
           "x": 208.5,
           "y": 316.546875,
           "width": 295.484375,
           "height": 447,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Resume",
+          "label": "Resume Gambit",
           "x": 509.984375,
           "y": 316.546875,
           "width": 295.484375,
           "height": 447,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Load game",
+          "label": "Load Gambit",
           "x": 811.46875,
           "y": 316.546875,
           "width": 295.484375,
           "height": 447,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Browse",
+          "label": "Browse Gambits",
           "x": 1112.953125,
           "y": 316.546875,
           "width": 295.484375,
           "height": 447,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
@@ -153,52 +161,56 @@
       "activeAnimation": "Idle",
       "cards": [
         {
-          "label": "New",
+          "label": "New Gambit",
           "x": 148.34375,
           "y": 114.296875,
           "width": 107.59375,
           "height": 161.40625,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Resume",
+          "label": "Resume Gambit",
           "x": 258.109375,
           "y": 114.296875,
           "width": 107.59375,
           "height": 161.40625,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Load game",
+          "label": "Load Gambit",
           "x": 367.875,
           "y": 114.296875,
           "width": 107.59375,
           "height": 161.40625,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Browse",
+          "label": "Browse Gambits",
           "x": 477.640625,
           "y": 114.296875,
           "width": 107.59375,
           "height": 161.40625,
           "visible": true,
           "textFits": true,
+          "headingFits": true,
           "image": {
             "width": 2048,
             "height": 1143

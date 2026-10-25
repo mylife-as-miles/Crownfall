@@ -1,0 +1,208 @@
+{
+  "passed": true,
+  "reference": {
+    "source": "User-supplied card typography screenshot; original preserved outside Git",
+    "fileName": "card-typography-reference.jpg",
+    "width": 960,
+    "height": 540,
+    "bytes": 79084,
+    "sha256": "a5c9948c26b68679c4c689d2a58de8d62b9617bd210bac22291577279459b519",
+    "observedSelectedHeadingInkBounds": [
+      321,
+      141,
+      402,
+      151
+    ],
+    "observedSelectedHeadingInkHeight": 10,
+    "measurement": "Amber pixel mask of NEW GAME heading; approximate 14px font size inferred from pixels, not embedded font metadata."
+  },
+  "implementation": {
+    "font": "Self-hosted Barlow 600",
+    "sizing": "max(1.458333cqw, 11px)",
+    "selected": "Shared #bf791a title and border accent",
+    "inactive": "#b5b2ac",
+    "disabledRule": "#817d73",
+    "disabledState": "All four current buttons open real preview/info dialogs and remain enabled. Disabled styling is available without making an unavailable gameplay claim.",
+    "unchanged": [
+      "Four 197×298 cards at1280, 4px gaps, 800px row",
+      "Supplied images and crop positions",
+      "Creature rig, pose, animation, camera, lights and particles"
+    ]
+  },
+  "snapshots": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "cards": [
+        {
+          "label": "New Gambit",
+          "selected": false,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "18.6666px",
+          "fontWeight": "600",
+          "color": "rgb(181, 178, 172)",
+          "lineHeight": "20.5333px",
+          "accent": "#bf791a",
+          "textFits": true
+        },
+        {
+          "label": "Resume Gambit",
+          "selected": true,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "18.6666px",
+          "fontWeight": "600",
+          "color": "rgb(191, 121, 26)",
+          "lineHeight": "20.5333px",
+          "accent": "#bf791a",
+          "textFits": true
+        },
+        {
+          "label": "Load Gambit",
+          "selected": false,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "18.6666px",
+          "fontWeight": "600",
+          "color": "rgb(181, 178, 172)",
+          "lineHeight": "20.5333px",
+          "accent": "#bf791a",
+          "textFits": true
+        },
+        {
+          "label": "Browse Gambits",
+          "selected": false,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "18.6666px",
+          "fontWeight": "600",
+          "color": "rgb(181, 178, 172)",
+          "lineHeight": "20.5333px",
+          "accent": "#bf791a",
+          "textFits": true
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 960,
+        "height": 540
+      },
+      "cards": [
+        {
+          "label": "New Gambit",
+          "selected": false,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "color": "rgb(181, 178, 172)",
+          "lineHeight": "15.4px",
+          "accent": "#bf791a",
+          "textFits": true
+        },
+        {
+          "label": "Resume Gambit",
+          "selected": true,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "color": "rgb(191, 121, 26)",
+          "lineHeight": "15.4px",
+          "accent": "#bf791a",
+          "textFits": true
+        },
+        {
+          "label": "Load Gambit",
+          "selected": false,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "color": "rgb(181, 178, 172)",
+          "lineHeight": "15.4px",
+          "accent": "#bf791a",
+          "textFits": true
+        },
+        {
+          "label": "Browse Gambits",
+          "selected": false,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "color": "rgb(181, 178, 172)",
+          "lineHeight": "15.4px",
+          "accent": "#bf791a",
+          "textFits": true
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "cards": [
+        {
+          "label": "New Gambit",
+          "selected": false,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "color": "rgb(181, 178, 172)",
+          "lineHeight": "12.1px",
+          "accent": "#bf791a",
+          "textFits": true
+        },
+        {
+          "label": "Resume Gambit",
+          "selected": true,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "color": "rgb(191, 121, 26)",
+          "lineHeight": "12.1px",
+          "accent": "#bf791a",
+          "textFits": true
+        },
+        {
+          "label": "Load Gambit",
+          "selected": false,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "color": "rgb(181, 178, 172)",
+          "lineHeight": "12.1px",
+          "accent": "#bf791a",
+          "textFits": true
+        },
+        {
+          "label": "Browse Gambits",
+          "selected": false,
+          "disabled": false,
+          "fontFamily": "Barlow, Arial, sans-serif",
+          "fontSize": "11px",
+          "fontWeight": "600",
+          "color": "rgb(181, 178, 172)",
+          "lineHeight": "12.1px",
+          "accent": "#bf791a",
+          "textFits": true
+        }
+      ]
+    }
+  ],
+  "selectionColorUpdates": true,
+  "limitations": [
+    "Computed colors are CSS values before existing card brightness filters and atmospheric compositing.",
+    "The reference uses different artwork and card count; only heading size, weight and colors are the requested styling target.",
+    "DOM style probe uses model=none; actual-GLB final screenshots and layout checks are separate."
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "revision": "Restored four small visible cards with slightly larger leftward-leaning actual creature",
+  "revision": "Fixed four-card Crownfall Gambit copy and reference-matched compact heading typography",
   "reviewer": "independent visual critic agent",
   "reference": "public/assets/reference.jpg",
   "reviewedScreenshot": "artifacts/final-1280x720.png",
@@ -8,16 +8,16 @@
     "width": 1280,
     "height": 720
   },
-  "score": 9.2,
+  "score": 9.3,
   "scoreOutOf": 10,
-  "assessmentType": "Independent subjective visual assessment of the current fixed four-card row and small creature-direction adjustment. Current desktop and phone-landscape screenshots inspected. Not an objective pixel-match score or a performance benchmark.",
+  "assessmentType": "Independent subjective assessment of Crownfall-specific copy, honest action labels, and the requested card-heading size, weight and state colors. Current desktop and phone-landscape screenshots inspected against the original scene and the new private typography reference. Not a pixel-match or performance score.",
   "exactReferenceMatch": false,
   "rubric": [
     {
       "category": "Restored fixed four-card composition",
       "maximum": 2.5,
       "score": 2.4,
-      "notes": "All four actual-image cards are visible at once in the restored 197x298 row. At 1280x720 the row is 800px wide with 4px gaps and no carousel or discovery controls. Desktop and letterboxed phone-landscape captures preserve the complete row."
+      "notes": "All four actual-image Gambit cards remain visible at once in the fixed 197x298 row. At 1280x720 the row remains 800px wide with 4px gaps and no carousel controls. Desktop and letterboxed phone-landscape captures preserve the complete row."
     },
     {
       "category": "Actual supplied artwork and focal crops",
@@ -26,10 +26,10 @@
       "notes": "Existing actual JPEG imagery and portrait focal positions remain unchanged. Wheel, blue gateway, timber bridges and crystal cliffs remain identifiable. Panoramic context is necessarily omitted by the portrait crops."
     },
     {
-      "category": "Typography and menu readability",
+      "category": "Reference typography, truthful Crownfall copy and readability",
       "maximum": 1.5,
-      "score": 1.3,
-      "notes": "Headings, labels and selected Resume border remain unobscured. Supporting copy fits the smaller cards, including wrapped Resume text. Copy is very small on phone landscape, consistent with the fixed desktop composition scaled into that viewport."
+      "score": 1.4,
+      "notes": "Compact Barlow600 headings closely follow the new reference. Selected Resume Gambit is amber; inactive titles are muted gray. All four longer Gambit headings fit at 1280,1920 and844px landscape viewports without wrapping or clipping. Concise descriptions accurately distinguish demo setup storage from connected gameplay. Supporting copy is still very small on phone landscape."
     },
     {
       "category": "Creature direction, framing and coordinated arm tilt",
@@ -46,21 +46,24 @@
   ],
   "iterationHistory": [
     {
-      "iteration": "Initial direction comparison",
-      "before": "artifacts/creature-direction/before-first.png",
-      "after": "artifacts/creature-direction/after-first.png",
+      "iteration": "Initial copy source audit",
       "score": null,
-      "findings": "Matched creature comparison established subtle scale increase and leftward attention. The first adjustment reached the top edge, so root lowered the model to restore crown clearance. Final matched pair uses the corrected lower placement; held-constant UI in these images is historical."
+      "findings": "Crownfall/Gambit naming and functional boundaries were accurate. Critic suggested the precise New subtitle Name your gambit and less repetitive Browse unavailability copy."
     },
     {
-      "iteration": "Final restored fixed-row review",
+      "iteration": "Initial modal screenshot review",
+      "score": null,
+      "findings": "Home/Browse screenshots exposed an unsupported decorative diagonal-arrow glyph. Root replaced it with a supported aria-hidden ASCII chevron. Landscape modal content supports vertical scrolling without horizontal overflow."
+    },
+    {
+      "iteration": "Final copy and typography reference review",
       "screenshot": "artifacts/final-1280x720.png",
       "additionalScreenshots": [
         "artifacts/final-1920x1080.png",
         "artifacts/final-landscape-844x390.png"
       ],
-      "score": 9.2,
-      "findings": "All four smaller cards visible, selected Resume and all text fit, no carousel controls, crown/face clear, and subtly larger leftward creature with coordinated arms. No blocking visual issue or further visual change requested."
+      "score": 9.3,
+      "findings": "Selected amber and inactive gray bold compact headings match the new reference style. All Gambit titles fit the unchanged four-card row at desktop and landscape sizes. Source copy remains truthful, concise and rooted in existing Crownfall identity. No blocking issue."
     }
   ],
   "model": {
@@ -85,17 +88,19 @@
     "fallback": "Illustration retained for unavailable or unsupported model rendering"
   },
   "authorizedDifferences": [
-    "Carousel removed; exactly four cards are visible simultaneously in the restored 197x298 layout with 4px gaps at 1280x720.",
-    "Actual supplied card images and their established portrait focal crops are retained.",
-    "Actual creature is scaled 4% larger, turned farther left, and given a subtle world-space lean; all four arms follow its parent rig transform.",
-    "Actual creature stays behind the cards and retains its existing Idle animation, materials, lighting and particle atmosphere.",
+    "Card copy now uses New Gambit, Resume Gambit, Load Gambit and Browse Gambits, grounded in Crownfall identity.",
+    "Home / Play / Settings replace placeholder example tabs; Back replaces the misleading Quit label.",
+    "Card-heading typography changes only to compact bold size/weight and amber/gray availability states based on the new private reference.",
+    "Exactly four 197x298 cards, actual supplied images, focal crops, creature transform and atmosphere remain unchanged.",
+    "Modal descriptions honestly state that the menu stores demo setup metadata, gameplay and online play are not connected, and the saved audio preference has no connected audio.",
     "Desktop and phone landscape composition only; no portrait redesign."
   ],
   "remainingLimits": [
-    "Supporting copy remains very small on phone landscape because the fixed desktop composition is scaled into the viewport.",
-    "Portrait cover crops necessarily omit some context from the supplied panoramic images.",
-    "Actual creature materials and geometry differ from the original illustration; exact screenshot reproduction is not claimed.",
-    "The 9.2 score is subjective visual judgment for the current fixed four-card revision. Earlier carousel and larger-card reviews are historical."
+    "Supporting copy remains very small on phone landscape; long modal content uses vertical scrolling in short viewports.",
+    "This menu preview stores demo setup metadata and does not start or restore chess gameplay. Online play and audio are not connected.",
+    "Portrait crops and actual creature materials differ from the original illustration; exact screenshot reproduction is not claimed.",
+    "The private typography reference is retained locally and is not included as an image in the repository.",
+    "The 9.3 score is subjective visual judgment for the current copy/typography revision; prior designs are historical."
   ],
   "historicalReviews": [
     "artifacts/visual-review-four-card.json",
@@ -103,15 +108,16 @@
     "artifacts/visual-review-five-card-glb.json",
     "artifacts/visual-review-four-card-generated-artwork.json",
     "artifacts/visual-review-four-visible-supplied-artwork.json",
-    "artifacts/visual-review-three-visible-carousel.json"
+    "artifacts/visual-review-three-visible-carousel.json",
+    "artifacts/visual-review-fixed-row-before-copy-type.json"
   ],
-  "verdict": "Meets the subjective 9/10 visual target for the current restored four-card row and subtle actual-creature scale, direction and arm-tilt adjustment. No blocking visual issue identified.",
+  "verdict": "Meets the subjective 9/10 target for the unchanged fixed four-card composition with truthful Crownfall Gambit copy and the requested compact bold amber/gray heading typography. No blocking visual or wording issue identified.",
   "cardCount": 4,
   "cards": [
-    "New",
-    "Resume",
-    "Load Game",
-    "Browse"
+    "New Gambit",
+    "Resume Gambit",
+    "Load Gambit",
+    "Browse Gambits"
   ],
   "cardGeometry": {
     "viewportWidth": 1280,
@@ -196,6 +202,55 @@
     "layoutAndLandscapeVerification": "artifacts/landscape-verification.json",
     "modelVerification": "artifacts/model-verification.json",
     "artworkProvenance": "artifacts/card-artwork.json",
-    "scope": "Visual critic independently inspected screenshots and matched before/after creature captures. Functional assertions are supported by the separate verification artifacts."
+    "scope": "Visual critic independently inspected screenshots and matched before/after creature captures. Functional assertions are supported by the separate verification artifacts.",
+    "copyInventory": "artifacts/menu-copy.json",
+    "modalCopyFit": "artifacts/copy-fit-verification.json",
+    "copyScreenshots": [
+      "artifacts/copy/home-1280.png",
+      "artifacts/copy/browse-1280.png",
+      "artifacts/copy/settings-844.png"
+    ]
+  },
+  "navigation": [
+    "Home",
+    "Play",
+    "Settings"
+  ],
+  "typographyReference": {
+    "fileName": "card-typography-reference.jpg",
+    "sourceWidth": 960,
+    "sourceHeight": 540,
+    "sourceBytes": 79084,
+    "sourceSha256": "a5c9948c26b68679c4c689d2a58de8d62b9617bd210bac22291577279459b519",
+    "privateLocalReferenceOnly": true,
+    "imageIncludedInRepository": false,
+    "observedStyle": "Compact approximately 14px bold uppercase heading at 960px; selected amber, inactive muted gray, availability-disabled Continue dimmer."
+  },
+  "headingTypography": {
+    "fontFamily": "Self-hosted Barlow",
+    "fontWeight": 600,
+    "fontSizeCSS": "max(1.458333cqw, 11px)",
+    "fontSizeAt1280": 18.67,
+    "fontSizeAt960": 14,
+    "selectedColor": "#bf791a shared with card accent border",
+    "inactiveColor": "#b5b2ac",
+    "disabledColor": "#817d73",
+    "currentDisabledCards": 0,
+    "notes": "All four cards open actual preview or informational dialogs, so no card was artificially disabled merely to mimic the unavailable Continue example."
+  },
+  "copyAudit": {
+    "result": "Pass",
+    "identity": "Crownfall \u2014 A King's Gambit Story; Every sacrifice has a name; cinematic chess. No new factions or characters invented.",
+    "navigation": "Home / Play / Settings only. Duplicate EXAMPLE tabs and fake notification removed. Footer Back accurately names the Home-return action.",
+    "cards": {
+      "New Gambit": "Names and creates a local demo setup; expressly does not start a chess game.",
+      "Resume Gambit": "Reviews local demo save metadata; expressly does not restore a chess position or launch gameplay.",
+      "Load Gambit": "One local demo save slot on the device.",
+      "Browse Gambits": "Online play unavailable; no fabricated matchmaking or replay capability."
+    },
+    "settings": "Particle quality and motion describe actual menu effects. Volume is explicitly a saved preference with audio not connected.",
+    "copyPolish": "New subtitle changed to Name your gambit. Browse unavailability wording simplified. Unsupported decorative diagonal-arrow glyphs replaced by aria-hidden supported ASCII chevrons.",
+    "sourceEvidence": "artifacts/menu-copy.json",
+    "modalFitEvidence": "artifacts/copy-fit-verification.json"
   }
 }
