@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checks": [
+    "Default Play/Resume selection and reference card positioning",
+    "Arrow navigation, focused Enter activation, Escape and modal closure",
+    "Create local demo save and load it after a reload",
+    "Quality and motion preferences persist; Low removes WebGL particles",
+    "Browse opens an honest unavailable state",
+    "Reference desktop and 1920px browser renders",
+    "OS reduced motion honored",
+    "No JavaScript or console errors during the menu flow"
+  ]
+}

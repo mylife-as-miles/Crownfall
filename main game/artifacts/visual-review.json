@@ -1,0 +1,36 @@
+{
+  "reviewer": "independent visual critic agent",
+  "reference": "public/assets/reference.jpg",
+  "reviewedScreenshot": "artifacts/iteration-4-1280x714.png",
+  "viewport": { "width": 1280, "height": 714 },
+  "score": 9.0,
+  "scoreOutOf": 10,
+  "assessmentType": "Subjective visual assessment against reference, adjusted for explicit subsequent user changes; not an objective pixel-match score.",
+  "exactReferenceMatch": false,
+  "rubric": [
+    { "category": "Composition and positions", "maximum": 2.5, "score": 2.45, "notes": "Nav, cards, selection and footer closely follow reference geometry. Creature behind cards is an explicitly requested change." },
+    { "category": "Creature silhouette and layering", "maximum": 2.0, "score": 1.84, "notes": "Strong silhouette, framing and softened teal/gold character grading. Reference-derived 2D reconstruction is temporary pending the user's actual GLB." },
+    { "category": "Card artwork and framing", "maximum": 1.5, "score": 1.32, "notes": "Framing and selected border closely match. Load Game and Browse use reconstructed landscapes because original source artwork was occluded; subjects differ from the reference. Final softening and warm veil improve consistency." },
+    { "category": "Typography and menu controls", "maximum": 1.0, "score": 0.96, "notes": "Labels, nav spacing, light narrow headings and controller hints are close to reference; some copy and font shapes differ." },
+    { "category": "Light, palette and vignette", "maximum": 1.5, "score": 1.46, "notes": "Warm atmospheric right-side fog, dark left vignette, subdued card grading and cyan haze closely reproduce the overall palette." },
+    { "category": "Particles, feathers and motion", "maximum": 1.0, "score": 0.97, "notes": "Visible additive teal cores and halos, restrained gold dust and soft feather wisps reproduce the magical atmosphere. Placement is animated and varies between captures." }
+  ],
+  "iterationHistory": [
+    { "iteration": "1", "screenshot": "artifacts/iteration-1-1280x714.png", "score": 8.0, "findings": "Nav drift, sparse tiny teal particles, overly sharp saturated creature." },
+    { "iteration": "2 before effects tuning", "screenshot": "artifacts/iteration-2-1280x714.png", "score": 8.4, "findings": "Fixed nav and headings; remaining atmosphere and grading differences." },
+    { "iteration": "2 after effects tuning", "screenshot": "artifacts/effects-tune.png", "score": 8.8, "findings": "Improved foreground particles and creature grading; additional diffuse fog needed." },
+    { "iteration": "3", "screenshot": "artifacts/iteration-3-1280x714.png", "score": 8.9, "findings": "User-requested creature-behind-card composition, stronger fog and clean reconstructed card backgrounds; new landscapes needed softer grading." },
+    { "iteration": "4", "screenshot": "artifacts/iteration-4-1280x714.png", "score": 9.0, "findings": "Reconstructed card artwork softened and warmed, resolving major remaining visual cohesion gap." }
+  ],
+  "authorizedDifferences": [
+    "Creature appears behind all four cards rather than overlapping their faces.",
+    "Desktop and phone landscape composition only; no portrait redesign."
+  ],
+  "remainingLimits": [
+    "Actual user-supplied creature GLB has not been received, so model appearance, materials and animations cannot be assessed yet.",
+    "Two menu card scenes are reconstructed landscapes, not exact original game artwork.",
+    "Temporary creature art differs subtly in pose, ornament and lighting from the reference.",
+    "The 9.0 score is a critic's subjective assessment and does not claim exact or pixel-identical reproduction."
+  ],
+  "verdict": "Meets the subjective 9/10 visual target for the current authorized composition. Actual GLB integration remains pending."
+}

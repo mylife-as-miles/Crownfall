@@ -1,0 +1,132 @@
+.atmosphere,
+.mote-field,
+.creature-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.atmosphere {
+  z-index: 5;
+  overflow: hidden;
+}
+.soul-streams {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+  stroke-dasharray: 30 120;
+  animation: soul-flow 18s linear infinite;
+}
+.mote-field canvas,
+.creature-model canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.spirit-aura {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 24% 29% at 83% 20%, #72f5d12b, transparent 82%),
+    radial-gradient(ellipse 24% 47% at 96% 43%, #d4b36a29, transparent 83%),
+    radial-gradient(ellipse 15% 34% at 98% 52%, #52d0b81f, transparent 90%);
+  mix-blend-mode: screen;
+  animation: aura-breathe 9s ease-in-out infinite;
+}
+.spirit-feather {
+  position: absolute;
+  width: 6.5%;
+  opacity: 0.4;
+  filter: blur(0.7px);
+  animation: feather-drift 13s ease-in-out infinite alternate;
+}
+.plume-one {
+  left: 59%;
+  top: 17.5%;
+  width: 5%;
+  transform: rotate(48deg);
+}
+.plume-two {
+  left: 47.5%;
+  top: 75%;
+  transform: rotate(62deg);
+  animation-delay: -5s;
+  opacity: 0.33;
+}
+.plume-three {
+  right: 1%;
+  top: 68%;
+  width: 5%;
+  transform: rotate(-40deg);
+  animation-delay: -9s;
+  opacity: 0.22;
+}
+.atmosphere--low .spirit-aura {
+  display: none;
+}
+.atmosphere--still *,
+.atmosphere--low * {
+  animation: none !important;
+}
+.creature-stage {
+  z-index: 1;
+  overflow: hidden;
+}
+.creature-illustration,
+.creature-model {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.creature-illustration {
+  object-fit: fill;
+  transition: opacity 0.75s ease;
+  user-select: none;
+  filter: saturate(0.73) brightness(0.88) contrast(0.92) blur(0.4px);
+}
+.creature-illustration--hidden {
+  opacity: 0;
+}
+.creature-model {
+  opacity: 0;
+  transition: opacity 0.75s ease;
+}
+.creature-model--loaded {
+  opacity: 1;
+}
+@keyframes aura-breathe {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes feather-drift {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 8px -12px;
+  }
+}
+@keyframes soul-flow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -300;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .atmosphere * {
+    animation: none !important;
+  }
+  .creature-illustration,
+  .creature-model {
+    transition: none;
+  }
+}
