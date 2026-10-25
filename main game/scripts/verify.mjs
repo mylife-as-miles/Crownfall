@@ -57,7 +57,7 @@ try {
     .getByRole("button", { name: "Resume", exact: true })
     .boundingBox();
   assert.ok(
-    bounds && Math.abs(bounds.x - 391) < 2 && Math.abs(bounds.y - 211) < 2,
+    bounds && Math.abs(bounds.x - 340) < 2 && Math.abs(bounds.y - 211) < 2,
     JSON.stringify(bounds),
   );
   results.push("Default Play/Resume selection and reference card positioning");
@@ -74,14 +74,23 @@ try {
     "four cards: New, Resume, Load Game, Browse",
   );
   for (const [index, rect] of cardBounds.entries()) {
-    assert.ok(Math.abs(rect.x - (139 + index * 252)) < 1, JSON.stringify(rect));
+    assert.ok(Math.abs(rect.x - (139 + index * 201)) < 1, JSON.stringify(rect));
     assert.ok(
       Math.abs(rect.y - 211) < 1 &&
-        Math.abs(rect.width - 247) < 1 &&
-        Math.abs(rect.height - 373) < 1,
+        Math.abs(rect.width - 197) < 1 &&
+        Math.abs(rect.height - 298) < 1,
       JSON.stringify(rect),
     );
   }
+  const rowBounds = await page.locator(".game-cards").boundingBox();
+  assert.ok(rowBounds && Math.abs(rowBounds.width - 800) < 1);
+  assert.equal(await page.locator(".card-carousel, .carousel-controls").count(), 0);
+  const fixedRow = await page.locator(".game-cards").evaluate((element) => ({
+    overflow: getComputedStyle(element).overflowX,
+    scrollableWidth: element.scrollWidth - element.clientWidth,
+  }));
+  assert.equal(fixedRow.overflow, "visible");
+  assert.ok(fixedRow.scrollableWidth <= 1);
   const artworks = await page
     .locator(".card-art")
     .evaluateAll(async (elements) =>
@@ -119,7 +128,7 @@ try {
       "each card loads its assigned supplied-image delivery copy",
     );
   }
-  results.push("Four supplied images load in order in the three-card carousel");
+  results.push("Four supplied images load in order in the fixed four-card row");
 
   await page.keyboard.press("ArrowRight");
   assert.equal(
@@ -183,7 +192,7 @@ try {
   await page.keyboard.press("ArrowRight");
   assert.equal(
     await page
-      .getByRole("button", { name: "Browse", exact: true })
+      .getByRole("button", { name: "New", exact: true })
       .getAttribute("aria-pressed"),
     "true",
   );
@@ -191,7 +200,7 @@ try {
   await page.keyboard.press("ArrowLeft");
   assert.equal(
     await page
-      .getByRole("button", { name: "New", exact: true })
+      .getByRole("button", { name: "Browse", exact: true })
       .getAttribute("aria-pressed"),
     "true",
   );
@@ -203,7 +212,7 @@ try {
     "true",
   );
   results.push(
-    "Host is absent; card navigation stops at endpoints and Home/End reveal all four options",
+    "Host is absent; card navigation wraps at endpoints and Home/End select the first/last option",
   );
 
   await page.evaluate(() => localStorage.clear());

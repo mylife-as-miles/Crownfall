@@ -2,12 +2,12 @@
   "passed": true,
   "checks": [
     "Default Play/Resume selection and reference card positioning",
-    "Four supplied images load in order in the three-card carousel",
+    "Four supplied images load in order in the fixed four-card row",
     "Arrow navigation, focused Enter activation, Escape and modal closure",
     "Create local demo save and load it after a reload",
     "Quality and motion preferences persist; Low removes WebGL particles",
     "Browse opens an honest unavailable state",
-    "Host is absent; card navigation stops at endpoints and Home/End reveal all four options",
+    "Host is absent; card navigation wraps at endpoints and Home/End select the first/last option",
     "Reference desktop and 1920px browser renders",
     "OS reduced motion honored",
     "No JavaScript or console errors during the menu flow"

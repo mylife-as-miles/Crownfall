@@ -1,6 +1,6 @@
 # Crownfall main game menu
 
-A separate React + TypeScript + Vite app for the supplied menu references, with four cards in a three-visible horizontal carousel at 1280 × 720. Run from this folder:
+A separate React + TypeScript + Vite app for the supplied menu references, with all four cards visible together at 1280 × 720. Run from this folder:
 
 ```sh
 npm ci
@@ -9,7 +9,7 @@ npm run dev
 
 Open `http://localhost:5173`. `npm run build` checks TypeScript and produces `dist/`. `npm run preview` serves that build.
 
-The layout targets desktop and landscape phones. The creature sits behind the cards as requested. Four cards (New, Resume, Load Game, Browse), top navigation, keyboard and controller navigation, dialogs, settings, and device-local demo saves work. Arrow keys select cards and stop at the first/last option; Home/End jumps to either endpoint. Enter activates; Escape goes back; Q/E switches sections. Browse clearly shows that online sessions are not available. The original chess game remains in `../web`; this new menu does not yet start that game. Settings persist on this browser. Low quality disables shader particles; ambient motion and the OS reduced motion preference stop animation.
+The layout targets desktop and landscape phones. The creature sits behind the cards as requested. Four cards (New, Resume, Load Game, Browse), top navigation, keyboard and controller navigation, dialogs, settings, and device-local demo saves work. Arrow keys select cards and wrap around the four options; Home/End selects the first/last card. Enter activates; Escape goes back; Q/E switches sections. Browse clearly shows that online sessions are not available. The original chess game remains in `../web`; this new menu does not yet start that game. Settings persist on this browser. Low quality disables shader particles; ambient motion and the OS reduced motion preference stop animation.
 
 ## Environment artwork
 
@@ -24,13 +24,11 @@ The four cards use the user's supplied JPEGs in attachment order. The originals 
 
 All four source images are 2048 × 1143. Delivery copies retain those dimensions and are stored at `public/assets/environments/card-{new,resume,load,browse}.webp`. The images are cropped by CSS to their focal points; no regenerated artwork is substituted. `artifacts/card-artwork.json` records the mapping, source/delivery checksums and focal positions. Library identifiers and the private Page references remain in the executor-local originals' provenance file rather than the public repository.
 
-The carousel keeps all four semantic cards in the DOM and shows three whole cards at each settled position: New / Resume / Load Game first, then Resume / Load Game / Browse. Card dimensions remain 247 × 373 pixels at 1280 × 720, with five-pixel gaps. The three-card content window is 751 pixels wide; small focus gutters make the measured scrollport about 756 pixels. The total four-card content is 1003 pixels wide, so the endpoint travel is 252 pixels. Titles and supporting text remain live HTML above the image layer.
-
-Native horizontal scrolling and CSS snapping handle trackpads and touch swipes. Shift+mouse-wheel scrolls horizontally inside the carousel; ordinary vertical wheel input remains available to the page. The previous/next arrows and range indicator sit under the row on a dark backplate. Arrow controls retain focus at endpoints. Keyboard and controller navigation reveal the focused card, and resizing preserves the endpoint or focused option. OS and app reduced-motion settings make programmatic card navigation immediate.
+All four cards (New / Resume / Load Game / Browse) are visible together in one fixed row. Original card dimensions are restored to 197 × 298 pixels at 1280 × 720, with four-pixel gaps and an 800-pixel row. Titles and supporting text remain live HTML above the image layer. The row has no carousel controls, scroll snapping, drag or wheel handlers. Keyboard and controller navigation move focus between the four cards without scrolling.
 
 ## Creature asset
 
-The default creature is the actual user-supplied **`Crownfall_Sorcerer_Digits_v3_1(1).glb`**, delivered as `public/models/crownfall-sorcerer.glb`. Its PBR material retains the supplied aged-gold and emerald textures. The menu selects the named **Idle** clip; Attack and Threat_Cast are retained in the file but do not play in the menu. The creature renders behind the cards with warm directional lighting, a teal rim, and a slightly angled camera-facing pose.
+The default creature is the actual user-supplied **`Crownfall_Sorcerer_Digits_v3_1(1).glb`**, delivered as `public/models/crownfall-sorcerer.glb`. Its PBR material retains the supplied aged-gold and emerald textures. The menu selects the named **Idle** clip; Attack and Threat_Cast are retained in the file but do not play in the menu. The creature renders behind the cards with warm directional lighting and a teal rim. Its final presentation is 4% larger, turned another 7.45° toward the cards and leaned 2.58° left. The whole rig, including all four arms, follows this parent transform; the bone animation is unchanged. A small downward adjustment keeps the crown inside the frame. Matched before/after Idle captures are in `artifacts/creature-direction/`.
 
 The supplied 19,382,272-byte file was optimized to 4,217,336 bytes using 2048px WebP textures and Draco geometry compression. All 80,910 triangles, 142 joints and three clips are preserved; no simplification or animation resampling was applied. The original upload is not overwritten. Required Draco decoders are self hosted in `public/decoders/draco/`, so this model needs no external decoder service.
 
@@ -46,8 +44,8 @@ With the dev server running:
 
 ```sh
 npm test
-npm run test:carousel
+node scripts/verify-layout.mjs
 node scripts/verify-model.mjs
 ```
 
-Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Screenshots and verification results are saved in `artifacts/`. The visual critic evaluates actual browser screenshots and carousel motion evidence; visual scores are subjective and distinct from automated functionality checks. `artifacts/carousel/` contains first/last desktop and landscape screenshots, scroll traces, the dedicated carousel verification report, and a short browser recording. Video capture uses Playwright’s supporting binaries (`npx playwright install chromium` if missing), plus FFmpeg and ffprobe on PATH. Software WebGL in the execution environment limits recording frame pacing; isolated native-scroll traces verify intermediate positions without treating the recording as a hardware frame-rate benchmark.
+Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Current screenshots and verification results are saved in `artifacts/`. The visual critic reviews actual browser screenshots; scores are subjective and distinct from automated functionality checks. The current layout is the restored four-visible-card row. Files in `artifacts/carousel/` and archived visual reviews document the superseded carousel iteration; its recording predates the final creature transform. Software WebGL verification does not establish physical-device GPU performance.

@@ -203,11 +203,24 @@ a {
 .nav-item:nth-child(5) {
   left: 35.39cqw;
 }
+.game-cards {
+  position: absolute;
+  z-index: 2;
+  left: 10.86cqw;
+  top: 29.31cqh;
+  display: flex;
+  gap: 0.3125cqw;
+  width: 62.5cqw;
+  height: 41.39cqh;
+}
 .game-card {
   position: relative;
   display: block;
   isolation: isolate;
   overflow: hidden;
+  flex: 0 0 15.390625cqw;
+  width: 15.390625cqw;
+  height: 100%;
   padding: 0;
   border: 0;
   text-align: left;

@@ -113,8 +113,11 @@ export default function CreatureStage({
       .detectSupport(renderer);
     const loader = new GLTFLoader().setDRACOLoader(draco).setKTX2Loader(ktx2);
     const pivot = new THREE.Group();
-    const facing = -0.34;
+    // Turn toward the cards and lean the whole animated rig, including all arms.
+    const facing = -0.47;
+    pivot.rotation.order = "ZYX";
     pivot.rotation.y = facing;
+    pivot.rotation.z = 0.045;
     scene.add(pivot);
     let model: THREE.Group | null = null;
     let mixer: THREE.AnimationMixer | null = null;
@@ -175,10 +178,11 @@ export default function CreatureStage({
           model = null;
           return;
         }
-        const scale = 5.2 / size.y;
+        const scale = 5.408 / size.y;
         model.scale.multiplyScalar(scale);
         model.position.sub(center.multiplyScalar(scale));
-        model.position.y -= 0.625;
+        // Compensate for the larger rig so the crown keeps its breathing room.
+        model.position.y -= 0.82;
         pivot.add(model);
         if (gltf.animations.length) {
           mixer = new THREE.AnimationMixer(model);

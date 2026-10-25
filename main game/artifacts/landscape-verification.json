@@ -1,117 +1,74 @@
 {
   "passed": true,
+  "mode": "Four cards visible together at original size",
   "results": [
     {
       "viewport": {
         "width": 844,
         "height": 390
       },
-      "window": "first",
-      "screenshot": "artifacts/carousel/844x390-first.png",
-      "scrollLeft": 0,
-      "maxScroll": 138,
-      "scrollportWidth": 414.1875,
-      "scrollportHeight": 206.03125,
+      "screenshot": "artifacts/final-landscape-844x390.png",
+      "rowWidth": 436.953125,
+      "scrollableWidth": 0,
+      "scrollSnapType": "none",
+      "pageOverflow": false,
+      "carouselControls": 0,
+      "actualModelLoaded": true,
+      "activeAnimation": "Idle",
       "cards": [
         {
           "label": "New",
           "x": 148.34375,
           "y": 114.296875,
-          "width": 134.90625,
-          "height": 202.03125,
+          "width": 107.59375,
+          "height": 161.40625,
           "visible": true,
-          "partial": false,
-          "textFits": true
+          "textFits": true,
+          "image": {
+            "width": 2048,
+            "height": 1143
+          }
         },
         {
           "label": "Resume",
-          "x": 285.96875,
+          "x": 258.109375,
           "y": 114.296875,
-          "width": 134.90625,
-          "height": 202.03125,
+          "width": 107.59375,
+          "height": 161.40625,
           "visible": true,
-          "partial": false,
-          "textFits": true
+          "textFits": true,
+          "image": {
+            "width": 2048,
+            "height": 1143
+          }
         },
         {
           "label": "Load game",
-          "x": 423.59375,
+          "x": 367.875,
           "y": 114.296875,
-          "width": 134.90625,
-          "height": 202.03125,
+          "width": 107.59375,
+          "height": 161.40625,
           "visible": true,
-          "partial": false,
-          "textFits": true
+          "textFits": true,
+          "image": {
+            "width": 2048,
+            "height": 1143
+          }
         },
         {
           "label": "Browse",
-          "x": 561.21875,
+          "x": 477.640625,
           "y": 114.296875,
-          "width": 134.90625,
-          "height": 202.03125,
-          "visible": false,
-          "partial": false,
-          "textFits": true
+          "width": 107.59375,
+          "height": 161.40625,
+          "visible": true,
+          "textFits": true,
+          "image": {
+            "width": 2048,
+            "height": 1143
+          }
         }
-      ],
-      "controlsOverlapFooter": false,
-      "actualModelLoaded": true
-    },
-    {
-      "viewport": {
-        "width": 844,
-        "height": 390
-      },
-      "window": "last",
-      "screenshot": "artifacts/carousel/844x390-last.png",
-      "scrollLeft": 138,
-      "maxScroll": 138,
-      "scrollportWidth": 414.1875,
-      "scrollportHeight": 206.03125,
-      "cards": [
-        {
-          "label": "New",
-          "x": 10.34375,
-          "y": 114.296875,
-          "width": 134.90625,
-          "height": 202.03125,
-          "visible": false,
-          "partial": false,
-          "textFits": true
-        },
-        {
-          "label": "Resume",
-          "x": 147.96875,
-          "y": 114.296875,
-          "width": 134.90625,
-          "height": 202.03125,
-          "visible": true,
-          "partial": false,
-          "textFits": true
-        },
-        {
-          "label": "Load game",
-          "x": 285.59375,
-          "y": 114.296875,
-          "width": 134.90625,
-          "height": 202.03125,
-          "visible": true,
-          "partial": false,
-          "textFits": true
-        },
-        {
-          "label": "Browse",
-          "x": 423.21875,
-          "y": 114.296875,
-          "width": 134.90625,
-          "height": 202.03125,
-          "visible": true,
-          "partial": false,
-          "textFits": true
-        }
-      ],
-      "controlsOverlapFooter": false,
-      "actualModelLoaded": true
+      ]
     }
   ],
   "errors": []

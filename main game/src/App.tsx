@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Atmosphere from "./Atmosphere";
 import CreatureStage from "./CreatureStage";
-import CardCarousel, { type CardCarouselHandle } from "./CardCarousel";
 import "./styles.css";
 
 type Panel =
@@ -123,7 +122,6 @@ export default function App() {
   const [notice, setNotice] = useState<string>("");
   const dialog = useRef<HTMLDialogElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const carousel = useRef<CardCarouselHandle>(null);
   const gamepadInputAt = useRef(0);
 
   const closePanel = useCallback(() => {
@@ -132,10 +130,9 @@ export default function App() {
     setNotice("");
   }, []);
   const selectCard = useCallback((index: number) => {
-    const next = Math.max(0, Math.min(index, cards.length - 1));
+    const next = ((index % cards.length) + cards.length) % cards.length;
     setSelected(next);
     cardRefs.current[next]?.focus({ preventScroll: true });
-    carousel.current?.reveal(next);
   }, []);
   const changeTab = useCallback((direction: number) => {
     setActiveTab((current) => {
@@ -304,15 +301,41 @@ export default function App() {
           </button>
         </nav>
 
-        <CardCarousel
-          ref={carousel}
-          items={cards}
-          selected={selected}
-          onSelect={setSelected}
-          onActivate={activate}
-          cardRefs={cardRefs}
-          reducedMotion={!preferences.motion}
-        />
+        <section className="game-cards" aria-label="Play options">
+          {cards.map((card, index) => (
+            <button
+              key={card.id}
+              ref={(element) => {
+                cardRefs.current[index] = element;
+              }}
+              type="button"
+              tabIndex={selected === index ? 0 : -1}
+              className={`game-card card-${card.id} ${selected === index ? "is-selected" : ""}`}
+              aria-label={
+                card.title === "LOAD GAME"
+                  ? "Load game"
+                  : card.title.charAt(0) + card.title.slice(1).toLowerCase()
+              }
+              aria-pressed={selected === index}
+              onPointerMove={(event) => {
+                if (
+                  event.pointerType === "mouse" &&
+                  (event.movementX !== 0 || event.movementY !== 0)
+                ) setSelected(index);
+              }}
+              onFocus={() => setSelected(index)}
+              onClick={() => activate(index)}
+            >
+              <span className="card-art" aria-hidden="true" />
+              <span className="card-shade" aria-hidden="true" />
+              <span className="card-heading">
+                <span className="card-title">{card.title}</span>
+                <span className="card-subtitle">{card.subtitle}</span>
+              </span>
+              <span className="card-description">{card.description}</span>
+            </button>
+          ))}
+        </section>
 
         <footer className="controller-hints" aria-label="Menu controls">
           <button aria-label="Select" onClick={() => activate(selected)}>

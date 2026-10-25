@@ -1,0 +1,209 @@
+{
+  "revision": "Three-card native horizontal viewport over four actual supplied cards with actual creature GLB",
+  "reviewer": "independent visual critic agent",
+  "reference": "artifacts/references/play-options.jpg",
+  "reviewedScreenshot": "artifacts/final-1280x720.png",
+  "additionalReviewedScreenshot": "artifacts/final-1920x1080.png",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "score": 9.3,
+  "scoreOutOf": 10,
+  "assessmentType": "Independent subjective visual assessment of the current three-visible-card carousel, its first and last windows, actual supplied artwork, discovery controls and actual creature balance. Native interaction behavior is supported by separate test artifacts. This score is not an objective pixel-match score or a GPU/frame-pacing benchmark.",
+  "exactReferenceMatch": false,
+  "rubric": [
+    {
+      "category": "Actual supplied artwork and focal cropping",
+      "maximum": 2.5,
+      "score": 2.4,
+      "notes": "All four actual supplied card images remain. Both visible windows preserve each image's established portrait crop and source identity, without stretching. No image regeneration or retouching is introduced."
+    },
+    {
+      "category": "Three-card viewport geometry and endpoint composition",
+      "maximum": 2.0,
+      "score": 2.0,
+      "notes": "A 751px viewport fits exactly three 247x373 cards with 5px gaps at 1280x720. Initial New/Resume/Load Game and terminal Resume/Load Game/Browse windows are complete, with no neighbor bleed or clones. Endpoints clamp without wrapping."
+    },
+    {
+      "category": "Text, selected borders and discovery controls",
+      "maximum": 1.5,
+      "score": 1.4,
+      "notes": "Text and selected outlines remain visible in both windows. The final dark control backplate resolves the counter's earlier low contrast over the patterned gold robe. Enabled arrows are brighter than disabled endpoints. Controls remain separated from the controller footer."
+    },
+    {
+      "category": "Actual creature balance behind the carousel",
+      "maximum": 1.5,
+      "score": 1.36,
+      "notes": "The narrower visible row exposes more of the actual model's shoulder and torso while preserving the behind-card relationship. Crown, eye, orbital rings, raised arm and robe form a clear silhouette. Intentional outer arm and robe cropping remains."
+    },
+    {
+      "category": "Lighting, particles and atmospheric cohesion",
+      "maximum": 1.5,
+      "score": 1.37,
+      "notes": "The cold source images, teal particle halos and actual creature remain coherent against warm gold fog. More visible torso improves the scene's balance. Particle placement varies with animation."
+    },
+    {
+      "category": "Native motion and interaction presentation",
+      "maximum": 1.0,
+      "score": 0.77,
+      "notes": "Separate carousel verification covers wheel, real Chromium touch, keyboard, gamepad, endpoint clamping, resize and reduced motion. Native scroll traces contain intermediate positions. The corrected clip demonstrates actual-model first-to-last-to-first windows. Shared software-GPU load makes traces sparse and the recorded frame pacing unsuitable for a smoothness or hardware-performance benchmark."
+    }
+  ],
+  "iterationHistory": [
+    {
+      "iteration": "Initial three-card first/end review",
+      "screenshots": [
+        "artifacts/carousel/desktop-first.png",
+        "artifacts/carousel/desktop-last.png",
+        "artifacts/carousel/landscape-first-932x430.png",
+        "artifacts/carousel/landscape-last-932x430.png"
+      ],
+      "score": null,
+      "findings": "Card geometry, source crops, selected outlines and creature balance were good. Critic requested stronger discovery-control contrast over the patterned robe."
+    },
+    {
+      "iteration": "Initial video artifact review",
+      "score": null,
+      "findings": "Initial clip spent most time loading and did not demonstrate both carousel windows. Critic requested a recording after the actual GLB was ready, with first-to-last-to-first windows and loading lead-in removed."
+    },
+    {
+      "iteration": "Final control and demonstration review",
+      "screenshot": "artifacts/final-1280x720.png",
+      "additionalScreenshot": "artifacts/final-1920x1080.png",
+      "score": 9.3,
+      "findings": "Final dark discovery-control backplate is readable at both desktop resolutions. Corrected video samples show actual-model initial, terminal and return windows without the loading prefix. No further visual changes required."
+    }
+  ],
+  "model": {
+    "status": "Actual user-supplied GLB integrated",
+    "sourceFile": "Crownfall_Sorcerer_Digits_v3_1(1).glb",
+    "deliveredFile": "public/models/crownfall-sorcerer.glb",
+    "assetEvidence": "artifacts/model-asset.json",
+    "verificationEvidence": "artifacts/model-verification.json",
+    "sourceBytes": 19382272,
+    "deliveredBytes": 4217336,
+    "triangles": 80910,
+    "joints": 142,
+    "retainedClips": [
+      "Attack",
+      "Idle",
+      "Threat_Cast"
+    ],
+    "activeMenuClip": "Idle",
+    "geometrySimplification": false,
+    "textureConversion": "WebP, maximum dimension 2048",
+    "geometryCompression": "Draco with self-hosted decoder",
+    "fallback": "Illustration retained for unavailable or unsupported model rendering"
+  },
+  "authorizedDifferences": [
+    "All four actual supplied cards remain, but exactly three are visible in a native horizontal viewport.",
+    "Initial window is New, Resume, Load Game; terminal window is Resume, Load Game, Browse. No clones or endpoint wrapping.",
+    "Cards retain 247x373 dimensions, 5px gaps and their actual-image portrait focal crops at 1280x720.",
+    "A small arrow and range-counter group beneath the row makes the hidden fourth card discoverable.",
+    "Actual supplied creature GLB remains behind the visible card row, with the existing warm gold atmosphere and magical effects.",
+    "Desktop and phone landscape composition only; no portrait redesign."
+  ],
+  "remainingLimits": [
+    "Native smooth scrolling is configured and intermediate scroll positions are observed, but shared software-GPU capture does not establish smooth frame pacing on target hardware.",
+    "The demonstration clip uses reduced resolution and Low particle quality to show both actual-model windows under the capture environment's limits.",
+    "Portrait cover crops omit some context from the panoramic supplied images.",
+    "Actual creature materials and geometry differ from the original illustration; exact screenshot reproduction is not claimed.",
+    "The 9.3 score is subjective visual judgment for the current carousel revision, not a performance benchmark."
+  ],
+  "historicalReviews": [
+    "artifacts/visual-review-four-card.json",
+    "artifacts/visual-review-five-card-artwork.json",
+    "artifacts/visual-review-five-card-glb.json",
+    "artifacts/visual-review-four-card-generated-artwork.json",
+    "artifacts/visual-review-four-visible-supplied-artwork.json"
+  ],
+  "verdict": "Meets the subjective 9/10 visual target for the three-visible-card native carousel over four actual supplied cards, with actual creature GLB. Native input behavior is verified separately; target-device frame pacing remains unbenchmarked.",
+  "cardCount": 4,
+  "cards": [
+    "New",
+    "Resume",
+    "Load Game",
+    "Browse"
+  ],
+  "cardGeometry": {
+    "viewportWidth": 1280,
+    "viewportHeight": 720,
+    "rowLeft": 139,
+    "top": 211,
+    "width": 247,
+    "height": 373,
+    "gap": 5,
+    "visibleViewportWidth": 751,
+    "visibleRightEdge": 890,
+    "bottomEdge": 584,
+    "nativeScrollBounds": [
+      0,
+      252
+    ],
+    "initialWindow": [
+      "New",
+      "Resume",
+      "Load Game"
+    ],
+    "terminalWindow": [
+      "Resume",
+      "Load Game",
+      "Browse"
+    ],
+    "clones": false,
+    "endpointWrap": false
+  },
+  "suppliedArtwork": {
+    "sourceInspection": "Four original JPEG files visually inspected at /workspace/crownfall-card-originals before reviewing browser crops. Delivery image dimensions and provenance hashes documented separately.",
+    "evidence": "artifacts/card-artwork.json",
+    "cards": [
+      {
+        "card": "new",
+        "sourceFile": "288933.jpg",
+        "sourceSha256": "716d44458e280d8f7922214f7d60494ce7d3822818af944ae40f7d727ef0d159",
+        "deliveryFile": "public/assets/environments/card-new.webp",
+        "backgroundPosition": "15% 50%"
+      },
+      {
+        "card": "resume",
+        "sourceFile": "288939.jpg",
+        "sourceSha256": "6c1b25c4691fbd62d82334de018190d7507fdd155773ee1b4a8d876f4dcae423",
+        "deliveryFile": "public/assets/environments/card-resume.webp",
+        "backgroundPosition": "82% 50%"
+      },
+      {
+        "card": "load",
+        "sourceFile": "288943.jpg",
+        "sourceSha256": "40c2c0b0c52b1749ba6ecc45c455e2b250aba321b3232a9623b91976783cc040",
+        "deliveryFile": "public/assets/environments/card-load.webp",
+        "backgroundPosition": "58% 50%"
+      },
+      {
+        "card": "browse",
+        "sourceFile": "289365.jpg",
+        "sourceSha256": "404ff647175ba14d094a7d27dbb8857d9733d39e1778553633cc5d07153b48ba",
+        "deliveryFile": "public/assets/environments/card-browse.webp",
+        "backgroundPosition": "64% 50%"
+      }
+    ]
+  },
+  "visibleCardCount": 3,
+  "additionalReviewedViews": [
+    "artifacts/carousel/desktop-first.png",
+    "artifacts/carousel/desktop-last.png",
+    "artifacts/carousel/landscape-first-932x430.png",
+    "artifacts/carousel/landscape-last-932x430.png",
+    "artifacts/carousel/video-frames/final-01.jpg",
+    "artifacts/carousel/video-frames/final-03.jpg",
+    "artifacts/carousel/video-frames/final-05.jpg"
+  ],
+  "carouselEvidence": {
+    "verification": "artifacts/carousel/verification.json",
+    "scrollTraces": "artifacts/carousel/scroll-traces.json",
+    "video": "artifacts/carousel/carousel-demo.webm",
+    "recordingMetadata": "artifacts/carousel/recording.json",
+    "videoReviewMethod": "Independently inspected extracted initial, terminal and return frames; reviewed stream metadata and native scroll traces. Tooling did not directly play the video.",
+    "videoLimitations": "Actual GLB, Low particle quality, deviceScaleFactor 0.35 and 640x360 output. Loading prefix removed without interpolation. Shared software-GPU timing does not validate frame pacing or hardware performance."
+  }
+}
