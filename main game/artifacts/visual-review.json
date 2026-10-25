@@ -1,5 +1,5 @@
 {
-  "revision": "Fixed four-card Crownfall Gambit copy and reference-matched compact heading typography",
+  "revision": "Final approved Gambit destination copy with unchanged compact typography and fixed four-card layout",
   "reviewer": "independent visual critic agent",
   "reference": "public/assets/reference.jpg",
   "reviewedScreenshot": "artifacts/final-1280x720.png",
@@ -29,7 +29,7 @@
       "category": "Reference typography, truthful Crownfall copy and readability",
       "maximum": 1.5,
       "score": 1.4,
-      "notes": "Compact Barlow600 headings closely follow the new reference. Selected Resume Gambit is amber; inactive titles are muted gray. All four longer Gambit headings fit at 1280,1920 and844px landscape viewports without wrapping or clipping. Concise descriptions accurately distinguish demo setup storage from connected gameplay. Supporting copy is still very small on phone landscape."
+      "notes": "Compact Barlow600 headings remain amber for selected Resume Gambit and muted gray for inactive cards. All titles, approved destination-intention subtitles and short bodies fit desktop and 844px landscape views. Browse has the approved unavailable subtitle and no body. Activation dialogs retain explicit demo-only limits; supporting copy remains small on landscape phones."
     },
     {
       "category": "Creature direction, framing and coordinated arm tilt",
@@ -64,6 +64,16 @@
       ],
       "score": 9.3,
       "findings": "Selected amber and inactive gray bold compact headings match the new reference style. All Gambit titles fit the unchanged four-card row at desktop and landscape sizes. Source copy remains truthful, concise and rooted in existing Crownfall identity. No blocking issue."
+    },
+    {
+      "iteration": "Final narrow card-wording polish",
+      "screenshot": "artifacts/final-1280x720.png",
+      "additionalScreenshots": [
+        "artifacts/final-1920x1080.png",
+        "artifacts/final-landscape-844x390.png"
+      ],
+      "score": 9.3,
+      "findings": "Independently inspected all three refreshed screenshots and exact source/inventory wording. Short approved card text and empty Browse body fit cleanly. Explicit New/Resume/Load activation disclosures remain, including the new Load inability-to-restore sentence. No styling or layout change; prior 9.3 assessment retained."
     }
   ],
   "model": {
@@ -88,7 +98,7 @@
     "fallback": "Illustration retained for unavailable or unsupported model rendering"
   },
   "authorizedDifferences": [
-    "Card copy now uses New Gambit, Resume Gambit, Load Gambit and Browse Gambits, grounded in Crownfall identity.",
+    "Cards use the latest approved Gambit destination-intention subtitles and short bodies, including an empty Browse body; prototype limitations remain explicit in activation dialogs.",
     "Home / Play / Settings replace placeholder example tabs; Back replaces the misleading Quit label.",
     "Card-heading typography changes only to compact bold size/weight and amber/gray availability states based on the new private reference.",
     "Exactly four 197x298 cards, actual supplied images, focal crops, creature transform and atmosphere remain unchanged.",
@@ -97,7 +107,7 @@
   ],
   "remainingLimits": [
     "Supporting copy remains very small on phone landscape; long modal content uses vertical scrolling in short viewports.",
-    "This menu preview stores demo setup metadata and does not start or restore chess gameplay. Online play and audio are not connected.",
+    "Card wording describes the intended full-game destinations. Current preview actions only create/view demo setup metadata or navigate; they do not start or restore chess gameplay. Online play and audio remain unconnected and are disclosed in activation/settings dialogs.",
     "Portrait crops and actual creature materials differ from the original illustration; exact screenshot reproduction is not claimed.",
     "The private typography reference is retained locally and is not included as an image in the repository.",
     "The 9.3 score is subjective visual judgment for the current copy/typography revision; prior designs are historical."
@@ -111,7 +121,7 @@
     "artifacts/visual-review-three-visible-carousel.json",
     "artifacts/visual-review-fixed-row-before-copy-type.json"
   ],
-  "verdict": "Meets the subjective 9/10 target for the unchanged fixed four-card composition with truthful Crownfall Gambit copy and the requested compact bold amber/gray heading typography. No blocking visual or wording issue identified.",
+  "verdict": "Retains the subjective 9.3/10 assessment: approved concise Gambit destination copy fits the unchanged four-card composition at desktop and phone-landscape sizes, with prototype-only behavior disclosed on activation. No blocking visual or wording issue identified.",
   "cardCount": 4,
   "cards": [
     "New Gambit",
@@ -243,14 +253,44 @@
     "identity": "Crownfall \u2014 A King's Gambit Story; Every sacrifice has a name; cinematic chess. No new factions or characters invented.",
     "navigation": "Home / Play / Settings only. Duplicate EXAMPLE tabs and fake notification removed. Footer Back accurately names the Home-return action.",
     "cards": {
-      "New Gambit": "Names and creates a local demo setup; expressly does not start a chess game.",
-      "Resume Gambit": "Reviews local demo save metadata; expressly does not restore a chess position or launch gameplay.",
-      "Load Gambit": "One local demo save slot on the device.",
-      "Browse Gambits": "Online play unavailable; no fabricated matchmaking or replay capability."
+      "New Gambit": "Approved destination-intention wording: Begin a new gambit. / Choose your opening. Every move has a cost. Activation still explicitly creates demo setup metadata rather than starting chess gameplay.",
+      "Resume Gambit": "Approved destination-intention wording: Return to your gambit. / Continue where you left the board. Activation still explicitly cannot restore a chess position or launch gameplay.",
+      "Load Gambit": "Approved destination-intention wording: Choose a saved gambit. / Return to a saved position. Load dialog explicitly says: One local demo save slot. Chess positions cannot be restored in this preview.",
+      "Browse Gambits": "Approved subtitle: Unavailable in this build. Body is empty. Activation retains the online-unavailable informational state."
     },
     "settings": "Particle quality and motion describe actual menu effects. Volume is explicitly a saved preference with audio not connected.",
-    "copyPolish": "New subtitle changed to Name your gambit. Browse unavailability wording simplified. Unsupported decorative diagonal-arrow glyphs replaced by aria-hidden supported ASCII chevrons.",
+    "copyPolish": "Latest user-approved destination-intention card text applied exactly, with empty Browse body. Prototype limitations remain in activation dialogs and actual CTA labels. Supported aria-hidden ASCII chevrons remain in use. No CSS, typography, geometry, model or artwork changes.",
     "sourceEvidence": "artifacts/menu-copy.json",
-    "modalFitEvidence": "artifacts/copy-fit-verification.json"
+    "modalFitEvidence": "artifacts/copy-fit-verification.json",
+    "latestApprovedCardCopy": [
+      {
+        "id": "new",
+        "title": "NEW GAMBIT",
+        "label": "New Gambit",
+        "subtitle": "Begin a new gambit.",
+        "description": "Choose your opening. Every move has a cost."
+      },
+      {
+        "id": "resume",
+        "title": "RESUME GAMBIT",
+        "label": "Resume Gambit",
+        "subtitle": "Return to your gambit.",
+        "description": "Continue where you left the board."
+      },
+      {
+        "id": "load",
+        "title": "LOAD GAMBIT",
+        "label": "Load Gambit",
+        "subtitle": "Choose a saved gambit.",
+        "description": "Return to a saved position."
+      },
+      {
+        "id": "browse",
+        "title": "BROWSE GAMBITS",
+        "label": "Browse Gambits",
+        "subtitle": "Unavailable in this build.",
+        "description": ""
+      }
+    ]
   }
 }

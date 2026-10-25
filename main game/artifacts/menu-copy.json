@@ -4,7 +4,7 @@
   "sources": {
     "ui": {
       "path": "src/App.tsx",
-      "sha256": "a138e4209875c026ee8533ff5f9680ba1dda8737a5e53065ca01fbe14d934492"
+      "sha256": "9defa7c0949606761f53591e162de423698b05ac7f7460a2d0fc2ea787b01eb3"
     },
     "document": {
       "path": "index.html",
@@ -58,29 +58,29 @@
       "id": "new",
       "title": "NEW GAMBIT",
       "label": "New Gambit",
-      "subtitle": "Name your gambit.",
-      "description": "Create a local Crownfall demo save. Gameplay is not connected yet."
+      "subtitle": "Begin a new gambit.",
+      "description": "Choose your opening. Every move has a cost."
     },
     {
       "id": "resume",
       "title": "RESUME GAMBIT",
       "label": "Resume Gambit",
-      "subtitle": "Your latest saved gambit.",
-      "description": "Review the demo save stored on this device."
+      "subtitle": "Return to your gambit.",
+      "description": "Continue where you left the board."
     },
     {
       "id": "load",
       "title": "LOAD GAMBIT",
       "label": "Load Gambit",
-      "subtitle": "Open your saved gambit.",
-      "description": "One local demo save slot is available on this device."
+      "subtitle": "Choose a saved gambit.",
+      "description": "Return to a saved position."
     },
     {
       "id": "browse",
       "title": "BROWSE GAMBITS",
       "label": "Browse Gambits",
-      "subtitle": "Online play unavailable.",
-      "description": "Online matches are not connected to this menu."
+      "subtitle": "Unavailable in this build.",
+      "description": ""
     }
   ],
   "cards_accessible_group": "Play options",
@@ -156,7 +156,7 @@
     },
     "load": {
       "heading": "Load Gambit",
-      "paragraph": "One demo save slot, stored on this device.",
+      "paragraph": "One local demo save slot. Chess positions cannot be restored in this preview.",
       "saved": {
         "save_slot_button": {
           "title": "Crownfall · Demo save",
@@ -342,5 +342,6 @@
     "Back opens a Home confirmation. It does not close the browser or delete the save.",
     "Gambit is the user-requested menu label; the preview does not expose or simulate the canonical campaign oath mechanic.",
     "All four fixed 197 by 298 pixel cards remain visible at 1280 by 720, with four-pixel gaps and an 800-pixel row. This inventory does not change layout or artwork."
-  ]
+  ],
+  "card_copy_intent": "Player-facing destination intentions, as requested; activation dialogs disclose local demo saves, absent gameplay integration and unavailable online play. No unsupported launch action is offered."
 }

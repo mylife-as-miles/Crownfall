@@ -28,32 +28,29 @@ const cards = [
     id: "new",
     title: "NEW GAMBIT",
     label: "New Gambit",
-    subtitle: "Name your gambit.",
-    description:
-      "Create a local Crownfall demo save. Gameplay is not connected yet.",
+    subtitle: "Begin a new gambit.",
+    description: "Choose your opening. Every move has a cost.",
   },
   {
     id: "resume",
     title: "RESUME GAMBIT",
     label: "Resume Gambit",
-    subtitle: "Your latest saved gambit.",
-    description:
-      "Review the demo save stored on this device.",
+    subtitle: "Return to your gambit.",
+    description: "Continue where you left the board.",
   },
   {
     id: "load",
     title: "LOAD GAMBIT",
     label: "Load Gambit",
-    subtitle: "Open your saved gambit.",
-    description:
-      "One local demo save slot is available on this device.",
+    subtitle: "Choose a saved gambit.",
+    description: "Return to a saved position.",
   },
   {
     id: "browse",
     title: "BROWSE GAMBITS",
     label: "Browse Gambits",
-    subtitle: "Online play unavailable.",
-    description: "Online matches are not connected to this menu.",
+    subtitle: "Unavailable in this build.",
+    description: "",
   },
 ] as const;
 const tabs: { label: string; panel: Panel; aria: string }[] = [
@@ -428,7 +425,10 @@ export default function App() {
             {panel === "load" && (
               <>
                 <h1 id="dialog-heading">Load Gambit</h1>
-                <p>One demo save slot, stored on this device.</p>
+                <p>
+                  One local demo save slot. Chess positions cannot be restored
+                  in this preview.
+                </p>
                 {save ? (
                   <button
                     className="save-slot save-button"

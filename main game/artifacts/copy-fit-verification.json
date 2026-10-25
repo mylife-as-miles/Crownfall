@@ -41,7 +41,7 @@
         "height": 720
       },
       "state": "load-empty",
-      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne demo save slot, stored on this device.\n\nNo saved gambit yet.\nCreate a new gambit to add a demo save.\nNew Gambit\n>\nB\nBack",
+      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne local demo save slot. Chess positions cannot be restored in this preview.\n\nNo saved gambit yet.\nCreate a new gambit to add a demo save.\nNew Gambit\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -96,7 +96,7 @@
         "height": 720
       },
       "state": "load-saved",
-      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne demo save slot, stored on this device.\n\n♜\nCrownfall · Demo save\nCopy Check · 10/25/2026\n>\nB\nBack",
+      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne local demo save slot. Chess positions cannot be restored in this preview.\n\n♜\nCrownfall · Demo save\nCopy Check · 10/25/2026\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -151,7 +151,7 @@
         "height": 390
       },
       "state": "load-empty",
-      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne demo save slot, stored on this device.\n\nNo saved gambit yet.\nCreate a new gambit to add a demo save.\nNew Gambit\n>\nB\nBack",
+      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne local demo save slot. Chess positions cannot be restored in this preview.\n\nNo saved gambit yet.\nCreate a new gambit to add a demo save.\nNew Gambit\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": true,
       "offenders": []
@@ -206,7 +206,7 @@
         "height": 390
       },
       "state": "load-saved",
-      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne demo save slot, stored on this device.\n\n♜\nCrownfall · Demo save\nCopy Check · 10/25/2026\n>\nB\nBack",
+      "text": "×\nCROWNFALL\nLoad Gambit\n\nOne local demo save slot. Chess positions cannot be restored in this preview.\n\n♜\nCrownfall · Demo save\nCopy Check · 10/25/2026\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
