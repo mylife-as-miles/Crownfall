@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { mkdir, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 
 const url = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
@@ -56,7 +57,7 @@ try {
     .getByRole("button", { name: "Resume", exact: true })
     .boundingBox();
   assert.ok(
-    bounds && Math.abs(bounds.x - 340) < 2 && Math.abs(bounds.y - 211) < 2,
+    bounds && Math.abs(bounds.x - 391) < 2 && Math.abs(bounds.y - 211) < 2,
     JSON.stringify(bounds),
   );
   results.push("Default Play/Resume selection and reference card positioning");
@@ -73,11 +74,11 @@ try {
     "four cards: New, Resume, Load Game, Browse",
   );
   for (const [index, rect] of cardBounds.entries()) {
-    assert.ok(Math.abs(rect.x - (139 + index * 201)) < 1, JSON.stringify(rect));
+    assert.ok(Math.abs(rect.x - (139 + index * 252)) < 1, JSON.stringify(rect));
     assert.ok(
       Math.abs(rect.y - 211) < 1 &&
-        Math.abs(rect.width - 197) < 1 &&
-        Math.abs(rect.height - 298) < 1,
+        Math.abs(rect.width - 247) < 1 &&
+        Math.abs(rect.height - 373) < 1,
       JSON.stringify(rect),
     );
   }
@@ -99,11 +100,27 @@ try {
       ),
     );
   assert.equal(new Set(artworks.map((art) => art.source)).size, 4);
-  assert.ok(
-    artworks.every((art) => art.width >= 400 && art.height > art.width),
+  assert.ok(artworks.every((art) => art.width === 2048 && art.height === 1143));
+  const artworkManifest = JSON.parse(
+    await readFile("artifacts/card-artwork.json", "utf8"),
   );
+  assert.deepEqual(
+    artworkManifest.cards.map((card) => card.sourceFile),
+    ["288933.jpg", "288939.jpg", "288943.jpg", "289365.jpg"],
+  );
+  for (const [index, art] of artworks.entries()) {
+    const response = await page.request.get(art.source);
+    assert.equal(response.ok(), true);
+    assert.equal(
+      createHash("sha256")
+        .update(await response.body())
+        .digest("hex"),
+      artworkManifest.cards[index].deliverySha256,
+      "each card loads its assigned supplied-image delivery copy",
+    );
+  }
   results.push(
-    "Four distinct portrait environments load across the 800px card row",
+    "Four supplied landscape images load across the enlarged 1003px card row",
   );
 
   await page.keyboard.press("ArrowRight");

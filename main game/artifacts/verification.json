@@ -2,7 +2,7 @@
   "passed": true,
   "checks": [
     "Default Play/Resume selection and reference card positioning",
-    "Four distinct portrait environments load across the 800px card row",
+    "Four supplied landscape images load across the enlarged 1003px card row",
     "Arrow navigation, focused Enter activation, Escape and modal closure",
     "Create local demo save and load it after a reload",
     "Quality and motion preferences persist; Low removes WebGL particles",

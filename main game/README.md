@@ -13,16 +13,18 @@ The layout targets desktop and landscape phones. The creature sits behind the ca
 
 ## Environment artwork
 
-All four cards use separate original generated environment illustrations, inspired by the atmosphere, depth, and environmental themes in [Carla Devèze's portfolio](https://carleaf.artstation.com/). Her portfolio images were studied as references; they are not shipped as card textures.
+The four cards use the user's supplied JPEGs in attachment order. The originals were retrieved from the private ChatGPT Page through authorized file reads, materialized under `/workspace/crownfall-card-originals/`, and verified against the supplied byte counts and source SHA-256 values before conversion. Originals are preserved outside the Git checkout; only separate optimized WebP delivery copies are used by the app. The private Page and its sharing settings are unchanged.
 
-| Card | Environment direction | Portfolio reference |
+| Card | Supplied original | Crop focus |
 | --- | --- | --- |
-| New | Mossy sanctuary, spring growth and misty waterfall | [Spring Meadows](https://carleaf.artstation.com/projects/bg3r2v) |
-| Resume | Warm manor hall and grand stairway | [The Manor](https://carleaf.artstation.com/projects/vbQLJx) |
-| Load Game | Dreamlike submerged garden and turquoise light | [Flying Waters](https://carleaf.artstation.com/projects/wrKlJO) |
-| Browse | Sculpted basalt cliffs and a luminous coastal passage | [Stone Wave Cliffs](https://carleaf.artstation.com/projects/DLKBny) |
+| New | `288933.jpg` | Ferris wheel and luminous ruined landscape |
+| Resume | `288939.jpg` | Blue gateway and floating architecture |
+| Load Game | `288943.jpg` | Timber bridges and distant arches |
+| Browse | `289365.jpg` | Crystal cliffs, dragons, and towers |
 
-Textures live in `public/assets/environments/` as optimized portrait WebP files. The row contains exactly four cards and spans 800 pixels: cards measure 197 × 298 pixels at 1280 × 720, with four-pixel gaps. Labels and descriptions remain live HTML above the artwork.
+All four source images are 2048 × 1143. Delivery copies retain those dimensions and are stored at `public/assets/environments/card-{new,resume,load,browse}.webp`. The images are cropped by CSS to their focal points; no regenerated artwork is substituted. `artifacts/card-artwork.json` records the mapping, source/delivery checksums and focal positions. Library identifiers and the private Page references remain in the executor-local originals' provenance file rather than the public repository.
+
+The enlarged row contains exactly four cards and spans 1003 pixels: cards measure 247 × 373 pixels at 1280 × 720, with five-pixel gaps. This is about 25% larger in each dimension than the previous 197 × 298 cards. Titles, supporting text and spacing are enlarged while remaining live HTML above the image layer.
 
 ## Creature asset
 

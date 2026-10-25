@@ -209,16 +209,16 @@ a {
   left: 10.86cqw;
   top: 29.31cqh;
   display: flex;
-  gap: 0.3125cqw;
-  height: 41.39cqh;
+  gap: 0.390625cqw;
+  height: 51.805556cqh;
 }
 .game-card {
   position: relative;
   display: block;
   isolation: isolate;
   overflow: hidden;
-  flex: 0 0 15.390625cqw;
-  width: 15.390625cqw;
+  flex: 0 0 19.296875cqw;
+  width: 19.296875cqw;
   height: 100%;
   padding: 0;
   border: 0;
@@ -251,18 +251,21 @@ a {
   background-image: url("/assets/environments/card-new.webp");
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: 15% 50%;
   transform: scale(1.015);
   transition: transform 0.8s ease;
 }
 .card-resume .card-art {
   background-image: url("/assets/environments/card-resume.webp");
+  background-position: 82% 50%;
 }
 .card-load .card-art {
   background-image: url("/assets/environments/card-load.webp");
+  background-position: 58% 50%;
 }
 .card-browse .card-art {
   background-image: url("/assets/environments/card-browse.webp");
+  background-position: 64% 50%;
 }
 .game-card:hover .card-art {
   transform: scale(1.035);
@@ -290,20 +293,20 @@ a {
 .card-heading {
   position: absolute;
   left: 0.86cqw;
-  top: 1.48cqh;
+  top: 1.8cqh;
   right: 0.6cqw;
   display: flex;
   flex-direction: column;
 }
 .card-title {
   font-family: "Barlow", Arial, sans-serif;
-  font-size: 1.40625cqw;
+  font-size: max(1.5625cqw, 12px);
   line-height: 1.15;
   font-weight: 300;
   letter-spacing: 0.005cqw;
 }
 .card-subtitle {
-  font-size: 0.586cqw;
+  font-size: max(0.68cqw, 7px);
   line-height: 1.15;
   letter-spacing: 0.007cqw;
   opacity: 0.83;
@@ -312,16 +315,12 @@ a {
 .card-description {
   position: absolute;
   left: 0.86cqw;
-  bottom: 1.2cqh;
+  bottom: 1.5cqh;
   right: 0.68cqw;
-  font-size: 0.625cqw;
+  font-size: max(0.74cqw, 7px);
   line-height: 1.2;
   color: #e8e0cc;
   opacity: 0.92;
-  max-width: 13.4cqw;
-}
-.card-resume .card-description {
-  bottom: 1.25cqh;
 }
 .controller-hints {
   position: absolute;

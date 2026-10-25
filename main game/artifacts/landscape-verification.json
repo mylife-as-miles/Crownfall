@@ -9,31 +9,48 @@
       "label": "New",
       "x": 148.34375,
       "y": 114.296875,
-      "width": 107.59375,
-      "height": 161.40625
+      "width": 134.90625,
+      "height": 202.03125,
+      "headingFont": 12,
+      "supportingFont": 7,
+      "textFits": true,
+      "crop": "15% 50%"
     },
     {
       "label": "Resume",
-      "x": 258.109375,
+      "x": 285.96875,
       "y": 114.296875,
-      "width": 107.59375,
-      "height": 161.40625
+      "width": 134.90625,
+      "height": 202.03125,
+      "headingFont": 12,
+      "supportingFont": 7,
+      "textFits": true,
+      "crop": "82% 50%"
     },
     {
       "label": "Load game",
-      "x": 367.875,
+      "x": 423.59375,
       "y": 114.296875,
-      "width": 107.59375,
-      "height": 161.40625
+      "width": 134.90625,
+      "height": 202.03125,
+      "headingFont": 12,
+      "supportingFont": 7,
+      "textFits": true,
+      "crop": "58% 50%"
     },
     {
       "label": "Browse",
-      "x": 477.640625,
+      "x": 561.21875,
       "y": 114.296875,
-      "width": 107.59375,
-      "height": 161.40625
+      "width": 134.90625,
+      "height": 202.03125,
+      "headingFont": 12,
+      "supportingFont": 7,
+      "textFits": true,
+      "crop": "64% 50%"
     }
   ],
+  "screenshot": "artifacts/final-landscape-844x390.png",
   "actualModelLoaded": true,
   "errors": []
 }

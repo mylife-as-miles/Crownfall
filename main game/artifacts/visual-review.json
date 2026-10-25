@@ -1,5 +1,5 @@
 {
-  "revision": "Four-card menu with actual user-supplied creature GLB",
+  "revision": "Four enlarged cards using actual user-supplied images with actual creature GLB",
   "reviewer": "independent visual critic agent",
   "reference": "artifacts/references/play-options.jpg",
   "reviewedScreenshot": "artifacts/final-1280x720.png",
@@ -8,55 +8,61 @@
     "width": 1280,
     "height": 720
   },
-  "score": 9.1,
+  "score": 9.2,
   "scoreOutOf": 10,
-  "assessmentType": "Subjective visual assessment of actual-model integration in the current user-authorized four-card composition. Not an objective pixel-match score.",
+  "assessmentType": "Independent subjective assessment of the latest enlarged four-card composition, actual supplied JPEG imagery, portrait cropping, text readability and actual creature integration. Not an objective pixel-match score.",
   "exactReferenceMatch": false,
   "rubric": [
     {
-      "category": "Environment artwork and portfolio inspiration",
+      "category": "Actual supplied artwork and focal cropping",
       "maximum": 3.0,
       "score": 2.85,
-      "notes": "Four original portraits remain: spring waterfall, ornate amber manor, cyan submerged garden and sculpted basalt coast. Atmospheric depth and visual cohesion are unchanged; Host has been removed as requested."
+      "notes": "Independently inspected all four original JPEGs and final browser renders. Cover cropping retains the wheel/hub in New, luminous blue gateway in Resume, timber span and distant arch in Load Game, and diagonal crystal cliff in Browse. Shared blue/violet light and floating ruins are cohesive. Some panoramic context is necessarily lost in portrait cover crops."
     },
     {
-      "category": "Four-card row geometry and composition",
+      "category": "Enlarged four-card geometry and composition",
       "maximum": 2.0,
       "score": 2.0,
-      "notes": "The corrected row contains only New, Resume, Load Game and Browse at left edges 139, 340, 541, 742; top 211; width 197; height 298; gap 4 at 1280x720. Resume is selected initially. Actual creature remains behind every card, with more of its right-side shoulder and torso visible after removing Host."
+      "notes": "At 1280x720 the four approved cards are 247x373 at x139,391,643,895 and y211, with 5px gaps, ending x1142/y584. The larger row matches the authorized enlargement and leaves clearance above the controller footer. Exactly four cards; Resume initially selected."
     },
     {
       "category": "Typography and control readability",
       "maximum": 1.0,
-      "score": 0.88,
-      "notes": "Card scrims and text shadows preserve the prior readability improvements. Supporting copy remains very small at 1280px, consistent with the reference scale. Actual model rendering does not obscure menu labels."
+      "score": 0.92,
+      "notes": "Enlarged headings and supporting copy are clearer than the previous smaller-card revision. Dark edge scrims and text shadows retain legibility across the bright Resume gateway and muted Load Game sky. Tiny supporting copy remains a deliberate menu style choice."
     },
     {
-      "category": "Actual creature framing and integration",
+      "category": "Actual creature framing and behind-card balance",
       "maximum": 1.5,
-      "score": 1.25,
-      "notes": "Actual animated GLB remains correctly framed behind all four cards. Crown, eye, orbital rings, shoulder, outer arm, hands and robe establish the intended silhouette. Removing Host reveals more of the torso and shoulder without covering menu labels. Outer hand and lower robe cropping remain intentional framing choices."
+      "score": 1.23,
+      "notes": "Actual animated sorcerer remains behind all four enlarged cards. Crown, eye, orbital rings, outer raised arm and lower robe preserve its silhouette despite greater authorized torso occlusion. Model geometry/materials are unchanged; some outer arm and robe cropping remains."
     },
     {
       "category": "Palette, lighting and atmospheric cohesion",
       "maximum": 1.5,
-      "score": 1.22,
-      "notes": "Corrected exposure preserves crown and robe detail and fits the model into the warm gold/teal atmosphere. Model hair and skin still read more mint and diffusely lit than the darker illustrated reference; some material appearance differences belong to the supplied asset."
+      "score": 1.3,
+      "notes": "Actual source images share cold magical light that complements the teal model and particles against warm gold fog. New remains darker than selected Resume because of its actual source lighting and selection hierarchy; no extra brightening or image retouching is needed."
     },
     {
       "category": "Particles, feathers and motion presentation",
       "maximum": 1.0,
       "score": 0.9,
-      "notes": "Teal cores and soft halos surround the actual model without masking the cards. Named Idle animation and motion-preference behavior are supported by artifacts/model-verification.json; still-image visual review does not independently measure animation quality."
+      "notes": "Existing teal cores and soft halos remain visible around the larger row and actual model without preventing text readability. Motion behavior is covered by the model verification artifact; still-image review does not independently measure temporal quality."
     }
   ],
   "iterationHistory": [
     {
-      "iteration": "Four-card count correction production pass",
+      "iteration": "Actual supplied artwork enlarged-card pass 1",
+      "screenshot": "artifacts/supplied-artwork-iteration-1.png",
+      "score": 9.2,
+      "findings": "Four actual source images and focal crops read correctly. Larger row and text are balanced with the actual model. No image regeneration, retouching, brightness correction or visual layout fix requested."
+    },
+    {
+      "iteration": "Final production verification",
       "screenshot": "artifacts/final-1280x720.png",
       "additionalScreenshot": "artifacts/final-1920x1080.png",
-      "score": 9.1,
-      "findings": "Both fresh production captures independently inspected. Exactly four approved cards are visible; Host is absent. Existing artwork, actual model, particle effects, geometry and readability remain unchanged. Current 9.1 score is retained."
+      "score": 9.2,
+      "findings": "Both fresh production captures independently inspected. Larger geometry, actual supplied artwork, default Resume selection and behind-card sorcerer balance remain correct."
     }
   ],
   "model": {
@@ -80,57 +86,82 @@
     "geometryCompression": "Draco with self-hosted decoder",
     "fallback": "Illustration retained for unavailable or unsupported model rendering"
   },
-  "sourceInspirations": [
-    {
-      "card": "New",
-      "title": "Spring Meadows",
-      "url": "https://carleaf.artstation.com/projects/bg3r2v",
-      "motifs": "Mossy sanctuary, spring growth and misty waterfall"
-    },
-    {
-      "card": "Resume",
-      "title": "The Manor",
-      "url": "https://carleaf.artstation.com/projects/vbQLJx",
-      "motifs": "Warm manor hall and grand stairway"
-    },
-    {
-      "card": "Load Game",
-      "title": "Flying Waters",
-      "url": "https://carleaf.artstation.com/projects/wrKlJO",
-      "motifs": "Dreamlike submerged garden and turquoise light"
-    },
-    {
-      "card": "Browse",
-      "title": "Stone Wave Cliffs",
-      "url": "https://carleaf.artstation.com/projects/DLKBny",
-      "motifs": "Sculpted basalt cliffs and luminous coastal passage"
-    }
-  ],
   "authorizedDifferences": [
-    "Latest user correction requires exactly four cards: New, Resume, Load Game and Browse. Host is removed. The later five-card source screenshot is historical guidance for card proportions, not the current approved count.",
-    "The actual supplied creature model replaces the earlier 2D creature stand-in. Model geometry, materials and pose may differ from the original illustration.",
-    "Creature remains behind all four cards as explicitly requested.",
-    "The four retained portfolio-inspired environment artworks are unchanged in this count-correction turn; the user may provide replacement card images later.",
-    "The warm gold background is retained and the later reference example's blue explanatory banner is omitted.",
+    "Exactly four enlarged cards: New, Resume, Load Game and Browse; Host remains removed.",
+    "Actual user-supplied JPEG imagery replaces every previous generated card environment. Web delivery copies preserve source dimensions and identity; originals are retained separately.",
+    "Portrait cover cropping uses focal positions 15%, 82%, 58% and 64% respectively. Source images were not regenerated or retouched.",
+    "Cards are enlarged to 247x373 from the previous 197x298 at 1280x720. Existing top alignment is retained, so the larger row obscures more of the creature torso by design.",
+    "Actual supplied creature GLB remains behind all cards, with warm gold background and magical effects retained.",
     "Desktop and phone landscape composition only; no portrait redesign."
   ],
   "remainingLimits": [
-    "Real-model lighting and material response differ from the original illustration; exact screenshot reproduction is not claimed.",
-    "Current card artworks are original generated inspired compositions, pending any later replacement images from the user.",
-    "Supporting copy remains very small at 1280x720.",
-    "The 9.1 score is subjective visual judgment. Historical 2D-artwork scores are archived and are not the current actual-model assessment."
+    "Portrait cover crops necessarily omit some context from the panoramic source images.",
+    "Actual creature material response and silhouette differ from the original illustrated reference; exact screenshot reproduction is not claimed.",
+    "Supporting text remains relatively small at 1280x720 despite its authorized increase.",
+    "The 9.2 score is subjective visual judgment for this current enlarged-card revision. Earlier generated-artwork and five-card scores are historical."
   ],
   "historicalReviews": [
     "artifacts/visual-review-four-card.json",
     "artifacts/visual-review-five-card-artwork.json",
-    "artifacts/visual-review-five-card-glb.json"
+    "artifacts/visual-review-five-card-glb.json",
+    "artifacts/visual-review-four-card-generated-artwork.json"
   ],
-  "verdict": "Meets the subjective 9/10 target for the corrected four-card menu with the actual supplied creature GLB integrated.",
+  "verdict": "Meets the subjective 9/10 target for the current enlarged four-card menu using actual supplied imagery and the actual creature GLB.",
   "cardCount": 4,
   "cards": [
     "New",
     "Resume",
     "Load Game",
     "Browse"
-  ]
+  ],
+  "cardGeometry": {
+    "viewportWidth": 1280,
+    "viewportHeight": 720,
+    "leftEdges": [
+      139,
+      391,
+      643,
+      895
+    ],
+    "top": 211,
+    "width": 247,
+    "height": 373,
+    "gap": 5,
+    "rightEdge": 1142,
+    "bottomEdge": 584
+  },
+  "suppliedArtwork": {
+    "sourceInspection": "Four original JPEG files visually inspected at /workspace/crownfall-card-originals before reviewing browser crops. Delivery image dimensions and provenance hashes documented separately.",
+    "evidence": "artifacts/card-artwork.json",
+    "cards": [
+      {
+        "card": "new",
+        "sourceFile": "288933.jpg",
+        "sourceSha256": "716d44458e280d8f7922214f7d60494ce7d3822818af944ae40f7d727ef0d159",
+        "deliveryFile": "public/assets/environments/card-new.webp",
+        "backgroundPosition": "15% 50%"
+      },
+      {
+        "card": "resume",
+        "sourceFile": "288939.jpg",
+        "sourceSha256": "6c1b25c4691fbd62d82334de018190d7507fdd155773ee1b4a8d876f4dcae423",
+        "deliveryFile": "public/assets/environments/card-resume.webp",
+        "backgroundPosition": "82% 50%"
+      },
+      {
+        "card": "load",
+        "sourceFile": "288943.jpg",
+        "sourceSha256": "40c2c0b0c52b1749ba6ecc45c455e2b250aba321b3232a9623b91976783cc040",
+        "deliveryFile": "public/assets/environments/card-load.webp",
+        "backgroundPosition": "58% 50%"
+      },
+      {
+        "card": "browse",
+        "sourceFile": "289365.jpg",
+        "sourceSha256": "404ff647175ba14d094a7d27dbb8857d9733d39e1778553633cc5d07153b48ba",
+        "deliveryFile": "public/assets/environments/card-browse.webp",
+        "backgroundPosition": "64% 50%"
+      }
+    ]
+  }
 }

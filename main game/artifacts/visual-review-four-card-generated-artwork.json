@@ -1,0 +1,136 @@
+{
+  "revision": "Four-card menu with actual user-supplied creature GLB",
+  "reviewer": "independent visual critic agent",
+  "reference": "artifacts/references/play-options.jpg",
+  "reviewedScreenshot": "artifacts/final-1280x720.png",
+  "additionalReviewedScreenshot": "artifacts/final-1920x1080.png",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "score": 9.1,
+  "scoreOutOf": 10,
+  "assessmentType": "Subjective visual assessment of actual-model integration in the current user-authorized four-card composition. Not an objective pixel-match score.",
+  "exactReferenceMatch": false,
+  "rubric": [
+    {
+      "category": "Environment artwork and portfolio inspiration",
+      "maximum": 3.0,
+      "score": 2.85,
+      "notes": "Four original portraits remain: spring waterfall, ornate amber manor, cyan submerged garden and sculpted basalt coast. Atmospheric depth and visual cohesion are unchanged; Host has been removed as requested."
+    },
+    {
+      "category": "Four-card row geometry and composition",
+      "maximum": 2.0,
+      "score": 2.0,
+      "notes": "The corrected row contains only New, Resume, Load Game and Browse at left edges 139, 340, 541, 742; top 211; width 197; height 298; gap 4 at 1280x720. Resume is selected initially. Actual creature remains behind every card, with more of its right-side shoulder and torso visible after removing Host."
+    },
+    {
+      "category": "Typography and control readability",
+      "maximum": 1.0,
+      "score": 0.88,
+      "notes": "Card scrims and text shadows preserve the prior readability improvements. Supporting copy remains very small at 1280px, consistent with the reference scale. Actual model rendering does not obscure menu labels."
+    },
+    {
+      "category": "Actual creature framing and integration",
+      "maximum": 1.5,
+      "score": 1.25,
+      "notes": "Actual animated GLB remains correctly framed behind all four cards. Crown, eye, orbital rings, shoulder, outer arm, hands and robe establish the intended silhouette. Removing Host reveals more of the torso and shoulder without covering menu labels. Outer hand and lower robe cropping remain intentional framing choices."
+    },
+    {
+      "category": "Palette, lighting and atmospheric cohesion",
+      "maximum": 1.5,
+      "score": 1.22,
+      "notes": "Corrected exposure preserves crown and robe detail and fits the model into the warm gold/teal atmosphere. Model hair and skin still read more mint and diffusely lit than the darker illustrated reference; some material appearance differences belong to the supplied asset."
+    },
+    {
+      "category": "Particles, feathers and motion presentation",
+      "maximum": 1.0,
+      "score": 0.9,
+      "notes": "Teal cores and soft halos surround the actual model without masking the cards. Named Idle animation and motion-preference behavior are supported by artifacts/model-verification.json; still-image visual review does not independently measure animation quality."
+    }
+  ],
+  "iterationHistory": [
+    {
+      "iteration": "Four-card count correction production pass",
+      "screenshot": "artifacts/final-1280x720.png",
+      "additionalScreenshot": "artifacts/final-1920x1080.png",
+      "score": 9.1,
+      "findings": "Both fresh production captures independently inspected. Exactly four approved cards are visible; Host is absent. Existing artwork, actual model, particle effects, geometry and readability remain unchanged. Current 9.1 score is retained."
+    }
+  ],
+  "model": {
+    "status": "Actual user-supplied GLB integrated",
+    "sourceFile": "Crownfall_Sorcerer_Digits_v3_1(1).glb",
+    "deliveredFile": "public/models/crownfall-sorcerer.glb",
+    "assetEvidence": "artifacts/model-asset.json",
+    "verificationEvidence": "artifacts/model-verification.json",
+    "sourceBytes": 19382272,
+    "deliveredBytes": 4217336,
+    "triangles": 80910,
+    "joints": 142,
+    "retainedClips": [
+      "Attack",
+      "Idle",
+      "Threat_Cast"
+    ],
+    "activeMenuClip": "Idle",
+    "geometrySimplification": false,
+    "textureConversion": "WebP, maximum dimension 2048",
+    "geometryCompression": "Draco with self-hosted decoder",
+    "fallback": "Illustration retained for unavailable or unsupported model rendering"
+  },
+  "sourceInspirations": [
+    {
+      "card": "New",
+      "title": "Spring Meadows",
+      "url": "https://carleaf.artstation.com/projects/bg3r2v",
+      "motifs": "Mossy sanctuary, spring growth and misty waterfall"
+    },
+    {
+      "card": "Resume",
+      "title": "The Manor",
+      "url": "https://carleaf.artstation.com/projects/vbQLJx",
+      "motifs": "Warm manor hall and grand stairway"
+    },
+    {
+      "card": "Load Game",
+      "title": "Flying Waters",
+      "url": "https://carleaf.artstation.com/projects/wrKlJO",
+      "motifs": "Dreamlike submerged garden and turquoise light"
+    },
+    {
+      "card": "Browse",
+      "title": "Stone Wave Cliffs",
+      "url": "https://carleaf.artstation.com/projects/DLKBny",
+      "motifs": "Sculpted basalt cliffs and luminous coastal passage"
+    }
+  ],
+  "authorizedDifferences": [
+    "Latest user correction requires exactly four cards: New, Resume, Load Game and Browse. Host is removed. The later five-card source screenshot is historical guidance for card proportions, not the current approved count.",
+    "The actual supplied creature model replaces the earlier 2D creature stand-in. Model geometry, materials and pose may differ from the original illustration.",
+    "Creature remains behind all four cards as explicitly requested.",
+    "The four retained portfolio-inspired environment artworks are unchanged in this count-correction turn; the user may provide replacement card images later.",
+    "The warm gold background is retained and the later reference example's blue explanatory banner is omitted.",
+    "Desktop and phone landscape composition only; no portrait redesign."
+  ],
+  "remainingLimits": [
+    "Real-model lighting and material response differ from the original illustration; exact screenshot reproduction is not claimed.",
+    "Current card artworks are original generated inspired compositions, pending any later replacement images from the user.",
+    "Supporting copy remains very small at 1280x720.",
+    "The 9.1 score is subjective visual judgment. Historical 2D-artwork scores are archived and are not the current actual-model assessment."
+  ],
+  "historicalReviews": [
+    "artifacts/visual-review-four-card.json",
+    "artifacts/visual-review-five-card-artwork.json",
+    "artifacts/visual-review-five-card-glb.json"
+  ],
+  "verdict": "Meets the subjective 9/10 target for the corrected four-card menu with the actual supplied creature GLB integrated.",
+  "cardCount": 4,
+  "cards": [
+    "New",
+    "Resume",
+    "Load Game",
+    "Browse"
+  ]
+}
