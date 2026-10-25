@@ -1,0 +1,50 @@
+{
+  "front_eclipse_8x": {
+    "name": "front_eclipse_8x",
+    "xy": [
+      10.0,
+      80.0
+    ],
+    "ground_z": -6.914,
+    "ground_hit": "CFCL_Terrain_AbyssCrust",
+    "top_z": 1.0,
+    "height_m": 18.4,
+    "scale": 18.737,
+    "mult": 8.0,
+    "yaw_deg": -7.1,
+    "dais": "CFCL_Sorcerer_Dais",
+    "dais_top_r": 9.84
+  },
+  "front_eclipse_10x": {
+    "name": "front_eclipse_10x",
+    "xy": [
+      12.0,
+      82.0
+    ],
+    "ground_z": 6.118,
+    "ground_hit": "Crownfall_Sorcerer_Deform",
+    "top_z": -3.6,
+    "height_m": 23.0,
+    "scale": 23.422,
+    "mult": 10.0,
+    "yaw_deg": -8.3,
+    "dais": "CFCL_Sorcerer_Dais",
+    "dais_top_r": 11.92
+  },
+  "behind_corona_10x": {
+    "name": "behind_corona_10x",
+    "xy": [
+      14.0,
+      118.0
+    ],
+    "ground_z": -11.893,
+    "ground_hit": "CFCL_Terrain_AbyssCrust",
+    "top_z": -1.0,
+    "height_m": 23.0,
+    "scale": 23.422,
+    "mult": 10.0,
+    "yaw_deg": -6.8,
+    "dais": "CFCL_Sorcerer_Dais",
+    "dais_top_r": 11.92
+  }
+}

@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.blend1
+*.blend2
+*.bak*
+.locks/
+logs/
+runpod/
+.env*
+.claude*
+cloud_setup_report.json

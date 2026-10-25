@@ -1,0 +1,11390 @@
+{
+ "objects": [
+  {
+   "name": "ENV_Island_Central_FracturedBedrock",
+   "tris": 0,
+   "min": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "max": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mats": [],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_BoardSupport",
+   "tris": 1148,
+   "min": [
+    -0.59,
+    -0.59,
+    -0.24
+   ],
+   "max": [
+    0.59,
+    0.59,
+    -0.05
+   ],
+   "mats": [
+    "CFEnv_Altar_IncisedAtlas07"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_UpperWornMoulding",
+   "tris": 1152,
+   "min": [
+    -0.59,
+    -0.59,
+    -0.08
+   ],
+   "max": [
+    0.59,
+    0.59,
+    -0.07
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_LowerWornMoulding",
+   "tris": 1152,
+   "min": [
+    -0.61,
+    -0.61,
+    -0.24
+   ],
+   "max": [
+    0.61,
+    0.61,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_00",
+   "tris": 32,
+   "min": [
+    0.59,
+    -0.02,
+    -0.18
+   ],
+   "max": [
+    0.6,
+    0.02,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_02",
+   "tris": 32,
+   "min": [
+    0.5,
+    0.28,
+    -0.18
+   ],
+   "max": [
+    0.52,
+    0.31,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_04",
+   "tris": 32,
+   "min": [
+    0.28,
+    0.5,
+    -0.18
+   ],
+   "max": [
+    0.31,
+    0.52,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_06",
+   "tris": 32,
+   "min": [
+    -0.02,
+    0.59,
+    -0.18
+   ],
+   "max": [
+    0.02,
+    0.6,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_08",
+   "tris": 32,
+   "min": [
+    -0.31,
+    0.5,
+    -0.18
+   ],
+   "max": [
+    -0.28,
+    0.52,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_10",
+   "tris": 32,
+   "min": [
+    -0.52,
+    0.28,
+    -0.18
+   ],
+   "max": [
+    -0.5,
+    0.31,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_12",
+   "tris": 32,
+   "min": [
+    -0.6,
+    -0.02,
+    -0.18
+   ],
+   "max": [
+    -0.59,
+    0.02,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_14",
+   "tris": 32,
+   "min": [
+    -0.52,
+    -0.31,
+    -0.18
+   ],
+   "max": [
+    -0.5,
+    -0.28,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_16",
+   "tris": 32,
+   "min": [
+    -0.31,
+    -0.52,
+    -0.18
+   ],
+   "max": [
+    -0.28,
+    -0.5,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_18",
+   "tris": 32,
+   "min": [
+    -0.02,
+    -0.6,
+    -0.18
+   ],
+   "max": [
+    0.02,
+    -0.59,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_20",
+   "tris": 32,
+   "min": [
+    0.28,
+    -0.52,
+    -0.18
+   ],
+   "max": [
+    0.31,
+    -0.5,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_Frieze_Inlay_22",
+   "tris": 32,
+   "min": [
+    0.5,
+    -0.31,
+    -0.18
+   ],
+   "max": [
+    0.52,
+    -0.28,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_BrokenRadialPaving",
+   "tris": 8410,
+   "min": [
+    -0.68,
+    -0.9,
+    -0.45
+   ],
+   "max": [
+    0.68,
+    0.9,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_00",
+   "tris": 0,
+   "min": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "max": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_02",
+   "tris": 228,
+   "min": [
+    0.35,
+    0.63,
+    -0.43
+   ],
+   "max": [
+    0.63,
+    0.83,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_03",
+   "tris": 228,
+   "min": [
+    0.01,
+    0.81,
+    -0.43
+   ],
+   "max": [
+    0.33,
+    0.9,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_04",
+   "tris": 228,
+   "min": [
+    -0.33,
+    0.82,
+    -0.43
+   ],
+   "max": [
+    -0.01,
+    0.9,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_06",
+   "tris": 88,
+   "min": [
+    -0.66,
+    0.58,
+    -0.43
+   ],
+   "max": [
+    -0.63,
+    0.63,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_07",
+   "tris": 0,
+   "min": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "max": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mats": [],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_08",
+   "tris": 0,
+   "min": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "max": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mats": [],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_10",
+   "tris": 228,
+   "min": [
+    -0.63,
+    -0.83,
+    -0.43
+   ],
+   "max": [
+    -0.35,
+    -0.63,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_11",
+   "tris": 228,
+   "min": [
+    -0.33,
+    -0.9,
+    -0.43
+   ],
+   "max": [
+    -0.01,
+    -0.81,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_12",
+   "tris": 228,
+   "min": [
+    0.01,
+    -0.9,
+    -0.43
+   ],
+   "max": [
+    0.34,
+    -0.81,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_14",
+   "tris": 58,
+   "min": [
+    0.63,
+    -0.62,
+    -0.43
+   ],
+   "max": [
+    0.64,
+    -0.59,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_OuterCarvedBand_15",
+   "tris": 0,
+   "min": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "max": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_00",
+   "tris": 204,
+   "min": [
+    0.73,
+    -0.01,
+    -0.24
+   ],
+   "max": [
+    0.75,
+    0.01,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_01",
+   "tris": 204,
+   "min": [
+    0.67,
+    0.27,
+    -0.24
+   ],
+   "max": [
+    0.69,
+    0.29,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_02",
+   "tris": 204,
+   "min": [
+    0.51,
+    0.51,
+    -0.24
+   ],
+   "max": [
+    0.53,
+    0.53,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_03",
+   "tris": 204,
+   "min": [
+    0.27,
+    0.67,
+    -0.24
+   ],
+   "max": [
+    0.29,
+    0.69,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_04",
+   "tris": 204,
+   "min": [
+    -0.01,
+    0.73,
+    -0.24
+   ],
+   "max": [
+    0.01,
+    0.75,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_05",
+   "tris": 204,
+   "min": [
+    -0.29,
+    0.67,
+    -0.24
+   ],
+   "max": [
+    -0.27,
+    0.69,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_06",
+   "tris": 204,
+   "min": [
+    -0.53,
+    0.51,
+    -0.24
+   ],
+   "max": [
+    -0.51,
+    0.53,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_07",
+   "tris": 204,
+   "min": [
+    -0.69,
+    0.27,
+    -0.24
+   ],
+   "max": [
+    -0.67,
+    0.29,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_08",
+   "tris": 204,
+   "min": [
+    -0.75,
+    -0.01,
+    -0.24
+   ],
+   "max": [
+    -0.73,
+    0.01,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_09",
+   "tris": 204,
+   "min": [
+    -0.69,
+    -0.29,
+    -0.24
+   ],
+   "max": [
+    -0.67,
+    -0.27,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_10",
+   "tris": 204,
+   "min": [
+    -0.53,
+    -0.53,
+    -0.24
+   ],
+   "max": [
+    -0.51,
+    -0.51,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_11",
+   "tris": 204,
+   "min": [
+    -0.29,
+    -0.69,
+    -0.24
+   ],
+   "max": [
+    -0.27,
+    -0.67,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_12",
+   "tris": 204,
+   "min": [
+    -0.01,
+    -0.75,
+    -0.24
+   ],
+   "max": [
+    0.01,
+    -0.73,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_13",
+   "tris": 204,
+   "min": [
+    0.27,
+    -0.69,
+    -0.24
+   ],
+   "max": [
+    0.29,
+    -0.67,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_14",
+   "tris": 204,
+   "min": [
+    0.51,
+    -0.53,
+    -0.24
+   ],
+   "max": [
+    0.53,
+    -0.51,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_RegistrationStud_15",
+   "tris": 204,
+   "min": [
+    0.67,
+    -0.29,
+    -0.24
+   ],
+   "max": [
+    0.69,
+    -0.27,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Weathered_Bronze"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_000",
+   "tris": 1280,
+   "min": [
+    0.69,
+    -0.46,
+    -0.36
+   ],
+   "max": [
+    0.8,
+    -0.39,
+    -0.25
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_001",
+   "tris": 1280,
+   "min": [
+    -0.5,
+    -0.84,
+    -0.41
+   ],
+   "max": [
+    -0.4,
+    -0.69,
+    -0.27
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_002",
+   "tris": 1280,
+   "min": [
+    -0.1,
+    0.87,
+    -0.4
+   ],
+   "max": [
+    0.02,
+    1.01,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_003",
+   "tris": 1280,
+   "min": [
+    0.01,
+    0.71,
+    -0.42
+   ],
+   "max": [
+    0.2,
+    0.92,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_004",
+   "tris": 1280,
+   "min": [
+    -0.95,
+    0.02,
+    -0.37
+   ],
+   "max": [
+    -0.71,
+    0.23,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_005",
+   "tris": 1280,
+   "min": [
+    -0.14,
+    -0.87,
+    -0.33
+   ],
+   "max": [
+    0.02,
+    -0.74,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_006",
+   "tris": 1280,
+   "min": [
+    -0.3,
+    -0.9,
+    -0.37
+   ],
+   "max": [
+    -0.18,
+    -0.71,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_007",
+   "tris": 1280,
+   "min": [
+    0.76,
+    0.44,
+    -0.27
+   ],
+   "max": [
+    0.82,
+    0.51,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_008",
+   "tris": 1280,
+   "min": [
+    -0.86,
+    0.3,
+    -0.34
+   ],
+   "max": [
+    -0.71,
+    0.43,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_009",
+   "tris": 1280,
+   "min": [
+    0.07,
+    -0.96,
+    -0.44
+   ],
+   "max": [
+    0.27,
+    -0.78,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_010",
+   "tris": 1280,
+   "min": [
+    -0.35,
+    -0.95,
+    -0.41
+   ],
+   "max": [
+    -0.1,
+    -0.77,
+    -0.15
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_011",
+   "tris": 1280,
+   "min": [
+    0.3,
+    -0.87,
+    -0.32
+   ],
+   "max": [
+    0.44,
+    -0.7,
+    -0.17
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_012",
+   "tris": 1280,
+   "min": [
+    -0.03,
+    -1.04,
+    -0.41
+   ],
+   "max": [
+    0.25,
+    -0.78,
+    -0.17
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_013",
+   "tris": 1280,
+   "min": [
+    -0.07,
+    -0.94,
+    -0.36
+   ],
+   "max": [
+    0.07,
+    -0.8,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_014",
+   "tris": 1280,
+   "min": [
+    -0.38,
+    0.73,
+    -0.31
+   ],
+   "max": [
+    -0.28,
+    0.88,
+    -0.16
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_015",
+   "tris": 1280,
+   "min": [
+    0.54,
+    -0.63,
+    -0.32
+   ],
+   "max": [
+    0.59,
+    -0.58,
+    -0.27
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_016",
+   "tris": 1280,
+   "min": [
+    -0.64,
+    -0.64,
+    -0.35
+   ],
+   "max": [
+    -0.53,
+    -0.52,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_017",
+   "tris": 1280,
+   "min": [
+    -0.42,
+    -0.89,
+    -0.35
+   ],
+   "max": [
+    -0.32,
+    -0.81,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_018",
+   "tris": 1280,
+   "min": [
+    -0.46,
+    0.71,
+    -0.36
+   ],
+   "max": [
+    -0.42,
+    0.76,
+    -0.31
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_019",
+   "tris": 1280,
+   "min": [
+    -0.82,
+    0.28,
+    -0.34
+   ],
+   "max": [
+    -0.73,
+    0.38,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_020",
+   "tris": 1280,
+   "min": [
+    -0.63,
+    0.52,
+    -0.33
+   ],
+   "max": [
+    -0.59,
+    0.56,
+    -0.31
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_021",
+   "tris": 1280,
+   "min": [
+    0.78,
+    -0.25,
+    -0.3
+   ],
+   "max": [
+    0.85,
+    -0.13,
+    -0.19
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_022",
+   "tris": 1280,
+   "min": [
+    0.82,
+    -0.38,
+    -0.36
+   ],
+   "max": [
+    0.87,
+    -0.31,
+    -0.31
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_023",
+   "tris": 1280,
+   "min": [
+    -0.77,
+    -0.56,
+    -0.34
+   ],
+   "max": [
+    -0.61,
+    -0.45,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_024",
+   "tris": 1280,
+   "min": [
+    0.77,
+    0.03,
+    -0.34
+   ],
+   "max": [
+    0.85,
+    0.14,
+    -0.25
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_025",
+   "tris": 1280,
+   "min": [
+    -0.62,
+    -0.66,
+    -0.3
+   ],
+   "max": [
+    -0.56,
+    -0.6,
+    -0.27
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_026",
+   "tris": 1280,
+   "min": [
+    -0.91,
+    -0.04,
+    -0.32
+   ],
+   "max": [
+    -0.88,
+    -0.0,
+    -0.28
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_027",
+   "tris": 1280,
+   "min": [
+    0.71,
+    0.03,
+    -0.37
+   ],
+   "max": [
+    0.88,
+    0.13,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_028",
+   "tris": 1280,
+   "min": [
+    0.3,
+    -0.87,
+    -0.36
+   ],
+   "max": [
+    0.33,
+    -0.81,
+    -0.3
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_029",
+   "tris": 1280,
+   "min": [
+    0.61,
+    -0.45,
+    -0.35
+   ],
+   "max": [
+    0.78,
+    -0.3,
+    -0.17
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_030",
+   "tris": 1280,
+   "min": [
+    -0.8,
+    -0.52,
+    -0.29
+   ],
+   "max": [
+    -0.7,
+    -0.44,
+    -0.19
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_031",
+   "tris": 1280,
+   "min": [
+    -0.82,
+    -0.13,
+    -0.34
+   ],
+   "max": [
+    -0.77,
+    -0.1,
+    -0.28
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_032",
+   "tris": 1280,
+   "min": [
+    -0.81,
+    0.43,
+    -0.33
+   ],
+   "max": [
+    -0.7,
+    0.53,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_033",
+   "tris": 1280,
+   "min": [
+    0.16,
+    -0.84,
+    -0.39
+   ],
+   "max": [
+    0.27,
+    -0.7,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_034",
+   "tris": 1280,
+   "min": [
+    0.71,
+    -0.41,
+    -0.34
+   ],
+   "max": [
+    0.87,
+    -0.24,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_035",
+   "tris": 1280,
+   "min": [
+    0.79,
+    -0.38,
+    -0.37
+   ],
+   "max": [
+    0.88,
+    -0.26,
+    -0.25
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_036",
+   "tris": 1280,
+   "min": [
+    -0.86,
+    -0.16,
+    -0.33
+   ],
+   "max": [
+    -0.77,
+    -0.06,
+    -0.26
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_037",
+   "tris": 1280,
+   "min": [
+    0.29,
+    -0.95,
+    -0.32
+   ],
+   "max": [
+    0.45,
+    -0.75,
+    -0.16
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_038",
+   "tris": 1280,
+   "min": [
+    -1.01,
+    -0.29,
+    -0.34
+   ],
+   "max": [
+    -0.84,
+    -0.1,
+    -0.14
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_039",
+   "tris": 1280,
+   "min": [
+    -0.49,
+    -0.83,
+    -0.26
+   ],
+   "max": [
+    -0.45,
+    -0.79,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_040",
+   "tris": 1280,
+   "min": [
+    0.78,
+    -0.26,
+    -0.37
+   ],
+   "max": [
+    0.86,
+    -0.18,
+    -0.28
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_041",
+   "tris": 1280,
+   "min": [
+    0.66,
+    0.37,
+    -0.4
+   ],
+   "max": [
+    0.78,
+    0.53,
+    -0.27
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_042",
+   "tris": 1280,
+   "min": [
+    -0.28,
+    -0.87,
+    -0.36
+   ],
+   "max": [
+    -0.18,
+    -0.75,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_043",
+   "tris": 1280,
+   "min": [
+    -0.63,
+    -0.75,
+    -0.29
+   ],
+   "max": [
+    -0.57,
+    -0.7,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_044",
+   "tris": 1280,
+   "min": [
+    -0.3,
+    -0.91,
+    -0.32
+   ],
+   "max": [
+    -0.22,
+    -0.84,
+    -0.26
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_045",
+   "tris": 1280,
+   "min": [
+    -0.8,
+    0.32,
+    -0.33
+   ],
+   "max": [
+    -0.76,
+    0.37,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_046",
+   "tris": 1280,
+   "min": [
+    -0.85,
+    0.26,
+    -0.35
+   ],
+   "max": [
+    -0.79,
+    0.31,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_047",
+   "tris": 1280,
+   "min": [
+    0.52,
+    0.48,
+    -0.36
+   ],
+   "max": [
+    0.73,
+    0.67,
+    -0.25
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_048",
+   "tris": 1280,
+   "min": [
+    0.37,
+    -0.86,
+    -0.39
+   ],
+   "max": [
+    0.49,
+    -0.64,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_049",
+   "tris": 1280,
+   "min": [
+    0.67,
+    0.54,
+    -0.27
+   ],
+   "max": [
+    0.72,
+    0.6,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_050",
+   "tris": 1280,
+   "min": [
+    -0.5,
+    0.64,
+    -0.44
+   ],
+   "max": [
+    -0.38,
+    0.87,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_051",
+   "tris": 1280,
+   "min": [
+    -0.97,
+    -0.13,
+    -0.45
+   ],
+   "max": [
+    -0.73,
+    0.04,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_052",
+   "tris": 1280,
+   "min": [
+    0.85,
+    -0.21,
+    -0.33
+   ],
+   "max": [
+    0.88,
+    -0.17,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_053",
+   "tris": 1280,
+   "min": [
+    -0.44,
+    -0.74,
+    -0.28
+   ],
+   "max": [
+    -0.39,
+    -0.67,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_054",
+   "tris": 1280,
+   "min": [
+    0.89,
+    -0.01,
+    -0.3
+   ],
+   "max": [
+    0.98,
+    0.09,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_055",
+   "tris": 1280,
+   "min": [
+    -0.91,
+    0.11,
+    -0.31
+   ],
+   "max": [
+    -0.81,
+    0.24,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_056",
+   "tris": 1280,
+   "min": [
+    0.52,
+    -0.73,
+    -0.36
+   ],
+   "max": [
+    0.62,
+    -0.57,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_057",
+   "tris": 1280,
+   "min": [
+    -0.37,
+    0.69,
+    -0.31
+   ],
+   "max": [
+    -0.32,
+    0.78,
+    -0.25
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_058",
+   "tris": 1280,
+   "min": [
+    0.74,
+    -0.3,
+    -0.3
+   ],
+   "max": [
+    0.83,
+    -0.17,
+    -0.17
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_059",
+   "tris": 1280,
+   "min": [
+    0.46,
+    -0.66,
+    -0.42
+   ],
+   "max": [
+    0.69,
+    -0.44,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_060",
+   "tris": 1280,
+   "min": [
+    0.66,
+    0.3,
+    -0.4
+   ],
+   "max": [
+    0.86,
+    0.48,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_061",
+   "tris": 1280,
+   "min": [
+    -0.01,
+    -0.87,
+    -0.37
+   ],
+   "max": [
+    0.05,
+    -0.81,
+    -0.3
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_062",
+   "tris": 1280,
+   "min": [
+    -0.38,
+    -0.82,
+    -0.39
+   ],
+   "max": [
+    -0.28,
+    -0.68,
+    -0.25
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_063",
+   "tris": 1280,
+   "min": [
+    -0.75,
+    -0.79,
+    -0.4
+   ],
+   "max": [
+    -0.53,
+    -0.57,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_064",
+   "tris": 1280,
+   "min": [
+    -0.57,
+    -0.83,
+    -0.32
+   ],
+   "max": [
+    -0.47,
+    -0.72,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_065",
+   "tris": 1280,
+   "min": [
+    -0.9,
+    -0.35,
+    -0.36
+   ],
+   "max": [
+    -0.77,
+    -0.24,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_066",
+   "tris": 1280,
+   "min": [
+    0.63,
+    -0.57,
+    -0.3
+   ],
+   "max": [
+    0.71,
+    -0.5,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_067",
+   "tris": 1280,
+   "min": [
+    0.74,
+    -0.3,
+    -0.41
+   ],
+   "max": [
+    0.82,
+    -0.18,
+    -0.26
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_068",
+   "tris": 1280,
+   "min": [
+    -0.75,
+    0.51,
+    -0.34
+   ],
+   "max": [
+    -0.65,
+    0.64,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_069",
+   "tris": 1280,
+   "min": [
+    0.76,
+    -0.14,
+    -0.35
+   ],
+   "max": [
+    0.89,
+    0.01,
+    -0.25
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_070",
+   "tris": 1280,
+   "min": [
+    -0.87,
+    0.23,
+    -0.38
+   ],
+   "max": [
+    -0.65,
+    0.44,
+    -0.19
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_071",
+   "tris": 1280,
+   "min": [
+    -0.96,
+    -0.18,
+    -0.4
+   ],
+   "max": [
+    -0.77,
+    -0.02,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_072",
+   "tris": 1280,
+   "min": [
+    0.43,
+    0.62,
+    -0.3
+   ],
+   "max": [
+    0.55,
+    0.75,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_073",
+   "tris": 1280,
+   "min": [
+    -0.53,
+    0.6,
+    -0.39
+   ],
+   "max": [
+    -0.38,
+    0.87,
+    -0.15
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_074",
+   "tris": 1280,
+   "min": [
+    -0.93,
+    -0.03,
+    -0.35
+   ],
+   "max": [
+    -0.71,
+    0.16,
+    -0.15
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_075",
+   "tris": 1280,
+   "min": [
+    -0.65,
+    0.61,
+    -0.35
+   ],
+   "max": [
+    -0.59,
+    0.68,
+    -0.26
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_076",
+   "tris": 1280,
+   "min": [
+    -0.42,
+    0.74,
+    -0.32
+   ],
+   "max": [
+    -0.3,
+    0.87,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_077",
+   "tris": 1280,
+   "min": [
+    0.43,
+    -0.78,
+    -0.34
+   ],
+   "max": [
+    0.5,
+    -0.57,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_078",
+   "tris": 1280,
+   "min": [
+    -0.57,
+    -0.84,
+    -0.38
+   ],
+   "max": [
+    -0.4,
+    -0.72,
+    -0.25
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_079",
+   "tris": 1280,
+   "min": [
+    0.29,
+    0.81,
+    -0.37
+   ],
+   "max": [
+    0.38,
+    0.92,
+    -0.26
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_080",
+   "tris": 1280,
+   "min": [
+    -0.79,
+    0.48,
+    -0.4
+   ],
+   "max": [
+    -0.69,
+    0.67,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_081",
+   "tris": 1280,
+   "min": [
+    -0.86,
+    0.38,
+    -0.32
+   ],
+   "max": [
+    -0.66,
+    0.51,
+    -0.15
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_082",
+   "tris": 1280,
+   "min": [
+    0.77,
+    0.1,
+    -0.33
+   ],
+   "max": [
+    0.98,
+    0.31,
+    -0.16
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_083",
+   "tris": 1280,
+   "min": [
+    -0.92,
+    -0.21,
+    -0.35
+   ],
+   "max": [
+    -0.74,
+    -0.1,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_084",
+   "tris": 1280,
+   "min": [
+    -0.11,
+    -0.88,
+    -0.34
+   ],
+   "max": [
+    -0.01,
+    -0.73,
+    -0.17
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_085",
+   "tris": 1280,
+   "min": [
+    0.29,
+    0.7,
+    -0.42
+   ],
+   "max": [
+    0.47,
+    0.87,
+    -0.25
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_086",
+   "tris": 1280,
+   "min": [
+    0.02,
+    0.72,
+    -0.4
+   ],
+   "max": [
+    0.16,
+    0.89,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_087",
+   "tris": 1280,
+   "min": [
+    0.24,
+    -0.86,
+    -0.33
+   ],
+   "max": [
+    0.32,
+    -0.8,
+    -0.27
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_088",
+   "tris": 1280,
+   "min": [
+    -0.97,
+    -0.29,
+    -0.34
+   ],
+   "max": [
+    -0.83,
+    -0.16,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_089",
+   "tris": 1280,
+   "min": [
+    0.79,
+    -0.11,
+    -0.29
+   ],
+   "max": [
+    0.88,
+    -0.04,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_090",
+   "tris": 1280,
+   "min": [
+    0.29,
+    -0.93,
+    -0.34
+   ],
+   "max": [
+    0.45,
+    -0.75,
+    -0.16
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_091",
+   "tris": 1280,
+   "min": [
+    0.68,
+    0.23,
+    -0.35
+   ],
+   "max": [
+    0.87,
+    0.42,
+    -0.16
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_092",
+   "tris": 1280,
+   "min": [
+    0.85,
+    -0.35,
+    -0.37
+   ],
+   "max": [
+    0.91,
+    -0.3,
+    -0.31
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_093",
+   "tris": 1280,
+   "min": [
+    -0.63,
+    0.59,
+    -0.33
+   ],
+   "max": [
+    -0.59,
+    0.64,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Dais_FractureRubble_094",
+   "tris": 1280,
+   "min": [
+    -0.12,
+    -0.94,
+    -0.29
+   ],
+   "max": [
+    -0.01,
+    -0.82,
+    -0.17
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Root_IslandDrape_01",
+   "tris": 158,
+   "min": [
+    0.49,
+    0.34,
+    -3.4
+   ],
+   "max": [
+    0.61,
+    0.64,
+    -0.19
+   ],
+   "mats": [
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Root_IslandDrape_02",
+   "tris": 158,
+   "min": [
+    0.1,
+    0.49,
+    -3.4
+   ],
+   "max": [
+    0.32,
+    0.78,
+    -0.19
+   ],
+   "mats": [
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Root_IslandDrape_03",
+   "tris": 158,
+   "min": [
+    -0.27,
+    0.57,
+    -3.4
+   ],
+   "max": [
+    -0.07,
+    0.84,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Root_IslandDrape_04",
+   "tris": 158,
+   "min": [
+    -0.58,
+    0.35,
+    -3.4
+   ],
+   "max": [
+    -0.47,
+    0.63,
+    -0.19
+   ],
+   "mats": [
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Root_IslandDrape_07",
+   "tris": 158,
+   "min": [
+    -0.46,
+    -0.71,
+    -3.4
+   ],
+   "max": [
+    -0.3,
+    -0.44,
+    -0.19
+   ],
+   "mats": [
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Root_IslandDrape_08",
+   "tris": 158,
+   "min": [
+    -0.14,
+    -0.86,
+    -3.4
+   ],
+   "max": [
+    0.14,
+    -0.61,
+    -0.19
+   ],
+   "mats": [
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Root_IslandDrape_09",
+   "tris": 158,
+   "min": [
+    0.25,
+    -0.67,
+    -3.4
+   ],
+   "max": [
+    0.48,
+    -0.43,
+    -0.19
+   ],
+   "mats": [
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Hero_Hand_PetrifiedOpenPalm",
+   "tris": 20264,
+   "min": [
+    1.91,
+    9.09,
+    -0.33
+   ],
+   "max": [
+    4.34,
+    10.42,
+    4.13
+   ],
+   "mats": [
+    "CF17_CavityDeposit_CFEnv_Hero_AgedOliveStone",
+    "CF17_CavityDeposit_CFEnv_Hero_DampCrevice"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_002",
+   "tris": 1280,
+   "min": [
+    4.56,
+    12.86,
+    11.56
+   ],
+   "max": [
+    4.75,
+    13.0,
+    11.74
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_004",
+   "tris": 1280,
+   "min": [
+    11.24,
+    18.71,
+    7.74
+   ],
+   "max": [
+    11.67,
+    19.15,
+    8.12
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_007",
+   "tris": 1280,
+   "min": [
+    -4.15,
+    11.46,
+    11.83
+   ],
+   "max": [
+    -3.98,
+    11.59,
+    11.97
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_008",
+   "tris": 1280,
+   "min": [
+    -4.49,
+    21.63,
+    4.3
+   ],
+   "max": [
+    -4.26,
+    21.91,
+    4.59
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_012",
+   "tris": 1280,
+   "min": [
+    0.05,
+    24.83,
+    2.13
+   ],
+   "max": [
+    0.4,
+    25.16,
+    2.51
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_013",
+   "tris": 1280,
+   "min": [
+    -8.82,
+    9.73,
+    3.79
+   ],
+   "max": [
+    -8.66,
+    9.88,
+    3.92
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_014",
+   "tris": 1280,
+   "min": [
+    -8.48,
+    10.5,
+    4.83
+   ],
+   "max": [
+    -8.21,
+    10.76,
+    5.07
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_015",
+   "tris": 1280,
+   "min": [
+    8.96,
+    11.31,
+    8.58
+   ],
+   "max": [
+    9.09,
+    11.41,
+    8.69
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_016",
+   "tris": 1280,
+   "min": [
+    8.48,
+    13.88,
+    3.71
+   ],
+   "max": [
+    8.82,
+    14.2,
+    3.97
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_017",
+   "tris": 1280,
+   "min": [
+    9.84,
+    10.89,
+    2.25
+   ],
+   "max": [
+    10.18,
+    11.21,
+    2.54
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_019",
+   "tris": 1280,
+   "min": [
+    1.73,
+    21.89,
+    3.11
+   ],
+   "max": [
+    1.91,
+    22.05,
+    3.3
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_020",
+   "tris": 1280,
+   "min": [
+    -7.0,
+    14.06,
+    9.64
+   ],
+   "max": [
+    -6.63,
+    14.38,
+    9.96
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_022",
+   "tris": 1280,
+   "min": [
+    -9.21,
+    9.09,
+    5.02
+   ],
+   "max": [
+    -8.94,
+    9.38,
+    5.26
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_024",
+   "tris": 1280,
+   "min": [
+    1.0,
+    15.51,
+    9.67
+   ],
+   "max": [
+    1.21,
+    15.68,
+    9.84
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_026",
+   "tris": 1280,
+   "min": [
+    6.55,
+    12.08,
+    5.96
+   ],
+   "max": [
+    6.81,
+    12.34,
+    6.19
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_029",
+   "tris": 1280,
+   "min": [
+    1.67,
+    17.72,
+    11.15
+   ],
+   "max": [
+    1.86,
+    17.9,
+    11.29
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_030",
+   "tris": 1280,
+   "min": [
+    -10.43,
+    15.66,
+    5.62
+   ],
+   "max": [
+    -10.05,
+    16.03,
+    5.98
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_032",
+   "tris": 1280,
+   "min": [
+    5.8,
+    16.25,
+    10.22
+   ],
+   "max": [
+    5.96,
+    16.37,
+    10.36
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_035",
+   "tris": 1280,
+   "min": [
+    -9.88,
+    13.06,
+    8.74
+   ],
+   "max": [
+    -9.73,
+    13.22,
+    8.89
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_036",
+   "tris": 1280,
+   "min": [
+    -10.57,
+    23.79,
+    11.27
+   ],
+   "max": [
+    -10.45,
+    23.93,
+    11.37
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_037",
+   "tris": 1280,
+   "min": [
+    10.82,
+    12.24,
+    4.25
+   ],
+   "max": [
+    11.14,
+    12.48,
+    4.6
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_039",
+   "tris": 1280,
+   "min": [
+    -6.32,
+    14.69,
+    8.81
+   ],
+   "max": [
+    -6.16,
+    14.9,
+    8.99
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_040",
+   "tris": 1280,
+   "min": [
+    -11.53,
+    18.9,
+    9.9
+   ],
+   "max": [
+    -11.39,
+    19.04,
+    10.05
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_043",
+   "tris": 1280,
+   "min": [
+    -4.51,
+    18.65,
+    6.08
+   ],
+   "max": [
+    -4.21,
+    18.94,
+    6.38
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_SuspendedStone_047",
+   "tris": 1280,
+   "min": [
+    -3.66,
+    20.88,
+    2.27
+   ],
+   "max": [
+    -3.35,
+    21.14,
+    2.5
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_00",
+   "tris": 108,
+   "min": [
+    -3.31,
+    -0.52,
+    -0.87
+   ],
+   "max": [
+    -2.91,
+    -0.08,
+    -0.69
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_01",
+   "tris": 108,
+   "min": [
+    -3.04,
+    -1.23,
+    -0.68
+   ],
+   "max": [
+    -2.68,
+    -0.87,
+    -0.5
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_02",
+   "tris": 108,
+   "min": [
+    -3.22,
+    0.31,
+    -0.76
+   ],
+   "max": [
+    -2.88,
+    0.68,
+    -0.53
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_03",
+   "tris": 108,
+   "min": [
+    -3.67,
+    -0.67,
+    -0.79
+   ],
+   "max": [
+    -3.33,
+    -0.37,
+    -0.63
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_04",
+   "tris": 108,
+   "min": [
+    -4.07,
+    -0.51,
+    -0.76
+   ],
+   "max": [
+    -3.73,
+    -0.17,
+    -0.61
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_05",
+   "tris": 108,
+   "min": [
+    -4.26,
+    -0.96,
+    -0.83
+   ],
+   "max": [
+    -3.91,
+    -0.63,
+    -0.61
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_06",
+   "tris": 108,
+   "min": [
+    -2.9,
+    -1.16,
+    -0.9
+   ],
+   "max": [
+    -2.54,
+    -0.78,
+    -0.65
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_07",
+   "tris": 108,
+   "min": [
+    -2.89,
+    0.07,
+    -0.86
+   ],
+   "max": [
+    -2.62,
+    0.44,
+    -0.61
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_08",
+   "tris": 108,
+   "min": [
+    -3.7,
+    -0.5,
+    -0.76
+   ],
+   "max": [
+    -3.4,
+    -0.22,
+    -0.58
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_09",
+   "tris": 108,
+   "min": [
+    -2.95,
+    0.42,
+    -0.82
+   ],
+   "max": [
+    -2.62,
+    0.73,
+    -0.64
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_10",
+   "tris": 108,
+   "min": [
+    -3.46,
+    -0.5,
+    -0.77
+   ],
+   "max": [
+    -3.04,
+    -0.12,
+    -0.5
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_11",
+   "tris": 108,
+   "min": [
+    -3.61,
+    -0.39,
+    -0.97
+   ],
+   "max": [
+    -3.38,
+    -0.06,
+    -0.7
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_12",
+   "tris": 108,
+   "min": [
+    -3.82,
+    0.24,
+    -0.69
+   ],
+   "max": [
+    -3.47,
+    0.57,
+    -0.51
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_-1_13",
+   "tris": 108,
+   "min": [
+    -3.05,
+    -0.95,
+    -0.7
+   ],
+   "max": [
+    -2.73,
+    -0.55,
+    -0.45
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_00",
+   "tris": 108,
+   "min": [
+    2.66,
+    -0.77,
+    -0.68
+   ],
+   "max": [
+    3.07,
+    -0.37,
+    -0.48
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_01",
+   "tris": 108,
+   "min": [
+    3.02,
+    -0.61,
+    -0.84
+   ],
+   "max": [
+    3.24,
+    -0.34,
+    -0.59
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_02",
+   "tris": 108,
+   "min": [
+    3.93,
+    -0.56,
+    -0.9
+   ],
+   "max": [
+    4.24,
+    -0.28,
+    -0.71
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_03",
+   "tris": 108,
+   "min": [
+    3.67,
+    -1.07,
+    -0.82
+   ],
+   "max": [
+    4.04,
+    -0.74,
+    -0.54
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_04",
+   "tris": 108,
+   "min": [
+    3.83,
+    -1.29,
+    -0.81
+   ],
+   "max": [
+    4.11,
+    -0.96,
+    -0.56
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_05",
+   "tris": 108,
+   "min": [
+    2.81,
+    0.12,
+    -0.95
+   ],
+   "max": [
+    3.28,
+    0.55,
+    -0.71
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_06",
+   "tris": 108,
+   "min": [
+    3.03,
+    -1.35,
+    -0.95
+   ],
+   "max": [
+    3.36,
+    -0.99,
+    -0.69
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_07",
+   "tris": 108,
+   "min": [
+    3.5,
+    -0.09,
+    -0.95
+   ],
+   "max": [
+    3.81,
+    0.25,
+    -0.72
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_08",
+   "tris": 108,
+   "min": [
+    3.67,
+    -0.53,
+    -0.68
+   ],
+   "max": [
+    4.08,
+    -0.09,
+    -0.54
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_09",
+   "tris": 108,
+   "min": [
+    3.15,
+    -1.26,
+    -0.97
+   ],
+   "max": [
+    3.4,
+    -1.0,
+    -0.71
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_10",
+   "tris": 108,
+   "min": [
+    3.93,
+    0.09,
+    -0.8
+   ],
+   "max": [
+    4.23,
+    0.42,
+    -0.55
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_11",
+   "tris": 108,
+   "min": [
+    2.98,
+    -0.28,
+    -0.74
+   ],
+   "max": [
+    3.37,
+    0.03,
+    -0.54
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_12",
+   "tris": 108,
+   "min": [
+    2.62,
+    -1.36,
+    -0.73
+   ],
+   "max": [
+    2.97,
+    -1.02,
+    -0.44
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Ruins_FallenMasonry_1_13",
+   "tris": 108,
+   "min": [
+    2.39,
+    -0.36,
+    -0.75
+   ],
+   "max": [
+    2.72,
+    0.03,
+    -0.6
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_00",
+   "tris": 2492,
+   "min": [
+    -5.95,
+    -1.22,
+    -2.51
+   ],
+   "max": [
+    -3.28,
+    -0.38,
+    4.62
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_01",
+   "tris": 2492,
+   "min": [
+    3.47,
+    -0.87,
+    -2.61
+   ],
+   "max": [
+    6.37,
+    0.08,
+    5.03
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_02",
+   "tris": 2492,
+   "min": [
+    -7.98,
+    3.34,
+    -2.71
+   ],
+   "max": [
+    -4.65,
+    4.43,
+    5.85
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_03",
+   "tris": 2492,
+   "min": [
+    5.74,
+    4.22,
+    -2.81
+   ],
+   "max": [
+    9.17,
+    5.43,
+    6.17
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_04",
+   "tris": 2492,
+   "min": [
+    -9.09,
+    9.58,
+    -3.01
+   ],
+   "max": [
+    -5.13,
+    10.92,
+    6.29
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_05",
+   "tris": 2492,
+   "min": [
+    6.15,
+    10.73,
+    -3.11
+   ],
+   "max": [
+    10.3,
+    12.15,
+    7.1
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_06",
+   "tris": 2492,
+   "min": [
+    -7.33,
+    9.96,
+    -2.41
+   ],
+   "max": [
+    -5.04,
+    10.77,
+    3.8
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_07",
+   "tris": 2492,
+   "min": [
+    6.01,
+    10.45,
+    -2.5
+   ],
+   "max": [
+    8.38,
+    11.31,
+    4.52
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_08",
+   "tris": 2492,
+   "min": [
+    -9.53,
+    3.82,
+    -2.81
+   ],
+   "max": [
+    -6.55,
+    4.91,
+    4.56
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Basalt_WeatheredCurvedRib_09",
+   "tris": 2492,
+   "min": [
+    6.85,
+    4.72,
+    -2.81
+   ],
+   "max": [
+    10.07,
+    5.84,
+    5.06
+   ],
+   "mats": [
+    "CF14_MatteRib_CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_WeatheredSuspendedSlab_02",
+   "tris": 1280,
+   "min": [
+    -2.48,
+    9.82,
+    6.3
+   ],
+   "max": [
+    -0.73,
+    11.86,
+    7.61
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_WeatheredSuspendedSlab_07",
+   "tris": 1280,
+   "min": [
+    5.99,
+    16.1,
+    8.29
+   ],
+   "max": [
+    8.04,
+    17.34,
+    9.5
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Sky_WeatheredSuspendedSlab_08",
+   "tris": 1280,
+   "min": [
+    -6.26,
+    13.55,
+    4.45
+   ],
+   "max": [
+    -4.05,
+    14.81,
+    6.12
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_HiddenLoadBearingCore",
+   "tris": 764,
+   "min": [
+    -0.55,
+    -0.55,
+    -0.46
+   ],
+   "max": [
+    0.55,
+    0.55,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Altar_DarkSanctuary"
+   ],
+   "cols": [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_AnchoredWeatheredRoots_hand",
+   "tris": 1104,
+   "min": [
+    2.78,
+    9.42,
+    -0.09
+   ],
+   "max": [
+    3.9,
+    9.92,
+    2.74
+   ],
+   "mats": [
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": "ENV_Hero_Hand_PetrifiedOpenPalm"
+  },
+  {
+   "name": "CFRefine_SurfaceConformingMoss_ledge_ENV_Altar_BoardSupport",
+   "tris": 106,
+   "min": [
+    -0.58,
+    -0.35,
+    -0.06
+   ],
+   "max": [
+    0.56,
+    0.59,
+    -0.05
+   ],
+   "mats": [
+    "CFEnv_Velvet_Moss",
+    "CFEnv_Moss_DampCrevice",
+    "CFEnv_Moss_SunwardTips"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": "ENV_Altar_BoardSupport"
+  },
+  {
+   "name": "CFRefine_SurfaceConformingMoss_ledge_ENV_Dais_BrokenRadialPaving",
+   "tris": 716,
+   "min": [
+    -0.66,
+    -0.86,
+    -0.27
+   ],
+   "max": [
+    0.66,
+    0.89,
+    -0.24
+   ],
+   "mats": [
+    "CFEnv_Velvet_Moss",
+    "CFEnv_Moss_DampCrevice",
+    "CFEnv_Moss_SunwardTips"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": "ENV_Dais_BrokenRadialPaving"
+  },
+  {
+   "name": "CFRefine_SurfaceConformingMoss_ledge_ENV_Island_Central_FracturedBedrock",
+   "tris": 992,
+   "min": [
+    -0.66,
+    -0.9,
+    -3.71
+   ],
+   "max": [
+    0.67,
+    0.98,
+    -0.27
+   ],
+   "mats": [
+    "CFEnv_Velvet_Moss",
+    "CFEnv_Moss_DampCrevice",
+    "CFEnv_Moss_SunwardTips"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": "ENV_Island_Central_FracturedBedrock"
+  },
+  {
+   "name": "CFRefine_flowers_AltarRearLeft_006",
+   "tris": 72,
+   "min": [
+    -0.5,
+    0.7,
+    -0.27
+   ],
+   "max": [
+    -0.44,
+    0.76,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_AltarRearLeft_007",
+   "tris": 72,
+   "min": [
+    -0.48,
+    0.69,
+    -0.27
+   ],
+   "max": [
+    -0.42,
+    0.74,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_AltarRearLeft_008",
+   "tris": 72,
+   "min": [
+    -0.43,
+    0.7,
+    -0.27
+   ],
+   "max": [
+    -0.39,
+    0.75,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_AltarRearRight_000",
+   "tris": 660,
+   "min": [
+    0.31,
+    0.61,
+    -0.26
+   ],
+   "max": [
+    0.51,
+    0.8,
+    -0.15
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_AltarRearRight_001",
+   "tris": 660,
+   "min": [
+    0.35,
+    0.66,
+    -0.26
+   ],
+   "max": [
+    0.56,
+    0.87,
+    -0.16
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_AltarRearRight_002",
+   "tris": 660,
+   "min": [
+    0.35,
+    0.65,
+    -0.26
+   ],
+   "max": [
+    0.54,
+    0.84,
+    -0.15
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_AltarRearRight_003",
+   "tris": 660,
+   "min": [
+    0.36,
+    0.62,
+    -0.26
+   ],
+   "max": [
+    0.53,
+    0.79,
+    -0.14
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_AltarRearRight_004",
+   "tris": 660,
+   "min": [
+    0.24,
+    0.65,
+    -0.26
+   ],
+   "max": [
+    0.45,
+    0.85,
+    -0.15
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_AltarRearRight_005",
+   "tris": 660,
+   "min": [
+    0.34,
+    0.67,
+    -0.26
+   ],
+   "max": [
+    0.52,
+    0.85,
+    -0.16
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_AltarRearRight_000",
+   "tris": 72,
+   "min": [
+    0.4,
+    0.74,
+    -0.26
+   ],
+   "max": [
+    0.48,
+    0.81,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_AltarRearRight_005",
+   "tris": 72,
+   "min": [
+    0.36,
+    0.67,
+    -0.26
+   ],
+   "max": [
+    0.41,
+    0.72,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_AltarRearRight_006",
+   "tris": 72,
+   "min": [
+    0.36,
+    0.71,
+    -0.26
+   ],
+   "max": [
+    0.41,
+    0.75,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_AltarRearRight_008",
+   "tris": 72,
+   "min": [
+    0.41,
+    0.72,
+    -0.26
+   ],
+   "max": [
+    0.45,
+    0.77,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_AltarRearRight_014",
+   "tris": 72,
+   "min": [
+    0.38,
+    0.6,
+    -0.25
+   ],
+   "max": [
+    0.42,
+    0.64,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_skullShoulder1_001",
+   "tris": 660,
+   "min": [
+    -3.05,
+    7.37,
+    -0.87
+   ],
+   "max": [
+    -2.87,
+    7.55,
+    -0.73
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder1_002",
+   "tris": 72,
+   "min": [
+    -3.02,
+    7.65,
+    -0.57
+   ],
+   "max": [
+    -2.95,
+    7.71,
+    -0.48
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder1_003",
+   "tris": 72,
+   "min": [
+    -2.98,
+    7.45,
+    -0.91
+   ],
+   "max": [
+    -2.91,
+    7.52,
+    -0.82
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder1_004",
+   "tris": 72,
+   "min": [
+    -2.99,
+    7.43,
+    -0.91
+   ],
+   "max": [
+    -2.89,
+    7.52,
+    -0.8
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder1_005",
+   "tris": 72,
+   "min": [
+    -2.91,
+    7.48,
+    -0.75
+   ],
+   "max": [
+    -2.83,
+    7.56,
+    -0.68
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder1_006",
+   "tris": 72,
+   "min": [
+    -2.94,
+    7.59,
+    -0.64
+   ],
+   "max": [
+    -2.85,
+    7.67,
+    -0.55
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder1_007",
+   "tris": 72,
+   "min": [
+    -3.19,
+    7.39,
+    -0.72
+   ],
+   "max": [
+    -3.1,
+    7.47,
+    -0.61
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder1_008",
+   "tris": 72,
+   "min": [
+    -3.03,
+    7.5,
+    -0.65
+   ],
+   "max": [
+    -2.95,
+    7.58,
+    -0.58
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder1_012",
+   "tris": 72,
+   "min": [
+    -2.97,
+    7.49,
+    -0.68
+   ],
+   "max": [
+    -2.9,
+    7.57,
+    -0.61
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder1_013",
+   "tris": 72,
+   "min": [
+    -3.02,
+    7.4,
+    -0.8
+   ],
+   "max": [
+    -2.94,
+    7.49,
+    -0.73
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_ferns_skullShoulder3_000",
+   "tris": 1080,
+   "min": [
+    -3.12,
+    7.99,
+    -1.29
+   ],
+   "max": [
+    -2.36,
+    8.82,
+    -0.98
+   ],
+   "mats": [
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_ferns_skullShoulder3_001",
+   "tris": 1260,
+   "min": [
+    -3.28,
+    7.89,
+    -1.33
+   ],
+   "max": [
+    -2.45,
+    8.71,
+    -1.0
+   ],
+   "mats": [
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_skullShoulder3_000",
+   "tris": 660,
+   "min": [
+    -3.01,
+    8.11,
+    -0.62
+   ],
+   "max": [
+    -2.74,
+    8.38,
+    -0.46
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_skullShoulder3_001",
+   "tris": 660,
+   "min": [
+    -2.77,
+    8.24,
+    -1.27
+   ],
+   "max": [
+    -2.5,
+    8.52,
+    -1.11
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_skullShoulder3_002",
+   "tris": 660,
+   "min": [
+    -3.17,
+    8.06,
+    -0.59
+   ],
+   "max": [
+    -2.9,
+    8.33,
+    -0.45
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_skullShoulder3_003",
+   "tris": 660,
+   "min": [
+    -2.92,
+    8.2,
+    -1.3
+   ],
+   "max": [
+    -2.59,
+    8.53,
+    -1.12
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_skullShoulder3_004",
+   "tris": 660,
+   "min": [
+    -3.14,
+    8.0,
+    -0.56
+   ],
+   "max": [
+    -2.79,
+    8.35,
+    -0.38
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_000",
+   "tris": 72,
+   "min": [
+    -2.81,
+    8.17,
+    -0.7
+   ],
+   "max": [
+    -2.73,
+    8.25,
+    -0.61
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_001",
+   "tris": 72,
+   "min": [
+    -3.0,
+    8.21,
+    -0.6
+   ],
+   "max": [
+    -2.93,
+    8.28,
+    -0.54
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_002",
+   "tris": 72,
+   "min": [
+    -2.75,
+    8.22,
+    -1.31
+   ],
+   "max": [
+    -2.68,
+    8.3,
+    -1.24
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_003",
+   "tris": 72,
+   "min": [
+    -2.86,
+    8.17,
+    -0.65
+   ],
+   "max": [
+    -2.8,
+    8.25,
+    -0.57
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_004",
+   "tris": 72,
+   "min": [
+    -2.73,
+    8.12,
+    -0.73
+   ],
+   "max": [
+    -2.66,
+    8.18,
+    -0.66
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_005",
+   "tris": 72,
+   "min": [
+    -3.02,
+    8.13,
+    -0.56
+   ],
+   "max": [
+    -2.97,
+    8.18,
+    -0.5
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_006",
+   "tris": 72,
+   "min": [
+    -2.86,
+    8.2,
+    -0.67
+   ],
+   "max": [
+    -2.79,
+    8.28,
+    -0.58
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_007",
+   "tris": 72,
+   "min": [
+    -2.91,
+    8.21,
+    -0.63
+   ],
+   "max": [
+    -2.83,
+    8.29,
+    -0.53
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_008",
+   "tris": 72,
+   "min": [
+    -2.99,
+    8.14,
+    -0.56
+   ],
+   "max": [
+    -2.91,
+    8.21,
+    -0.46
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_009",
+   "tris": 72,
+   "min": [
+    -2.78,
+    8.24,
+    -1.3
+   ],
+   "max": [
+    -2.69,
+    8.33,
+    -1.21
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_010",
+   "tris": 72,
+   "min": [
+    -2.71,
+    8.33,
+    -1.25
+   ],
+   "max": [
+    -2.63,
+    8.39,
+    -1.16
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_011",
+   "tris": 72,
+   "min": [
+    -2.79,
+    8.08,
+    -0.66
+   ],
+   "max": [
+    -2.71,
+    8.16,
+    -0.58
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_012",
+   "tris": 72,
+   "min": [
+    -2.76,
+    8.15,
+    -0.76
+   ],
+   "max": [
+    -2.67,
+    8.25,
+    -0.67
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_skullShoulder3_013",
+   "tris": 72,
+   "min": [
+    -2.84,
+    8.32,
+    -1.31
+   ],
+   "max": [
+    -2.77,
+    8.39,
+    -1.23
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder0_003",
+   "tris": 72,
+   "min": [
+    2.83,
+    9.05,
+    -0.59
+   ],
+   "max": [
+    2.9,
+    9.12,
+    -0.5
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder0_004",
+   "tris": 72,
+   "min": [
+    2.89,
+    9.05,
+    -0.9
+   ],
+   "max": [
+    2.97,
+    9.14,
+    -0.81
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder0_006",
+   "tris": 72,
+   "min": [
+    2.83,
+    8.95,
+    -1.39
+   ],
+   "max": [
+    2.89,
+    9.03,
+    -1.3
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder0_007",
+   "tris": 72,
+   "min": [
+    2.78,
+    8.92,
+    -1.39
+   ],
+   "max": [
+    2.85,
+    8.98,
+    -1.32
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder0_008",
+   "tris": 72,
+   "min": [
+    2.8,
+    9.15,
+    -0.43
+   ],
+   "max": [
+    2.89,
+    9.23,
+    -0.32
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder0_009",
+   "tris": 72,
+   "min": [
+    2.82,
+    9.09,
+    -0.5
+   ],
+   "max": [
+    2.9,
+    9.16,
+    -0.41
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_ferns_handShoulder1_000",
+   "tris": 1260,
+   "min": [
+    4.13,
+    8.74,
+    -0.55
+   ],
+   "max": [
+    4.83,
+    9.43,
+    -0.3
+   ],
+   "mats": [
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_ferns_handShoulder1_001",
+   "tris": 1260,
+   "min": [
+    4.09,
+    8.78,
+    -0.46
+   ],
+   "max": [
+    4.93,
+    9.63,
+    -0.14
+   ],
+   "mats": [
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder1_000",
+   "tris": 660,
+   "min": [
+    4.18,
+    8.92,
+    -0.56
+   ],
+   "max": [
+    4.46,
+    9.19,
+    -0.4
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder1_001",
+   "tris": 660,
+   "min": [
+    4.05,
+    8.89,
+    -0.5
+   ],
+   "max": [
+    4.41,
+    9.25,
+    -0.3
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder1_002",
+   "tris": 660,
+   "min": [
+    4.24,
+    8.93,
+    -0.53
+   ],
+   "max": [
+    4.6,
+    9.28,
+    -0.33
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder1_003",
+   "tris": 660,
+   "min": [
+    4.27,
+    8.9,
+    -0.56
+   ],
+   "max": [
+    4.57,
+    9.2,
+    -0.4
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder1_004",
+   "tris": 660,
+   "min": [
+    4.35,
+    8.83,
+    -0.59
+   ],
+   "max": [
+    4.64,
+    9.13,
+    -0.39
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder1_005",
+   "tris": 660,
+   "min": [
+    4.3,
+    8.85,
+    -0.59
+   ],
+   "max": [
+    4.59,
+    9.16,
+    -0.41
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_000",
+   "tris": 72,
+   "min": [
+    4.4,
+    9.03,
+    -0.55
+   ],
+   "max": [
+    4.48,
+    9.11,
+    -0.47
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_001",
+   "tris": 72,
+   "min": [
+    4.4,
+    9.09,
+    -0.51
+   ],
+   "max": [
+    4.47,
+    9.16,
+    -0.43
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_002",
+   "tris": 72,
+   "min": [
+    4.45,
+    9.02,
+    -0.55
+   ],
+   "max": [
+    4.5,
+    9.09,
+    -0.48
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_003",
+   "tris": 72,
+   "min": [
+    4.38,
+    9.04,
+    -0.54
+   ],
+   "max": [
+    4.46,
+    9.12,
+    -0.46
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_005",
+   "tris": 72,
+   "min": [
+    4.38,
+    9.07,
+    -0.53
+   ],
+   "max": [
+    4.46,
+    9.14,
+    -0.45
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_006",
+   "tris": 72,
+   "min": [
+    4.45,
+    9.03,
+    -0.55
+   ],
+   "max": [
+    4.51,
+    9.08,
+    -0.48
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_007",
+   "tris": 72,
+   "min": [
+    4.35,
+    9.04,
+    -0.54
+   ],
+   "max": [
+    4.44,
+    9.14,
+    -0.42
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_008",
+   "tris": 72,
+   "min": [
+    4.35,
+    8.99,
+    -0.59
+   ],
+   "max": [
+    4.44,
+    9.05,
+    -0.51
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_009",
+   "tris": 72,
+   "min": [
+    4.35,
+    9.08,
+    -0.52
+   ],
+   "max": [
+    4.43,
+    9.17,
+    -0.44
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_010",
+   "tris": 72,
+   "min": [
+    4.4,
+    9.06,
+    -0.54
+   ],
+   "max": [
+    4.46,
+    9.1,
+    -0.47
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_011",
+   "tris": 72,
+   "min": [
+    4.34,
+    9.17,
+    -0.47
+   ],
+   "max": [
+    4.42,
+    9.25,
+    -0.37
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_012",
+   "tris": 72,
+   "min": [
+    4.41,
+    9.07,
+    -0.53
+   ],
+   "max": [
+    4.48,
+    9.13,
+    -0.42
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_013",
+   "tris": 72,
+   "min": [
+    4.36,
+    9.15,
+    -0.48
+   ],
+   "max": [
+    4.45,
+    9.23,
+    -0.39
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder1_014",
+   "tris": 72,
+   "min": [
+    4.49,
+    9.07,
+    -0.5
+   ],
+   "max": [
+    4.58,
+    9.17,
+    -0.4
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_ferns_handShoulder2_000",
+   "tris": 900,
+   "min": [
+    2.38,
+    9.41,
+    -0.42
+   ],
+   "max": [
+    3.01,
+    10.12,
+    -0.11
+   ],
+   "mats": [
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_ferns_handShoulder2_001",
+   "tris": 1260,
+   "min": [
+    2.21,
+    9.46,
+    -0.44
+   ],
+   "max": [
+    3.06,
+    10.31,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder2_000",
+   "tris": 660,
+   "min": [
+    2.44,
+    9.56,
+    -0.45
+   ],
+   "max": [
+    2.83,
+    9.95,
+    -0.26
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder2_001",
+   "tris": 660,
+   "min": [
+    2.51,
+    9.73,
+    -0.43
+   ],
+   "max": [
+    2.81,
+    10.03,
+    -0.26
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder2_002",
+   "tris": 660,
+   "min": [
+    2.48,
+    9.48,
+    -0.44
+   ],
+   "max": [
+    2.77,
+    9.77,
+    -0.3
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder2_003",
+   "tris": 660,
+   "min": [
+    2.37,
+    9.69,
+    -0.49
+   ],
+   "max": [
+    2.65,
+    9.96,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder2_004",
+   "tris": 660,
+   "min": [
+    2.61,
+    9.67,
+    -0.41
+   ],
+   "max": [
+    2.85,
+    9.9,
+    -0.27
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_shrubs_handShoulder2_005",
+   "tris": 660,
+   "min": [
+    2.53,
+    9.66,
+    -0.46
+   ],
+   "max": [
+    2.78,
+    9.91,
+    -0.28
+   ],
+   "mats": [
+    "CFEnv_Crimson_Undergrowth",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_000",
+   "tris": 72,
+   "min": [
+    2.59,
+    9.77,
+    -0.46
+   ],
+   "max": [
+    2.65,
+    9.84,
+    -0.4
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_001",
+   "tris": 72,
+   "min": [
+    2.54,
+    9.89,
+    -0.42
+   ],
+   "max": [
+    2.6,
+    9.97,
+    -0.33
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_002",
+   "tris": 72,
+   "min": [
+    2.62,
+    9.82,
+    -0.44
+   ],
+   "max": [
+    2.68,
+    9.87,
+    -0.36
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_003",
+   "tris": 72,
+   "min": [
+    2.6,
+    9.78,
+    -0.45
+   ],
+   "max": [
+    2.68,
+    9.87,
+    -0.34
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_004",
+   "tris": 72,
+   "min": [
+    2.73,
+    9.7,
+    -0.37
+   ],
+   "max": [
+    2.82,
+    9.8,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_005",
+   "tris": 72,
+   "min": [
+    2.39,
+    9.84,
+    -0.53
+   ],
+   "max": [
+    2.44,
+    9.91,
+    -0.46
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_006",
+   "tris": 72,
+   "min": [
+    2.52,
+    9.77,
+    -0.48
+   ],
+   "max": [
+    2.61,
+    9.86,
+    -0.38
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_007",
+   "tris": 72,
+   "min": [
+    2.57,
+    9.74,
+    -0.48
+   ],
+   "max": [
+    2.62,
+    9.79,
+    -0.41
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_008",
+   "tris": 72,
+   "min": [
+    2.59,
+    9.71,
+    -0.45
+   ],
+   "max": [
+    2.67,
+    9.79,
+    -0.37
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_009",
+   "tris": 72,
+   "min": [
+    2.63,
+    9.83,
+    -0.43
+   ],
+   "max": [
+    2.68,
+    9.89,
+    -0.35
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_010",
+   "tris": 72,
+   "min": [
+    2.62,
+    9.76,
+    -0.44
+   ],
+   "max": [
+    2.72,
+    9.85,
+    -0.35
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_011",
+   "tris": 72,
+   "min": [
+    2.56,
+    9.66,
+    -0.47
+   ],
+   "max": [
+    2.63,
+    9.73,
+    -0.41
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_012",
+   "tris": 72,
+   "min": [
+    2.62,
+    9.63,
+    -0.42
+   ],
+   "max": [
+    2.72,
+    9.73,
+    -0.3
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_013",
+   "tris": 72,
+   "min": [
+    2.58,
+    9.75,
+    -0.48
+   ],
+   "max": [
+    2.63,
+    9.82,
+    -0.41
+   ],
+   "mats": [
+    "CFEnv_Crimson_YoungTips",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFRefine_flowers_handShoulder2_014",
+   "tris": 72,
+   "min": [
+    2.8,
+    9.81,
+    -0.37
+   ],
+   "max": [
+    2.89,
+    9.9,
+    -0.27
+   ],
+   "mats": [
+    "CFEnv_Crimson_Blossom",
+    "CFEnv_Fern_Verdigris",
+    "CFEnv_Ancient_Root"
+   ],
+   "cols": [
+    "CFENV_20_VEGETATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Abyss_BlackCooledVolcanicBasin",
+   "tris": 10368,
+   "min": [
+    -15.0,
+    -7.0,
+    -3.33
+   ],
+   "max": [
+    15.0,
+    24.0,
+    -3.11
+   ],
+   "mats": [
+    "CF_Abyss_CooledCrust"
+   ],
+   "cols": [
+    "CFENV_90_PRESENTATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Abyss_VisibleMoltenCleftVolume",
+   "tris": 19582,
+   "min": [
+    -17.16,
+    -2.6,
+    -5.43
+   ],
+   "max": [
+    17.16,
+    34.8,
+    -2.63
+   ],
+   "mats": [
+    "CFEnv_Molten_DirectionalFlow22"
+   ],
+   "cols": [
+    "CFENV_90_PRESENTATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Atmosphere05_FarCourtHeightHaze",
+   "tris": 12,
+   "min": [
+    -24.0,
+    14.0,
+    -4.0
+   ],
+   "max": [
+    24.0,
+    40.0,
+    15.0
+   ],
+   "mats": [
+    "CF05_FiniteFarHeightHaze"
+   ],
+   "cols": [
+    "CFENV_90_PRESENTATION"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_LeftRockAbutment",
+   "tris": 12032,
+   "min": [
+    -2.95,
+    10.09,
+    -3.69
+   ],
+   "max": [
+    -1.62,
+    12.17,
+    -0.48
+   ],
+   "mats": [
+    "CFEnv_Basalt",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_RightRockAbutment",
+   "tris": 12032,
+   "min": [
+    1.19,
+    10.1,
+    -3.8
+   ],
+   "max": [
+    2.51,
+    12.17,
+    -0.48
+   ],
+   "mats": [
+    "CFEnv_Basalt",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_PierPlinth_-1",
+   "tris": 188,
+   "min": [
+    -2.71,
+    10.54,
+    -0.57
+   ],
+   "max": [
+    -1.59,
+    11.56,
+    -0.33
+   ],
+   "mats": [
+    "CFEnv_Basalt",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_00_0",
+   "tris": 188,
+   "min": [
+    -2.54,
+    10.67,
+    -0.33
+   ],
+   "max": [
+    -2.16,
+    11.43,
+    -0.01
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_00_1",
+   "tris": 188,
+   "min": [
+    -2.14,
+    10.67,
+    -0.33
+   ],
+   "max": [
+    -1.76,
+    11.43,
+    -0.01
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_01_0",
+   "tris": 188,
+   "min": [
+    -2.54,
+    10.67,
+    0.0
+   ],
+   "max": [
+    -2.16,
+    11.43,
+    0.33
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_01_1",
+   "tris": 188,
+   "min": [
+    -2.14,
+    10.67,
+    0.0
+   ],
+   "max": [
+    -1.76,
+    11.43,
+    0.33
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_02_0",
+   "tris": 268,
+   "min": [
+    -2.54,
+    10.67,
+    0.34
+   ],
+   "max": [
+    -2.16,
+    11.43,
+    0.66
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_02_1",
+   "tris": 268,
+   "min": [
+    -2.14,
+    10.67,
+    0.34
+   ],
+   "max": [
+    -1.76,
+    11.43,
+    0.66
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_03_0",
+   "tris": 188,
+   "min": [
+    -2.54,
+    10.67,
+    0.67
+   ],
+   "max": [
+    -2.16,
+    11.43,
+    1.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_03_1",
+   "tris": 188,
+   "min": [
+    -2.14,
+    10.67,
+    0.67
+   ],
+   "max": [
+    -1.76,
+    11.43,
+    1.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_04_0",
+   "tris": 268,
+   "min": [
+    -2.54,
+    10.67,
+    1.01
+   ],
+   "max": [
+    -2.16,
+    11.43,
+    1.33
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_04_1",
+   "tris": 268,
+   "min": [
+    -2.14,
+    10.67,
+    1.01
+   ],
+   "max": [
+    -1.76,
+    11.43,
+    1.33
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_05_0",
+   "tris": 188,
+   "min": [
+    -2.54,
+    10.67,
+    1.34
+   ],
+   "max": [
+    -2.16,
+    11.43,
+    1.67
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_05_1",
+   "tris": 188,
+   "min": [
+    -2.14,
+    10.67,
+    1.34
+   ],
+   "max": [
+    -1.76,
+    11.43,
+    1.67
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_06_0",
+   "tris": 268,
+   "min": [
+    -2.54,
+    10.67,
+    1.68
+   ],
+   "max": [
+    -2.16,
+    11.43,
+    2.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_-1_06_1",
+   "tris": 268,
+   "min": [
+    -2.14,
+    10.67,
+    1.68
+   ],
+   "max": [
+    -1.76,
+    11.43,
+    2.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_ImpostCap_-1",
+   "tris": 188,
+   "min": [
+    -2.66,
+    10.59,
+    1.79
+   ],
+   "max": [
+    -1.64,
+    11.51,
+    1.97
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_PierPlinth_1",
+   "tris": 188,
+   "min": [
+    1.16,
+    10.54,
+    -0.57
+   ],
+   "max": [
+    2.28,
+    11.56,
+    -0.33
+   ],
+   "mats": [
+    "CFEnv_Basalt",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_00_0",
+   "tris": 188,
+   "min": [
+    1.33,
+    10.67,
+    -0.33
+   ],
+   "max": [
+    1.71,
+    11.43,
+    -0.01
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_00_1",
+   "tris": 188,
+   "min": [
+    1.73,
+    10.67,
+    -0.33
+   ],
+   "max": [
+    2.11,
+    11.43,
+    -0.01
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_01_0",
+   "tris": 188,
+   "min": [
+    1.33,
+    10.67,
+    0.0
+   ],
+   "max": [
+    1.71,
+    11.43,
+    0.33
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_01_1",
+   "tris": 188,
+   "min": [
+    1.73,
+    10.67,
+    0.0
+   ],
+   "max": [
+    2.11,
+    11.43,
+    0.33
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_02_0",
+   "tris": 268,
+   "min": [
+    1.33,
+    10.67,
+    0.34
+   ],
+   "max": [
+    1.71,
+    11.43,
+    0.66
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_02_1",
+   "tris": 268,
+   "min": [
+    1.73,
+    10.67,
+    0.34
+   ],
+   "max": [
+    2.11,
+    11.43,
+    0.66
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_03_0",
+   "tris": 188,
+   "min": [
+    1.33,
+    10.67,
+    0.67
+   ],
+   "max": [
+    1.71,
+    11.43,
+    1.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_03_1",
+   "tris": 188,
+   "min": [
+    1.73,
+    10.67,
+    0.67
+   ],
+   "max": [
+    2.11,
+    11.43,
+    1.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_04_0",
+   "tris": 268,
+   "min": [
+    1.33,
+    10.67,
+    1.01
+   ],
+   "max": [
+    1.71,
+    11.43,
+    1.33
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_BondedCourse_1_04_1",
+   "tris": 268,
+   "min": [
+    1.73,
+    10.67,
+    1.01
+   ],
+   "max": [
+    2.11,
+    11.43,
+    1.33
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactGate_ImpostCap_1",
+   "tris": 188,
+   "min": [
+    1.21,
+    10.59,
+    1.11
+   ],
+   "max": [
+    2.23,
+    11.51,
+    1.29
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_RockTerrace",
+   "tris": 12032,
+   "min": [
+    2.72,
+    6.99,
+    -3.68
+   ],
+   "max": [
+    4.49,
+    10.0,
+    -0.92
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_WornStair_00",
+   "tris": 200,
+   "min": [
+    3.02,
+    7.29,
+    -1.23
+   ],
+   "max": [
+    4.17,
+    7.61,
+    -0.93
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_WornStair_01",
+   "tris": 196,
+   "min": [
+    3.02,
+    7.59,
+    -1.08
+   ],
+   "max": [
+    4.17,
+    7.91,
+    -0.78
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_WornStair_02",
+   "tris": 188,
+   "min": [
+    3.02,
+    7.89,
+    -0.93
+   ],
+   "max": [
+    4.17,
+    8.21,
+    -0.63
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_WornStair_03",
+   "tris": 188,
+   "min": [
+    3.02,
+    8.19,
+    -0.78
+   ],
+   "max": [
+    4.17,
+    8.51,
+    -0.48
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_WornStair_04",
+   "tris": 198,
+   "min": [
+    3.02,
+    8.49,
+    -0.63
+   ],
+   "max": [
+    4.17,
+    8.81,
+    -0.33
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_WornStair_05",
+   "tris": 188,
+   "min": [
+    3.02,
+    8.79,
+    -0.48
+   ],
+   "max": [
+    4.17,
+    9.11,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_FracturedParapet_-1_0",
+   "tris": 188,
+   "min": [
+    2.84,
+    7.52,
+    -0.95
+   ],
+   "max": [
+    3.04,
+    7.98,
+    -0.53
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_FracturedParapet_-1_1",
+   "tris": 188,
+   "min": [
+    2.83,
+    8.14,
+    -0.75
+   ],
+   "max": [
+    3.05,
+    8.6,
+    -0.33
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_FracturedParapet_-1_2",
+   "tris": 188,
+   "min": [
+    2.84,
+    8.76,
+    -0.55
+   ],
+   "max": [
+    3.04,
+    9.22,
+    -0.13
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_FracturedParapet_1_0",
+   "tris": 188,
+   "min": [
+    4.16,
+    7.52,
+    -0.95
+   ],
+   "max": [
+    4.36,
+    7.98,
+    -0.53
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_FracturedParapet_1_1",
+   "tris": 188,
+   "min": [
+    4.16,
+    8.14,
+    -0.75
+   ],
+   "max": [
+    4.36,
+    8.6,
+    -0.33
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_HandApproach_FracturedParapet_1_2",
+   "tris": 188,
+   "min": [
+    4.15,
+    8.76,
+    -0.54
+   ],
+   "max": [
+    4.37,
+    9.22,
+    -0.14
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactCourt_ColumnSocket_0",
+   "tris": 188,
+   "min": [
+    -3.37,
+    9.43,
+    -0.47
+   ],
+   "max": [
+    -2.73,
+    10.07,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Basalt",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactCourt_FracturedColumnDrum_0",
+   "tris": 396,
+   "min": [
+    -3.36,
+    9.47,
+    -0.33
+   ],
+   "max": [
+    -2.76,
+    10.02,
+    0.53
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactCourt_ColumnSocket_1",
+   "tris": 188,
+   "min": [
+    2.4,
+    9.7,
+    -0.47
+   ],
+   "max": [
+    3.04,
+    10.34,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Basalt",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PactCourt_FracturedColumnDrum_1",
+   "tris": 396,
+   "min": [
+    2.47,
+    9.77,
+    -0.3
+   ],
+   "max": [
+    2.98,
+    10.27,
+    0.27
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone",
+    "CFEnv_Stone_DarkMortarCrevices",
+    "CFEnv_Stone_ExposedFracture"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_WeatheredFrontDescent_00",
+   "tris": 188,
+   "min": [
+    -0.53,
+    -1.05,
+    -0.43
+   ],
+   "max": [
+    0.53,
+    -0.77,
+    -0.23
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_WeatheredFrontDescent_01",
+   "tris": 188,
+   "min": [
+    -0.48,
+    -1.24,
+    -0.57
+   ],
+   "max": [
+    0.48,
+    -0.96,
+    -0.37
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Altar_WeatheredFrontDescent_02",
+   "tris": 188,
+   "min": [
+    -0.43,
+    -1.43,
+    -0.71
+   ],
+   "max": [
+    0.43,
+    -1.15,
+    -0.51
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_30_RITUAL_ARCHITECTURE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_CC0_AltarWestUnderface",
+   "tris": 19512,
+   "min": [
+    -0.89,
+    -0.32,
+    -1.12
+   ],
+   "max": [
+    -0.03,
+    0.36,
+    -0.32
+   ],
+   "mats": [
+    "CFEnv_CC0_PhotographedRockFace"
+   ],
+   "cols": [
+    "CFENV_40_CC0_PHOTOGRAMMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_CC0_AltarEastUnderface",
+   "tris": 19512,
+   "min": [
+    -0.03,
+    -0.36,
+    -1.12
+   ],
+   "max": [
+    0.95,
+    0.48,
+    -0.32
+   ],
+   "mats": [
+    "CFEnv_CC0_PhotographedRockFace"
+   ],
+   "cols": [
+    "CFENV_40_CC0_PHOTOGRAMMETRY"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Eclipse_Body",
+   "tris": 3968,
+   "min": [
+    -14.0,
+    126.0,
+    22.75
+   ],
+   "max": [
+    14.0,
+    154.0,
+    50.75
+   ],
+   "mats": [
+    "CF08_DarkBody_ConstantEmission"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Eclipse_Corona",
+   "tris": 2,
+   "min": [
+    -41.53,
+    132.06,
+    -3.31
+   ],
+   "max": [
+    42.54,
+    153.31,
+    78.03
+   ],
+   "mats": [
+    "CF08_BakedCorona_EmissionAlpha"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Eclipse_Smoke_00",
+   "tris": 2,
+   "min": [
+    -28.98,
+    115.04,
+    26.11
+   ],
+   "max": [
+    15.81,
+    131.36,
+    68.44
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Eclipse_Smoke_01",
+   "tris": 2,
+   "min": [
+    -29.63,
+    119.58,
+    21.69
+   ],
+   "max": [
+    -4.91,
+    126.82,
+    45.47
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Eclipse_Smoke_02",
+   "tris": 2,
+   "min": [
+    2.49,
+    118.07,
+    24.5
+   ],
+   "max": [
+    33.82,
+    128.33,
+    55.97
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Eclipse_Smoke_03",
+   "tris": 2,
+   "min": [
+    -35.47,
+    119.34,
+    32.14
+   ],
+   "max": [
+    -7.55,
+    127.06,
+    59.02
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Eclipse_Smoke_04",
+   "tris": 2,
+   "min": [
+    -40.41,
+    120.3,
+    -0.37
+   ],
+   "max": [
+    4.39,
+    126.1,
+    44.16
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Eclipse_Shards",
+   "tris": 560,
+   "min": [
+    -17.25,
+    132.68,
+    16.43
+   ],
+   "max": [
+    35.05,
+    144.27,
+    75.91
+   ],
+   "mats": [
+    "CFEnv_Basalt_BurntAbyss"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Sky_SmokeBank_00",
+   "tris": 2,
+   "min": [
+    -158.51,
+    131.96,
+    35.32
+   ],
+   "max": [
+    -44.12,
+    214.08,
+    140.85
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Sky_SmokeBank_01",
+   "tris": 2,
+   "min": [
+    -16.3,
+    97.12,
+    4.35
+   ],
+   "max": [
+    127.24,
+    185.9,
+    140.07
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Sky_SmokeBank_02",
+   "tris": 2,
+   "min": [
+    -159.25,
+    116.14,
+    -23.24
+   ],
+   "max": [
+    6.77,
+    186.83,
+    135.22
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Sky_SmokeBank_03",
+   "tris": 2,
+   "min": [
+    -66.48,
+    176.89,
+    10.44
+   ],
+   "max": [
+    101.04,
+    240.12,
+    168.85
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Sky_SmokeBank_04",
+   "tris": 2,
+   "min": [
+    -137.36,
+    95.37,
+    21.83
+   ],
+   "max": [
+    -23.99,
+    159.15,
+    123.85
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Sky_SmokeBank_05",
+   "tris": 2,
+   "min": [
+    -40.42,
+    93.62,
+    1.94
+   ],
+   "max": [
+    102.99,
+    163.43,
+    138.78
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Sky_SmokeBank_06",
+   "tris": 2,
+   "min": [
+    -180.01,
+    141.42,
+    1.23
+   ],
+   "max": [
+    -31.97,
+    218.15,
+    142.25
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Sky_SmokeBank_07",
+   "tris": 2,
+   "min": [
+    -39.18,
+    171.98,
+    15.83
+   ],
+   "max": [
+    106.82,
+    247.63,
+    165.83
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CFCL_Sky_SmokeBank_08",
+   "tris": 2,
+   "min": [
+    -134.45,
+    114.29,
+    18.46
+   ],
+   "max": [
+    -48.99,
+    176.3,
+    108.8
+   ],
+   "mats": [
+    "CF14_BakedSmoke_BaseColorAlpha_BLEND"
+   ],
+   "cols": [
+    "CFENV_91_SKY_AB_CLAUDE"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Hero_CC0Skull05_CraniumAndUpperTeeth",
+   "tris": 2504,
+   "min": [
+    -5.45,
+    6.24,
+    -0.41
+   ],
+   "max": [
+    -2.15,
+    9.96,
+    2.61
+   ],
+   "mats": [
+    "CF17_CavityDeposit_CFEnv_Hero_CC0SkullIvory05"
+   ],
+   "cols": [
+    "CFENV_11_SKULL_CANDIDATE_05"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Depth06_MidLeftRiftRib",
+   "tris": 2492,
+   "min": [
+    -8.73,
+    21.32,
+    -3.25
+   ],
+   "max": [
+    -6.15,
+    22.43,
+    3.89
+   ],
+   "mats": [
+    "CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_12_DEPTH_LAYERS_06"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Depth06_FarLeftOuterRib",
+   "tris": 2492,
+   "min": [
+    -16.98,
+    29.36,
+    -3.7
+   ],
+   "max": [
+    -13.24,
+    30.68,
+    5.03
+   ],
+   "mats": [
+    "CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_12_DEPTH_LAYERS_06"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Depth06_MidRightRiftRib",
+   "tris": 2492,
+   "min": [
+    7.59,
+    24.42,
+    -3.15
+   ],
+   "max": [
+    10.13,
+    25.49,
+    4.58
+   ],
+   "mats": [
+    "CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_12_DEPTH_LAYERS_06"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Depth06_FarRightOuterRib",
+   "tris": 2492,
+   "min": [
+    13.93,
+    33.24,
+    -3.5
+   ],
+   "max": [
+    18.11,
+    34.75,
+    6.71
+   ],
+   "mats": [
+    "CFDepth04_DarkRib_CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_12_DEPTH_LAYERS_06"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_CC0_Fern02_AltarLeft",
+   "tris": 784,
+   "min": [
+    -0.83,
+    -0.11,
+    -0.25
+   ],
+   "max": [
+    -0.43,
+    0.31,
+    -0.09
+   ],
+   "mats": [
+    "CFEnv_CC0_Fern02_Cutout"
+   ],
+   "cols": [
+    "CFENV_42_CC0_FERN_CLUMPS"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_CC0_Fern02_AltarRight",
+   "tris": 816,
+   "min": [
+    0.43,
+    -0.13,
+    -0.24
+   ],
+   "max": [
+    0.87,
+    0.31,
+    -0.12
+   ],
+   "mats": [
+    "CFEnv_CC0_Fern02_Cutout"
+   ],
+   "cols": [
+    "CFENV_42_CC0_FERN_CLUMPS"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_CC0_Fern02_AltarRearLeft",
+   "tris": 2384,
+   "min": [
+    -0.8,
+    0.3,
+    -0.26
+   ],
+   "max": [
+    -0.43,
+    0.66,
+    -0.14
+   ],
+   "mats": [
+    "CFEnv_CC0_Fern02_Cutout"
+   ],
+   "cols": [
+    "CFENV_42_CC0_FERN_CLUMPS"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Canyon10_MainBank_Left",
+   "tris": 20000,
+   "min": [
+    -8.69,
+    -0.8,
+    -5.04
+   ],
+   "max": [
+    -2.41,
+    17.4,
+    -0.3
+   ],
+   "mats": [
+    "CFEnv_Captured_namaqualand_cliff_02"
+   ],
+   "cols": [
+    "CFENV_13_CONNECTED_CANYON_BANKS_10"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Canyon10_MainBank_Right",
+   "tris": 20000,
+   "min": [
+    2.41,
+    0.1,
+    -4.96
+   ],
+   "max": [
+    8.69,
+    18.3,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Captured_namaqualand_cliff_02"
+   ],
+   "cols": [
+    "CFENV_13_CONNECTED_CANYON_BANKS_10"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Canyon10_ClosedBackfill_-1",
+   "tris": 60,
+   "min": [
+    -10.75,
+    -1.6,
+    -6.25
+   ],
+   "max": [
+    -5.61,
+    19.5,
+    -1.53
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_13_CONNECTED_CANYON_BANKS_10"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Canyon10_ClosedBackfill_1",
+   "tris": 60,
+   "min": [
+    5.61,
+    -1.6,
+    -6.25
+   ],
+   "max": [
+    10.75,
+    19.5,
+    -1.5
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_13_CONNECTED_CANYON_BANKS_10"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Canyon10_HeroOutcrop_Skull",
+   "tris": 19999,
+   "min": [
+    -4.32,
+    3.68,
+    -2.94
+   ],
+   "max": [
+    -1.43,
+    8.61,
+    0.19
+   ],
+   "mats": [
+    "CFEnv_Captured_namaqualand_cliff_01"
+   ],
+   "cols": [
+    "CFENV_13_CONNECTED_CANYON_BANKS_10"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Canyon10_HeroOutcrop_Hand",
+   "tris": 19999,
+   "min": [
+    0.97,
+    8.15,
+    -2.76
+   ],
+   "max": [
+    4.57,
+    12.59,
+    0.37
+   ],
+   "mats": [
+    "CFEnv_Captured_namaqualand_cliff_01"
+   ],
+   "cols": [
+    "CFENV_13_CONNECTED_CANYON_BANKS_10"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_FarConnectedBank_-1",
+   "tris": 3999,
+   "min": [
+    -9.9,
+    16.2,
+    -4.93
+   ],
+   "max": [
+    -3.56,
+    35.2,
+    -0.53
+   ],
+   "mats": [
+    "CFEnv_Captured_namaqualand_cliff_02"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_FarConnectedBank_1",
+   "tris": 3999,
+   "min": [
+    3.56,
+    16.2,
+    -4.93
+   ],
+   "max": [
+    9.9,
+    35.2,
+    -0.53
+   ],
+   "mats": [
+    "CFEnv_Captured_namaqualand_cliff_02"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_FarBuriedBackfill_-1",
+   "tris": 52,
+   "min": [
+    -12.19,
+    16.0,
+    -6.3
+   ],
+   "max": [
+    -6.25,
+    35.4,
+    -1.82
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_FarBuriedBackfill_1",
+   "tris": 52,
+   "min": [
+    6.27,
+    16.0,
+    -6.3
+   ],
+   "max": [
+    12.19,
+    35.4,
+    -1.81
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CapturedArchBearing_-1",
+   "tris": 1248,
+   "min": [
+    -5.25,
+    24.93,
+    -3.21
+   ],
+   "max": [
+    -2.83,
+    29.06,
+    -0.76
+   ],
+   "mats": [
+    "CFEnv_Captured_namaqualand_cliff_01"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CapturedArchBearing_1",
+   "tris": 1248,
+   "min": [
+    2.77,
+    25.0,
+    -3.21
+   ],
+   "max": [
+    5.79,
+    28.71,
+    -0.76
+   ],
+   "mats": [
+    "CFEnv_Captured_namaqualand_cliff_01"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BuriedMasonryBearing_-1",
+   "tris": 44,
+   "min": [
+    -4.15,
+    26.24,
+    -3.5
+   ],
+   "max": [
+    -2.9,
+    27.77,
+    -1.03
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_-1_0_0",
+   "tris": 44,
+   "min": [
+    -3.44,
+    26.54,
+    -2.38
+   ],
+   "max": [
+    -3.03,
+    27.46,
+    -2.1
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_-1_0_1",
+   "tris": 44,
+   "min": [
+    -3.86,
+    26.55,
+    -2.38
+   ],
+   "max": [
+    -3.45,
+    27.46,
+    -2.1
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_-1_1_0",
+   "tris": 44,
+   "min": [
+    -3.45,
+    26.54,
+    -2.09
+   ],
+   "max": [
+    -3.03,
+    27.46,
+    -1.81
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_-1_1_1",
+   "tris": 44,
+   "min": [
+    -3.87,
+    26.55,
+    -2.09
+   ],
+   "max": [
+    -3.45,
+    27.45,
+    -1.81
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_-1_2_0",
+   "tris": 44,
+   "min": [
+    -3.45,
+    26.55,
+    -1.8
+   ],
+   "max": [
+    -3.03,
+    27.46,
+    -1.51
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_-1_2_1",
+   "tris": 44,
+   "min": [
+    -3.87,
+    26.55,
+    -1.8
+   ],
+   "max": [
+    -3.46,
+    27.46,
+    -1.51
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_SpringImpost_-1",
+   "tris": 44,
+   "min": [
+    -3.95,
+    26.48,
+    -1.66
+   ],
+   "max": [
+    -2.89,
+    27.52,
+    -1.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_0_0",
+   "tris": 44,
+   "min": [
+    -3.99,
+    26.63,
+    -1.45
+   ],
+   "max": [
+    -3.45,
+    27.51,
+    -1.16
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_0_1",
+   "tris": 44,
+   "min": [
+    -3.98,
+    26.63,
+    -1.16
+   ],
+   "max": [
+    -3.45,
+    27.51,
+    -0.87
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_0_2",
+   "tris": 44,
+   "min": [
+    -3.99,
+    26.63,
+    -0.87
+   ],
+   "max": [
+    -3.45,
+    27.5,
+    -0.58
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_0_3",
+   "tris": 44,
+   "min": [
+    -3.99,
+    26.63,
+    -0.58
+   ],
+   "max": [
+    -3.45,
+    27.5,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_0_4",
+   "tris": 44,
+   "min": [
+    -3.99,
+    26.63,
+    -0.29
+   ],
+   "max": [
+    -3.45,
+    27.51,
+    -0.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_0_5",
+   "tris": 44,
+   "min": [
+    -3.98,
+    26.64,
+    0.0
+   ],
+   "max": [
+    -3.46,
+    27.5,
+    0.28
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_InterruptedCoping_-1",
+   "tris": 44,
+   "min": [
+    -4.01,
+    26.58,
+    0.27
+   ],
+   "max": [
+    -3.42,
+    27.57,
+    0.4
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_1_0",
+   "tris": 44,
+   "min": [
+    -4.53,
+    26.64,
+    -1.45
+   ],
+   "max": [
+    -3.99,
+    27.51,
+    -1.16
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_1_1",
+   "tris": 44,
+   "min": [
+    -4.53,
+    26.64,
+    -1.16
+   ],
+   "max": [
+    -3.99,
+    27.51,
+    -0.87
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_1_2",
+   "tris": 44,
+   "min": [
+    -4.52,
+    26.63,
+    -0.87
+   ],
+   "max": [
+    -3.99,
+    27.51,
+    -0.58
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_1_3",
+   "tris": 44,
+   "min": [
+    -4.53,
+    26.63,
+    -0.58
+   ],
+   "max": [
+    -4.0,
+    27.5,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_1_4",
+   "tris": 44,
+   "min": [
+    -4.53,
+    26.63,
+    -0.29
+   ],
+   "max": [
+    -3.99,
+    27.51,
+    -0.0
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_2_0",
+   "tris": 44,
+   "min": [
+    -5.07,
+    26.63,
+    -1.45
+   ],
+   "max": [
+    -4.53,
+    27.51,
+    -1.16
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_2_1",
+   "tris": 44,
+   "min": [
+    -5.07,
+    26.63,
+    -1.16
+   ],
+   "max": [
+    -4.53,
+    27.5,
+    -0.88
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_2_2",
+   "tris": 44,
+   "min": [
+    -5.07,
+    26.64,
+    -0.87
+   ],
+   "max": [
+    -4.53,
+    27.5,
+    -0.58
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_-1_2_3",
+   "tris": 44,
+   "min": [
+    -5.07,
+    26.63,
+    -0.58
+   ],
+   "max": [
+    -4.55,
+    27.51,
+    -0.29
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_0_0",
+   "tris": 44,
+   "min": [
+    -4.5,
+    27.35,
+    -1.06
+   ],
+   "max": [
+    -3.99,
+    27.91,
+    -0.77
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_0_1",
+   "tris": 44,
+   "min": [
+    -4.49,
+    27.35,
+    -0.77
+   ],
+   "max": [
+    -3.98,
+    27.91,
+    -0.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_0_2",
+   "tris": 44,
+   "min": [
+    -4.49,
+    27.35,
+    -0.49
+   ],
+   "max": [
+    -3.98,
+    27.91,
+    -0.21
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_0_3",
+   "tris": 44,
+   "min": [
+    -4.5,
+    27.35,
+    -0.2
+   ],
+   "max": [
+    -3.99,
+    27.91,
+    0.08
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_1_0",
+   "tris": 44,
+   "min": [
+    -4.54,
+    27.91,
+    -1.06
+   ],
+   "max": [
+    -4.04,
+    28.47,
+    -0.77
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_1_1",
+   "tris": 44,
+   "min": [
+    -4.54,
+    27.91,
+    -0.77
+   ],
+   "max": [
+    -4.05,
+    28.47,
+    -0.5
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_1_2",
+   "tris": 44,
+   "min": [
+    -4.53,
+    27.91,
+    -0.49
+   ],
+   "max": [
+    -4.03,
+    28.47,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_1_3",
+   "tris": 44,
+   "min": [
+    -4.54,
+    27.91,
+    -0.2
+   ],
+   "max": [
+    -4.04,
+    28.47,
+    0.08
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_2_0",
+   "tris": 44,
+   "min": [
+    -4.54,
+    28.47,
+    -1.06
+   ],
+   "max": [
+    -4.03,
+    29.03,
+    -0.77
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_2_1",
+   "tris": 44,
+   "min": [
+    -4.54,
+    28.47,
+    -0.77
+   ],
+   "max": [
+    -4.04,
+    29.03,
+    -0.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_2_2",
+   "tris": 44,
+   "min": [
+    -4.53,
+    28.47,
+    -0.49
+   ],
+   "max": [
+    -4.04,
+    29.03,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_3_0",
+   "tris": 44,
+   "min": [
+    -4.5,
+    29.03,
+    -1.06
+   ],
+   "max": [
+    -3.99,
+    29.59,
+    -0.78
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_3_1",
+   "tris": 44,
+   "min": [
+    -4.5,
+    29.03,
+    -0.77
+   ],
+   "max": [
+    -3.99,
+    29.59,
+    -0.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_3_2",
+   "tris": 44,
+   "min": [
+    -4.5,
+    29.03,
+    -0.49
+   ],
+   "max": [
+    -3.99,
+    29.59,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_4_0",
+   "tris": 44,
+   "min": [
+    -4.45,
+    29.6,
+    -1.06
+   ],
+   "max": [
+    -3.94,
+    30.15,
+    -0.77
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_-1_4_1",
+   "tris": 44,
+   "min": [
+    -4.45,
+    29.59,
+    -0.77
+   ],
+   "max": [
+    -3.96,
+    30.15,
+    -0.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BuriedMasonryBearing_1",
+   "tris": 44,
+   "min": [
+    2.89,
+    26.22,
+    -3.5
+   ],
+   "max": [
+    4.15,
+    27.76,
+    -1.03
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_1_0_0",
+   "tris": 44,
+   "min": [
+    3.03,
+    26.54,
+    -2.38
+   ],
+   "max": [
+    3.45,
+    27.45,
+    -2.1
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_1_0_1",
+   "tris": 44,
+   "min": [
+    3.45,
+    26.55,
+    -2.38
+   ],
+   "max": [
+    3.87,
+    27.45,
+    -2.1
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_1_1_0",
+   "tris": 44,
+   "min": [
+    3.03,
+    26.55,
+    -2.09
+   ],
+   "max": [
+    3.45,
+    27.45,
+    -1.81
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_1_1_1",
+   "tris": 44,
+   "min": [
+    3.45,
+    26.55,
+    -2.09
+   ],
+   "max": [
+    3.87,
+    27.45,
+    -1.81
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_1_2_0",
+   "tris": 44,
+   "min": [
+    3.03,
+    26.55,
+    -1.8
+   ],
+   "max": [
+    3.45,
+    27.46,
+    -1.51
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BondedSpring_1_2_1",
+   "tris": 44,
+   "min": [
+    3.45,
+    26.55,
+    -1.8
+   ],
+   "max": [
+    3.87,
+    27.46,
+    -1.51
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_SpringImpost_1",
+   "tris": 44,
+   "min": [
+    2.89,
+    26.48,
+    -1.66
+   ],
+   "max": [
+    3.95,
+    27.52,
+    -1.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_1_0_0",
+   "tris": 44,
+   "min": [
+    3.45,
+    26.64,
+    -1.45
+   ],
+   "max": [
+    3.98,
+    27.51,
+    -1.17
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_1_0_1",
+   "tris": 44,
+   "min": [
+    3.45,
+    26.63,
+    -1.16
+   ],
+   "max": [
+    3.99,
+    27.5,
+    -0.88
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_1_0_2",
+   "tris": 44,
+   "min": [
+    3.45,
+    26.64,
+    -0.87
+   ],
+   "max": [
+    3.99,
+    27.51,
+    -0.58
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_1_0_3",
+   "tris": 44,
+   "min": [
+    3.45,
+    26.64,
+    -0.58
+   ],
+   "max": [
+    3.98,
+    27.51,
+    -0.3
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_InterruptedCoping_1",
+   "tris": 44,
+   "min": [
+    3.43,
+    26.58,
+    -0.31
+   ],
+   "max": [
+    4.02,
+    27.57,
+    -0.18
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_1_1_0",
+   "tris": 44,
+   "min": [
+    3.99,
+    26.63,
+    -1.45
+   ],
+   "max": [
+    4.53,
+    27.5,
+    -1.17
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_1_1_1",
+   "tris": 44,
+   "min": [
+    4.0,
+    26.63,
+    -1.16
+   ],
+   "max": [
+    4.53,
+    27.5,
+    -0.87
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenSpandrel_1_1_2",
+   "tris": 44,
+   "min": [
+    3.99,
+    26.63,
+    -0.87
+   ],
+   "max": [
+    4.53,
+    27.5,
+    -0.59
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_0_0",
+   "tris": 44,
+   "min": [
+    3.98,
+    27.35,
+    -1.06
+   ],
+   "max": [
+    4.5,
+    27.91,
+    -0.77
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_0_1",
+   "tris": 44,
+   "min": [
+    3.98,
+    27.35,
+    -0.77
+   ],
+   "max": [
+    4.49,
+    27.91,
+    -0.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_0_2",
+   "tris": 44,
+   "min": [
+    3.99,
+    27.35,
+    -0.49
+   ],
+   "max": [
+    4.49,
+    27.91,
+    -0.22
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_1_0",
+   "tris": 44,
+   "min": [
+    4.04,
+    27.9,
+    -1.06
+   ],
+   "max": [
+    4.54,
+    28.46,
+    -0.78
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_1_1",
+   "tris": 44,
+   "min": [
+    4.03,
+    27.91,
+    -0.77
+   ],
+   "max": [
+    4.54,
+    28.47,
+    -0.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_1_2",
+   "tris": 44,
+   "min": [
+    4.03,
+    27.91,
+    -0.49
+   ],
+   "max": [
+    4.53,
+    28.47,
+    -0.2
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_2_0",
+   "tris": 44,
+   "min": [
+    4.03,
+    28.47,
+    -1.06
+   ],
+   "max": [
+    4.55,
+    29.03,
+    -0.77
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_2_1",
+   "tris": 44,
+   "min": [
+    4.04,
+    28.47,
+    -0.77
+   ],
+   "max": [
+    4.54,
+    29.03,
+    -0.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_3_0",
+   "tris": 44,
+   "min": [
+    3.99,
+    29.03,
+    -1.06
+   ],
+   "max": [
+    4.5,
+    29.59,
+    -0.77
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CourtWallReturn_1_3_1",
+   "tris": 44,
+   "min": [
+    3.99,
+    29.04,
+    -0.77
+   ],
+   "max": [
+    4.5,
+    29.59,
+    -0.49
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_00",
+   "tris": 76,
+   "min": [
+    -3.37,
+    26.59,
+    -1.52
+   ],
+   "max": [
+    -2.97,
+    27.41,
+    -1.02
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_01",
+   "tris": 76,
+   "min": [
+    -3.35,
+    26.59,
+    -1.06
+   ],
+   "max": [
+    -2.89,
+    27.41,
+    -0.52
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_02",
+   "tris": 76,
+   "min": [
+    -3.25,
+    26.59,
+    -0.6
+   ],
+   "max": [
+    -2.75,
+    27.41,
+    -0.04
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_03",
+   "tris": 76,
+   "min": [
+    -3.08,
+    26.59,
+    -0.16
+   ],
+   "max": [
+    -2.55,
+    27.41,
+    0.42
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_04",
+   "tris": 76,
+   "min": [
+    -2.86,
+    26.59,
+    0.25
+   ],
+   "max": [
+    -2.3,
+    27.41,
+    0.84
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_05",
+   "tris": 76,
+   "min": [
+    -2.59,
+    26.59,
+    0.64
+   ],
+   "max": [
+    -2.01,
+    27.41,
+    1.23
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_06",
+   "tris": 76,
+   "min": [
+    -2.26,
+    26.59,
+    0.99
+   ],
+   "max": [
+    -1.67,
+    27.41,
+    1.57
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_07",
+   "tris": 76,
+   "min": [
+    -1.88,
+    26.59,
+    1.3
+   ],
+   "max": [
+    -1.29,
+    27.41,
+    1.87
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_08",
+   "tris": 76,
+   "min": [
+    -1.47,
+    26.59,
+    1.57
+   ],
+   "max": [
+    -0.89,
+    27.41,
+    2.11
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_09",
+   "tris": 76,
+   "min": [
+    -1.03,
+    26.59,
+    1.78
+   ],
+   "max": [
+    -0.46,
+    27.41,
+    2.28
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_-1_10",
+   "tris": 76,
+   "min": [
+    -0.55,
+    26.59,
+    1.94
+   ],
+   "max": [
+    -0.01,
+    27.41,
+    2.41
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_00",
+   "tris": 76,
+   "min": [
+    2.97,
+    26.59,
+    -1.52
+   ],
+   "max": [
+    3.39,
+    27.41,
+    -1.02
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_01",
+   "tris": 76,
+   "min": [
+    2.89,
+    26.59,
+    -1.06
+   ],
+   "max": [
+    3.35,
+    27.41,
+    -0.52
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_02",
+   "tris": 76,
+   "min": [
+    2.75,
+    26.59,
+    -0.6
+   ],
+   "max": [
+    3.24,
+    27.41,
+    -0.04
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_03",
+   "tris": 76,
+   "min": [
+    2.55,
+    26.59,
+    -0.16
+   ],
+   "max": [
+    3.08,
+    27.41,
+    0.42
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_04",
+   "tris": 76,
+   "min": [
+    2.3,
+    26.59,
+    0.25
+   ],
+   "max": [
+    2.87,
+    27.41,
+    0.84
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_05",
+   "tris": 76,
+   "min": [
+    2.01,
+    26.59,
+    0.64
+   ],
+   "max": [
+    2.58,
+    27.41,
+    1.22
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_06",
+   "tris": 76,
+   "min": [
+    1.67,
+    26.59,
+    0.99
+   ],
+   "max": [
+    2.25,
+    27.41,
+    1.58
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_07",
+   "tris": 76,
+   "min": [
+    1.29,
+    26.59,
+    1.3
+   ],
+   "max": [
+    1.89,
+    27.41,
+    1.87
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_08",
+   "tris": 76,
+   "min": [
+    0.89,
+    26.59,
+    1.57
+   ],
+   "max": [
+    1.47,
+    27.41,
+    2.1
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_09",
+   "tris": 76,
+   "min": [
+    0.46,
+    26.59,
+    1.78
+   ],
+   "max": [
+    1.02,
+    27.41,
+    2.29
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_CurvedVoussoir_1_10",
+   "tris": 76,
+   "min": [
+    0.01,
+    26.59,
+    1.94
+   ],
+   "max": [
+    0.55,
+    27.41,
+    2.42
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_WornPointedCrownKey",
+   "tris": 44,
+   "min": [
+    -0.18,
+    26.56,
+    2.01
+   ],
+   "max": [
+    0.17,
+    27.44,
+    2.36
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenHoodMoulding_-1_0",
+   "tris": 44,
+   "min": [
+    -3.49,
+    26.54,
+    -1.52
+   ],
+   "max": [
+    -3.36,
+    27.46,
+    -1.03
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenHoodMoulding_-1_1",
+   "tris": 44,
+   "min": [
+    -3.46,
+    26.54,
+    -1.04
+   ],
+   "max": [
+    -3.28,
+    27.46,
+    -0.55
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenHoodMoulding_-1_2",
+   "tris": 44,
+   "min": [
+    -3.37,
+    26.54,
+    -0.57
+   ],
+   "max": [
+    -3.14,
+    27.46,
+    -0.08
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenHoodMoulding_1_0",
+   "tris": 44,
+   "min": [
+    3.36,
+    26.54,
+    -1.52
+   ],
+   "max": [
+    3.49,
+    27.46,
+    -1.03
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_BrokenHoodMoulding_1_1",
+   "tris": 44,
+   "min": [
+    3.28,
+    26.54,
+    -1.04
+   ],
+   "max": [
+    3.46,
+    27.46,
+    -0.55
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearLeftCurvedSpring_00",
+   "tris": 76,
+   "min": [
+    -2.38,
+    10.7,
+    1.95
+   ],
+   "max": [
+    -2.08,
+    11.4,
+    2.13
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearLeftCurvedSpring_01",
+   "tris": 76,
+   "min": [
+    -2.37,
+    10.7,
+    2.1
+   ],
+   "max": [
+    -2.05,
+    11.4,
+    2.31
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearLeftCurvedSpring_02",
+   "tris": 76,
+   "min": [
+    -2.33,
+    10.7,
+    2.24
+   ],
+   "max": [
+    -2.0,
+    11.4,
+    2.48
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearLeftCurvedSpring_03",
+   "tris": 76,
+   "min": [
+    -2.27,
+    10.7,
+    2.38
+   ],
+   "max": [
+    -1.94,
+    11.4,
+    2.65
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearLeftCurvedSpring_04",
+   "tris": 76,
+   "min": [
+    -2.18,
+    10.7,
+    2.51
+   ],
+   "max": [
+    -1.86,
+    11.4,
+    2.8
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearLeftCurvedSpring_05",
+   "tris": 76,
+   "min": [
+    -2.07,
+    10.7,
+    2.64
+   ],
+   "max": [
+    -1.76,
+    11.4,
+    2.93
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearLeftCurvedSpring_06",
+   "tris": 76,
+   "min": [
+    -1.94,
+    10.7,
+    2.75
+   ],
+   "max": [
+    -1.64,
+    11.4,
+    3.06
+   ],
+   "mats": [
+    "CFEnv_Sanctuary_Stone"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearBrokenHood_00",
+   "tris": 44,
+   "min": [
+    -2.47,
+    10.66,
+    1.95
+   ],
+   "max": [
+    -2.38,
+    11.44,
+    2.14
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearBrokenHood_01",
+   "tris": 44,
+   "min": [
+    -2.45,
+    10.66,
+    2.14
+   ],
+   "max": [
+    -2.35,
+    11.44,
+    2.33
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearBrokenHood_02",
+   "tris": 44,
+   "min": [
+    -2.41,
+    10.66,
+    2.32
+   ],
+   "max": [
+    -2.29,
+    11.44,
+    2.52
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_Pact09_NearBrokenHood_03",
+   "tris": 44,
+   "min": [
+    -2.35,
+    10.66,
+    2.5
+   ],
+   "max": [
+    -2.2,
+    11.44,
+    2.69
+   ],
+   "mats": [
+    "CFEnv_Basalt"
+   ],
+   "cols": [
+    "CFENV_31_LOST_COURT_ARCH_09"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_PhotoLichen11_skull",
+   "tris": 9828,
+   "min": [
+    -5.45,
+    6.3,
+    1.04
+   ],
+   "max": [
+    -2.16,
+    9.96,
+    2.61
+   ],
+   "mats": [
+    "CFEnv_PhotoLichen11_skull"
+   ],
+   "cols": [
+    "CFENV_43_PHOTOGRAPHIC_MOSS_11"
+   ],
+   "parent": "ENV_Hero_CC0Skull05_CraniumAndUpperTeeth"
+  },
+  {
+   "name": "ENV_MossFronds11_skull",
+   "tris": 8414,
+   "min": [
+    -5.47,
+    6.29,
+    1.32
+   ],
+   "max": [
+    -2.16,
+    9.96,
+    2.64
+   ],
+   "mats": [
+    "CFEnv_CC0_Moss11_SharedCutout"
+   ],
+   "cols": [
+    "CFENV_43_PHOTOGRAPHIC_MOSS_11"
+   ],
+   "parent": "ENV_Hero_CC0Skull05_CraniumAndUpperTeeth"
+  },
+  {
+   "name": "ENV_PhotoLichen11_hand",
+   "tris": 8342,
+   "min": [
+    1.91,
+    9.08,
+    -0.32
+   ],
+   "max": [
+    4.34,
+    10.42,
+    4.13
+   ],
+   "mats": [
+    "CFEnv_PhotoLichen11_hand"
+   ],
+   "cols": [
+    "CFENV_43_PHOTOGRAPHIC_MOSS_11"
+   ],
+   "parent": "ENV_Hero_Hand_PetrifiedOpenPalm"
+  },
+  {
+   "name": "ENV_MossFronds11_hand",
+   "tris": 7010,
+   "min": [
+    1.92,
+    9.08,
+    -0.32
+   ],
+   "max": [
+    4.32,
+    10.42,
+    4.09
+   ],
+   "mats": [
+    "CFEnv_CC0_Moss11_SharedCutout"
+   ],
+   "cols": [
+    "CFENV_43_PHOTOGRAPHIC_MOSS_11"
+   ],
+   "parent": "ENV_Hero_Hand_PetrifiedOpenPalm"
+  },
+  {
+   "name": "ENV_BankVegetation21_EastHero",
+   "tris": 8000,
+   "min": [
+    1.97,
+    8.76,
+    -1.79
+   ],
+   "max": [
+    3.92,
+    10.08,
+    0.24
+   ],
+   "mats": [
+    "CFEnv_CC0_Fern02_Cutout",
+    "CFEnv_CC0_Fern02_Crimson13_Cutout.001"
+   ],
+   "cols": [
+    "CFENV_45_COHERENT_FERN_PATCHES_21"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_BankVegetation21_EastNear",
+   "tris": 4016,
+   "min": [
+    4.88,
+    1.61,
+    -2.32
+   ],
+   "max": [
+    5.48,
+    2.22,
+    -1.99
+   ],
+   "mats": [
+    "CFEnv_CC0_Fern02_Cutout",
+    "CFEnv_CC0_Fern02_Crimson13_Cutout.001"
+   ],
+   "cols": [
+    "CFENV_45_COHERENT_FERN_PATCHES_21"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_BankVegetation21_WestHero",
+   "tris": 8000,
+   "min": [
+    -3.95,
+    4.9,
+    -0.32
+   ],
+   "max": [
+    -2.85,
+    7.52,
+    0.43
+   ],
+   "mats": [
+    "CFEnv_CC0_Fern02_Cutout",
+    "CFEnv_CC0_Fern02_Crimson13_Cutout.001"
+   ],
+   "cols": [
+    "CFENV_45_COHERENT_FERN_PATCHES_21"
+   ],
+   "parent": null
+  },
+  {
+   "name": "ENV_BankVegetation21_WestNear",
+   "tris": 3984,
+   "min": [
+    -6.11,
+    1.46,
+    -2.27
+   ],
+   "max": [
+    -5.47,
+    2.07,
+    -1.8
+   ],
+   "mats": [
+    "CFEnv_CC0_Fern02_Cutout",
+    "CFEnv_CC0_Fern02_Crimson13_Cutout.001"
+   ],
+   "cols": [
+    "CFENV_45_COHERENT_FERN_PATCHES_21"
+   ],
+   "parent": null
+  },
+  {
+   "name": "CF_PlayingSurface_8x8.001",
+   "tris": 222,
+   "min": [
+    -0.32,
+    -0.32,
+    -0.01
+   ],
+   "max": [
+    0.32,
+    0.32,
+    0.0
+   ],
+   "mats": [
+    "Crownfall_Atlas_PBR_2K.001"
+   ],
+   "cols": [
+    "01_BOARD_EXPORT.001"
+   ],
+   "parent": "Crownfall_Board_v001_ROOT.001"
+  },
+  {
+   "name": "CF_Base_Integrated_Walnut.001",
+   "tris": 376,
+   "min": [
+    -0.38,
+    -0.38,
+    -0.05
+   ],
+   "max": [
+    0.38,
+    0.38,
+    -0.01
+   ],
+   "mats": [
+    "Crownfall_Atlas_PBR_2K.001"
+   ],
+   "cols": [
+    "01_BOARD_EXPORT.001"
+   ],
+   "parent": "Crownfall_Board_v001_ROOT.001"
+  },
+  {
+   "name": "CF_Frame_CarvedWood_BronzeFittings.001",
+   "tris": 5288,
+   "min": [
+    -0.38,
+    -0.38,
+    -0.05
+   ],
+   "max": [
+    0.38,
+    0.38,
+    0.01
+   ],
+   "mats": [
+    "Crownfall_Atlas_PBR_2K.001"
+   ],
+   "cols": [
+    "01_BOARD_EXPORT.001"
+   ],
+   "parent": "Crownfall_Board_v001_ROOT.001"
+  },
+  {
+   "name": "CF_Emblem_Player_Replaceable_Blank.001",
+   "tris": 616,
+   "min": [
+    -0.07,
+    -0.37,
+    0.0
+   ],
+   "max": [
+    0.07,
+    -0.33,
+    0.01
+   ],
+   "mats": [
+    "Crownfall_Atlas_PBR_2K.001"
+   ],
+   "cols": [
+    "01_BOARD_EXPORT.001"
+   ],
+   "parent": "Crownfall_Board_v001_ROOT.001"
+  },
+  {
+   "name": "CF_Emblem_Opponent_Replaceable_Blank.001",
+   "tris": 616,
+   "min": [
+    -0.07,
+    0.33,
+    0.0
+   ],
+   "max": [
+    0.07,
+    0.37,
+    0.01
+   ],
+   "mats": [
+    "Crownfall_Atlas_PBR_2K.001"
+   ],
+   "cols": [
+    "01_BOARD_EXPORT.001"
+   ],
+   "parent": "Crownfall_Board_v001_ROOT.001"
+  }
+ ],
+ "tris_by_prefix": [
+  [
+   "ENV_Dais",
+   134788
+  ],
+  [
+   "ENV_Canyon10",
+   80118
+  ],
+  [
+   "ENV_CC0",
+   43008
+  ],
+  [
+   "ENV_Sky",
+   35840
+  ],
+  [
+   "ENV_PactGate",
+   30128
+  ],
+  [
+   "ENV_Abyss",
+   29950
+  ],
+  [
+   "ENV_Basalt",
+   24920
+  ],
+  [
+   "ENV_BankVegetation21",
+   24000
+  ],
+  [
+   "ENV_Hero",
+   22768
+  ],
+  [
+   "ENV_PhotoLichen11",
+   18170
+  ],
+  [
+   "ENV_Pact09",
+   16146
+  ],
+  [
+   "CFRefine_shrubs",
+   15840
+  ],
+  [
+   "ENV_MossFronds11",
+   15424
+  ],
+  [
+   "ENV_HandApproach",
+   14318
+  ],
+  [
+   "ENV_Depth06",
+   9968
+  ],
+  [
+   "CFRefine_ferns",
+   7020
+  ],
+  [
+   "CF_Frame",
+   5288
+  ],
+  [
+   "ENV_Altar",
+   5164
+  ],
+  [
+   "CFRefine_flowers",
+   4752
+  ],
+  [
+   "CFCL_Eclipse",
+   4540
+  ],
+  [
+   "ENV_Ruins",
+   3024
+  ],
+  [
+   "CFRefine_SurfaceConformingMoss",
+   1814
+  ],
+  [
+   "CF_Emblem",
+   1232
+  ],
+  [
+   "ENV_PactCourt",
+   1168
+  ],
+  [
+   "ENV_Root",
+   1106
+  ],
+  [
+   "CFRefine_AnchoredWeatheredRoots",
+   1104
+  ],
+  [
+   "CF_Base",
+   376
+  ],
+  [
+   "CF_PlayingSurface",
+   222
+  ],
+  [
+   "CFCL_Sky",
+   18
+  ],
+  [
+   "ENV_Atmosphere05",
+   12
+  ],
+  [
+   "ENV_Island",
+   0
+  ]
+ ]
+}

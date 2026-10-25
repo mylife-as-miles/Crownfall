@@ -1,0 +1,29 @@
+{
+ "ver": "v028_hero",
+ "variant": "keyhalf-disc-skygrade-rim-lava2-light2-fill",
+ "disc": "matte black",
+ "skygrade": 2,
+ "rim": 5.4,
+ "graze_key": {
+  "strength": 1.0,
+  "from": [
+   -0.9,
+   -0.28,
+   0.34
+  ],
+  "angle_deg": 1.2
+ },
+ "lava2": 7,
+ "light2": {
+  "world": "x0.5",
+  "fill": "x0.4",
+  "graze": "x0.8",
+  "rim_W": 6.5,
+  "rim_elev_deg": 12
+ },
+ "fill": {
+  "world": "x1.25",
+  "cam_fill_W": 0.45
+ },
+ "seconds": 216.9
+}

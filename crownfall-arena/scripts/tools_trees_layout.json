@@ -1,0 +1,45 @@
+{
+ "_note": "v004 (scope freeze, hero camera): FEWER trees in 2 deliberate clusters - right: crimson crown + coral beside/behind the hand seat; left: dark-green crown + coral on the left bank behind the skull.",
+ "placements": [
+  {
+   "source": "CFCL_ToolTree_CrimsonCrown",
+   "name": "ToolTree_HandFlank_Crimson",
+   "xy": [
+    7.6,
+    8.6
+   ],
+   "yaw": 200,
+   "scale": 0.85
+  },
+  {
+   "source": "CFCL_ToolTree_CoralTree",
+   "name": "ToolTree_HandFlank_Coral",
+   "xy": [
+    9.3,
+    9.8
+   ],
+   "yaw": 60,
+   "scale": 0.7
+  },
+  {
+   "source": "CFCL_ToolTree_GreenCrown",
+   "name": "ToolTree_LeftLedge_Green",
+   "xy": [
+    -9.4,
+    10.0
+   ],
+   "yaw": 15,
+   "scale": 1.0
+  },
+  {
+   "source": "CFCL_ToolTree_CoralTree",
+   "name": "ToolTree_LeftLedge_Coral",
+   "xy": [
+    -7.6,
+    9.0
+   ],
+   "yaw": 40,
+   "scale": 0.72
+  }
+ ]
+}

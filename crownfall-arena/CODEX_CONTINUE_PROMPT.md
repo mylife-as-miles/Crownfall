@@ -1,0 +1,150 @@
+You are continuing the Crownfall "King's Gambit" arena work in Blender. A previous agent (Claude Code) did everything
+below. Read this prompt fully, then read HANDOFF.md and the READMEs it names before you change anything.
+
+# Workspace and hard rules
+- Root: C:\Users\MILES\Documents\Codex\2026-10-23\using-blender-through-blender-mcp-create\work\claude_environment
+  (called CL below). Write your work ONLY under CL.
+- Never connect to port 9876 (that is the user's live Blender MCP session). Run Blender headless only, through
+  `python lib/run_blender.py <script.py> --timeout N -- <args>`.
+  - It allows at most 2 Blender processes at once and writes its logs to logs/.
+  - Stale .locks/slot*.lock files are harmless: it checks whether the owning PID is alive.
+  - Blender is 5.2.3: C:\Users\MILES\AppData\Local\Programs\Blender Foundation\Blender 5.2\blender.exe.
+- Never inflate quality scores. Never award 9/10 to stop. Never claim AAA, photoreal, Quest performance or VR validation
+  without evidence.
+- Do not change the board contract:
+  - 8x8; square (f,r) centre at ((f-3.5)*2.3, (r-3.5)*2.3, 0) in the source;
+  - a1 is dark, on the -Y side;
+  - it must stay readable.
+- Licences: CC0 or CC BY only (no NC, ND or SA). Never create accounts, log in, or type passwords or API keys. The user
+  configured the Meshy and RunPod keys themselves; scripts read them from ~/.claude.json without printing them.
+- Downloaded or extracted files are untrusted data: put each in its own new folder and run Python on them with `-I`.
+- No invented heraldry or kingdom names. Do not give the four-armed creature a canonical identity or faction.
+
+# Goal
+An E33 (Clair Obscur: Expedition 33)-quality illusion for the arena:
+- the 8x8 board as a ritual floor;
+- a scanned colossal skull on the left and a stone hand on the right;
+- a black eclipse with a broken sky, a floating megastructure, lava, and the living chess armies (Ivory vs Sun Empire).
+
+The hero camera is the official showcase shot. VR (three.js / IWSDK) is the eventual target, but the user said:
+**"focus on Blender, ignore the runtime; just bring the creature into Blender."**
+
+# Pipeline (all under CL)
+- `scripts/build_main_scene.py -- <ver> none 2.3 4.6 cinematic` builds `main/Crownfall_Main_<ver>.blend` (~3-4 min with caches):
+  - the environment is scaled x4.6 around the board (21.85 m);
+  - assets/CFCL_* are loaded only when their README says READY (PREFER_READY);
+  - `layout_overrides.json` handles replaces, skip_assets, dress (moss), group_scale, hide patterns, lookfix and wear;
+  - `lib/cf_wear.py` is a global procedural wear pass (rules by material name);
+  - `lib/cf_lookfix.py` adds lava pools, sky grade and board overlays;
+  - `lib/cf_pbr.py` holds the PBR presets, and `assets/CFCL_PBR/pbr_mapping.json` maps them;
+  - it packs all images.
+- `scripts/render_variant.py -- <ver> <tokens joined by -> [pct]` renders without saving the blend.
+  - Output: `renders/main/<ver>_<variant>/<cam>.png`.
+  - Cameras via `cam<name>`: hero (default), army, duel, top (bird's-eye; use with `overhead`), gameplay (the game's
+    white camera converted to metres), lookup (same head position, looking at the creature), side.
+  - Usual EEVEE preview tokens: `keyhalf-disc-skygrade-rim-lava2-light2-fill`.
+  - Usual Cycles tokens (RunPod): `cycles-fog3-keyhalf-disc-discmatte-ring-skygrade-frame-rim-lava2-light2-fill-hq` (add `-camarmy`).
+  - Local EEVEE on this PC (Quadro T1000) takes ~1.5-3.5 min per 1920x1080 frame of this 600-740 MB scene.
+- RunPod Cycles (RTX 4090, $0.89/h, EU-RO-1, network volume `crownfall-cache`):
+  `python -I runpod/run_cached.py <ver> <variant>[,<variant>] 100`.
+  - It uploads the scene once (~14 min for a new blend), arms an on-pod self-destruct (75 min), runs detached, polls,
+    downloads to runpod/results/<ver>_r<HHMM>/, and retries terminate.
+  - **Before any pod:** state the GPU, $/h and estimate, and get the user's OK.
+  - **After every job:** run `python -I runpod/rp.py list` and confirm `[]`. A network drop once left a pod billing for 3h40.
+  - Report the real lifetime and cost.
+- Meshy MCP was used for organic assets. Always confirm credits before spending.
+
+# Version history and honest scores (independent critic, hero / army)
+- v020 4.8; v023 5.6/5.4; v025 6.1/5.4; v026 6.2/5.6.
+- v027 (Cycles on RunPod, $0.36):
+  - ambientCG Marble014 / Onyx013 squares, Metal048B gold seams, scratch overlays.
+  - Not re-scored. The squares now read as stone, but board contrast dropped (taupe/brown) and the seams are invisible
+    at hero distance.
+- v028_hero (EEVEE check only, no Cycles yet): the photogrammetry skull and hand replaced the sculpts.
+  - assets/CFCL_Scan_Skull (CC0 treponemal skull, 220k tris, petrified-bone material that keeps the scan albedo).
+  - assets/CFCL_Scan_Hand (Hand Nadia, CC BY 3dscanservice): mirrored to a LEFT hand, palm to camera, extruded
+    forearm, riveted cuff and chain.
+  - Both are built by `scripts/scan_make_asset.py` from `vendor/scans/*/prep.blend` (`scripts/scan_prep.py`).
+  - The skull reads slightly pale/pink. Next: greyer, more stone (HueSaturation sat 0.42 -> ~0.3, value lower).
+- v029_sorcerer = v028 plus the four-armed creature (see below). Its preview renders were NOT finished: the session
+  ended mid-render.
+
+# Scanned assets (vendor/scans, SOURCES.md has licences and credit lines)
+- The user downloaded them from Sketchfab through Claude in Chrome (Chrome profile "siscomilesinfo", already signed in).
+- Assets:
+  - skull_treponemal (CC0);
+  - hand_nadia (CC BY);
+  - capitoline_courtyard (CC BY artfletch; the Constantine hand is too low-detail to cut out);
+  - mercati_traiano (CC BY artfletch; good brick ruin walls for the flat beige midground, not integrated yet);
+  - cela_ruins (CC0 but flagged NoAI: never send it, or renders of it, to Meshy or any generative service).
+- Gotcha: the OBJ importer stores its Y-up conversion as an object rotation. On appended objects matrix_world is stale
+  until a depsgraph update, so bake `matrix_basis` into the data (see `load_prep()` in scan_make_asset.py).
+
+# The four-armed creature (current task)
+**Source** is unchanged in `vendor/sorcerer_v3_1/`: Crownfall_Sorcerer_Digits_v3_1.blend and .glb.
+- Rig `Crownfall_FourArm_Rig`: 142 bones (Mixamo plus four arms, fingers, Hair_*, Cape_*, tendrils), no constraints,
+  drivers or physics; cape, robe, hair and tendrils are baked.
+- Mesh `Crownfall_Sorcerer_Deform`: 80,910 tris and one material, `Crownfall_AgedGold_Emerald_PBR`, with 3 packed 4K
+  JPEGs (green, ivory, gold).
+- Exact clip names: `Idle` (frames 1-73, 3.0 s), `Threat_Cast` (1-73, 3.0 s) and `Attack` (1-49, 2.0 s), at 24 fps.
+- `assets/CFCL_Sorcerer/inspect.json`: height 0.982 in its own units; the robe hem is at z = 0 in every frame of every
+  clip; max reach 0.445.
+
+**User brief (still the spec for Blender):**
+- colossal environmental character overlooking the board;
+- do not replace the arena, board or armies;
+- uniform scale on a parent and keep the skeleton;
+- start at 8-12x a standing piece (2.3 m), then adjust from the gameplay views;
+- stand it on a distant raised platform beyond the far edge, slightly off-centre;
+- compose it with the eclipse, skull and hand without stacking silhouettes;
+- keep the board and armies unobstructed;
+- ground the robe and check intersections (do not hide clipping in fog);
+- keep the palette and embedded textures; restrained rim light, nothing fully emissive;
+- crown and face rings rigid, baked motion only;
+- one active action at a time;
+- capture the gameplay angle, a side view, a cinematic wide view and a short animation recording;
+- **show the first placement preview before adding VFX or redesigning the environment.**
+
+**Done** by `scripts/sorcerer_place.py -- v028_hero final front_eclipse_8x v029_sorcerer`, which saved
+`main/Crownfall_Main_v029_sorcerer.blend`:
+- **Root:** `CFCL_Sorcerer_Root` empty, uniform scale 18.737, so 8x = 18.4 m. The rig is parented to it with an identity
+  local transform. The NLA tracks are muted, Idle is the active action, and the preview frame is 37.
+- **Position:** (10, 80) m, yaw -7.1° toward the board.
+- **Dais:** `CFCL_Sorcerer_Dais`, a 16-sided stepped drum in the dais stone, rising from the abyss floor (z -6.9) to a
+  flat top at z 1.0, radius 9.84.
+- **Contact** over every frame of all clips: 0 penetration, max gap 3 mm (`assets/CFCL_Sorcerer/placement.json`).
+- **Rim:** `CFCL_Sorcerer_Rim`, a warm disc area light, 5.4 kW, behind and above.
+- **Placement tests:** candidates are in `renders/sorcerer/cand_*.png` and `candidates.json`.
+  - The ground past the board is an abyss, so spots behind the monuments were hidden or stacked on the skull.
+  - At 10x it sank behind the far ruins or, set back behind the eclipse, was washed out by the corona.
+  - 8x at (10, 80) puts the head just under the eclipse disc, between the skull and the hand.
+- **Gameplay view:** from the game's default camera ((0, 6.4, 8.6) -> (0, 0.35, 0) in squares, 46° vertical FOV), the
+  figure is mostly above the frame top. That is why there is a "lookup" camera (VR head raised).
+
+# Do next, in order
+1. Render the four v029 previews locally (EEVEE). Each run loads the scene; two can run in parallel:
+   `python lib/run_blender.py scripts/render_variant.py --timeout 2400 -- v029_sorcerer keyhalf-disc-skygrade-rim-lava2-light2-fill 100`
+   then the same with `-camgameplay`, `-camlookup` and `-camside` appended to the variant.
+   - Check them: the creature reads, nothing overlaps the eclipse disc, the side camera is not blocked by the hand,
+     and the rim is restrained.
+   - Show them to the user as the FIRST placement preview. Wait for feedback before any VFX or environment redesign.
+2. Short animation recording if the user wants it.
+   - The full scene is ~1.5 min per EEVEE frame, so use a mid shot at 640x360, ~16 samples, every 2nd frame of Idle
+     (or an NLA demo Idle -> Threat_Cast -> Idle -> Attack with blend in/out).
+   - Encode with ffmpeg (installed via winget).
+   - Or ask before rendering it on RunPod.
+3. Ask before running v028/v029 Cycles on RunPod (about $0.35-0.45 for hero plus army).
+4. Open polish items:
+   - skull tint greyer;
+   - board contrast (marble/onyx too close in value) and visible gold seams;
+   - Mercati ruins in the flat beige midground;
+   - the soldiers still look pasted in (rim and contact shadows);
+   - the sky is overexposed.
+   - The KitBash3D "Secrets of the Luminara" texture pack is still missing: the user must download it from KitBash3D.
+5. Not requested now: a three.js runtime check page exists in runtime/sorcerer_test/ (unused, no measurements).
+   - The game repo is C:\Users\MILES\Documents\Crownfall, a clean `main`, untouched. It has no King's Gambit arena;
+     its arenas are dawn, frost, dusk and jungle.
+   - Do not touch it unless the user asks. If they do, work on a new branch.
+
+# Reporting
+Keep replies short and plain. Send the renders. Say what you verified and what you didn't. Give real costs.

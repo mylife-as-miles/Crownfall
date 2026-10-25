@@ -1,0 +1,241 @@
+{
+ "_note": "env units. Depth bands (world from the board): near-far 40-80 m = 9-17 env, far 80-160 m = 17-35 env, very far 160-300 m = 35-65 env (+ the TM ring 36-80 env). Heights are TM samples x amp. v004: wings pushed back + chunkier; under-eclipse mesas split into 3 depth planes. v006: rock landmasses replaced by 4 MID-distance (40-150 m world = 9-33 env) architectural fragments; sky-scale landmasses belong to CFCL_Sky_Shatter. v007 (scope freeze, hero camera): block wings/mesas dropped (read as near-black rectangles); 3 TM-displaced ridge layers fill the central horizon; distance haze in every material. v008: tower crown lowered 1.9 env + 0.7x (its cornice touched the eclipse's lower limb in the hero check); arch span lowered/smaller (left side was crowded).",
+ "cliff_wings": [],
+ "basalt_stacks": [
+  {
+   "c": [
+    -22.0,
+    58.0
+   ],
+   "r": 7.0,
+   "h": 16.0
+  },
+  {
+   "c": [
+    26.0,
+    62.0
+   ],
+   "r": 6.0,
+   "h": 13.0
+  },
+  {
+   "c": [
+    -8.0,
+    72.0
+   ],
+   "r": 4.0,
+   "h": 8.0
+  },
+  {
+   "c": [
+    -11.0,
+    36.0
+   ],
+   "r": 3.0,
+   "h": 5.0
+  },
+  {
+   "c": [
+    18.5,
+    27.0
+   ],
+   "r": 3.2,
+   "h": 7.5
+  },
+  {
+   "c": [
+    -16.0,
+    18.0
+   ],
+   "r": 2.6,
+   "h": 6.0
+  },
+  {
+   "c": [
+    17.0,
+    18.5
+   ],
+   "r": 2.6,
+   "h": 7.0
+  }
+ ],
+ "bridges": [
+  {
+   "name": "CFCL_FarLand_BrokenBridge",
+   "x0": -9.0,
+   "x1": 12.0,
+   "y": 50.0,
+   "deck": 3.2,
+   "bays": 6,
+   "broken": [
+    2,
+    3
+   ],
+   "snapped": [
+    3
+   ],
+   "yaw": 4
+  }
+ ],
+ "fragments": [
+  {
+   "type": "arch_span",
+   "c": [
+    -10.5,
+    25.0,
+    4.6
+   ],
+   "rot": [
+    4,
+    -9,
+    32
+   ],
+   "scale": 0.78
+  },
+  {
+   "type": "tower_crown",
+   "c": [
+    3.0,
+    30.0,
+    -1.6
+   ],
+   "rot": [
+    7,
+    5,
+    10
+   ],
+   "scale": 0.7
+  },
+  {
+   "type": "floor_column",
+   "c": [
+    14.0,
+    26.0,
+    4.0
+   ],
+   "rot": [
+    -6,
+    11,
+    -28
+   ],
+   "scale": 0.85
+  },
+  {
+   "type": "cliff_ruins",
+   "c": [
+    -15.0,
+    27.0,
+    2.5
+   ],
+   "rot": [
+    3,
+    6,
+    50
+   ],
+   "scale": 0.9
+  }
+ ],
+ "cliff_wings_v006": [
+  {
+   "name": "CFCL_FarLand_CubicCliff_Left",
+   "c": [
+    -26.0,
+    40.0
+   ],
+   "w": 20.0,
+   "d": 10.0,
+   "ang": 30,
+   "base": 0.5,
+   "amp": 8.5
+  },
+  {
+   "name": "CFCL_FarLand_CubicCliff_Right",
+   "c": [
+    27.0,
+    42.0
+   ],
+   "w": 20.0,
+   "d": 10.0,
+   "ang": -28,
+   "base": 0.5,
+   "amp": 8.0
+  },
+  {
+   "name": "CFCL_FarLand_Mesa_UnderEclipse_A",
+   "c": [
+    -3.0,
+    46.0
+   ],
+   "w": 9.0,
+   "d": 6.0,
+   "ang": 8,
+   "base": -1.0,
+   "amp": 4.0
+  },
+  {
+   "name": "CFCL_FarLand_Mesa_UnderEclipse_B",
+   "c": [
+    13.0,
+    55.0
+   ],
+   "w": 11.0,
+   "d": 6.0,
+   "ang": -6,
+   "base": -0.5,
+   "amp": 5.5
+  },
+  {
+   "name": "CFCL_FarLand_Mesa_UnderEclipse_C",
+   "c": [
+    3.0,
+    66.0
+   ],
+   "w": 14.0,
+   "d": 7.0,
+   "ang": 3,
+   "base": 0.0,
+   "amp": 7.0
+  }
+ ],
+ "ridges": [
+  {
+   "name": "CFCL_FarLand_Ridge_1",
+   "y": 44.0,
+   "x0": -42.0,
+   "x1": 44.0,
+   "depth": 9.0,
+   "amp": 9.0,
+   "z0": -6.0,
+   "uoff": [
+    0.13,
+    0.21
+   ]
+  },
+  {
+   "name": "CFCL_FarLand_Ridge_2",
+   "y": 58.0,
+   "x0": -55.0,
+   "x1": 55.0,
+   "depth": 10.0,
+   "amp": 10.5,
+   "z0": -6.0,
+   "uoff": [
+    -0.17,
+    0.33
+   ]
+  },
+  {
+   "name": "CFCL_FarLand_Ridge_3",
+   "y": 74.0,
+   "x0": -70.0,
+   "x1": 70.0,
+   "depth": 12.0,
+   "amp": 12.0,
+   "z0": -6.0,
+   "uoff": [
+    0.29,
+    -0.12
+   ]
+  }
+ ]
+}

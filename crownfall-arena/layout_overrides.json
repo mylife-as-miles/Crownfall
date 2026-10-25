@@ -1,0 +1,821 @@
+{
+ "_note": "Integration-preview overrides (Claude track). dress = cf_vegetation.dress() calls on placed objects.",
+ "fog_density": 0.03,
+ "dress": [
+  {
+   "object": "CFCL_Hero_Skull",
+   "seed": 3,
+   "scale": 1.6,
+   "density": 1.0,
+   "kw": {
+    "moss_cover": 0.2,
+    "families": [
+     "moss_shell"
+    ]
+   },
+   "_note": "v028: photogrammetry skull (no painted moss) - moss shell back up from 0.06"
+  },
+  {
+   "object": "CFCL_Hero_Hand",
+   "seed": 5,
+   "scale": 1.6,
+   "density": 0.9,
+   "kw": {
+    "moss_cover": 0.4,
+    "families": [
+     "moss_shell"
+    ]
+   }
+  },
+  {
+   "object": "CFCL_Hero_Hand_Mound",
+   "seed": 6,
+   "scale": 1.3,
+   "density": 0.55,
+   "kw": {
+    "moss_cover": 0.18,
+    "max_clusters": 6,
+    "families": [
+     "moss_shell",
+     "cushions",
+     "tufts",
+     "fungi",
+     "roots",
+     "drips"
+    ]
+   }
+  },
+  {
+   "object": "CFCL_Terrain_Central",
+   "seed": 7,
+   "scale": 1.0,
+   "density": 0.55,
+   "kw": {
+    "moss_cover": 0.18,
+    "max_clusters": 6,
+    "families": [
+     "moss_shell",
+     "cushions",
+     "tufts",
+     "fungi",
+     "roots",
+     "drips"
+    ]
+   }
+  },
+  {
+   "object": "CFCL_Terrain_SkullSeat",
+   "seed": 8,
+   "scale": 1.2,
+   "density": 0.44,
+   "kw": {
+    "moss_cover": 0.18,
+    "max_clusters": 6,
+    "families": [
+     "moss_shell",
+     "cushions",
+     "tufts",
+     "fungi",
+     "roots",
+     "drips"
+    ]
+   }
+  },
+  {
+   "object": "CFCL_Terrain_HandSeat",
+   "seed": 9,
+   "scale": 1.2,
+   "density": 0.44,
+   "kw": {
+    "moss_cover": 0.18,
+    "max_clusters": 6,
+    "families": [
+     "moss_shell",
+     "cushions",
+     "tufts",
+     "fungi",
+     "roots",
+     "drips"
+    ]
+   }
+  },
+  {
+   "object": "CFCL_Rib_C_near_01",
+   "seed": 10,
+   "scale": 1.2,
+   "density": 0.6,
+   "kw": {
+    "families": [
+     "moss_shell",
+     "crimson",
+     "fungi",
+     "roots",
+     "drips"
+    ]
+   }
+  },
+  {
+   "object": "CFCL_Rib_D_near_05",
+   "seed": 11,
+   "scale": 1.2,
+   "density": 0.6,
+   "kw": {
+    "families": [
+     "moss_shell",
+     "crimson",
+     "fungi",
+     "roots",
+     "drips"
+    ]
+   }
+  },
+  {
+   "object": "CFCL_Arch_DaisFloor",
+   "seed": 12,
+   "scale": 0.6,
+   "density": 0.7,
+   "kw": {
+    "families": [
+     "moss_shell",
+     "crimson"
+    ],
+    "max_clusters": 2
+   }
+  },
+  {
+   "object": "CFCL_Arch_AltarDrum",
+   "seed": 13,
+   "scale": 0.3,
+   "density": 0.6,
+   "kw": {
+    "families": [
+     "moss_shell",
+     "cushions",
+     "crimson",
+     "tufts"
+    ]
+   }
+  },
+  {
+   "object": "Ruin_SkullShrine_UnderSkull",
+   "seed": 21,
+   "scale": 3.0,
+   "density": 1.2,
+   "kw": {
+    "families": [
+     "crimson"
+    ],
+    "max_clusters": 1
+   }
+  },
+  {
+   "object": "Ruin_HandArcade_AroundForearm",
+   "seed": 22,
+   "scale": 3.0,
+   "density": 1.2,
+   "kw": {
+    "families": [
+     "crimson"
+    ],
+    "max_clusters": 1
+   }
+  }
+ ],
+ "objects": {
+  "Ruin_HandSeat_Stair": {
+   "hide": true
+  },
+  "CFCL_Arch_AltarOffering_Wax": {
+   "hide": true
+  },
+  "CFCL_Terrain_SpineRidge": {
+   "hide": true
+  },
+  "CFCL_Rib_C_mid_12": {
+   "hide": true
+  },
+  "CFCL_Rib_C_far_24": {
+   "hide": true
+  },
+  "CFCL_Arch_BoardSkirt": {
+   "hide": true
+  },
+  "CFCL_Arch_BoardSkirt_Bronze": {
+   "hide": true
+  },
+  "CFCL_Hero_Skull_Rubble": {
+   "hide": true
+  }
+ },
+ "cameras": {
+  "elevated_close": [
+   [
+    0,
+    -2.6,
+    2.6
+   ],
+   [
+    0,
+    0.5,
+    -0.3
+   ],
+   28
+  ]
+ },
+ "skip_assets": [
+  "CFCL_Terrain_Islands",
+  "CFCL_Tools_Trees",
+  "CFCL_Ucupaint_Hand",
+  "CFCL_Ucupaint_Skull"
+ ],
+ "look": {
+  "_note": "v3 LOCKED PALETTE (user): obsidian / ancient stone / crimson / ember gold; selective moss + dark red veg; lava concentrated near forms; darker foreground, ember-gold eclipse key, cool shadows, layered fog",
+  "world": {
+   "below": [
+    0.04,
+    0.045,
+    0.055
+   ],
+   "horizon": [
+    0.34,
+    0.34,
+    0.36
+   ],
+   "mid": [
+    0.16,
+    0.19,
+    0.24
+   ],
+   "zenith": [
+    0.05,
+    0.08,
+    0.13
+   ],
+   "glow": [
+    1.0,
+    0.56,
+    0.2
+   ]
+  },
+  "fog_color": [
+   0.52,
+   0.58,
+   0.66
+  ],
+  "fog_anisotropy": 0.72,
+  "fog_clear_r": 30.0,
+  "fog_full_r": 170.0,
+  "fog_near_mult": 0.12,
+  "light_mult": {
+   "CFCL_Sun_EclipseKey": 1.9,
+   "CFCL_Sun_EclipseRim": 1.8,
+   "CFCL_Sun_CoolFill": 1.0
+  },
+  "light_color": {
+   "CFCL_Sun_EclipseKey": [
+    1.0,
+    0.7,
+    0.4
+   ],
+   "CFCL_Sun_EclipseRim": [
+    1.0,
+    0.6,
+    0.28
+   ],
+   "CFCL_Sun_CoolFill": [
+    0.48,
+    0.6,
+    0.95
+   ]
+  },
+  "exposure": -0.1,
+  "lava_emission_mult": 1.4,
+  "lava_far_floor": 0.1,
+  "hide_lights": [
+   "CFCL_Spot_SacredShaft"
+  ],
+  "mat_value_mult": {
+   "CFCL_Basalt": 0.5,
+   "CFCL_LavaCrust": 0.7
+  }
+ },
+ "scale_mult_patterns": {
+  "^CFCL_Rib_.*(near|mid)": 0.62,
+  "^CFCL_Rib_.*far": 0.8
+ },
+ "group_scale": [
+  {
+   "anchor": "CFCL_Hero_Hand",
+   "members": [
+    "CFCL_Hero_Hand",
+    "CFCL_Hero_Hand_Manacle",
+    "CFCL_Hero_Hand_FingerFragment",
+    "CFCL_Hero_Hand_Mound"
+   ],
+   "mult": 1.25,
+   "offset": [
+    0.9,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "anchor": "CFCL_Hero_Skull",
+   "members": [
+    "CFCL_Hero_Skull",
+    "CFCL_Hero_Skull_Mandible",
+    "Ruin_SkullShrine_UnderSkull"
+   ],
+   "mult": 1.25,
+   "rotate_z_deg": 18
+  }
+ ],
+ "rim_targets": [
+  "CFCL_Hero_Skull",
+  "CFCL_Hero_Hand"
+ ],
+ "rim_energy": 9000.0,
+ "rim_colors": {
+  "CFCL_Hero_Skull": [
+   1.0,
+   0.62,
+   0.3
+  ],
+  "CFCL_Hero_Hand": [
+   1.0,
+   0.6,
+   0.28
+  ]
+ },
+ "looks": {
+  "cinematic": {
+   "_note": "CINEMATIC: storm sky, eclipse-motivated key/rim, cool ambient, layered fog, focused lava | v008: tuned toward user's lookdev kit (world 0.35-0.5, exposure -0.35) + cooler fog/fill",
+   "world": {
+    "below": [
+     0.04,
+     0.045,
+     0.055
+    ],
+    "horizon": [
+     0.3,
+     0.31,
+     0.35
+    ],
+    "mid": [
+     0.13,
+     0.17,
+     0.25
+    ],
+    "zenith": [
+     0.04,
+     0.07,
+     0.13
+    ],
+    "glow": [
+     1.0,
+     0.56,
+     0.2
+    ],
+    "clouds": 0.85,
+    "cloud_scale": 1.3,
+    "cloud_color": [
+     0.03,
+     0.036,
+     0.05
+    ]
+   },
+   "fog_color": [
+    0.46,
+    0.54,
+    0.7
+   ],
+   "fog_anisotropy": 0.72,
+   "fog_clear_r": 30.0,
+   "fog_full_r": 170.0,
+   "fog_near_mult": 0.12,
+   "light_mult": {
+    "CFCL_Sun_EclipseKey": 1.9,
+    "CFCL_Sun_EclipseRim": 1.8,
+    "CFCL_Sun_CoolFill": 1.1
+   },
+   "light_color": {
+    "CFCL_Sun_EclipseKey": [
+     1.0,
+     0.7,
+     0.4
+    ],
+    "CFCL_Sun_EclipseRim": [
+     1.0,
+     0.6,
+     0.28
+    ],
+    "CFCL_Sun_CoolFill": [
+     0.42,
+     0.56,
+     1.0
+    ]
+   },
+   "exposure": -0.15,
+   "lava_emission_mult": 1.4,
+   "lava_far_floor": 0.1,
+   "hide_lights": [
+    "CFCL_Spot_SacredShaft"
+   ],
+   "mat_value_mult": {
+    "CFCL_Basalt": 0.5,
+    "CFCL_LavaCrust": 0.7
+   },
+   "world_strength": 0.6,
+   "mist_banks": [
+    {
+     "center": [
+      0,
+      32,
+      -2
+     ],
+     "size": [
+      150,
+      30,
+      16
+     ],
+     "density": 0.05,
+     "z_ref": -6,
+     "falloff": 6,
+     "color": [
+      0.5,
+      0.52,
+      0.58
+     ]
+    },
+    {
+     "center": [
+      0,
+      105,
+      2
+     ],
+     "size": [
+      220,
+      80,
+      26
+     ],
+     "density": 0.04,
+     "z_ref": -6,
+     "falloff": 9,
+     "color": [
+      0.66,
+      0.64,
+      0.62
+     ],
+     "anisotropy": 0.6,
+     "emission": [
+      0.92,
+      0.8,
+      0.66,
+      0.012
+     ]
+    },
+    {
+     "center": [
+      0,
+      300,
+      40
+     ],
+     "size": [
+      800,
+      300,
+      120
+     ],
+     "density": 0.05,
+     "z_ref": -8,
+     "falloff": 45,
+     "color": [
+      0.64,
+      0.6,
+      0.56
+     ],
+     "emission": [
+      0.66,
+      0.64,
+      0.62,
+      0.004
+     ]
+    }
+   ],
+   "bloom": {
+    "threshold": 1.3,
+    "strength": 0.22,
+    "size": 0.35,
+    "saturation": 0.5
+   },
+   "rig": {
+    "key_elev_deg": 15,
+    "key_energy": 4.5,
+    "key_color": [
+     1.0,
+     0.69,
+     0.29
+    ],
+    "fill_elev_deg": 30,
+    "fill_ratio": 0.36,
+    "fill_color": [
+     0.45,
+     0.6,
+     1.0
+    ],
+    "remove_lights": [
+     "CF_Area_SkullFill",
+     "CFCL_Area_BoardFill"
+    ],
+    "board_top_light": 36000.0,
+    "skull_fill": 3500.0,
+    "skull_fill_color": [
+     0.6,
+     0.7,
+     0.98
+    ],
+    "skull_fill_offset": [
+     -10.0,
+     -24.0,
+     3.0
+    ],
+    "board_spot_deg": 50.5
+   },
+   "mat_overrides": {
+    "^CFCL_BoardArena_Bronze": {
+     "base": [
+      0.147,
+      0.084,
+      0.033
+     ],
+     "rough": 0.62,
+     "metal": 1.0
+    },
+    "^CFCL_EclipseBody$": {
+     "base": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "rough": 1.0,
+     "metal": 0.0,
+     "spec": 0.0,
+     "emit": 0.0
+    }
+   },
+   "vignette": 0.1
+  },
+  "gameplay": {
+   "_note": "GAMEPLAY: readability first - lighter fog, no storm layer, neutral exposure, softer lava (closer to what three.js can reproduce)",
+   "world": {
+    "below": [
+     0.04,
+     0.045,
+     0.055
+    ],
+    "horizon": [
+     0.34,
+     0.34,
+     0.36
+    ],
+    "mid": [
+     0.16,
+     0.19,
+     0.24
+    ],
+    "zenith": [
+     0.05,
+     0.08,
+     0.13
+    ],
+    "glow": [
+     1.0,
+     0.56,
+     0.2
+    ],
+    "clouds": 0.0
+   },
+   "fog_color": [
+    0.52,
+    0.58,
+    0.66
+   ],
+   "fog_anisotropy": 0.72,
+   "fog_clear_r": 30.0,
+   "fog_full_r": 170.0,
+   "fog_near_mult": 0.08,
+   "light_mult": {
+    "CFCL_Sun_EclipseKey": 1.9,
+    "CFCL_Sun_EclipseRim": 1.8,
+    "CFCL_Sun_CoolFill": 1.3
+   },
+   "light_color": {
+    "CFCL_Sun_EclipseKey": [
+     1.0,
+     0.7,
+     0.4
+    ],
+    "CFCL_Sun_EclipseRim": [
+     1.0,
+     0.6,
+     0.28
+    ],
+    "CFCL_Sun_CoolFill": [
+     0.48,
+     0.6,
+     0.95
+    ]
+   },
+   "exposure": 0.15,
+   "lava_emission_mult": 1.0,
+   "lava_far_floor": 0.1,
+   "hide_lights": [
+    "CFCL_Spot_SacredShaft"
+   ],
+   "mat_value_mult": {
+    "CFCL_Basalt": 0.5,
+    "CFCL_LavaCrust": 0.7
+   }
+  }
+ },
+ "replaces": {
+  "CFCL_Scan_Hand": "CFCL_Hero_Hand",
+  "CFCL_Scan_Skull": "CFCL_Hero_Skull"
+ },
+ "resolution": [
+  1920,
+  1080
+ ],
+ "samples": 96,
+ "hide_patterns": [
+  "^Far_TowerSquare_Right$",
+  "^Far_TowerRound_RightFar$",
+  "^Ruin_RightFlank_ColumnStanding$",
+  "^CFCL_Rib_I_far_20$",
+  "^CFCL_Arch_SteleBronze_Chain$",
+  "^CFCL_Veg_Crimson_.*CFCL_Hero_Skull",
+  "^Ruin_SkullSeat_Wall$",
+  "^Ruin_LeftFlank_WallLow$",
+  "^Ruin_RightFlank_LancetArch$",
+  "^CFCL_ToolIvy_LancetArch$",
+  "^CFCL_Rib_L_near_03$",
+  "^CFCL_ToolIvy_Rib_L_near_03$",
+  "^CFCL_Rib_I_mid_04$",
+  "^CFCL_ToolIvy_Rib_I_mid_04$",
+  "^Far_GreatArch_Left$",
+  "^CFCL_ToolIvy_Rib_M_near_07$",
+  "^Far_Colonnade_LeftFar$",
+  "^CFCL_FarLand_Frag_FloorColumn$",
+  "^CFCL_Rib_D_far_22$",
+  "^CFCL_FarLand_BasaltStacks$",
+  "^CFCL_FarLand_Frag_ArchSpan$",
+  "^ToolArch_SkullFlank_GothicPortal$",
+  "^CFCL_ToolIvy_Portal$",
+  "^KB3D_SkullFlank_Entrance$",
+  "^CFCL_FarLand_Frag_CliffRuins$",
+  "^CFCL_Rib_A_mid_14$",
+  "^CFCL_Eclipse_Smoke_00$",
+  "^CFCL_RitualFloor_Stream_\\d+_SpeckS$"
+ ],
+ "volumetric_end": 650.0,
+ "gate": {
+  "luma_mean_min": 0.3,
+  "crushed_max": 0.05,
+  "cool_min": 0.1
+ },
+ "wear": {
+  "enable": true,
+  "_doc": "lib/cf_wear.py profiles; per-profile overrides go in 'profiles', extra [regex, profile] rules in 'rules' (checked first)"
+ },
+ "lookfix": {
+  "lava": {
+   "pools": [
+    {
+     "xy": [
+      -27,
+      33
+     ],
+     "r": 5.5,
+     "light": 1800
+    },
+    {
+     "xy": [
+      -3,
+      31
+     ],
+     "r": 4.0,
+     "light": 1300
+    },
+    {
+     "xy": [
+      3.5,
+      30
+     ],
+     "r": 3.5,
+     "light": 1300
+    },
+    {
+     "xy": [
+      15,
+      35
+     ],
+     "r": 4.5,
+     "light": 1800
+    },
+    {
+     "xy": [
+      36,
+      41
+     ],
+     "r": 5.0,
+     "light": 1800
+    }
+   ],
+   "rivers": [
+    {
+     "pts": [
+      [
+       -27,
+       33
+      ],
+      [
+       -34,
+       30
+      ],
+      [
+       -41,
+       27
+      ],
+      [
+       -48,
+       24
+      ]
+     ],
+     "w": 1.8
+    },
+    {
+     "pts": [
+      [
+       36,
+       41
+      ],
+      [
+       43,
+       38
+      ],
+      [
+       50,
+       34
+      ],
+      [
+       57,
+       30
+      ]
+     ],
+     "w": 1.6
+    },
+    {
+     "pts": [
+      [
+       3.5,
+       30
+      ],
+      [
+       1,
+       27.5
+      ],
+      [
+       -1.5,
+       25.5
+      ]
+     ],
+     "w": 1.0
+    }
+   ]
+  },
+  "sky": {
+   "darken": [
+    "CFCL_SkyShatter_SkyFace"
+   ],
+   "top_from": 0.35,
+   "top_to": 0.9,
+   "top_mul": 0.45,
+   "cracks": [
+    "CFCL_SkyShatter_Beyond"
+   ],
+   "crack_mul": 1.8,
+   "crack_tint": [
+    1.0,
+    0.42,
+    0.14
+   ],
+   "crack_tint_amt": 0.65
+  },
+  "_doc": "v022 (independent critic on v020): lava at the monument bases lighting them from below; darker top of frame; crimson/ember-gold glow in the sky cracks",
+  "board_overlays": {
+   "tile_m": 2.3
+  }
+ },
+ "pbr_optional": [
+  "board_v027"
+ ]
+}

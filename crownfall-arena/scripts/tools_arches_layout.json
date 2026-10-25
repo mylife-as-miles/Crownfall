@@ -1,0 +1,10 @@
+{
+ "_note": "env-unit placements for CFCL_Tools_Arches (yaw: local -Y faces the board, + yaw_offset). Z comes from a ground ray-cast.",
+ "placements": [
+  {"source": "CFCL_ToolArch_GothicPortal", "name": "ToolArch_SkullFlank_GothicPortal", "xy": [-7.0, 15.0], "yaw_offset": 18, "replaces": "Ruin_SkullSeat_Wall"},
+  {"source": "CFCL_ToolArch_RomanArcade", "name": "ToolArch_MidLeft_RomanArcade", "xy": [-13.0, 22.0], "yaw_offset": 10},
+  {"source": "CFCL_ToolArch_HalfArch", "name": "ToolArch_MidRight_HalfArch", "xy": [13.0, 20.0], "yaw_offset": -15},
+  {"source": "CFCL_ToolArch_Colonnade", "name": "ToolArch_NearRight_Colonnade", "xy": [7.9, 5.4], "scale": 0.72, "yaw_offset": -20, "replaces": "Ruin_RightFlank_ColumnStanding"},
+  {"source": "CFCL_ToolArch_Colonnade", "name": "ToolArch_NearLeft_Colonnade", "xy": [-7.9, 5.8], "scale": 0.66, "mirror": true, "yaw_offset": 25, "replaces": "Ruin_LeftFlank_WallLow"}
+ ]
+}

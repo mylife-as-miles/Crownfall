@@ -1,0 +1,55 @@
+{
+  "name": "front_eclipse_8x",
+  "xy": [
+    10.0,
+    80.0
+  ],
+  "ground_z": -6.914,
+  "ground_hit": "CFCL_Terrain_AbyssCrust",
+  "top_z": 1.0,
+  "height_m": 18.4,
+  "scale": 18.737,
+  "mult": 8.0,
+  "yaw_deg": -7.1,
+  "dais": "CFCL_Sorcerer_Dais",
+  "dais_top_r": 9.84,
+  "contact": {
+    "Idle": {
+      "hem_min_z": 1.0,
+      "hem_max_z": 1.0,
+      "penetration_m": 0.0,
+      "max_gap_m": 0.0
+    },
+    "Threat_Cast": {
+      "hem_min_z": 1.0,
+      "hem_max_z": 1.0003,
+      "penetration_m": 0.0,
+      "max_gap_m": 0.0003
+    },
+    "Attack": {
+      "hem_min_z": 1.0,
+      "hem_max_z": 1.003,
+      "penetration_m": 0.0,
+      "max_gap_m": 0.003
+    }
+  },
+  "rim": "CFCL_Sorcerer_Rim",
+  "rim_energy_W": 5416.9599609375,
+  "rig_bones": 142,
+  "tris": 80910,
+  "clips": {
+    "Idle": [
+      1,
+      73
+    ],
+    "Threat_Cast": [
+      1,
+      73
+    ],
+    "Attack": [
+      1,
+      49
+    ]
+  },
+  "note": "v3.1 rig appended unchanged; one parent scale; NLA muted, Idle active; nothing else drives its bones"
+}

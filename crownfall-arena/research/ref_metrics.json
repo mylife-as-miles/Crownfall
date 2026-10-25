@@ -1,0 +1,4470 @@
+{
+ "_notes": {
+  "luma": "Rec.709 weights on sRGB-encoded channels, 0-1 (display-referred). Compare to final PNG.",
+  "Lstar": "CIE L* 0-100 (perceptual lightness, D65).",
+  "palette": "k=8 k-means in CIELAB on <=40k random pixels, seed 0; hex is mean sRGB of members.",
+  "regions": "Boxes chosen by eye on a 5% grid overlay; fractions of image W,H."
+ },
+ "composition_by_grid": {
+  "01_REF_primary_frontal_concept.png": {
+   "skull_bbox": {
+    "x": [
+     0.2,
+     0.395
+    ],
+    "y": [
+     0.295,
+     0.61
+    ],
+    "w": 0.195,
+    "h": 0.315,
+    "centre": [
+     0.3,
+     0.45
+    ]
+   },
+   "hand_bbox_incl_forearm": {
+    "x": [
+     0.74,
+     0.88
+    ],
+    "y": [
+     0.12,
+     0.62
+    ],
+    "w": 0.14,
+    "h": 0.5
+   },
+   "hand_fingers_palm_only": {
+    "y": [
+     0.12,
+     0.4
+    ]
+   },
+   "eclipse_disc": {
+    "centre": [
+     0.643,
+     0.224
+    ],
+    "diameter_frac_W": 0.147,
+    "diameter_frac_H": 0.263
+   },
+   "eclipse_fire_plume_extent": {
+    "x": [
+     0.45,
+     0.86
+    ],
+    "y": [
+     0.0,
+     0.42
+    ]
+   },
+   "board_playfield": {
+    "far_edge_y": 0.685,
+    "near_edge_y": 0.835,
+    "far_x": [
+     0.3,
+     0.71
+    ],
+    "near_x": [
+     0.24,
+     0.76
+    ]
+   },
+   "board_incl_frame_near_bronze_corners_x": [
+    0.145,
+    0.855
+   ],
+   "altar_front_face": {
+    "y": [
+     0.84,
+     1.0
+    ],
+    "x": [
+     0.1,
+     0.9
+    ]
+   },
+   "lava_visible": {
+    "left": {
+     "x": [
+      0.0,
+      0.15
+     ],
+     "y": [
+      0.74,
+      1.0
+     ]
+    },
+    "right": {
+     "x": [
+      0.85,
+      1.0
+     ],
+     "y": [
+      0.72,
+      1.0
+     ]
+    }
+   },
+   "horizon_eye_line_y": 0.6,
+   "largest_floating_island": {
+    "x": [
+     0.4,
+     0.46
+    ],
+    "y": [
+     0.15,
+     0.29
+    ]
+   },
+   "second_floating_island": {
+    "x": [
+     0.57,
+     0.65
+    ],
+    "y": [
+     0.48,
+     0.57
+    ]
+   },
+   "near_rib_count_visible": {
+    "left": 9,
+    "right": 7
+   },
+   "mid_spire_count_visible": 12
+  },
+  "02_REF_primary_elevated_concept.png": {
+   "altar_disc_x": [
+    0.274,
+    0.73
+   ],
+   "altar_disc_y": [
+    0.16,
+    0.92
+   ],
+   "board_frame_x": [
+    0.345,
+    0.655
+   ],
+   "board_frame_to_altar_diameter_ratio": 0.68,
+   "lava_streams": "two, flanking altar left (x 0.24-0.29) and right (x 0.71-0.77), merging below it",
+   "rib_arcs": "~10 per side, arranged on two concentric arcs, tips leaning inward toward altar"
+  }
+ },
+ "user_refs": {
+  "00_codex_viewport_current.png": {
+   "size": [
+    1918,
+    1077
+   ],
+   "luma_pct": {
+    "5": 0.094,
+    "25": 0.188,
+    "50": 0.244,
+    "75": 0.295,
+    "95": 0.495
+   },
+   "luma_mean": 0.257,
+   "luma_rms_contrast": 0.121,
+   "Lstar_pct": {
+    "5": 8.2,
+    "25": 19.9,
+    "50": 26.4,
+    "75": 32.0,
+    "95": 52.9
+   },
+   "frac_luma_below_0.08": 0.002,
+   "frac_luma_above_0.85": 0.0051,
+   "frac_clipped_white_0.98": 0.0011,
+   "luma_hist10": [
+    0.059,
+    0.244,
+    0.456,
+    0.125,
+    0.07,
+    0.032,
+    0.004,
+    0.004,
+    0.004,
+    0.002
+   ],
+   "sat_hsv_mean": 0.113,
+   "sat_hsv_median": 0.067,
+   "chroma_lab_mean": 4.7,
+   "chroma_lab_p95": 13.6,
+   "colourfulness_HS": 19.8,
+   "frac_warm_saturated": 0.018,
+   "frac_cool_tinted": 0.047,
+   "mean_hex": "#44423c",
+   "palette8": [
+    {
+     "hex": "#3b3c3c",
+     "pct": 33.5,
+     "luma": 0.234,
+     "L*": 25.2
+    },
+    {
+     "hex": "#202020",
+     "pct": 20.0,
+     "luma": 0.125,
+     "L*": 12.1
+    },
+    {
+     "hex": "#3a382b",
+     "pct": 17.7,
+     "luma": 0.218,
+     "L*": 23.3
+    },
+    {
+     "hex": "#535349",
+     "pct": 15.8,
+     "luma": 0.322,
+     "L*": 34.9
+    },
+    {
+     "hex": "#807a67",
+     "pct": 10.5,
+     "luma": 0.477,
+     "L*": 51.1
+    },
+    {
+     "hex": "#cccccb",
+     "pct": 1.3,
+     "luma": 0.8,
+     "L*": 81.9
+    },
+    {
+     "hex": "#b43d1e",
+     "pct": 0.9,
+     "luma": 0.331,
+     "L*": 43.1
+    },
+    {
+     "hex": "#5275a9",
+     "pct": 0.3,
+     "luma": 0.443,
+     "L*": 48.6
+    }
+   ],
+   "grid3x3": [
+    [
+     {
+      "hex": "#3f3f3d",
+      "luma": 0.248,
+      "sat": 0.06,
+      "L*": 26.7
+     },
+     {
+      "hex": "#464541",
+      "luma": 0.27,
+      "sat": 0.053,
+      "L*": 29.2
+     },
+     {
+      "hex": "#3c3b39",
+      "luma": 0.232,
+      "sat": 0.057,
+      "L*": 24.9
+     }
+    ],
+    [
+     {
+      "hex": "#4b4b42",
+      "luma": 0.292,
+      "sat": 0.13,
+      "L*": 31.6
+     },
+     {
+      "hex": "#575449",
+      "luma": 0.328,
+      "sat": 0.179,
+      "L*": 35.6
+     },
+     {
+      "hex": "#43433f",
+      "luma": 0.261,
+      "sat": 0.08,
+      "L*": 28.2
+     }
+    ],
+    [
+     {
+      "hex": "#3c372f",
+      "luma": 0.219,
+      "sat": 0.195,
+      "L*": 23.4
+     },
+     {
+      "hex": "#3a352e",
+      "luma": 0.211,
+      "sat": 0.199,
+      "L*": 22.5
+     },
+     {
+      "hex": "#42413d",
+      "luma": 0.256,
+      "sat": 0.067,
+      "L*": 27.6
+     }
+    ]
+   ]
+  },
+  "01_REF_primary_frontal_concept.png": {
+   "size": [
+    1024,
+    572
+   ],
+   "luma_pct": {
+    "5": 0.062,
+    "25": 0.163,
+    "50": 0.276,
+    "75": 0.445,
+    "95": 0.651
+   },
+   "luma_mean": 0.314,
+   "luma_rms_contrast": 0.19,
+   "Lstar_pct": {
+    "5": 4.9,
+    "25": 17.3,
+    "50": 30.1,
+    "75": 48.0,
+    "95": 68.3
+   },
+   "frac_luma_below_0.08": 0.076,
+   "frac_luma_above_0.85": 0.0072,
+   "frac_clipped_white_0.98": 0.0002,
+   "luma_hist10": [
+    0.114,
+    0.225,
+    0.203,
+    0.148,
+    0.121,
+    0.105,
+    0.053,
+    0.018,
+    0.01,
+    0.003
+   ],
+   "sat_hsv_mean": 0.244,
+   "sat_hsv_median": 0.165,
+   "chroma_lab_mean": 8.3,
+   "chroma_lab_p95": 23.5,
+   "colourfulness_HS": 26.1,
+   "frac_warm_saturated": 0.149,
+   "frac_cool_tinted": 0.103,
+   "mean_hex": "#564f48",
+   "palette8": [
+    {
+     "hex": "#2e332e",
+     "pct": 20.0,
+     "luma": 0.194,
+     "L*": 20.5
+    },
+    {
+     "hex": "#4e4d47",
+     "pct": 18.4,
+     "luma": 0.302,
+     "L*": 32.8
+    },
+    {
+     "hex": "#6c6d66",
+     "pct": 16.2,
+     "luma": 0.425,
+     "L*": 45.8
+    },
+    {
+     "hex": "#1a1410",
+     "pct": 15.8,
+     "luma": 0.082,
+     "L*": 7.3
+    },
+    {
+     "hex": "#979286",
+     "pct": 15.1,
+     "luma": 0.572,
+     "L*": 60.6
+    },
+    {
+     "hex": "#45211c",
+     "pct": 8.2,
+     "luma": 0.158,
+     "L*": 17.6
+    },
+    {
+     "hex": "#d2bca1",
+     "pct": 4.5,
+     "luma": 0.748,
+     "L*": 77.4
+    },
+    {
+     "hex": "#8b3f30",
+     "pct": 1.7,
+     "luma": 0.305,
+     "L*": 36.8
+    }
+   ],
+   "grid3x3": [
+    [
+     {
+      "hex": "#3c423e",
+      "luma": 0.252,
+      "sat": 0.131,
+      "L*": 27.2
+     },
+     {
+      "hex": "#7d7972",
+      "luma": 0.477,
+      "sat": 0.12,
+      "L*": 51.1
+     },
+     {
+      "hex": "#57544c",
+      "luma": 0.33,
+      "sat": 0.205,
+      "L*": 35.8
+     }
+    ],
+    [
+     {
+      "hex": "#3b3934",
+      "luma": 0.224,
+      "sat": 0.193,
+      "L*": 24.0
+     },
+     {
+      "hex": "#7e7a70",
+      "luma": 0.479,
+      "sat": 0.135,
+      "L*": 51.3
+     },
+     {
+      "hex": "#565851",
+      "luma": 0.342,
+      "sat": 0.156,
+      "L*": 37.1
+     }
+    ],
+    [
+     {
+      "hex": "#452e26",
+      "luma": 0.197,
+      "sat": 0.472,
+      "L*": 21.4
+     },
+     {
+      "hex": "#5c5148",
+      "luma": 0.325,
+      "sat": 0.306,
+      "L*": 35.3
+     },
+     {
+      "hex": "#423027",
+      "luma": 0.201,
+      "sat": 0.472,
+      "L*": 21.7
+     }
+    ]
+   ],
+   "regions": {
+    "sky_haze_between_monuments": {
+     "median_hex": "#97938b",
+     "mean_hex": "#97938a",
+     "luma_p10_p50_p90": [
+      0.522,
+      0.579,
+      0.624
+     ],
+     "sat_mean": 0.086,
+     "hue_circmean_deg": 49.0,
+     "tier_hex": {
+      "dark_0-33": "#8d877f",
+      "mid_33-66": "#97938b",
+      "bright_66-100": "#a09e96",
+      "top10": "#a7a39b",
+      "top1": "#bdb1a6"
+     },
+     "hue_families": {},
+     "pixels": 2337
+    },
+    "sky_upper_left_cloud": {
+     "median_hex": "#697374",
+     "mean_hex": "#656f6f",
+     "luma_p10_p50_p90": [
+      0.329,
+      0.442,
+      0.475
+     ],
+     "sat_mean": 0.094,
+     "hue_circmean_deg": 181.0,
+     "tier_hex": {
+      "dark_0-33": "#576060",
+      "mid_33-66": "#697374",
+      "bright_66-100": "#707a7a",
+      "top10": "#737c7b",
+      "top1": "#778180"
+     },
+     "hue_families": {},
+     "pixels": 2790
+    },
+    "eclipse_disc_interior": {
+     "median_hex": "#424041",
+     "mean_hex": "#464343",
+     "luma_p10_p50_p90": [
+      0.222,
+      0.254,
+      0.299
+     ],
+     "sat_mean": 0.112,
+     "hue_circmean_deg": 313.0,
+     "tier_hex": {
+      "dark_0-33": "#393a3c",
+      "mid_33-66": "#424041",
+      "bright_66-100": "#564f4c",
+      "top10": "#70635d",
+      "top1": "#b8a89f"
+     },
+     "hue_families": {},
+     "pixels": 11079
+    },
+    "eclipse_corona_ring": {
+     "median_hex": "#a78363",
+     "mean_hex": "#ab9174",
+     "luma_p10_p50_p90": [
+      0.333,
+      0.534,
+      0.913
+     ],
+     "sat_mean": 0.324,
+     "hue_circmean_deg": 31.0,
+     "tier_hex": {
+      "dark_0-33": "#6c594a",
+      "mid_33-66": "#a78565",
+      "bright_66-100": "#eed4ae",
+      "top10": "#fef2cc",
+      "top1": "#fffcda"
+     },
+     "hue_families": {
+      "orange_amber": {
+       "frac": 0.224,
+       "mean_hex": "#a07855",
+       "shadow_p20_hex": "#74553d",
+       "lit_p80_hex": "#cda174",
+       "luma_p10_p50_p90": [
+        0.36,
+        0.485,
+        0.634
+       ]
+      }
+     },
+     "pixels": 5858
+    },
+    "eclipse_fire_cloud_right": {
+     "median_hex": "#a47556",
+     "mean_hex": "#ad8664",
+     "luma_p10_p50_p90": [
+      0.308,
+      0.488,
+      0.882
+     ],
+     "sat_mean": 0.426,
+     "hue_circmean_deg": 27.0,
+     "tier_hex": {
+      "dark_0-33": "#704e3b",
+      "mid_33-66": "#a67858",
+      "bright_66-100": "#efcc9a",
+      "top10": "#fdebb8",
+      "top1": "#fff9cb"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.07,
+       "mean_hex": "#7e5242",
+       "shadow_p20_hex": "#674133",
+       "lit_p80_hex": "#9e6955",
+       "luma_p10_p50_p90": [
+        0.285,
+        0.347,
+        0.438
+       ]
+      },
+      "orange_amber": {
+       "frac": 0.498,
+       "mean_hex": "#a87751",
+       "shadow_p20_hex": "#714932",
+       "lit_p80_hex": "#e9b47e",
+       "luma_p10_p50_p90": [
+        0.318,
+        0.462,
+        0.726
+       ]
+      }
+     },
+     "pixels": 6014
+    },
+    "skull_moss_crown": {
+     "median_hex": "#414e40",
+     "mean_hex": "#555f50",
+     "luma_p10_p50_p90": [
+      0.21,
+      0.29,
+      0.655
+     ],
+     "sat_mean": 0.186,
+     "hue_circmean_deg": 109.0,
+     "tier_hex": {
+      "dark_0-33": "#2f3b32",
+      "mid_33-66": "#435041",
+      "bright_66-100": "#8b937e",
+      "top10": "#b5b8a5",
+      "top1": "#c5c8b4"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.758,
+       "mean_hex": "#414e3f",
+       "shadow_p20_hex": "#2b372f",
+       "lit_p80_hex": "#65725a",
+       "luma_p10_p50_p90": [
+        0.206,
+        0.259,
+        0.406
+       ]
+      }
+     },
+     "pixels": 3128
+    },
+    "skull_bone_cheek_zygoma": {
+     "median_hex": "#687152",
+     "mean_hex": "#6c745c",
+     "luma_p10_p50_p90": [
+      0.198,
+      0.427,
+      0.713
+     ],
+     "sat_mean": 0.223,
+     "hue_circmean_deg": 85.0,
+     "tier_hex": {
+      "dark_0-33": "#343c2f",
+      "mid_33-66": "#687054",
+      "bright_66-100": "#a9ae91",
+      "top10": "#c5caaf",
+      "top1": "#dae0c0"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.812,
+       "mean_hex": "#656d54",
+       "shadow_p20_hex": "#2c352b",
+       "lit_p80_hex": "#a8ae8d",
+       "luma_p10_p50_p90": [
+        0.197,
+        0.4,
+        0.661
+       ]
+      }
+     },
+     "pixels": 728
+    },
+    "skull_bone_temple_left": {
+     "median_hex": "#2a332c",
+     "mean_hex": "#2b342e",
+     "luma_p10_p50_p90": [
+      0.165,
+      0.191,
+      0.226
+     ],
+     "sat_mean": 0.181,
+     "hue_circmean_deg": 138.0,
+     "tier_hex": {
+      "dark_0-33": "#252d27",
+      "mid_33-66": "#2a342d",
+      "bright_66-100": "#333c36",
+      "top10": "#3a433d",
+      "top1": "#5d6762"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.712,
+       "mean_hex": "#29342c",
+       "shadow_p20_hex": "#232d26",
+       "lit_p80_hex": "#313c35",
+       "luma_p10_p50_p90": [
+        0.166,
+        0.19,
+        0.222
+       ]
+      }
+     },
+     "pixels": 1656
+    },
+    "skull_orbit_shadow": {
+     "median_hex": "#262a29",
+     "mean_hex": "#2a2e2c",
+     "luma_p10_p50_p90": [
+      0.138,
+      0.162,
+      0.243
+     ],
+     "sat_mean": 0.136,
+     "hue_circmean_deg": 142.0,
+     "tier_hex": {
+      "dark_0-33": "#1f2525",
+      "mid_33-66": "#262b29",
+      "bright_66-100": "#393935",
+      "top10": "#454540",
+      "top1": "#504e49"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.097,
+       "mean_hex": "#2a2f29",
+       "shadow_p20_hex": "#1a211e",
+       "lit_p80_hex": "#44473b",
+       "luma_p10_p50_p90": [
+        0.124,
+        0.159,
+        0.267
+       ]
+      }
+     },
+     "pixels": 713
+    },
+    "hand_moss_forearm": {
+     "median_hex": "#2e342c",
+     "mean_hex": "#40473a",
+     "luma_p10_p50_p90": [
+      0.154,
+      0.197,
+      0.568
+     ],
+     "sat_mean": 0.204,
+     "hue_circmean_deg": 105.0,
+     "tier_hex": {
+      "dark_0-33": "#232b22",
+      "mid_33-66": "#2f352c",
+      "bright_66-100": "#6d7661",
+      "top10": "#97a18a",
+      "top1": "#acb595"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.715,
+       "mean_hex": "#384132",
+       "shadow_p20_hex": "#1f281e",
+       "lit_p80_hex": "#747e5f",
+       "luma_p10_p50_p90": [
+        0.15,
+        0.191,
+        0.475
+       ]
+      }
+     },
+     "pixels": 2829
+    },
+    "hand_fingers_stone": {
+     "median_hex": "#374136",
+     "mean_hex": "#424a43",
+     "luma_p10_p50_p90": [
+      0.17,
+      0.244,
+      0.44
+     ],
+     "sat_mean": 0.166,
+     "hue_circmean_deg": 133.0,
+     "tier_hex": {
+      "dark_0-33": "#26302a",
+      "mid_33-66": "#3a433b",
+      "bright_66-100": "#666b65",
+      "top10": "#87897f",
+      "top1": "#babeae"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.494,
+       "mean_hex": "#303b30",
+       "shadow_p20_hex": "#222b25",
+       "lit_p80_hex": "#4e5943",
+       "luma_p10_p50_p90": [
+        0.163,
+        0.197,
+        0.308
+       ]
+      }
+     },
+     "pixels": 2080
+    },
+    "basalt_near_rib_left": {
+     "median_hex": "#1c1b1b",
+     "mean_hex": "#292826",
+     "luma_p10_p50_p90": [
+      0.082,
+      0.106,
+      0.297
+     ],
+     "sat_mean": 0.074,
+     "hue_circmean_deg": 32.0,
+     "tier_hex": {
+      "dark_0-33": "#171615",
+      "mid_33-66": "#1f1f1d",
+      "bright_66-100": "#444541",
+      "top10": "#585b57",
+      "top1": "#676b67"
+     },
+     "hue_families": {},
+     "pixels": 4018
+    },
+    "basalt_near_rib_right": {
+     "median_hex": "#333e3a",
+     "mean_hex": "#303a37",
+     "luma_p10_p50_p90": [
+      0.134,
+      0.234,
+      0.273
+     ],
+     "sat_mean": 0.183,
+     "hue_circmean_deg": 167.0,
+     "tier_hex": {
+      "dark_0-33": "#1e2627",
+      "mid_33-66": "#333e39",
+      "bright_66-100": "#3e4946",
+      "top10": "#4c5654",
+      "top1": "#646e6e"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.412,
+       "mean_hex": "#333e39",
+       "shadow_p20_hex": "#28312d",
+       "lit_p80_hex": "#394540",
+       "luma_p10_p50_p90": [
+        0.202,
+        0.242,
+        0.256
+       ]
+      }
+     },
+     "pixels": 4104
+    },
+    "basalt_mid_spire_centre": {
+     "median_hex": "#646e6a",
+     "mean_hex": "#6c7672",
+     "luma_p10_p50_p90": [
+      0.384,
+      0.42,
+      0.585
+     ],
+     "sat_mean": 0.085,
+     "hue_circmean_deg": 157.0,
+     "tier_hex": {
+      "dark_0-33": "#5c6663",
+      "mid_33-66": "#646e6b",
+      "bright_66-100": "#848d89",
+      "top10": "#939c97",
+      "top1": "#9aa29e"
+     },
+     "hue_families": {},
+     "pixels": 690
+    },
+    "standing_stone_monolith": {
+     "median_hex": "#333735",
+     "mean_hex": "#363a37",
+     "luma_p10_p50_p90": [
+      0.181,
+      0.212,
+      0.245
+     ],
+     "sat_mean": 0.097,
+     "hue_circmean_deg": 127.0,
+     "tier_hex": {
+      "dark_0-33": "#2c2f2c",
+      "mid_33-66": "#333734",
+      "bright_66-100": "#444743",
+      "top10": "#60625c",
+      "top1": "#babab0"
+     },
+     "hue_families": {},
+     "pixels": 765
+    },
+    "fog_far_centre": {
+     "median_hex": "#949085",
+     "mean_hex": "#948f84",
+     "luma_p10_p50_p90": [
+      0.511,
+      0.566,
+      0.612
+     ],
+     "sat_mean": 0.105,
+     "hue_circmean_deg": 43.0,
+     "tier_hex": {
+      "dark_0-33": "#878279",
+      "mid_33-66": "#939086",
+      "bright_66-100": "#a19b8f",
+      "top10": "#aaa296",
+      "top1": "#cfc3b7"
+     },
+     "hue_families": {},
+     "pixels": 2074
+    },
+    "floating_island_left": {
+     "median_hex": "#5a5e5c",
+     "mean_hex": "#5a5e5c",
+     "luma_p10_p50_p90": [
+      0.339,
+      0.364,
+      0.389
+     ],
+     "sat_mean": 0.049,
+     "hue_circmean_deg": 149.0,
+     "tier_hex": {
+      "dark_0-33": "#555856",
+      "mid_33-66": "#5a5e5c",
+      "bright_66-100": "#606563",
+      "top10": "#696c6b",
+      "top1": "#919592"
+     },
+     "hue_families": {},
+     "pixels": 1224
+    },
+    "crimson_foliage_left": {
+     "median_hex": "#371e1e",
+     "mean_hex": "#3a2725",
+     "luma_p10_p50_p90": [
+      0.082,
+      0.136,
+      0.318
+     ],
+     "sat_mean": 0.391,
+     "hue_circmean_deg": 15.0,
+     "tier_hex": {
+      "dark_0-33": "#261312",
+      "mid_33-66": "#351e1e",
+      "bright_66-100": "#52423e",
+      "top10": "#67615a",
+      "top1": "#7f7c76"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.496,
+       "mean_hex": "#38191a",
+       "shadow_p20_hex": "#280e0e",
+       "lit_p80_hex": "#4b2728",
+       "luma_p10_p50_p90": [
+        0.08,
+        0.123,
+        0.175
+       ]
+      }
+     },
+     "pixels": 3280
+    },
+    "crimson_foliage_altar": {
+     "median_hex": "#4b2725",
+     "mean_hex": "#492e2b",
+     "luma_p10_p50_p90": [
+      0.086,
+      0.185,
+      0.356
+     ],
+     "sat_mean": 0.45,
+     "hue_circmean_deg": 22.0,
+     "tier_hex": {
+      "dark_0-33": "#271411",
+      "mid_33-66": "#4b2825",
+      "bright_66-100": "#68504b",
+      "top10": "#7f736c",
+      "top1": "#a6a39c"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.502,
+       "mean_hex": "#502324",
+       "shadow_p20_hex": "#35100f",
+       "lit_p80_hex": "#6c393b",
+       "luma_p10_p50_p90": [
+        0.099,
+        0.175,
+        0.259
+       ]
+      },
+      "orange_amber": {
+       "frac": 0.054,
+       "mean_hex": "#2b1f14",
+       "shadow_p20_hex": "#180f07",
+       "lit_p80_hex": "#413023",
+       "luma_p10_p50_p90": [
+        0.067,
+        0.127,
+        0.19
+       ]
+      },
+      "green_moss": {
+       "frac": 0.086,
+       "mean_hex": "#202219",
+       "shadow_p20_hex": "#10130d",
+       "lit_p80_hex": "#3e402c",
+       "luma_p10_p50_p90": [
+        0.072,
+        0.101,
+        0.234
+       ]
+      }
+     },
+     "pixels": 1564
+    },
+    "moss_on_altar_rim": {
+     "median_hex": "#524c3f",
+     "mean_hex": "#5b5649",
+     "luma_p10_p50_p90": [
+      0.081,
+      0.3,
+      0.64
+     ],
+     "sat_mean": 0.308,
+     "hue_circmean_deg": 41.0,
+     "tier_hex": {
+      "dark_0-33": "#231e14",
+      "mid_33-66": "#544e40",
+      "bright_66-100": "#9c9487",
+      "top10": "#c2bcae",
+      "top1": "#e7e2d3"
+     },
+     "hue_families": {
+      "orange_amber": {
+       "frac": 0.094,
+       "mean_hex": "#271f11",
+       "shadow_p20_hex": "#130c03",
+       "lit_p80_hex": "#3e3522",
+       "luma_p10_p50_p90": [
+        0.052,
+        0.122,
+        0.198
+       ]
+      },
+      "green_moss": {
+       "frac": 0.074,
+       "mean_hex": "#383822",
+       "shadow_p20_hex": "#1c1c09",
+       "lit_p80_hex": "#54543f",
+       "luma_p10_p50_p90": [
+        0.113,
+        0.206,
+        0.311
+       ]
+      }
+     },
+     "pixels": 1734
+    },
+    "board_checker_area": {
+     "median_hex": "#847c70",
+     "mean_hex": "#8c8173",
+     "luma_p10_p50_p90": [
+      0.217,
+      0.488,
+      0.815
+     ],
+     "sat_mean": 0.185,
+     "hue_circmean_deg": 36.0,
+     "tier_hex": {
+      "dark_0-33": "#49433c",
+      "mid_33-66": "#887f73",
+      "bright_66-100": "#d2c1aa",
+      "top10": "#ebd9c0",
+      "top1": "#f9e9ce"
+     },
+     "hue_families": {},
+     "pixels": 24081
+    },
+    "board_bronze_corner_FL": {
+     "median_hex": "#5b4a33",
+     "mean_hex": "#715f47",
+     "luma_p10_p50_p90": [
+      0.155,
+      0.299,
+      0.738
+     ],
+     "sat_mean": 0.421,
+     "hue_circmean_deg": 34.0,
+     "tier_hex": {
+      "dark_0-33": "#3c291b",
+      "mid_33-66": "#5e4d34",
+      "bright_66-100": "#b9a887",
+      "top10": "#e4d2a9",
+      "top1": "#fdf4d8"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.085,
+       "mean_hex": "#48211f",
+       "shadow_p20_hex": "#371412",
+       "lit_p80_hex": "#5c312f",
+       "luma_p10_p50_p90": [
+        0.105,
+        0.156,
+        0.21
+       ]
+      },
+      "orange_amber": {
+       "frac": 0.438,
+       "mean_hex": "#4e3d24",
+       "shadow_p20_hex": "#312415",
+       "lit_p80_hex": "#7c653c",
+       "luma_p10_p50_p90": [
+        0.151,
+        0.216,
+        0.371
+       ]
+      }
+     },
+     "pixels": 1173
+    },
+    "altar_front_carved_face": {
+     "median_hex": "#1e1310",
+     "mean_hex": "#261b18",
+     "luma_p10_p50_p90": [
+      0.045,
+      0.084,
+      0.261
+     ],
+     "sat_mean": 0.447,
+     "hue_circmean_deg": 20.0,
+     "tier_hex": {
+      "dark_0-33": "#150b09",
+      "mid_33-66": "#1f1310",
+      "bright_66-100": "#3f342e",
+      "top10": "#69685e",
+      "top1": "#b1aca0"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.448,
+       "mean_hex": "#25110f",
+       "shadow_p20_hex": "#180907",
+       "lit_p80_hex": "#341a18",
+       "luma_p10_p50_p90": [
+        0.048,
+        0.079,
+        0.119
+       ]
+      },
+      "orange_amber": {
+       "frac": 0.059,
+       "mean_hex": "#1a130c",
+       "shadow_p20_hex": "#110c07",
+       "lit_p80_hex": "#251e13",
+       "luma_p10_p50_p90": [
+        0.05,
+        0.076,
+        0.107
+       ]
+      }
+     },
+     "pixels": 20859
+    },
+    "lava_left_pool": {
+     "median_hex": "#48221d",
+     "mean_hex": "#46201b",
+     "luma_p10_p50_p90": [
+      0.028,
+      0.169,
+      0.272
+     ],
+     "sat_mean": 0.587,
+     "hue_circmean_deg": 16.0,
+     "tier_hex": {
+      "dark_0-33": "#110a07",
+      "mid_33-66": "#48221d",
+      "bright_66-100": "#78352d",
+      "top10": "#964439",
+      "top1": "#c65d4b"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.643,
+       "mean_hex": "#5d251f",
+       "shadow_p20_hex": "#1b0a07",
+       "lit_p80_hex": "#953e33",
+       "luma_p10_p50_p90": [
+        0.048,
+        0.197,
+        0.295
+       ]
+      }
+     },
+     "pixels": 13298
+    },
+    "lava_right_pool": {
+     "median_hex": "#41201a",
+     "mean_hex": "#401f19",
+     "luma_p10_p50_p90": [
+      0.025,
+      0.159,
+      0.284
+     ],
+     "sat_mean": 0.567,
+     "hue_circmean_deg": 18.0,
+     "tier_hex": {
+      "dark_0-33": "#0b0705",
+      "mid_33-66": "#3f1e19",
+      "bright_66-100": "#76372d",
+      "top10": "#a14a3b",
+      "top1": "#c26653"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.562,
+       "mean_hex": "#5e261f",
+       "shadow_p20_hex": "#24100d",
+       "lit_p80_hex": "#a23f30",
+       "luma_p10_p50_p90": [
+        0.056,
+        0.189,
+        0.316
+       ]
+      }
+     },
+     "pixels": 11316
+    },
+    "foreground_bottom_strip": {
+     "median_hex": "#24110e",
+     "mean_hex": "#2b1411",
+     "luma_p10_p50_p90": [
+      0.032,
+      0.081,
+      0.172
+     ],
+     "sat_mean": 0.594,
+     "hue_circmean_deg": 15.0,
+     "tier_hex": {
+      "dark_0-33": "#110806",
+      "mid_33-66": "#27110e",
+      "bright_66-100": "#4a241e",
+      "top10": "#5c362b",
+      "top1": "#a16553"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.625,
+       "mean_hex": "#361411",
+       "shadow_p20_hex": "#180807",
+       "lit_p80_hex": "#5a241f",
+       "luma_p10_p50_p90": [
+        0.046,
+        0.097,
+        0.168
+       ]
+      },
+      "orange_amber": {
+       "frac": 0.059,
+       "mean_hex": "#20190f",
+       "shadow_p20_hex": "#110b06",
+       "lit_p80_hex": "#413421",
+       "luma_p10_p50_p90": [
+        0.05,
+        0.072,
+        0.199
+       ]
+      }
+     },
+     "pixels": 35840
+    }
+   }
+  },
+  "02_REF_primary_elevated_concept.png": {
+   "size": [
+    1024,
+    572
+   ],
+   "luma_pct": {
+    "5": 0.069,
+    "25": 0.143,
+    "50": 0.233,
+    "75": 0.37,
+    "95": 0.69
+   },
+   "luma_mean": 0.282,
+   "luma_rms_contrast": 0.189,
+   "Lstar_pct": {
+    "5": 5.4,
+    "25": 15.0,
+    "50": 25.5,
+    "75": 40.4,
+    "95": 72.0
+   },
+   "frac_luma_below_0.08": 0.073,
+   "frac_luma_above_0.85": 0.0135,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.121,
+    0.298,
+    0.227,
+    0.136,
+    0.081,
+    0.06,
+    0.03,
+    0.025,
+    0.016,
+    0.006
+   ],
+   "sat_hsv_mean": 0.268,
+   "sat_hsv_median": 0.215,
+   "chroma_lab_mean": 9.5,
+   "chroma_lab_p95": 26.5,
+   "colourfulness_HS": 29.2,
+   "frac_warm_saturated": 0.175,
+   "frac_cool_tinted": 0.079,
+   "mean_hex": "#4f473e",
+   "palette8": [
+    {
+     "hex": "#191a16",
+     "pct": 24.5,
+     "luma": 0.1,
+     "L*": 9.3
+    },
+    {
+     "hex": "#363732",
+     "pct": 20.3,
+     "luma": 0.213,
+     "L*": 22.8
+    },
+    {
+     "hex": "#5b5750",
+     "pct": 18.2,
+     "luma": 0.344,
+     "L*": 37.3
+    },
+    {
+     "hex": "#888378",
+     "pct": 12.3,
+     "luma": 0.514,
+     "L*": 54.8
+    },
+    {
+     "hex": "#4a231f",
+     "pct": 8.8,
+     "luma": 0.168,
+     "L*": 19.0
+    },
+    {
+     "hex": "#3e3d28",
+     "pct": 6.7,
+     "luma": 0.234,
+     "L*": 25.2
+    },
+    {
+     "hex": "#d4bfa5",
+     "pct": 6.6,
+     "luma": 0.76,
+     "L*": 78.4
+    },
+    {
+     "hex": "#883127",
+     "pct": 2.5,
+     "luma": 0.261,
+     "L*": 33.1
+    }
+   ],
+   "grid3x3": [
+    [
+     {
+      "hex": "#4c4f49",
+      "luma": 0.304,
+      "sat": 0.132,
+      "L*": 33.0
+     },
+     {
+      "hex": "#817265",
+      "luma": 0.456,
+      "sat": 0.224,
+      "L*": 49.0
+     },
+     {
+      "hex": "#4b524d",
+      "luma": 0.314,
+      "sat": 0.153,
+      "L*": 34.1
+     }
+    ],
+    [
+     {
+      "hex": "#3f352d",
+      "luma": 0.213,
+      "sat": 0.291,
+      "L*": 22.9
+     },
+     {
+      "hex": "#837667",
+      "luma": 0.47,
+      "sat": 0.209,
+      "L*": 50.4
+     },
+     {
+      "hex": "#373630",
+      "luma": 0.21,
+      "sat": 0.242,
+      "L*": 22.5
+     }
+    ],
+    [
+     {
+      "hex": "#352821",
+      "luma": 0.166,
+      "sat": 0.391,
+      "L*": 17.4
+     },
+     {
+      "hex": "#4e3b31",
+      "luma": 0.245,
+      "sat": 0.416,
+      "L*": 26.7
+     },
+     {
+      "hex": "#332720",
+      "luma": 0.161,
+      "sat": 0.357,
+      "L*": 16.8
+     }
+    ]
+   ],
+   "regions": {
+    "altar_ring_carved_top": {
+     "median_hex": "#404035",
+     "mean_hex": "#3f3f33",
+     "luma_p10_p50_p90": [
+      0.106,
+      0.248,
+      0.371
+     ],
+     "sat_mean": 0.248,
+     "hue_circmean_deg": 58.0,
+     "tier_hex": {
+      "dark_0-33": "#232217",
+      "mid_33-66": "#404034",
+      "bright_66-100": "#5b5a4f",
+      "top10": "#6d6a60",
+      "top1": "#827f70"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.263,
+       "mean_hex": "#323323",
+       "shadow_p20_hex": "#191a0f",
+       "lit_p80_hex": "#4f503a",
+       "luma_p10_p50_p90": [
+        0.102,
+        0.192,
+        0.287
+       ]
+      }
+     },
+     "pixels": 3749
+    },
+    "altar_ring_side_left": {
+     "median_hex": "#403f33",
+     "mean_hex": "#3e3d33",
+     "luma_p10_p50_p90": [
+      0.101,
+      0.246,
+      0.37
+     ],
+     "sat_mean": 0.241,
+     "hue_circmean_deg": 56.0,
+     "tier_hex": {
+      "dark_0-33": "#1f1d15",
+      "mid_33-66": "#3e3d31",
+      "bright_66-100": "#5e5d51",
+      "top10": "#76776a",
+      "top1": "#a0a092"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.384,
+       "mean_hex": "#313326",
+       "shadow_p20_hex": "#17180f",
+       "lit_p80_hex": "#515443",
+       "luma_p10_p50_p90": [
+        0.093,
+        0.184,
+        0.314
+       ]
+      }
+     },
+     "pixels": 2635
+    },
+    "board_checker_area": {
+     "median_hex": "#726c63",
+     "mean_hex": "#8e8373",
+     "luma_p10_p50_p90": [
+      0.246,
+      0.426,
+      0.857
+     ],
+     "sat_mean": 0.175,
+     "hue_circmean_deg": 40.0,
+     "tier_hex": {
+      "dark_0-33": "#45423c",
+      "mid_33-66": "#847a6d",
+      "bright_66-100": "#e2ccb1",
+      "top10": "#f6e3c6",
+      "top1": "#feefd4"
+     },
+     "hue_families": {},
+     "pixels": 65682
+    },
+    "board_frame_wood_left": {
+     "median_hex": "#473a32",
+     "mean_hex": "#483b34",
+     "luma_p10_p50_p90": [
+      0.171,
+      0.235,
+      0.312
+     ],
+     "sat_mean": 0.293,
+     "hue_circmean_deg": 22.0,
+     "tier_hex": {
+      "dark_0-33": "#372c25",
+      "mid_33-66": "#463a33",
+      "bright_66-100": "#5b4c44",
+      "top10": "#6c5c52",
+      "top1": "#968275"
+     },
+     "hue_families": {
+      "orange_amber": {
+       "frac": 0.068,
+       "mean_hex": "#35251b",
+       "shadow_p20_hex": "#22150b",
+       "lit_p80_hex": "#483428",
+       "luma_p10_p50_p90": [
+        0.093,
+        0.16,
+        0.21
+       ]
+      }
+     },
+     "pixels": 3255
+    },
+    "board_bronze_corner_TL": {
+     "median_hex": "#887557",
+     "mean_hex": "#837055",
+     "luma_p10_p50_p90": [
+      0.198,
+      0.464,
+      0.715
+     ],
+     "sat_mean": 0.398,
+     "hue_circmean_deg": 34.0,
+     "tier_hex": {
+      "dark_0-33": "#493822",
+      "mid_33-66": "#847057",
+      "bright_66-100": "#bda686",
+      "top10": "#d8c1a0",
+      "top1": "#e5d3b9"
+     },
+     "hue_families": {
+      "orange_amber": {
+       "frac": 0.459,
+       "mean_hex": "#5f4a2f",
+       "shadow_p20_hex": "#372613",
+       "lit_p80_hex": "#a48559",
+       "luma_p10_p50_p90": [
+        0.162,
+        0.263,
+        0.566
+       ]
+      }
+     },
+     "pixels": 460
+    },
+    "lava_left_stream": {
+     "median_hex": "#612521",
+     "mean_hex": "#692b25",
+     "luma_p10_p50_p90": [
+      0.146,
+      0.197,
+      0.316
+     ],
+     "sat_mean": 0.628,
+     "hue_circmean_deg": 10.0,
+     "tier_hex": {
+      "dark_0-33": "#4f1c18",
+      "mid_33-66": "#672620",
+      "bright_66-100": "#864035",
+      "top10": "#ac5242",
+      "top1": "#ee7453"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.859,
+       "mean_hex": "#702822",
+       "shadow_p20_hex": "#4f1916",
+       "lit_p80_hex": "#a84134",
+       "luma_p10_p50_p90": [
+        0.15,
+        0.193,
+        0.308
+       ]
+      }
+     },
+     "pixels": 5865
+    },
+    "lava_right_stream": {
+     "median_hex": "#6d2f28",
+     "mean_hex": "#763027",
+     "luma_p10_p50_p90": [
+      0.149,
+      0.24,
+      0.357
+     ],
+     "sat_mean": 0.648,
+     "hue_circmean_deg": 7.0,
+     "tier_hex": {
+      "dark_0-33": "#571d17",
+      "mid_33-66": "#6e3029",
+      "bright_66-100": "#9d4336",
+      "top10": "#c5513e",
+      "top1": "#dd6d5b"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.934,
+       "mean_hex": "#792f26",
+       "shadow_p20_hex": "#511914",
+       "lit_p80_hex": "#b64837",
+       "luma_p10_p50_p90": [
+        0.149,
+        0.237,
+        0.358
+       ]
+      }
+     },
+     "pixels": 8052
+    },
+    "lava_bottom": {
+     "median_hex": "#401a17",
+     "mean_hex": "#431e1a",
+     "luma_p10_p50_p90": [
+      0.067,
+      0.137,
+      0.249
+     ],
+     "sat_mean": 0.585,
+     "hue_circmean_deg": 11.0,
+     "tier_hex": {
+      "dark_0-33": "#22100d",
+      "mid_33-66": "#431a17",
+      "bright_66-100": "#64312a",
+      "top10": "#7c493e",
+      "top1": "#d16750"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.782,
+       "mean_hex": "#491c18",
+       "shadow_p20_hex": "#220d0b",
+       "lit_p80_hex": "#793129",
+       "luma_p10_p50_p90": [
+        0.07,
+        0.14,
+        0.221
+       ]
+      }
+     },
+     "pixels": 17806
+    },
+    "skull_moss": {
+     "median_hex": "#7d806d",
+     "mean_hex": "#797f6a",
+     "luma_p10_p50_p90": [
+      0.25,
+      0.496,
+      0.724
+     ],
+     "sat_mean": 0.195,
+     "hue_circmean_deg": 78.0,
+     "tier_hex": {
+      "dark_0-33": "#414d37",
+      "mid_33-66": "#7b7f6b",
+      "bright_66-100": "#afb19b",
+      "top10": "#cdcdb6",
+      "top1": "#eeecd6"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.564,
+       "mean_hex": "#59634d",
+       "shadow_p20_hex": "#2d3b26",
+       "lit_p80_hex": "#8f9379",
+       "luma_p10_p50_p90": [
+        0.218,
+        0.361,
+        0.529
+       ]
+      }
+     },
+     "pixels": 3280
+    },
+    "skull_bone": {
+     "median_hex": "#323c2d",
+     "mean_hex": "#343e2e",
+     "luma_p10_p50_p90": [
+      0.133,
+      0.224,
+      0.333
+     ],
+     "sat_mean": 0.268,
+     "hue_circmean_deg": 100.0,
+     "tier_hex": {
+      "dark_0-33": "#1d271b",
+      "mid_33-66": "#323c2c",
+      "bright_66-100": "#4e5644",
+      "top10": "#5d6552",
+      "top1": "#828978"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.981,
+       "mean_hex": "#333d2d",
+       "shadow_p20_hex": "#1a2418",
+       "lit_p80_hex": "#515a47",
+       "luma_p10_p50_p90": [
+        0.133,
+        0.22,
+        0.329
+       ]
+      }
+     },
+     "pixels": 1000
+    },
+    "hand_moss_palm": {
+     "median_hex": "#292d25",
+     "mean_hex": "#353b2d",
+     "luma_p10_p50_p90": [
+      0.131,
+      0.169,
+      0.424
+     ],
+     "sat_mean": 0.231,
+     "hue_circmean_deg": 93.0,
+     "tier_hex": {
+      "dark_0-33": "#1f241d",
+      "mid_33-66": "#292d25",
+      "bright_66-100": "#565f46",
+      "top10": "#7f8966",
+      "top1": "#aab48a"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.701,
+       "mean_hex": "#373f2e",
+       "shadow_p20_hex": "#1b2219",
+       "lit_p80_hex": "#737e5c",
+       "luma_p10_p50_p90": [
+        0.127,
+        0.177,
+        0.458
+       ]
+      }
+     },
+     "pixels": 3534
+    },
+    "crimson_foliage_ring": {
+     "median_hex": "#49322a",
+     "mean_hex": "#48352d",
+     "luma_p10_p50_p90": [
+      0.104,
+      0.212,
+      0.339
+     ],
+     "sat_mean": 0.415,
+     "hue_circmean_deg": 24.0,
+     "tier_hex": {
+      "dark_0-33": "#2e1b15",
+      "mid_33-66": "#48322a",
+      "bright_66-100": "#625147",
+      "top10": "#786b60",
+      "top1": "#a19283"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.336,
+       "mean_hex": "#462321",
+       "shadow_p20_hex": "#290e0b",
+       "lit_p80_hex": "#603736",
+       "luma_p10_p50_p90": [
+        0.082,
+        0.168,
+        0.244
+       ]
+      },
+      "orange_amber": {
+       "frac": 0.104,
+       "mean_hex": "#35261a",
+       "shadow_p20_hex": "#21140a",
+       "lit_p80_hex": "#473628",
+       "luma_p10_p50_p90": [
+        0.089,
+        0.162,
+        0.219
+       ]
+      },
+      "green_moss": {
+       "frac": 0.11,
+       "mean_hex": "#2f3322",
+       "shadow_p20_hex": "#1a1c14",
+       "lit_p80_hex": "#4f533e",
+       "luma_p10_p50_p90": [
+        0.109,
+        0.173,
+        0.312
+       ]
+      }
+     },
+     "pixels": 2852
+    },
+    "crimson_foliage_left": {
+     "median_hex": "#341a19",
+     "mean_hex": "#351d1c",
+     "luma_p10_p50_p90": [
+      0.078,
+      0.117,
+      0.215
+     ],
+     "sat_mean": 0.477,
+     "hue_circmean_deg": 11.0,
+     "tier_hex": {
+      "dark_0-33": "#261010",
+      "mid_33-66": "#2f1918",
+      "bright_66-100": "#4a2e2c",
+      "top10": "#5c4742",
+      "top1": "#796a62"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.616,
+       "mean_hex": "#391718",
+       "shadow_p20_hex": "#290a0b",
+       "lit_p80_hex": "#4c2727",
+       "luma_p10_p50_p90": [
+        0.07,
+        0.116,
+        0.175
+       ]
+      }
+     },
+     "pixels": 2108
+    },
+    "moss_ring_quadrant": {
+     "median_hex": "#433029",
+     "mean_hex": "#483e35",
+     "luma_p10_p50_p90": [
+      0.1,
+      0.203,
+      0.48
+     ],
+     "sat_mean": 0.308,
+     "hue_circmean_deg": 39.0,
+     "tier_hex": {
+      "dark_0-33": "#261b15",
+      "mid_33-66": "#43322a",
+      "bright_66-100": "#6f6d60",
+      "top10": "#8f8f81",
+      "top1": "#a9a89a"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.245,
+       "mean_hex": "#432420",
+       "shadow_p20_hex": "#2b1310",
+       "lit_p80_hex": "#5e3631",
+       "luma_p10_p50_p90": [
+        0.097,
+        0.161,
+        0.236
+       ]
+      },
+      "orange_amber": {
+       "frac": 0.056,
+       "mean_hex": "#2d2117",
+       "shadow_p20_hex": "#1b130c",
+       "lit_p80_hex": "#3e2e22",
+       "luma_p10_p50_p90": [
+        0.078,
+        0.139,
+        0.188
+       ]
+      },
+      "green_moss": {
+       "frac": 0.147,
+       "mean_hex": "#36392c",
+       "shadow_p20_hex": "#181a10",
+       "lit_p80_hex": "#5f6251",
+       "luma_p10_p50_p90": [
+        0.097,
+        0.185,
+        0.353
+       ]
+      }
+     },
+     "pixels": 1886
+    },
+    "basalt_ribs_left": {
+     "median_hex": "#373c39",
+     "mean_hex": "#383d39",
+     "luma_p10_p50_p90": [
+      0.15,
+      0.23,
+      0.313
+     ],
+     "sat_mean": 0.097,
+     "hue_circmean_deg": 142.0,
+     "tier_hex": {
+      "dark_0-33": "#282c2b",
+      "mid_33-66": "#373c39",
+      "bright_66-100": "#494e47",
+      "top10": "#555a4e",
+      "top1": "#606656"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.113,
+       "mean_hex": "#495040",
+       "shadow_p20_hex": "#333a2f",
+       "lit_p80_hex": "#5b6250",
+       "luma_p10_p50_p90": [
+        0.23,
+        0.304,
+        0.369
+       ]
+      }
+     },
+     "pixels": 2829
+    },
+    "rubble_masonry_left": {
+     "median_hex": "#292a20",
+     "mean_hex": "#2e2f25",
+     "luma_p10_p50_p90": [
+      0.062,
+      0.16,
+      0.332
+     ],
+     "sat_mean": 0.264,
+     "hue_circmean_deg": 70.0,
+     "tier_hex": {
+      "dark_0-33": "#121411",
+      "mid_33-66": "#292a20",
+      "bright_66-100": "#4f4e3f",
+      "top10": "#686559",
+      "top1": "#8c867c"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.413,
+       "mean_hex": "#2d3020",
+       "shadow_p20_hex": "#14170e",
+       "lit_p80_hex": "#4a4d39",
+       "luma_p10_p50_p90": [
+        0.086,
+        0.18,
+        0.282
+       ]
+      }
+     },
+     "pixels": 8772
+    },
+    "sky_fog_top_right": {
+     "median_hex": "#2e3834",
+     "mean_hex": "#3a4442",
+     "luma_p10_p50_p90": [
+      0.145,
+      0.21,
+      0.405
+     ],
+     "sat_mean": 0.173,
+     "hue_circmean_deg": 170.0,
+     "tier_hex": {
+      "dark_0-33": "#1f2925",
+      "mid_33-66": "#36403e",
+      "bright_66-100": "#5a6364",
+      "top10": "#677171",
+      "top1": "#798480"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.429,
+       "mean_hex": "#232d29",
+       "shadow_p20_hex": "#1b2521",
+       "lit_p80_hex": "#2e3832",
+       "luma_p10_p50_p90": [
+        0.136,
+        0.163,
+        0.199
+       ]
+      }
+     },
+     "pixels": 9842
+    }
+   }
+  },
+  "03_codex_pass01_render.png": {
+   "size": [
+    1400,
+    960
+   ],
+   "luma_pct": {
+    "5": 0.168,
+    "25": 0.282,
+    "50": 0.335,
+    "75": 0.429,
+    "95": 0.627
+   },
+   "luma_mean": 0.361,
+   "luma_rms_contrast": 0.139,
+   "Lstar_pct": {
+    "5": 17.5,
+    "25": 30.6,
+    "50": 36.6,
+    "75": 46.5,
+    "95": 65.9
+   },
+   "frac_luma_below_0.08": 0.0,
+   "frac_luma_above_0.85": 0.0053,
+   "frac_clipped_white_0.98": 0.0004,
+   "luma_hist10": [
+    0.0,
+    0.11,
+    0.195,
+    0.4,
+    0.151,
+    0.084,
+    0.029,
+    0.023,
+    0.006,
+    0.003
+   ],
+   "sat_hsv_mean": 0.177,
+   "sat_hsv_median": 0.164,
+   "chroma_lab_mean": 8.8,
+   "chroma_lab_p95": 15.0,
+   "colourfulness_HS": 21.8,
+   "frac_warm_saturated": 0.022,
+   "frac_cool_tinted": 0.289,
+   "mean_hex": "#585e54",
+   "palette8": [
+    {
+     "hex": "#495855",
+     "pct": 29.1,
+     "luma": 0.331,
+     "L*": 36.0
+    },
+    {
+     "hex": "#3c4338",
+     "pct": 14.5,
+     "luma": 0.253,
+     "L*": 27.4
+    },
+    {
+     "hex": "#8b8873",
+     "pct": 13.7,
+     "luma": 0.529,
+     "L*": 56.4
+    },
+    {
+     "hex": "#282d27",
+     "pct": 12.6,
+     "luma": 0.17,
+     "L*": 17.8
+    },
+    {
+     "hex": "#697165",
+     "pct": 12.6,
+     "luma": 0.434,
+     "L*": 46.8
+    },
+    {
+     "hex": "#535848",
+     "pct": 11.7,
+     "luma": 0.338,
+     "L*": 36.7
+    },
+    {
+     "hex": "#c4bead",
+     "pct": 4.7,
+     "luma": 0.745,
+     "L*": 76.9
+    },
+    {
+     "hex": "#ae4e33",
+     "pct": 1.0,
+     "luma": 0.379,
+     "L*": 45.3
+    }
+   ],
+   "grid3x3": [
+    [
+     {
+      "hex": "#55615b",
+      "luma": 0.371,
+      "sat": 0.149,
+      "L*": 40.1
+     },
+     {
+      "hex": "#7d7a6a",
+      "luma": 0.477,
+      "sat": 0.169,
+      "L*": 51.1
+     },
+     {
+      "hex": "#505e5a",
+      "luma": 0.355,
+      "sat": 0.183,
+      "L*": 38.5
+     }
+    ],
+    [
+     {
+      "hex": "#565e53",
+      "luma": 0.358,
+      "sat": 0.161,
+      "L*": 38.8
+     },
+     {
+      "hex": "#49534e",
+      "luma": 0.315,
+      "sat": 0.151,
+      "L*": 34.2
+     },
+     {
+      "hex": "#4f594e",
+      "luma": 0.337,
+      "sat": 0.198,
+      "L*": 36.6
+     }
+    ],
+    [
+     {
+      "hex": "#4c5144",
+      "luma": 0.311,
+      "sat": 0.173,
+      "L*": 33.7
+     },
+     {
+      "hex": "#7e7565",
+      "luma": 0.463,
+      "sat": 0.208,
+      "L*": 49.7
+     },
+     {
+      "hex": "#40463a",
+      "luma": 0.265,
+      "sat": 0.201,
+      "L*": 28.7
+     }
+    ]
+   ],
+   "regions": {
+    "sky": {
+     "median_hex": "#55605b",
+     "mean_hex": "#555e57",
+     "luma_p10_p50_p90": [
+      0.296,
+      0.365,
+      0.397
+     ],
+     "sat_mean": 0.124,
+     "hue_circmean_deg": 135.0,
+     "tier_hex": {
+      "dark_0-33": "#4d5449",
+      "mid_33-66": "#55605b",
+      "bright_66-100": "#5c6660",
+      "top10": "#606a63",
+      "top1": "#636d65"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.149,
+       "mean_hex": "#4e5144",
+       "shadow_p20_hex": "#44493e",
+       "lit_p80_hex": "#57594a",
+       "luma_p10_p50_p90": [
+        0.278,
+        0.315,
+        0.344
+       ]
+      }
+     },
+     "pixels": 13440
+    },
+    "skull_stone": {
+     "median_hex": "#979c8c",
+     "mean_hex": "#838a7c",
+     "luma_p10_p50_p90": [
+      0.309,
+      0.603,
+      0.679
+     ],
+     "sat_mean": 0.133,
+     "hue_circmean_deg": 94.0,
+     "tier_hex": {
+      "dark_0-33": "#4a5750",
+      "mid_33-66": "#929785",
+      "bright_66-100": "#adafa0",
+      "top10": "#bdbcad",
+      "top1": "#dcd7ca"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.113,
+       "mean_hex": "#677157",
+       "shadow_p20_hex": "#404c3b",
+       "lit_p80_hex": "#868e6e",
+       "luma_p10_p50_p90": [
+        0.305,
+        0.453,
+        0.528
+       ]
+      }
+     },
+     "pixels": 16128
+    },
+    "hand_stone": {
+     "median_hex": "#7b8471",
+     "mean_hex": "#737c6a",
+     "luma_p10_p50_p90": [
+      0.305,
+      0.504,
+      0.587
+     ],
+     "sat_mean": 0.162,
+     "hue_circmean_deg": 91.0,
+     "tier_hex": {
+      "dark_0-33": "#4f5948",
+      "mid_33-66": "#7b8370",
+      "bright_66-100": "#8e9785",
+      "top10": "#9da494",
+      "top1": "#c4c0b0"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.385,
+       "mean_hex": "#5d6652",
+       "shadow_p20_hex": "#323d2a",
+       "lit_p80_hex": "#7d8570",
+       "luma_p10_p50_p90": [
+        0.227,
+        0.411,
+        0.505
+       ]
+      }
+     },
+     "pixels": 12240
+    },
+    "spire_left": {
+     "median_hex": "#495246",
+     "mean_hex": "#485145",
+     "luma_p10_p50_p90": [
+      0.241,
+      0.311,
+      0.361
+     ],
+     "sat_mean": 0.15,
+     "hue_circmean_deg": 106.0,
+     "tier_hex": {
+      "dark_0-33": "#3a4339",
+      "mid_33-66": "#495246",
+      "bright_66-100": "#555d50",
+      "top10": "#5b6356",
+      "top1": "#6c7061"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.49,
+       "mean_hex": "#474f42",
+       "shadow_p20_hex": "#343d33",
+       "lit_p80_hex": "#565d4d",
+       "luma_p10_p50_p90": [
+        0.229,
+        0.31,
+        0.349
+       ]
+      }
+     },
+     "pixels": 13440
+    },
+    "lava": {
+     "median_hex": "#a04730",
+     "mean_hex": "#804531",
+     "luma_p10_p50_p90": [
+      0.191,
+      0.348,
+      0.428
+     ],
+     "sat_mean": 0.497,
+     "hue_circmean_deg": 37.0,
+     "tier_hex": {
+      "dark_0-33": "#35342d",
+      "mid_33-66": "#8c4630",
+      "bright_66-100": "#bf5537",
+      "top10": "#c45a3b",
+      "top1": "#c45e41"
+     },
+     "hue_families": {
+      "red_crimson": {
+       "frac": 0.594,
+       "mean_hex": "#b04e33",
+       "shadow_p20_hex": "#89412c",
+       "lit_p80_hex": "#c45a3b",
+       "luma_p10_p50_p90": [
+        0.327,
+        0.389,
+        0.43
+       ]
+      },
+      "green_moss": {
+       "frac": 0.051,
+       "mean_hex": "#373b30",
+       "shadow_p20_hex": "#2c3229",
+       "lit_p80_hex": "#424438",
+       "luma_p10_p50_p90": [
+        0.193,
+        0.225,
+        0.257
+       ]
+      }
+     },
+     "pixels": 4032
+    },
+    "eclipse_disc": {
+     "median_hex": "#837b64",
+     "mean_hex": "#847a61",
+     "luma_p10_p50_p90": [
+      0.453,
+      0.485,
+      0.494
+     ],
+     "sat_mean": 0.261,
+     "hue_circmean_deg": 44.0,
+     "tier_hex": {
+      "dark_0-33": "#80755b",
+      "mid_33-66": "#837b64",
+      "bright_66-100": "#887f65",
+      "top10": "#908366",
+      "top1": "#a2906e"
+     },
+     "hue_families": {},
+     "pixels": 26025
+    },
+    "eclipse_corona_ring": {
+     "median_hex": "#92846b",
+     "mean_hex": "#a0927a",
+     "luma_p10_p50_p90": [
+      0.447,
+      0.52,
+      0.876
+     ],
+     "sat_mean": 0.246,
+     "hue_circmean_deg": 40.0,
+     "tier_hex": {
+      "dark_0-33": "#80755d",
+      "mid_33-66": "#92866c",
+      "bright_66-100": "#cebba4",
+      "top10": "#fdeedb",
+      "top1": "#fffff0"
+     },
+     "hue_families": {},
+     "pixels": 8377
+    },
+    "altar_floor": {
+     "median_hex": "#b6b29f",
+     "mean_hex": "#a39f8d",
+     "luma_p10_p50_p90": [
+      0.337,
+      0.696,
+      0.791
+     ],
+     "sat_mean": 0.157,
+     "hue_circmean_deg": 51.0,
+     "tier_hex": {
+      "dark_0-33": "#6a6654",
+      "mid_33-66": "#b2ae9b",
+      "bright_66-100": "#cdc7b7",
+      "top10": "#d2cdbd",
+      "top1": "#d6d1c2"
+     },
+     "hue_families": {
+      "green_moss": {
+       "frac": 0.134,
+       "mean_hex": "#636852",
+       "shadow_p20_hex": "#444838",
+       "lit_p80_hex": "#8a8d74",
+       "luma_p10_p50_p90": [
+        0.282,
+        0.39,
+        0.534
+       ]
+      }
+     },
+     "pixels": 12267
+    }
+   }
+  },
+  "04_REF_secondary_hell_courtyard.png": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.087,
+    "25": 0.2,
+    "50": 0.323,
+    "75": 0.701,
+    "95": 0.874
+   },
+   "luma_mean": 0.433,
+   "luma_rms_contrast": 0.271,
+   "Lstar_pct": {
+    "5": 9.1,
+    "25": 23.5,
+    "50": 38.0,
+    "75": 74.4,
+    "95": 89.1
+   },
+   "frac_luma_below_0.08": 0.038,
+   "frac_luma_above_0.85": 0.0842,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.066,
+    0.184,
+    0.181,
+    0.145,
+    0.041,
+    0.037,
+    0.096,
+    0.106,
+    0.121,
+    0.024
+   ],
+   "sat_hsv_mean": 0.591,
+   "sat_hsv_median": 0.638,
+   "chroma_lab_mean": 31.9,
+   "chroma_lab_p95": 48.0,
+   "colourfulness_HS": 51.1,
+   "frac_warm_saturated": 0.846,
+   "frac_cool_tinted": 0.0,
+   "mean_hex": "#9e644d",
+   "palette8": [
+    {
+     "hex": "#592a1b",
+     "pct": 21.7,
+     "luma": 0.2,
+     "L*": 23.2
+    },
+    {
+     "hex": "#85422c",
+     "pct": 20.5,
+     "luma": 0.307,
+     "L*": 36.1
+    },
+    {
+     "hex": "#32140a",
+     "pct": 13.0,
+     "luma": 0.1,
+     "L*": 10.6
+    },
+    {
+     "hex": "#f1a785",
+     "pct": 10.7,
+     "luma": 0.707,
+     "L*": 74.9
+    },
+    {
+     "hex": "#fbc4a0",
+     "pct": 10.1,
+     "luma": 0.803,
+     "L*": 83.1
+    },
+    {
+     "hex": "#fddcc1",
+     "pct": 9.1,
+     "luma": 0.882,
+     "L*": 89.8
+    },
+    {
+     "hex": "#e18968",
+     "pct": 8.6,
+     "luma": 0.601,
+     "L*": 65.7
+    },
+    {
+     "hex": "#ad5337",
+     "pct": 6.4,
+     "luma": 0.391,
+     "L*": 46.0
+    }
+   ],
+   "grid3x3": [
+    [
+     {
+      "hex": "#d4876d",
+      "luma": 0.586,
+      "sat": 0.517,
+      "L*": 63.7
+     },
+     {
+      "hex": "#e6ae91",
+      "luma": 0.722,
+      "sat": 0.393,
+      "L*": 75.6
+     },
+     {
+      "hex": "#ecba95",
+      "luma": 0.76,
+      "sat": 0.394,
+      "L*": 79.0
+     }
+    ],
+    [
+     {
+      "hex": "#743a29",
+      "luma": 0.271,
+      "sat": 0.722,
+      "L*": 31.5
+     },
+     {
+      "hex": "#be7458",
+      "luma": 0.509,
+      "sat": 0.574,
+      "L*": 56.3
+     },
+     {
+      "hex": "#7f4935",
+      "luma": 0.326,
+      "sat": 0.664,
+      "L*": 37.0
+     }
+    ],
+    [
+     {
+      "hex": "#582a1b",
+      "luma": 0.2,
+      "sat": 0.711,
+      "L*": 23.1
+     },
+     {
+      "hex": "#84442f",
+      "luma": 0.315,
+      "sat": 0.659,
+      "L*": 36.5
+     },
+     {
+      "hex": "#572c1d",
+      "luma": 0.204,
+      "sat": 0.684,
+      "L*": 23.4
+     }
+    ]
+   ]
+  }
+ },
+ "game_refs": {
+  "AFOP_01_crimson_canopy_heath_depth.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.109,
+    "25": 0.238,
+    "50": 0.392,
+    "75": 0.582,
+    "95": 0.899
+   },
+   "luma_mean": 0.43,
+   "luma_rms_contrast": 0.24,
+   "Lstar_pct": {
+    "5": 10.4,
+    "25": 25.9,
+    "50": 42.7,
+    "75": 62.1,
+    "95": 91.2
+   },
+   "frac_luma_below_0.08": 0.016,
+   "frac_luma_above_0.85": 0.0905,
+   "frac_clipped_white_0.98": 0.0001,
+   "luma_hist10": [
+    0.036,
+    0.159,
+    0.147,
+    0.174,
+    0.146,
+    0.105,
+    0.074,
+    0.045,
+    0.064,
+    0.049
+   ],
+   "sat_hsv_mean": 0.263,
+   "sat_hsv_median": 0.233,
+   "chroma_lab_mean": 15.5,
+   "chroma_lab_p95": 39.0,
+   "colourfulness_HS": 39.7,
+   "frac_warm_saturated": 0.08,
+   "frac_cool_tinted": 0.367,
+   "mean_hex": "#726c72",
+   "palette8": [
+    {
+     "hex": "#2b272e",
+     "pct": 26.4,
+     "luma": 0.158,
+     "L*": 16.4
+    },
+    {
+     "hex": "#5b5966",
+     "pct": 24.8,
+     "luma": 0.355,
+     "L*": 38.5
+    },
+    {
+     "hex": "#d0e0f5",
+     "pct": 12.0,
+     "luma": 0.871,
+     "L*": 88.6
+    },
+    {
+     "hex": "#9f96a4",
+     "pct": 9.7,
+     "luma": 0.601,
+     "L*": 63.4
+    },
+    {
+     "hex": "#62684a",
+     "pct": 8.5,
+     "luma": 0.396,
+     "L*": 42.9
+    },
+    {
+     "hex": "#a26b9c",
+     "pct": 7.2,
+     "luma": 0.48,
+     "L*": 52.6
+    },
+    {
+     "hex": "#a2b17f",
+     "pct": 6.8,
+     "luma": 0.669,
+     "L*": 70.0
+    },
+    {
+     "hex": "#b07362",
+     "pct": 4.7,
+     "luma": 0.498,
+     "L*": 54.5
+    }
+   ]
+  },
+  "AFOP_02_stratified_rock_arches.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.154,
+    "25": 0.225,
+    "50": 0.375,
+    "75": 0.547,
+    "95": 0.703
+   },
+   "luma_mean": 0.396,
+   "luma_rms_contrast": 0.185,
+   "Lstar_pct": {
+    "5": 16.0,
+    "25": 24.4,
+    "50": 41.2,
+    "75": 59.2,
+    "95": 73.8
+   },
+   "frac_luma_below_0.08": 0.008,
+   "frac_luma_above_0.85": 0.0037,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.015,
+    0.157,
+    0.228,
+    0.127,
+    0.126,
+    0.186,
+    0.108,
+    0.041,
+    0.011,
+    0.001
+   ],
+   "sat_hsv_mean": 0.387,
+   "sat_hsv_median": 0.385,
+   "chroma_lab_mean": 22.4,
+   "chroma_lab_p95": 54.6,
+   "colourfulness_HS": 63.4,
+   "frac_warm_saturated": 0.084,
+   "frac_cool_tinted": 0.417,
+   "mean_hex": "#5c695d",
+   "palette8": [
+    {
+     "hex": "#393d40",
+     "pct": 33.1,
+     "luma": 0.237,
+     "L*": 25.5
+    },
+    {
+     "hex": "#719ed0",
+     "pct": 21.5,
+     "luma": 0.596,
+     "L*": 63.8
+    },
+    {
+     "hex": "#8fa441",
+     "pct": 12.3,
+     "luma": 0.597,
+     "L*": 63.9
+    },
+    {
+     "hex": "#5b6827",
+     "pct": 11.2,
+     "luma": 0.378,
+     "L*": 41.5
+    },
+    {
+     "hex": "#2e2c17",
+     "pct": 10.2,
+     "luma": 0.168,
+     "L*": 17.7
+    },
+    {
+     "hex": "#807c6f",
+     "pct": 8.3,
+     "luma": 0.485,
+     "L*": 51.8
+    },
+    {
+     "hex": "#8e5575",
+     "pct": 1.9,
+     "luma": 0.39,
+     "L*": 43.6
+    },
+    {
+     "hex": "#b8713b",
+     "pct": 1.6,
+     "luma": 0.487,
+     "L*": 54.5
+    }
+   ]
+  },
+  "AFOP_03_floating_cliffs_hanging_vines.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.174,
+    "25": 0.296,
+    "50": 0.42,
+    "75": 0.564,
+    "95": 0.79
+   },
+   "luma_mean": 0.44,
+   "luma_rms_contrast": 0.184,
+   "Lstar_pct": {
+    "5": 18.4,
+    "25": 32.3,
+    "50": 45.5,
+    "75": 60.0,
+    "95": 81.5
+   },
+   "frac_luma_below_0.08": 0.005,
+   "frac_luma_above_0.85": 0.0183,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.009,
+    0.066,
+    0.184,
+    0.204,
+    0.187,
+    0.144,
+    0.102,
+    0.058,
+    0.04,
+    0.004
+   ],
+   "sat_hsv_mean": 0.233,
+   "sat_hsv_median": 0.213,
+   "chroma_lab_mean": 12.5,
+   "chroma_lab_p95": 32.5,
+   "colourfulness_HS": 34.3,
+   "frac_warm_saturated": 0.053,
+   "frac_cool_tinted": 0.437,
+   "mean_hex": "#68736a",
+   "palette8": [
+    {
+     "hex": "#3b4845",
+     "pct": 20.5,
+     "luma": 0.27,
+     "L*": 29.3
+    },
+    {
+     "hex": "#676f57",
+     "pct": 17.2,
+     "luma": 0.421,
+     "L*": 45.5
+    },
+    {
+     "hex": "#7a8b8e",
+     "pct": 15.7,
+     "luma": 0.533,
+     "L*": 56.7
+    },
+    {
+     "hex": "#516168",
+     "pct": 14.2,
+     "luma": 0.369,
+     "L*": 40.1
+    },
+    {
+     "hex": "#b39e83",
+     "pct": 9.2,
+     "luma": 0.629,
+     "L*": 66.4
+    },
+    {
+     "hex": "#2b2824",
+     "pct": 8.5,
+     "luma": 0.158,
+     "L*": 16.5
+    },
+    {
+     "hex": "#b5cbd4",
+     "pct": 7.4,
+     "luma": 0.78,
+     "L*": 80.3
+    },
+    {
+     "hex": "#94b47f",
+     "pct": 7.3,
+     "luma": 0.664,
+     "L*": 69.8
+    }
+   ]
+  },
+  "AFOP_04_bracket_fungi_mossy_trunks_sky_disc.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.096,
+    "25": 0.171,
+    "50": 0.303,
+    "75": 0.463,
+    "95": 0.83
+   },
+   "luma_mean": 0.351,
+   "luma_rms_contrast": 0.221,
+   "Lstar_pct": {
+    "5": 8.6,
+    "25": 18.0,
+    "50": 33.3,
+    "75": 50.1,
+    "95": 85.1
+   },
+   "frac_luma_below_0.08": 0.021,
+   "frac_luma_above_0.85": 0.0306,
+   "frac_clipped_white_0.98": 0.0003,
+   "luma_hist10": [
+    0.06,
+    0.258,
+    0.177,
+    0.171,
+    0.121,
+    0.069,
+    0.033,
+    0.042,
+    0.061,
+    0.009
+   ],
+   "sat_hsv_mean": 0.291,
+   "sat_hsv_median": 0.256,
+   "chroma_lab_mean": 12.0,
+   "chroma_lab_p95": 31.8,
+   "colourfulness_HS": 36.9,
+   "frac_warm_saturated": 0.111,
+   "frac_cool_tinted": 0.455,
+   "mean_hex": "#525c55",
+   "palette8": [
+    {
+     "hex": "#1c211d",
+     "pct": 25.2,
+     "luma": 0.124,
+     "L*": 12.2
+    },
+    {
+     "hex": "#4e6261",
+     "pct": 20.3,
+     "luma": 0.368,
+     "L*": 40.0
+    },
+    {
+     "hex": "#333c33",
+     "pct": 19.2,
+     "luma": 0.226,
+     "L*": 24.3
+    },
+    {
+     "hex": "#7a8f8a",
+     "pct": 12.2,
+     "luma": 0.541,
+     "L*": 57.6
+    },
+    {
+     "hex": "#b7d7e7",
+     "pct": 10.8,
+     "luma": 0.82,
+     "L*": 84.1
+    },
+    {
+     "hex": "#5b4f30",
+     "pct": 7.0,
+     "luma": 0.313,
+     "L*": 34.3
+    },
+    {
+     "hex": "#9b5c2b",
+     "pct": 2.8,
+     "luma": 0.399,
+     "L*": 45.4
+    },
+    {
+     "hex": "#a7964e",
+     "pct": 2.6,
+     "luma": 0.582,
+     "L*": 62.2
+    }
+   ]
+  },
+  "BMW_01_moss_clearing_godrays.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.062,
+    "25": 0.106,
+    "50": 0.176,
+    "75": 0.32,
+    "95": 0.783
+   },
+   "luma_mean": 0.256,
+   "luma_rms_contrast": 0.219,
+   "Lstar_pct": {
+    "5": 4.7,
+    "25": 9.8,
+    "50": 18.4,
+    "75": 34.9,
+    "95": 80.6
+   },
+   "frac_luma_below_0.08": 0.132,
+   "frac_luma_above_0.85": 0.035,
+   "frac_clipped_white_0.98": 0.0124,
+   "luma_hist10": [
+    0.228,
+    0.339,
+    0.16,
+    0.09,
+    0.049,
+    0.037,
+    0.027,
+    0.023,
+    0.022,
+    0.024
+   ],
+   "sat_hsv_mean": 0.212,
+   "sat_hsv_median": 0.167,
+   "chroma_lab_mean": 5.5,
+   "chroma_lab_p95": 19.6,
+   "colourfulness_HS": 17.5,
+   "frac_warm_saturated": 0.094,
+   "frac_cool_tinted": 0.001,
+   "mean_hex": "#44413b",
+   "palette8": [
+    {
+     "hex": "#181712",
+     "pct": 34.9,
+     "luma": 0.088,
+     "L*": 7.7
+    },
+    {
+     "hex": "#2d2a24",
+     "pct": 23.9,
+     "luma": 0.166,
+     "L*": 17.3
+    },
+    {
+     "hex": "#48443f",
+     "pct": 14.1,
+     "luma": 0.268,
+     "L*": 29.1
+    },
+    {
+     "hex": "#696b6a",
+     "pct": 8.1,
+     "luma": 0.419,
+     "L*": 45.1
+    },
+    {
+     "hex": "#9d9e9f",
+     "pct": 6.3,
+     "luma": 0.618,
+     "L*": 64.9
+    },
+    {
+     "hex": "#e3e0e1",
+     "pct": 6.1,
+     "luma": 0.881,
+     "L*": 89.4
+    },
+    {
+     "hex": "#4a4a1e",
+     "pct": 4.3,
+     "luma": 0.279,
+     "L*": 30.5
+    },
+    {
+     "hex": "#86684e",
+     "pct": 2.3,
+     "luma": 0.426,
+     "L*": 46.4
+    }
+   ]
+  },
+  "BMW_02_weathered_colossal_statue_votives.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.128,
+    "25": 0.175,
+    "50": 0.272,
+    "75": 0.431,
+    "95": 0.787
+   },
+   "luma_mean": 0.331,
+   "luma_rms_contrast": 0.201,
+   "Lstar_pct": {
+    "5": 12.9,
+    "25": 18.8,
+    "50": 30.0,
+    "75": 46.8,
+    "95": 81.2
+   },
+   "frac_luma_below_0.08": 0.0,
+   "frac_luma_above_0.85": 0.0405,
+   "frac_clipped_white_0.98": 0.0147,
+   "luma_hist10": [
+    0.009,
+    0.333,
+    0.199,
+    0.15,
+    0.156,
+    0.061,
+    0.024,
+    0.02,
+    0.016,
+    0.031
+   ],
+   "sat_hsv_mean": 0.38,
+   "sat_hsv_median": 0.411,
+   "chroma_lab_mean": 13.7,
+   "chroma_lab_p95": 26.6,
+   "colourfulness_HS": 27.3,
+   "frac_warm_saturated": 0.629,
+   "frac_cool_tinted": 0.0,
+   "mean_hex": "#685045",
+   "palette8": [
+    {
+     "hex": "#32221b",
+     "pct": 25.4,
+     "luma": 0.145,
+     "L*": 15.0
+    },
+    {
+     "hex": "#473329",
+     "pct": 22.0,
+     "luma": 0.213,
+     "L*": 23.2
+    },
+    {
+     "hex": "#836f67",
+     "pct": 19.6,
+     "luma": 0.448,
+     "L*": 48.3
+    },
+    {
+     "hex": "#6a4f40",
+     "pct": 14.5,
+     "luma": 0.328,
+     "L*": 36.1
+    },
+    {
+     "hex": "#c9a28a",
+     "pct": 6.2,
+     "luma": 0.66,
+     "L*": 69.4
+    },
+    {
+     "hex": "#f8ebe0",
+     "pct": 4.6,
+     "luma": 0.929,
+     "L*": 93.7
+    },
+    {
+     "hex": "#a1674b",
+     "pct": 4.4,
+     "luma": 0.445,
+     "L*": 49.3
+    },
+    {
+     "hex": "#5d3525",
+     "pct": 3.2,
+     "luma": 0.236,
+     "L*": 26.6
+    }
+   ]
+  },
+  "BMW_03_giant_bone_creature_dark.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.09,
+    "25": 0.114,
+    "50": 0.143,
+    "75": 0.193,
+    "95": 0.494
+   },
+   "luma_mean": 0.184,
+   "luma_rms_contrast": 0.126,
+   "Lstar_pct": {
+    "5": 7.7,
+    "25": 10.8,
+    "50": 14.4,
+    "75": 20.5,
+    "95": 52.9
+   },
+   "frac_luma_below_0.08": 0.017,
+   "frac_luma_above_0.85": 0.0001,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.107,
+    0.659,
+    0.12,
+    0.041,
+    0.024,
+    0.02,
+    0.019,
+    0.009,
+    0.001,
+    0.0
+   ],
+   "sat_hsv_mean": 0.157,
+   "sat_hsv_median": 0.149,
+   "chroma_lab_mean": 4.0,
+   "chroma_lab_p95": 9.0,
+   "colourfulness_HS": 10.3,
+   "frac_warm_saturated": 0.0,
+   "frac_cool_tinted": 0.499,
+   "mean_hex": "#2a302e",
+   "palette8": [
+    {
+     "hex": "#1b1d1b",
+     "pct": 47.0,
+     "luma": 0.11,
+     "L*": 10.3
+    },
+    {
+     "hex": "#242a28",
+     "pct": 26.4,
+     "luma": 0.159,
+     "L*": 16.5
+    },
+    {
+     "hex": "#2e3934",
+     "pct": 11.2,
+     "luma": 0.212,
+     "L*": 22.8
+    },
+    {
+     "hex": "#3c4b44",
+     "pct": 5.2,
+     "luma": 0.28,
+     "L*": 30.4
+    },
+    {
+     "hex": "#4e625e",
+     "pct": 3.4,
+     "luma": 0.365,
+     "L*": 39.7
+    },
+    {
+     "hex": "#687c7b",
+     "pct": 2.5,
+     "luma": 0.469,
+     "L*": 50.4
+    },
+    {
+     "hex": "#88999b",
+     "pct": 2.3,
+     "luma": 0.586,
+     "L*": 61.9
+    },
+    {
+     "hex": "#acb4b8",
+     "pct": 2.0,
+     "luma": 0.701,
+     "L*": 72.8
+    }
+   ]
+  },
+  "CD_01_floating_block_shards_carved_plinth.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.036,
+    "25": 0.239,
+    "50": 0.399,
+    "75": 0.507,
+    "95": 0.67
+   },
+   "luma_mean": 0.381,
+   "luma_rms_contrast": 0.188,
+   "Lstar_pct": {
+    "5": 2.6,
+    "25": 26.4,
+    "50": 44.0,
+    "75": 54.8,
+    "95": 70.1
+   },
+   "frac_luma_below_0.08": 0.075,
+   "frac_luma_above_0.85": 0.0083,
+   "frac_clipped_white_0.98": 0.0006,
+   "luma_hist10": [
+    0.089,
+    0.108,
+    0.122,
+    0.182,
+    0.233,
+    0.158,
+    0.074,
+    0.022,
+    0.007,
+    0.005
+   ],
+   "sat_hsv_mean": 0.412,
+   "sat_hsv_median": 0.406,
+   "chroma_lab_mean": 20.3,
+   "chroma_lab_p95": 52.0,
+   "colourfulness_HS": 53.8,
+   "frac_warm_saturated": 0.162,
+   "frac_cool_tinted": 0.251,
+   "mean_hex": "#5e6354",
+   "palette8": [
+    {
+     "hex": "#797466",
+     "pct": 16.9,
+     "luma": 0.454,
+     "L*": 48.8
+    },
+    {
+     "hex": "#50739b",
+     "pct": 15.9,
+     "luma": 0.434,
+     "L*": 47.4
+    },
+    {
+     "hex": "#383b3b",
+     "pct": 15.4,
+     "luma": 0.23,
+     "L*": 24.8
+    },
+    {
+     "hex": "#12110e",
+     "pct": 13.2,
+     "luma": 0.067,
+     "L*": 6.2
+    },
+    {
+     "hex": "#567827",
+     "pct": 13.1,
+     "luma": 0.42,
+     "L*": 46.4
+    },
+    {
+     "hex": "#aeac9c",
+     "pct": 11.8,
+     "luma": 0.671,
+     "L*": 70.0
+    },
+    {
+     "hex": "#70482a",
+     "pct": 7.2,
+     "luma": 0.307,
+     "L*": 34.6
+    },
+    {
+     "hex": "#9c894e",
+     "pct": 6.6,
+     "luma": 0.537,
+     "L*": 57.7
+    }
+   ]
+  },
+  "CD_02_broken_concentric_rings_aerial.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.143,
+    "25": 0.287,
+    "50": 0.41,
+    "75": 0.568,
+    "95": 0.694
+   },
+   "luma_mean": 0.418,
+   "luma_rms_contrast": 0.176,
+   "Lstar_pct": {
+    "5": 15.5,
+    "25": 32.1,
+    "50": 44.4,
+    "75": 60.2,
+    "95": 72.2
+   },
+   "frac_luma_below_0.08": 0.011,
+   "frac_luma_above_0.85": 0.0003,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.016,
+    0.12,
+    0.145,
+    0.204,
+    0.165,
+    0.151,
+    0.157,
+    0.041,
+    0.001,
+    0.0
+   ],
+   "sat_hsv_mean": 0.329,
+   "sat_hsv_median": 0.227,
+   "chroma_lab_mean": 13.8,
+   "chroma_lab_p95": 29.7,
+   "colourfulness_HS": 38.1,
+   "frac_warm_saturated": 0.001,
+   "frac_cool_tinted": 0.597,
+   "mean_hex": "#5e6d7d",
+   "palette8": [
+    {
+     "hex": "#35547c",
+     "pct": 21.9,
+     "luma": 0.314,
+     "L*": 35.0
+    },
+    {
+     "hex": "#adaca8",
+     "pct": 17.1,
+     "luma": 0.675,
+     "L*": 70.4
+    },
+    {
+     "hex": "#8e9193",
+     "pct": 16.0,
+     "luma": 0.567,
+     "L*": 60.0
+    },
+    {
+     "hex": "#6b7684",
+     "pct": 14.3,
+     "luma": 0.456,
+     "L*": 49.0
+    },
+    {
+     "hex": "#163057",
+     "pct": 12.9,
+     "luma": 0.178,
+     "L*": 20.0
+    },
+    {
+     "hex": "#4c5969",
+     "pct": 7.1,
+     "luma": 0.344,
+     "L*": 37.5
+    },
+    {
+     "hex": "#67736a",
+     "pct": 5.6,
+     "luma": 0.439,
+     "L*": 47.3
+    },
+    {
+     "hex": "#19212d",
+     "pct": 5.1,
+     "luma": 0.127,
+     "L*": 12.9
+    }
+   ]
+  },
+  "CD_03_stratified_cliff_crystal_fans.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.102,
+    "25": 0.302,
+    "50": 0.438,
+    "75": 0.575,
+    "95": 0.76
+   },
+   "luma_mean": 0.437,
+   "luma_rms_contrast": 0.194,
+   "Lstar_pct": {
+    "5": 10.4,
+    "25": 33.0,
+    "50": 47.4,
+    "75": 60.9,
+    "95": 78.4
+   },
+   "frac_luma_below_0.08": 0.037,
+   "frac_luma_above_0.85": 0.0028,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.049,
+    0.076,
+    0.123,
+    0.178,
+    0.194,
+    0.164,
+    0.108,
+    0.088,
+    0.02,
+    0.0
+   ],
+   "sat_hsv_mean": 0.289,
+   "sat_hsv_median": 0.25,
+   "chroma_lab_mean": 12.5,
+   "chroma_lab_p95": 25.7,
+   "colourfulness_HS": 32.9,
+   "frac_warm_saturated": 0.204,
+   "frac_cool_tinted": 0.068,
+   "mean_hex": "#786e62",
+   "palette8": [
+    {
+     "hex": "#6f6353",
+     "pct": 23.3,
+     "luma": 0.393,
+     "L*": 42.6
+    },
+    {
+     "hex": "#4c4134",
+     "pct": 17.5,
+     "luma": 0.259,
+     "L*": 28.1
+    },
+    {
+     "hex": "#c1b9ac",
+     "pct": 17.1,
+     "luma": 0.728,
+     "L*": 75.4
+    },
+    {
+     "hex": "#938c81",
+     "pct": 14.7,
+     "luma": 0.551,
+     "L*": 58.5
+    },
+    {
+     "hex": "#988667",
+     "pct": 10.9,
+     "luma": 0.531,
+     "L*": 56.7
+    },
+    {
+     "hex": "#1e160f",
+     "pct": 8.3,
+     "luma": 0.093,
+     "L*": 9.0
+    },
+    {
+     "hex": "#5c7694",
+     "pct": 5.9,
+     "luma": 0.448,
+     "L*": 48.6
+    },
+    {
+     "hex": "#631c0d",
+     "pct": 2.3,
+     "luma": 0.166,
+     "L*": 22.1
+    }
+   ]
+  },
+  "CD_04_snowcapped_ruin_floating_block.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.073,
+    "25": 0.255,
+    "50": 0.371,
+    "75": 0.535,
+    "95": 0.721
+   },
+   "luma_mean": 0.393,
+   "luma_rms_contrast": 0.19,
+   "Lstar_pct": {
+    "5": 6.1,
+    "25": 28.8,
+    "50": 40.8,
+    "75": 56.9,
+    "95": 74.7
+   },
+   "frac_luma_below_0.08": 0.054,
+   "frac_luma_above_0.85": 0.0004,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.065,
+    0.063,
+    0.233,
+    0.196,
+    0.155,
+    0.102,
+    0.113,
+    0.071,
+    0.002,
+    0.0
+   ],
+   "sat_hsv_mean": 0.351,
+   "sat_hsv_median": 0.275,
+   "chroma_lab_mean": 14.0,
+   "chroma_lab_p95": 32.9,
+   "colourfulness_HS": 44.2,
+   "frac_warm_saturated": 0.014,
+   "frac_cool_tinted": 0.49,
+   "mean_hex": "#586676",
+   "palette8": [
+    {
+     "hex": "#244877",
+     "pct": 23.5,
+     "luma": 0.265,
+     "L*": 30.1
+    },
+    {
+     "hex": "#afb0af",
+     "pct": 17.7,
+     "luma": 0.689,
+     "L*": 71.7
+    },
+    {
+     "hex": "#85888a",
+     "pct": 15.8,
+     "luma": 0.532,
+     "L*": 56.6
+    },
+    {
+     "hex": "#476d91",
+     "pct": 11.7,
+     "luma": 0.405,
+     "L*": 44.6
+    },
+    {
+     "hex": "#616161",
+     "pct": 11.7,
+     "luma": 0.382,
+     "L*": 41.4
+    },
+    {
+     "hex": "#0b0f17",
+     "pct": 8.0,
+     "luma": 0.059,
+     "L*": 5.2
+    },
+    {
+     "hex": "#413e35",
+     "pct": 6.4,
+     "luma": 0.242,
+     "L*": 26.1
+    },
+    {
+     "hex": "#2f3a4c",
+     "pct": 5.1,
+     "luma": 0.225,
+     "L*": 24.4
+    }
+   ]
+  },
+  "E33_01_floating_shards_bent_tower.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.095,
+    "25": 0.179,
+    "50": 0.297,
+    "75": 0.483,
+    "95": 0.692
+   },
+   "luma_mean": 0.341,
+   "luma_rms_contrast": 0.192,
+   "Lstar_pct": {
+    "5": 8.4,
+    "25": 18.8,
+    "50": 32.3,
+    "75": 51.7,
+    "95": 72.1
+   },
+   "frac_luma_below_0.08": 0.012,
+   "frac_luma_above_0.85": 0.0003,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.062,
+    0.235,
+    0.208,
+    0.15,
+    0.112,
+    0.093,
+    0.096,
+    0.043,
+    0.002,
+    0.0
+   ],
+   "sat_hsv_mean": 0.167,
+   "sat_hsv_median": 0.157,
+   "chroma_lab_mean": 6.2,
+   "chroma_lab_p95": 14.1,
+   "colourfulness_HS": 17.9,
+   "frac_warm_saturated": 0.03,
+   "frac_cool_tinted": 0.153,
+   "mean_hex": "#5b5653",
+   "palette8": [
+    {
+     "hex": "#1e1d1e",
+     "pct": 20.2,
+     "luma": 0.116,
+     "L*": 11.1
+    },
+    {
+     "hex": "#38332d",
+     "pct": 18.0,
+     "luma": 0.202,
+     "L*": 21.5
+    },
+    {
+     "hex": "#5f554a",
+     "pct": 12.8,
+     "luma": 0.338,
+     "L*": 36.7
+    },
+    {
+     "hex": "#99928c",
+     "pct": 10.6,
+     "luma": 0.576,
+     "L*": 60.9
+    },
+    {
+     "hex": "#bbb0a5",
+     "pct": 10.5,
+     "luma": 0.697,
+     "L*": 72.5
+    },
+    {
+     "hex": "#404445",
+     "pct": 10.5,
+     "luma": 0.263,
+     "L*": 28.5
+    },
+    {
+     "hex": "#636673",
+     "pct": 8.9,
+     "luma": 0.402,
+     "L*": 43.4
+    },
+    {
+     "hex": "#877866",
+     "pct": 8.5,
+     "luma": 0.477,
+     "L*": 51.2
+    }
+   ]
+  },
+  "E33_02_vortex_sky_flower_meadow.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.06,
+    "25": 0.176,
+    "50": 0.319,
+    "75": 0.605,
+    "95": 0.809
+   },
+   "luma_mean": 0.385,
+   "luma_rms_contrast": 0.247,
+   "Lstar_pct": {
+    "5": 4.6,
+    "25": 18.8,
+    "50": 35.1,
+    "75": 64.2,
+    "95": 83.0
+   },
+   "frac_luma_below_0.08": 0.08,
+   "frac_luma_above_0.85": 0.028,
+   "frac_clipped_white_0.98": 0.0012,
+   "luma_hist10": [
+    0.112,
+    0.187,
+    0.179,
+    0.102,
+    0.069,
+    0.097,
+    0.118,
+    0.08,
+    0.046,
+    0.011
+   ],
+   "sat_hsv_mean": 0.328,
+   "sat_hsv_median": 0.277,
+   "chroma_lab_mean": 12.6,
+   "chroma_lab_p95": 38.4,
+   "colourfulness_HS": 41.6,
+   "frac_warm_saturated": 0.26,
+   "frac_cool_tinted": 0.18,
+   "mean_hex": "#676257",
+   "palette8": [
+    {
+     "hex": "#211b13",
+     "pct": 25.8,
+     "luma": 0.108,
+     "L*": 10.5
+    },
+    {
+     "hex": "#434748",
+     "pct": 18.1,
+     "luma": 0.276,
+     "L*": 29.8
+    },
+    {
+     "hex": "#bfb5ab",
+     "pct": 13.1,
+     "luma": 0.714,
+     "L*": 74.1
+    },
+    {
+     "hex": "#503f24",
+     "pct": 12.5,
+     "luma": 0.254,
+     "L*": 27.9
+    },
+    {
+     "hex": "#7c8d8d",
+     "pct": 11.1,
+     "luma": 0.538,
+     "L*": 57.3
+    },
+    {
+     "hex": "#afd3d6",
+     "pct": 7.4,
+     "luma": 0.798,
+     "L*": 82.1
+    },
+    {
+     "hex": "#aa8d54",
+     "pct": 7.3,
+     "luma": 0.561,
+     "L*": 60.0
+    },
+    {
+     "hex": "#ac6352",
+     "pct": 4.7,
+     "luma": 0.445,
+     "L*": 49.9
+    }
+   ]
+  },
+  "E33_03_teal_fog_colossus_crimson_leaves.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.084,
+    "25": 0.207,
+    "50": 0.273,
+    "75": 0.358,
+    "95": 0.55
+   },
+   "luma_mean": 0.29,
+   "luma_rms_contrast": 0.135,
+   "Lstar_pct": {
+    "5": 7.1,
+    "25": 22.6,
+    "50": 30.8,
+    "75": 40.3,
+    "95": 60.0
+   },
+   "frac_luma_below_0.08": 0.041,
+   "frac_luma_above_0.85": 0.0011,
+   "frac_clipped_white_0.98": 0.0001,
+   "luma_hist10": [
+    0.079,
+    0.152,
+    0.371,
+    0.207,
+    0.098,
+    0.079,
+    0.008,
+    0.003,
+    0.001,
+    0.001
+   ],
+   "sat_hsv_mean": 0.529,
+   "sat_hsv_median": 0.587,
+   "chroma_lab_mean": 17.2,
+   "chroma_lab_p95": 27.0,
+   "colourfulness_HS": 55.1,
+   "frac_warm_saturated": 0.031,
+   "frac_cool_tinted": 0.795,
+   "mean_hex": "#2e5061",
+   "palette8": [
+    {
+     "hex": "#245777",
+     "pct": 32.9,
+     "luma": 0.307,
+     "L*": 35.0
+    },
+    {
+     "hex": "#233f4d",
+     "pct": 19.9,
+     "luma": 0.226,
+     "L*": 25.0
+    },
+    {
+     "hex": "#468da8",
+     "pct": 16.1,
+     "luma": 0.5,
+     "L*": 55.1
+    },
+    {
+     "hex": "#141b1d",
+     "pct": 15.4,
+     "luma": 0.102,
+     "L*": 9.5
+    },
+    {
+     "hex": "#373734",
+     "pct": 9.1,
+     "luma": 0.216,
+     "L*": 23.2
+    },
+    {
+     "hex": "#68584d",
+     "pct": 4.7,
+     "luma": 0.356,
+     "L*": 38.9
+    },
+    {
+     "hex": "#b2a08e",
+     "pct": 1.4,
+     "luma": 0.636,
+     "L*": 66.9
+    },
+    {
+     "hex": "#705b9c",
+     "pct": 0.5,
+     "luma": 0.393,
+     "L*": 43.3
+    }
+   ]
+  },
+  "E33_04_crimson_band_teal_ground.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.176,
+    "25": 0.226,
+    "50": 0.28,
+    "75": 0.363,
+    "95": 0.845
+   },
+   "luma_mean": 0.337,
+   "luma_rms_contrast": 0.187,
+   "Lstar_pct": {
+    "5": 18.8,
+    "25": 24.8,
+    "50": 30.9,
+    "75": 39.9,
+    "95": 86.3
+   },
+   "frac_luma_below_0.08": 0.0,
+   "frac_luma_above_0.85": 0.0488,
+   "frac_clipped_white_0.98": 0.0095,
+   "luma_hist10": [
+    0.001,
+    0.134,
+    0.456,
+    0.221,
+    0.064,
+    0.025,
+    0.018,
+    0.019,
+    0.025,
+    0.036
+   ],
+   "sat_hsv_mean": 0.4,
+   "sat_hsv_median": 0.44,
+   "chroma_lab_mean": 11.9,
+   "chroma_lab_p95": 17.0,
+   "colourfulness_HS": 28.4,
+   "frac_warm_saturated": 0.01,
+   "frac_cool_tinted": 0.896,
+   "mean_hex": "#425b64",
+   "palette8": [
+    {
+     "hex": "#304f58",
+     "pct": 33.3,
+     "luma": 0.288,
+     "L*": 31.8
+    },
+    {
+     "hex": "#233940",
+     "pct": 32.1,
+     "luma": 0.208,
+     "L*": 22.6
+    },
+    {
+     "hex": "#476a79",
+     "pct": 16.3,
+     "luma": 0.391,
+     "L*": 42.8
+    },
+    {
+     "hex": "#d9e7ea",
+     "pct": 6.8,
+     "luma": 0.894,
+     "L*": 90.6
+    },
+    {
+     "hex": "#88a6b3",
+     "pct": 4.7,
+     "luma": 0.629,
+     "L*": 66.2
+    },
+    {
+     "hex": "#393544",
+     "pct": 3.4,
+     "luma": 0.215,
+     "L*": 23.1
+    },
+    {
+     "hex": "#66786c",
+     "pct": 2.2,
+     "luma": 0.453,
+     "L*": 48.8
+    },
+    {
+     "hex": "#5e283b",
+     "pct": 1.2,
+     "luma": 0.207,
+     "L*": 24.6
+    }
+   ]
+  },
+  "ER_01_erdtree_rays_ruined_arches.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.101,
+    "25": 0.265,
+    "50": 0.412,
+    "75": 0.596,
+    "95": 0.822
+   },
+   "luma_mean": 0.432,
+   "luma_rms_contrast": 0.219,
+   "Lstar_pct": {
+    "5": 9.4,
+    "25": 28.8,
+    "50": 44.5,
+    "75": 63.1,
+    "95": 84.3
+   },
+   "frac_luma_below_0.08": 0.034,
+   "frac_luma_above_0.85": 0.0261,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.049,
+    0.117,
+    0.146,
+    0.171,
+    0.136,
+    0.137,
+    0.109,
+    0.067,
+    0.066,
+    0.003
+   ],
+   "sat_hsv_mean": 0.289,
+   "sat_hsv_median": 0.271,
+   "chroma_lab_mean": 16.5,
+   "chroma_lab_p95": 34.3,
+   "colourfulness_HS": 36.9,
+   "frac_warm_saturated": 0.082,
+   "frac_cool_tinted": 0.279,
+   "mean_hex": "#6a7158",
+   "palette8": [
+    {
+     "hex": "#384645",
+     "pct": 19.9,
+     "luma": 0.263,
+     "L*": 28.5
+    },
+    {
+     "hex": "#586353",
+     "pct": 17.1,
+     "luma": 0.374,
+     "L*": 40.5
+    },
+    {
+     "hex": "#152022",
+     "pct": 15.2,
+     "luma": 0.118,
+     "L*": 11.7
+    },
+    {
+     "hex": "#768160",
+     "pct": 15.1,
+     "luma": 0.488,
+     "L*": 52.3
+    },
+    {
+     "hex": "#949764",
+     "pct": 12.2,
+     "luma": 0.576,
+     "L*": 61.1
+    },
+    {
+     "hex": "#b5b37d",
+     "pct": 8.7,
+     "luma": 0.688,
+     "L*": 71.9
+    },
+    {
+     "hex": "#dad5aa",
+     "pct": 8.5,
+     "luma": 0.828,
+     "L*": 84.7
+    },
+    {
+     "hex": "#d1bb69",
+     "pct": 3.3,
+     "luma": 0.729,
+     "L*": 76.1
+    }
+   ]
+  },
+  "ER_02_fog_sea_spires_gold_trees.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.133,
+    "25": 0.292,
+    "50": 0.419,
+    "75": 0.563,
+    "95": 0.682
+   },
+   "luma_mean": 0.419,
+   "luma_rms_contrast": 0.171,
+   "Lstar_pct": {
+    "5": 13.3,
+    "25": 31.8,
+    "50": 45.3,
+    "75": 59.7,
+    "95": 71.2
+   },
+   "frac_luma_below_0.08": 0.022,
+   "frac_luma_above_0.85": 0.0,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.031,
+    0.088,
+    0.146,
+    0.201,
+    0.176,
+    0.189,
+    0.137,
+    0.032,
+    0.001,
+    0.0
+   ],
+   "sat_hsv_mean": 0.21,
+   "sat_hsv_median": 0.199,
+   "chroma_lab_mean": 11.8,
+   "chroma_lab_p95": 19.9,
+   "colourfulness_HS": 25.6,
+   "frac_warm_saturated": 0.018,
+   "frac_cool_tinted": 0.717,
+   "mean_hex": "#676a7a",
+   "palette8": [
+    {
+     "hex": "#868ca2",
+     "pct": 20.6,
+     "luma": 0.549,
+     "L*": 58.4
+    },
+    {
+     "hex": "#666d87",
+     "pct": 19.6,
+     "luma": 0.428,
+     "L*": 46.2
+    },
+    {
+     "hex": "#4a5065",
+     "pct": 17.8,
+     "luma": 0.314,
+     "L*": 34.1
+    },
+    {
+     "hex": "#a0a7bc",
+     "pct": 14.4,
+     "luma": 0.656,
+     "L*": 68.6
+    },
+    {
+     "hex": "#383739",
+     "pct": 12.6,
+     "luma": 0.216,
+     "L*": 23.1
+    },
+    {
+     "hex": "#1d1917",
+     "pct": 7.1,
+     "luma": 0.1,
+     "L*": 9.6
+    },
+    {
+     "hex": "#635d5a",
+     "pct": 5.9,
+     "luma": 0.37,
+     "L*": 40.1
+    },
+    {
+     "hex": "#bfab83",
+     "pct": 2.2,
+     "luma": 0.676,
+     "L*": 70.9
+    }
+   ]
+  },
+  "ER_03_SOTE_shadow_tree_backlit_castle.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.072,
+    "25": 0.153,
+    "50": 0.239,
+    "75": 0.367,
+    "95": 0.627
+   },
+   "luma_mean": 0.28,
+   "luma_rms_contrast": 0.17,
+   "Lstar_pct": {
+    "5": 6.1,
+    "25": 16.0,
+    "50": 25.9,
+    "75": 40.0,
+    "95": 66.3
+   },
+   "frac_luma_below_0.08": 0.07,
+   "frac_luma_above_0.85": 0.0045,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.112,
+    0.278,
+    0.238,
+    0.17,
+    0.086,
+    0.056,
+    0.034,
+    0.019,
+    0.007,
+    0.002
+   ],
+   "sat_hsv_mean": 0.422,
+   "sat_hsv_median": 0.362,
+   "chroma_lab_mean": 12.9,
+   "chroma_lab_p95": 26.5,
+   "colourfulness_HS": 34.9,
+   "frac_warm_saturated": 0.197,
+   "frac_cool_tinted": 0.342,
+   "mean_hex": "#47493c",
+   "palette8": [
+    {
+     "hex": "#1f312c",
+     "pct": 24.0,
+     "luma": 0.176,
+     "L*": 18.7
+    },
+    {
+     "hex": "#071c20",
+     "pct": 19.5,
+     "luma": 0.093,
+     "L*": 8.9
+    },
+    {
+     "hex": "#3e4236",
+     "pct": 18.6,
+     "luma": 0.253,
+     "L*": 27.4
+    },
+    {
+     "hex": "#615642",
+     "pct": 16.0,
+     "luma": 0.34,
+     "L*": 37.0
+    },
+    {
+     "hex": "#856b4c",
+     "pct": 9.9,
+     "luma": 0.433,
+     "L*": 47.1
+    },
+    {
+     "hex": "#ac9067",
+     "pct": 7.3,
+     "luma": 0.576,
+     "L*": 61.3
+    },
+    {
+     "hex": "#d5bd9a",
+     "pct": 3.8,
+     "luma": 0.752,
+     "L*": 77.8
+    },
+    {
+     "hex": "#75826d",
+     "pct": 1.0,
+     "luma": 0.493,
+     "L*": 52.9
+    }
+   ]
+  },
+  "ER_04_SOTE_burning_lattice_tower.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.129,
+    "25": 0.23,
+    "50": 0.322,
+    "75": 0.436,
+    "95": 0.603
+   },
+   "luma_mean": 0.34,
+   "luma_rms_contrast": 0.143,
+   "Lstar_pct": {
+    "5": 12.9,
+    "25": 25.8,
+    "50": 36.4,
+    "75": 48.1,
+    "95": 64.2
+   },
+   "frac_luma_below_0.08": 0.006,
+   "frac_luma_above_0.85": 0.0003,
+   "frac_clipped_white_0.98": 0.0,
+   "luma_hist10": [
+    0.019,
+    0.153,
+    0.268,
+    0.236,
+    0.172,
+    0.1,
+    0.047,
+    0.004,
+    0.001,
+    0.0
+   ],
+   "sat_hsv_mean": 0.399,
+   "sat_hsv_median": 0.383,
+   "chroma_lab_mean": 20.0,
+   "chroma_lab_p95": 51.1,
+   "colourfulness_HS": 50.1,
+   "frac_warm_saturated": 0.592,
+   "frac_cool_tinted": 0.019,
+   "mean_hex": "#745042",
+   "palette8": [
+    {
+     "hex": "#312927",
+     "pct": 21.6,
+     "luma": 0.168,
+     "L*": 17.5
+    },
+    {
+     "hex": "#644037",
+     "pct": 20.2,
+     "luma": 0.279,
+     "L*": 31.0
+    },
+    {
+     "hex": "#8d6755",
+     "pct": 18.0,
+     "luma": 0.431,
+     "L*": 47.1
+    },
+    {
+     "hex": "#b38d76",
+     "pct": 14.0,
+     "luma": 0.578,
+     "L*": 61.6
+    },
+    {
+     "hex": "#5c4c43",
+     "pct": 10.6,
+     "luma": 0.31,
+     "L*": 33.7
+    },
+    {
+     "hex": "#904d39",
+     "pct": 10.2,
+     "luma": 0.353,
+     "L*": 40.5
+    },
+    {
+     "hex": "#ad371d",
+     "pct": 4.2,
+     "luma": 0.308,
+     "L*": 41.0
+    },
+    {
+     "hex": "#eb9b39",
+     "pct": 1.2,
+     "luma": 0.648,
+     "L*": 70.7
+    }
+   ]
+  },
+  "ER_05_SOTE_carved_altar_candles.jpg": {
+   "size": [
+    1920,
+    1080
+   ],
+   "luma_pct": {
+    "5": 0.0,
+    "25": 0.013,
+    "50": 0.051,
+    "75": 0.141,
+    "95": 0.337
+   },
+   "luma_mean": 0.097,
+   "luma_rms_contrast": 0.122,
+   "Lstar_pct": {
+    "5": 0.0,
+    "25": 0.9,
+    "50": 3.9,
+    "75": 14.9,
+    "95": 39.0
+   },
+   "frac_luma_below_0.08": 0.596,
+   "frac_luma_above_0.85": 0.0021,
+   "frac_clipped_white_0.98": 0.0002,
+   "luma_hist10": [
+    0.646,
+    0.212,
+    0.078,
+    0.033,
+    0.018,
+    0.006,
+    0.003,
+    0.002,
+    0.001,
+    0.001
+   ],
+   "sat_hsv_mean": 0.626,
+   "sat_hsv_median": 0.704,
+   "chroma_lab_mean": 10.0,
+   "chroma_lab_p95": 40.8,
+   "colourfulness_HS": 36.7,
+   "frac_warm_saturated": 0.311,
+   "frac_cool_tinted": 0.0,
+   "mean_hex": "#26160d",
+   "palette8": [
+    {
+     "hex": "#080503",
+     "pct": 55.2,
+     "luma": 0.021,
+     "L*": 1.6
+    },
+    {
+     "hex": "#231810",
+     "pct": 16.6,
+     "luma": 0.101,
+     "L*": 9.5
+    },
+    {
+     "hex": "#3a2314",
+     "pct": 11.8,
+     "luma": 0.151,
+     "L*": 16.2
+    },
+    {
+     "hex": "#573019",
+     "pct": 8.2,
+     "luma": 0.213,
+     "L*": 24.4
+    },
+    {
+     "hex": "#814924",
+     "pct": 4.3,
+     "luma": 0.322,
+     "L*": 37.0
+    },
+    {
+     "hex": "#c57e41",
+     "pct": 1.8,
+     "luma": 0.535,
+     "L*": 59.0
+    },
+    {
+     "hex": "#9e4920",
+     "pct": 1.7,
+     "luma": 0.347,
+     "L*": 41.6
+    },
+    {
+     "hex": "#eed9a5",
+     "pct": 0.4,
+     "luma": 0.854,
+     "L*": 87.3
+    }
+   ]
+  }
+ }
+}

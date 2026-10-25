@@ -1,0 +1,1093 @@
+{
+ "scenes": [
+  "Crownfall_Board_v001",
+  "Crownfall_Environment_v001"
+ ],
+ "collections": {
+  "Scene Collection": {
+   "depth": 0,
+   "n_objects": 0,
+   "children": [
+    "CFENV_00_ENVIRONMENT_V001",
+    "01_BOARD_EXPORT.001",
+    "03_SQUARE_CENTRES_EXPORT.001"
+   ]
+  },
+  "Collection": {
+   "depth": 1,
+   "n_objects": 0,
+   "children": []
+  },
+  "01_BOARD_EXPORT": {
+   "depth": 1,
+   "n_objects": 6,
+   "children": []
+  },
+  "99_INSPECTION_STUDIO_NOT_FOR_EXPORT": {
+   "depth": 1,
+   "n_objects": 8,
+   "children": []
+  },
+  "02_COLLISION_NOT_RENDERED": {
+   "depth": 1,
+   "n_objects": 1,
+   "children": []
+  },
+  "03_SQUARE_CENTRES_EXPORT": {
+   "depth": 1,
+   "n_objects": 65,
+   "children": []
+  },
+  "CFENV_00_ENVIRONMENT_V001": {
+   "depth": 1,
+   "n_objects": 0,
+   "children": [
+    "CFENV_10_OPAQUE_GEOMETRY",
+    "CFENV_20_VEGETATION",
+    "CFENV_90_PRESENTATION"
+   ]
+  },
+  "CFENV_10_OPAQUE_GEOMETRY": {
+   "depth": 2,
+   "n_objects": 535,
+   "children": []
+  },
+  "CFENV_20_VEGETATION": {
+   "depth": 2,
+   "n_objects": 288,
+   "children": []
+  },
+  "CFENV_90_PRESENTATION": {
+   "depth": 2,
+   "n_objects": 257,
+   "children": []
+  },
+  "01_BOARD_EXPORT.001": {
+   "depth": 1,
+   "n_objects": 6,
+   "children": []
+  },
+  "03_SQUARE_CENTRES_EXPORT.001": {
+   "depth": 1,
+   "n_objects": 65,
+   "children": []
+  }
+ },
+ "cameras": {
+  "ENV_Camera_01_CinematicFront": {
+   "loc": [
+    0.0,
+    -4.599999904632568,
+    2.5999999046325684
+   ],
+   "rot": [
+    1.4780399799346924,
+    -0.0,
+    0.0
+   ],
+   "lens": 24.0
+  },
+  "ENV_Camera_02_SeatedPlayer": {
+   "loc": [
+    0.0,
+    -0.9399999976158142,
+    0.7200000286102295
+   ],
+   "rot": [
+    0.9919584393501282,
+    -0.0,
+    0.0
+   ],
+   "lens": 25.0
+  },
+  "ENV_Camera_03_OrbitalTop": {
+   "loc": [
+    0.0,
+    2.5999999046325684,
+    13.800000190734863
+   ],
+   "rot": [
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "lens": 35.0
+  },
+  "ENV_Camera_04_SanctuaryThreeQuarter": {
+   "loc": [
+    6.599999904632568,
+    -7.400000095367432,
+    5.199999809265137
+   ],
+   "rot": [
+    1.248586654663086,
+    -4.777240647513281e-08,
+    0.5833730101585388
+   ],
+   "lens": 33.0
+  },
+  "ENV_Camera_05_BoardCraftClose": {
+   "loc": [
+    0.7200000286102295,
+    -0.8700000047683716,
+    0.7099999785423279
+   ],
+   "rot": [
+    0.9845499396324158,
+    4.324957458834433e-08,
+    0.6913370490074158
+   ],
+   "lens": 48.0
+  },
+  "ENV_Camera_06_MonumentsClose": {
+   "loc": [
+    -0.3499999940395355,
+    -2.4000000953674316,
+    2.5
+   ],
+   "rot": [
+    1.3738703727722168,
+    6.554141229742072e-09,
+    -0.06988600641489029
+   ],
+   "lens": 38.0
+  },
+  "INSPECT_Close": {
+   "loc": [
+    0.44999998807907104,
+    -0.5400000214576721,
+    0.3400000035762787
+   ],
+   "rot": [
+    0.837397575378418,
+    -6.292357568327134e-08,
+    0.7114590406417847
+   ],
+   "lens": 62.0
+  },
+  "INSPECT_Seated": {
+   "loc": [
+    0.0,
+    -0.8999999761581421,
+    0.550000011920929
+   ],
+   "rot": [
+    1.0102020502090454,
+    -0.0,
+    0.0
+   ],
+   "lens": 32.0
+  },
+  "INSPECT_ThreeQuarter": {
+   "loc": [
+    1.0800000429153442,
+    -1.25,
+    1.059999942779541
+   ],
+   "rot": [
+    0.9896528124809265,
+    2.144931343650569e-08,
+    0.7125659584999084
+   ],
+   "lens": 55.0
+  },
+  "INSPECT_Top": {
+   "loc": [
+    0.0,
+    0.0,
+    1.399999976158142
+   ],
+   "rot": [
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "lens": 50.0
+  }
+ },
+ "lights": {
+  "ENV_Light_BackMonumentRim": {
+   "type": "AREA",
+   "loc": [
+    -1.0,
+    8.0,
+    7.800000190734863
+   ],
+   "energy": 2000.0,
+   "color": [
+    0.8199999928474426,
+    0.8799999952316284,
+    0.75
+   ]
+  },
+  "ENV_Light_BoardSoftFill": {
+   "type": "AREA",
+   "loc": [
+    0.10000000149011612,
+    -1.5,
+    2.0
+   ],
+   "energy": 90.0,
+   "color": [
+    0.9599999785423279,
+    0.9100000262260437,
+    0.800000011920929
+   ]
+  },
+  "ENV_Light_CoolSanctuaryKey": {
+   "type": "AREA",
+   "loc": [
+    -3.5,
+    -3.5,
+    7.5
+   ],
+   "energy": 1750.0,
+   "color": [
+    0.7400000095367432,
+    0.8799999952316284,
+    0.9100000262260437
+   ]
+  },
+  "ENV_Light_EclipseAmberRim": {
+   "type": "AREA",
+   "loc": [
+    0.0,
+    10.0,
+    7.099999904632568
+   ],
+   "energy": 1350.0,
+   "color": [
+    1.0,
+    0.47999998927116394,
+    0.1599999964237213
+   ]
+  },
+  "ENV_Light_LavaFrontBounce": {
+   "type": "AREA",
+   "loc": [
+    0.0,
+    -0.5,
+    -2.3499999046325684
+   ],
+   "energy": 450.0,
+   "color": [
+    1.0,
+    0.18000000715255737,
+    0.03500000014901161
+   ]
+  },
+  "ENV_Light_LavaLeftBounce": {
+   "type": "POINT",
+   "loc": [
+    -2.5999999046325684,
+    1.100000023841858,
+    -1.649999976158142
+   ],
+   "energy": 100.0,
+   "color": [
+    1.0,
+    0.23000000417232513,
+    0.05000000074505806
+   ]
+  },
+  "ENV_Light_LavaRightBounce": {
+   "type": "POINT",
+   "loc": [
+    3.0,
+    2.0,
+    -1.7000000476837158
+   ],
+   "energy": 110.0,
+   "color": [
+    1.0,
+    0.25999999046325684,
+    0.054999999701976776
+   ]
+  },
+  "ENV_Light_TealAirFill": {
+   "type": "AREA",
+   "loc": [
+    5.0,
+    1.0,
+    5.5
+   ],
+   "energy": 850.0,
+   "color": [
+    0.38999998569488525,
+    0.6700000166893005,
+    0.75
+   ]
+  },
+  "STUDIO_Fill": {
+   "type": "AREA",
+   "loc": [
+    0.8999999761581421,
+    0.20000000298023224,
+    0.800000011920929
+   ],
+   "energy": 9.0,
+   "color": [
+    0.7699999809265137,
+    0.8500000238418579,
+    1.0
+   ]
+  },
+  "STUDIO_Key": {
+   "type": "AREA",
+   "loc": [
+    -0.6000000238418579,
+    -0.699999988079071,
+    1.2999999523162842
+   ],
+   "energy": 18.0,
+   "color": [
+    1.0,
+    0.8899999856948853,
+    0.7400000095367432
+   ]
+  },
+  "STUDIO_Rim": {
+   "type": "AREA",
+   "loc": [
+    -0.30000001192092896,
+    0.8999999761581421,
+    1.0
+   ],
+   "energy": 12.0,
+   "color": [
+    1.0,
+    0.8799999952316284,
+    0.6899999976158142
+   ]
+  }
+ },
+ "largest_meshes": [
+  [
+   "ENV_Atmosphere_RenderOnlyDistanceHaze",
+   [
+    0.0,
+    8.0,
+    4.0
+   ],
+   [
+    32.0,
+    37.0,
+    25.0
+   ],
+   [
+    "CFENV_90_PRESENTATION"
+   ]
+  ],
+  [
+   "STUDIO_Ground",
+   [
+    0.0,
+    0.0,
+    -0.06
+   ],
+   [
+    200.0,
+    200.0,
+    0.01
+   ],
+   [
+    "99_INSPECTION_STUDIO_NOT_FOR_EXPORT"
+   ]
+  ],
+  [
+   "CFEnv_Surface_Conforming_Moss",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    8.24,
+    6.22,
+    4.85
+   ],
+   [
+    "CFENV_20_VEGETATION"
+   ]
+  ],
+  [
+   "ENV_Abyss_BlackCooledVolcanicBasin",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    30.0,
+    31.0,
+    0.22
+   ],
+   [
+    "CFENV_90_PRESENTATION"
+   ]
+  ],
+  [
+   "ENV_Island_PeripheralEscarpment_05",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    4.6,
+    4.73,
+    5.88
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Island_PeripheralEscarpment_03",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    4.74,
+    4.67,
+    5.77
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Island_PeripheralEscarpment_02",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    4.68,
+    4.59,
+    5.67
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Island_PeripheralEscarpment_04",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    4.36,
+    4.43,
+    5.97
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_Eclipse_BlackCelestialBody",
+   [
+    0.15,
+    13.2,
+    7.25
+   ],
+   [
+    3.78,
+    3.78,
+    3.78
+   ],
+   [
+    "CFENV_90_PRESENTATION"
+   ]
+  ],
+  [
+   "ENV_Island_HandSeat",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    3.41,
+    3.35,
+    4.56
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Island_SkullSeat",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    3.34,
+    3.32,
+    3.97
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Island_Central_FracturedBedrock",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    3.41,
+    3.41,
+    3.71
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Island_PeripheralEscarpment_01",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    3.03,
+    2.93,
+    4.55
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Island_PeripheralEscarpment_00",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    2.9,
+    3.05,
+    4.35
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_13",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.64,
+    1.66,
+    10.94
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_10",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.85,
+    1.47,
+    9.59
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_11",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.53,
+    1.39,
+    9.95
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_12",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.49,
+    1.3,
+    10.03
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_04",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.53,
+    1.21,
+    8.65
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_05",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.54,
+    1.37,
+    7.55
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_07",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.27,
+    1.32,
+    9.1
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_03",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.4,
+    1.17,
+    6.92
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_09",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    2.19,
+    2.13,
+    2.37
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_01",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.39,
+    0.97,
+    8.05
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_00",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.45,
+    0.98,
+    7.3
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_06",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.11,
+    1.04,
+    8.05
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Hero_Skull_AncientHollowStone",
+   [
+    -2.35,
+    2.15,
+    0.61
+   ],
+   [
+    2.04,
+    1.73,
+    2.42
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_02",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.38,
+    0.98,
+    6.31
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_15",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.98,
+    1.96,
+    2.05
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_16",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.97,
+    1.9,
+    1.91
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Hero_Hand_PetrifiedOpenPalm",
+   [
+    2.72,
+    3.3,
+    0.18
+   ],
+   [
+    1.92,
+    0.85,
+    4.28
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_00",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.78,
+    1.74,
+    1.87
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_09",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.87,
+    0.85,
+    6.46
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_02",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.75,
+    1.75,
+    1.46
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_03",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.71,
+    1.65,
+    1.58
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_15",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.72,
+    0.73,
+    6.4
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_08",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.78,
+    0.76,
+    5.36
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_10",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.38,
+    1.4,
+    1.52
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Basalt_GothicNeedle_14",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.71,
+    0.72,
+    5.62
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_11",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.32,
+    1.32,
+    1.46
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Abyss_MainMoltenRiver_1",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    2.08,
+    26.77,
+    0.04
+   ],
+   [
+    "CFENV_90_PRESENTATION"
+   ]
+  ],
+  [
+   "ENV_Abyss_MainMoltenRiver_-1",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    2.07,
+    26.79,
+    0.04
+   ],
+   [
+    "CFENV_90_PRESENTATION"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_14",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.48,
+    1.37,
+    1.08
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Sky_FracturedFloatingIsland_12",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    1.33,
+    1.26,
+    1.14
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ],
+  [
+   "ENV_Dais_BrokenRadialPaving",
+   [
+    0.0,
+    0.0,
+    0.0
+   ],
+   [
+    2.94,
+    2.9,
+    0.21
+   ],
+   [
+    "CFENV_10_OPAQUE_GEOMETRY"
+   ]
+  ]
+ ],
+ "n_mesh_objects": 1054,
+ "render": {
+  "engine": "CYCLES",
+  "view_transform": "AgX",
+  "look": "AgX - Medium High Contrast",
+  "world": "Crownfall_Environment_World"
+ }
+}
