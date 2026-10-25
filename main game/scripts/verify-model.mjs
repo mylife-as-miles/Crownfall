@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 
-// A real glTF payload exercises GLTFLoader without depending on the pending art asset.
+// A small fixture verifies alternate assets alongside the actual supplied GLB.
 const vertices = new Float32Array([-0.6, -1, 0, 0.6, -1, 0, 0, 1, 0]);
 const gltf = {
   asset: { version: "2.0", generator: "Crownfall model integration check" },
@@ -140,18 +142,61 @@ try {
 
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(origin, { waitUntil: "networkidle" });
-  await page.locator(".atmosphere--still").waitFor();
+  await page.locator(".atmosphere--still").waitFor({ state: "attached" });
+  await page.locator(".creature-model--loaded").waitFor();
   assert.equal(
-    await page.locator(".creature-model canvas").count(),
-    0,
-    "no pending GLB means no unnecessary second WebGL context",
+    await page.locator(".creature-stage").getAttribute("data-active-animation"),
+    "Idle",
+    "the supplied model selects Idle rather than Attack",
   );
-  console.log("PASS: reduced-motion atmosphere and asset-pending fallback");
+  assert.equal(await page.locator(".creature-illustration--hidden").count(), 1);
+  const canvas = page.locator(".creature-model canvas");
+  await canvas.evaluate((element) => {
+    element.dataset.testIdentity = "loaded-real-model";
+  });
+  const originalCanvas = await canvas.elementHandle();
+  console.log(
+    "PASS: actual compressed GLB loads with Idle selected under reduced motion",
+  );
+
+  // Hide the independent particles so a moving screenshot can only come from the model.
+  await page.addStyleTag({
+    content: ".atmosphere { visibility: hidden !important; }",
+  });
+  const frameDigest = async () =>
+    createHash("sha256")
+      .update(await canvas.screenshot())
+      .digest("hex");
+  await page.waitForTimeout(800);
+  const pausedFrame = await frameDigest();
+  await page.waitForTimeout(350);
+  assert.equal(
+    await frameDigest(),
+    pausedFrame,
+    "OS reduced motion freezes the actual model",
+  );
 
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.waitForTimeout(200);
+  const movingFrame = await frameDigest();
+  await page.waitForTimeout(550);
+  assert.notEqual(
+    await frameDigest(),
+    movingFrame,
+    "the actual Idle pose visibly animates",
+  );
+  console.log(
+    "PASS: actual Idle animates and OS reduced motion freezes its rendered pose",
+  );
+  // The actual asset should remain decoded when changing the motion setting.
+  const modelRequests = [];
+  page.on("request", (request) => {
+    if (request.url().includes("crownfall-sorcerer.glb"))
+      modelRequests.push(request.url());
+  });
   await page.getByRole("tab", { name: "Settings", exact: true }).click();
   await page.getByLabel("Ambient motion", { exact: false }).uncheck();
-  await page.locator(".atmosphere--still").waitFor();
+  await page.locator(".atmosphere--still").waitFor({ state: "attached" });
   await page
     .getByLabel("Particle quality", { exact: false })
     .selectOption("low");
@@ -173,13 +218,55 @@ try {
     1,
     "the app motion setting remains effective independently of OS preference",
   );
+  assert.equal(
+    await canvas.getAttribute("data-test-identity"),
+    "loaded-real-model",
+    "motion changes retain the renderer and decoded model",
+  );
+  assert.equal(
+    await originalCanvas.evaluate((element) => element.isConnected),
+    true,
+  );
+  assert.equal(
+    modelRequests.length,
+    0,
+    "motion and quality controls do not reload the GLB",
+  );
   assert.deepEqual(
     failures,
     [],
     "all fallback and settings paths finish without runtime errors",
   );
   console.log(
-    "PASS: Low quality releases WebGL; app motion setting survives quality changes",
+    "PASS: motion/quality changes retain the decoded GLB and Low releases particle WebGL",
+  );
+
+  await page.goto(`${origin}/?model=none`, { waitUntil: "networkidle" });
+  assert.equal(await page.locator(".creature-model canvas").count(), 0);
+  assert.equal(await page.locator(".creature-illustration--hidden").count(), 0);
+  console.log(
+    "PASS: explicit illustration preview needs no character WebGL context",
+  );
+  await mkdir("artifacts", { recursive: true });
+  await writeFile(
+    "artifacts/model-verification.json",
+    JSON.stringify(
+      {
+        passed: true,
+        asset: "public/models/crownfall-sorcerer.glb",
+        checks: [
+          "Alternate glTF fixture renders visible pixels without WebGL errors",
+          "Invalid glTF retains the illustration fallback",
+          "Actual compressed GLB loads and selects the named Idle clip",
+          "Actual Idle visibly animates; OS reduced motion freezes its rendered pose",
+          "Motion/quality controls retain the renderer and decoded model without another GLB request",
+          "Low releases the independent particle renderer",
+          "Explicit illustration preview uses no character WebGL context",
+        ],
+      },
+      null,
+      2,
+    ) + "\n",
   );
 } finally {
   await browser.close();

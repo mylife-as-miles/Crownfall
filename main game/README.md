@@ -27,15 +27,13 @@ Textures live in `public/assets/environments/` as five optimized portrait WebP f
 
 ## Creature asset
 
-The current creature is **temporary transparent artwork derived from the user-supplied reference**, not a rendered GLB. Fonts are self hosted Barlow under the included SIL Open Font License.
+The default creature is the actual user-supplied **`Crownfall_Sorcerer_Digits_v3_1(1).glb`**, delivered as `public/models/crownfall-sorcerer.glb`. Its PBR material retains the supplied aged-gold and emerald textures. The menu selects the named **Idle** clip; Attack and Threat_Cast are retained in the file but do not play in the menu. The creature renders behind the cards with warm directional lighting, a teal rim, and a slightly angled camera-facing pose.
 
-When the character GLB is supplied:
+The supplied 19,382,272-byte file was optimized to 4,217,336 bytes using 2048px WebP textures and Draco geometry compression. All 80,910 triangles, 142 joints and three clips are preserved; no simplification or animation resampling was applied. The original upload is not overwritten. Required Draco decoders are self hosted in `public/decoders/draco/`, so this model needs no external decoder service.
 
-1. Put it in `public/models/creature.glb`.
-2. Set `CREATURE_MODEL_URL` to `'/models/creature.glb'` in `src/effects/creature-config.ts`, or preview it using `?model=/models/creature.glb`.
-3. Tune framing, rotation, animation choice and lighting in `src/CreatureStage.tsx` for the actual model.
+`src/effects/creature-config.ts` controls the default model URL. `?model=/models/alternate.glb` previews another asset and `?model=none` previews the illustration fallback. Framing and lighting are in `src/CreatureStage.tsx`. Switching motion preferences pauses or resumes the existing renderer without downloading or decoding the model again. OS reduced motion is honored. A temporary reference-derived illustration remains visible while the model loads, or if model loading or WebGL fails.
 
-Three.js loads the model with a transparent background, gold and teal lighting, automatic bounds fitting, animation clips and subtle idle movement. The illustration remains visible if loading fails. Draco and KTX2 decoders use their configured CDN paths when compressed assets require them. Final pose and visual parity must be checked against the actual asset; the synthetic loader test cannot verify its appearance.
+Fonts are self hosted Barlow under the included SIL Open Font License. The bundled Draco distribution includes its Apache license.
 
 `src/Atmosphere.tsx` uses custom GLSL shaders for additive teal and gold particles, with CSS wisps and drifting feather SVGs. Effects clean up resources on unmount. Rive is not required for these effects.
 

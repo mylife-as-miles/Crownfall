@@ -26,6 +26,11 @@ try {
   });
   await page.goto(url);
   await page.evaluate(() => document.fonts.ready);
+  await page.locator(".creature-model--loaded").waitFor({ timeout: 60000 });
+  assert.equal(
+    await page.locator(".creature-stage").getAttribute("data-active-animation"),
+    "Idle",
+  );
   await page.locator(".creature-illustration").waitFor();
   await page.waitForFunction(() => {
     const image = document.querySelector(".creature-illustration");
@@ -180,7 +185,8 @@ try {
   await page.evaluate(() => localStorage.clear());
   await page.mouse.move(0, 0);
   await page.reload();
-  await page.waitForTimeout(650);
+  await page.locator(".creature-model--loaded").waitFor({ timeout: 60000 });
+  await page.waitForTimeout(800);
   await page.screenshot({ path: "artifacts/final-1280x720.png" });
   await page.setViewportSize({ width: 1920, height: 1080 });
   await page.screenshot({ path: "artifacts/final-1920x1080.png" });

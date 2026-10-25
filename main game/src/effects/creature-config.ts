@@ -1,3 +1,3 @@
-// Put the supplied character in public/models/ and set its root-relative URL here.
-// A query string such as ?model=/models/creature.glb also works for previewing.
-export const CREATURE_MODEL_URL: string | null = null;
+// User-supplied Crownfall_Sorcerer_Digits_v3_1(1).glb.
+// ?model=/models/alternate.glb previews another model; ?model=none previews fallback.
+export const CREATURE_MODEL_URL = `${import.meta.env.BASE_URL}models/crownfall-sorcerer.glb`;
