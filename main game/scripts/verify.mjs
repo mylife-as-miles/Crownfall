@@ -67,7 +67,11 @@ try {
       return { x, y, width, height };
     }),
   );
-  assert.equal(cardBounds.length, 5, "five cards including Host");
+  assert.equal(
+    cardBounds.length,
+    4,
+    "four cards: New, Resume, Load Game, Browse",
+  );
   for (const [index, rect] of cardBounds.entries()) {
     assert.ok(Math.abs(rect.x - (139 + index * 201)) < 1, JSON.stringify(rect));
     assert.ok(
@@ -94,12 +98,12 @@ try {
         }),
       ),
     );
-  assert.equal(new Set(artworks.map((art) => art.source)).size, 5);
+  assert.equal(new Set(artworks.map((art) => art.source)).size, 4);
   assert.ok(
     artworks.every((art) => art.width >= 400 && art.height > art.width),
   );
   results.push(
-    "Five distinct portrait environments load across the screenshot's full 1001px card row",
+    "Four distinct portrait environments load across the 800px card row",
   );
 
   await page.keyboard.press("ArrowRight");
@@ -156,14 +160,11 @@ try {
   await page.keyboard.press("Escape");
   results.push("Browse opens an honest unavailable state");
 
-  await page.getByRole("button", { name: "Host", exact: true }).click();
-  await page.getByRole("heading", { name: "Host a game." }).waitFor();
-  assert.match(
-    await page.locator("dialog").innerText(),
-    /Online hosting is not available yet/,
+  assert.equal(
+    await page.getByRole("button", { name: "Host", exact: true }).count(),
+    0,
   );
-  await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "Host", exact: true }).focus();
+  await page.getByRole("button", { name: "Browse", exact: true }).focus();
   await page.keyboard.press("ArrowRight");
   assert.equal(
     await page
@@ -174,12 +175,12 @@ try {
   await page.keyboard.press("ArrowLeft");
   assert.equal(
     await page
-      .getByRole("button", { name: "Host", exact: true })
+      .getByRole("button", { name: "Browse", exact: true })
       .getAttribute("aria-pressed"),
     "true",
   );
   results.push(
-    "Host opens its unavailable state and keyboard navigation wraps through all five cards",
+    "Host is absent and keyboard navigation wraps through all four cards",
   );
 
   await page.evaluate(() => localStorage.clear());

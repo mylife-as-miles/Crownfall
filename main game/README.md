@@ -1,6 +1,6 @@
 # Crownfall main game menu
 
-A separate React + TypeScript + Vite app for the supplied menu references, with the five-card row sized to the latest 1280 × 720 screenshot. Run from this folder:
+A separate React + TypeScript + Vite app for the supplied menu references, with a four-card row at 1280 × 720. Run from this folder:
 
 ```sh
 npm ci
@@ -9,11 +9,11 @@ npm run dev
 
 Open `http://localhost:5173`. `npm run build` checks TypeScript and produces `dist/`. `npm run preview` serves that build.
 
-The layout targets desktop and landscape phones. The creature sits behind the cards as requested. Five cards (New, Resume, Load Game, Browse, Host), top navigation, keyboard and controller navigation, dialogs, settings, and device-local demo saves work. Arrow keys select cards; Enter activates; Escape goes back; Q/E switches sections. Host and Browse clearly show that online sessions are not available. The original chess game remains in `../web`; this new menu does not yet start that game. Settings persist on this browser. Low quality disables shader particles; ambient motion and the OS reduced motion preference stop animation.
+The layout targets desktop and landscape phones. The creature sits behind the cards as requested. Four cards (New, Resume, Load Game, Browse), top navigation, keyboard and controller navigation, dialogs, settings, and device-local demo saves work. Arrow keys select cards; Enter activates; Escape goes back; Q/E switches sections. Browse clearly shows that online sessions are not available. The original chess game remains in `../web`; this new menu does not yet start that game. Settings persist on this browser. Low quality disables shader particles; ambient motion and the OS reduced motion preference stop animation.
 
 ## Environment artwork
 
-All five cards now use separate original generated environment illustrations, inspired by the atmosphere, depth, and environmental themes in [Carla Devèze's portfolio](https://carleaf.artstation.com/). Her portfolio images were studied as references; they are not shipped as card textures.
+All four cards use separate original generated environment illustrations, inspired by the atmosphere, depth, and environmental themes in [Carla Devèze's portfolio](https://carleaf.artstation.com/). Her portfolio images were studied as references; they are not shipped as card textures.
 
 | Card | Environment direction | Portfolio reference |
 | --- | --- | --- |
@@ -21,9 +21,8 @@ All five cards now use separate original generated environment illustrations, in
 | Resume | Warm manor hall and grand stairway | [The Manor](https://carleaf.artstation.com/projects/vbQLJx) |
 | Load Game | Dreamlike submerged garden and turquoise light | [Flying Waters](https://carleaf.artstation.com/projects/wrKlJO) |
 | Browse | Sculpted basalt cliffs and a luminous coastal passage | [Stone Wave Cliffs](https://carleaf.artstation.com/projects/DLKBny) |
-| Host | Floating fractured monument above a ceremonial valley | [The Monolith](https://carleaf.artstation.com/projects/zxoo46) |
 
-Textures live in `public/assets/environments/` as five optimized portrait WebP files. The reference row spans about 1001 pixels: cards measure 197 × 298 pixels at 1280 × 720, with four-pixel gaps. This expands the original four-card row by 25% while matching the five-card screenshot. Labels and descriptions remain live HTML above the artwork.
+Textures live in `public/assets/environments/` as optimized portrait WebP files. The row contains exactly four cards and spans 800 pixels: cards measure 197 × 298 pixels at 1280 × 720, with four-pixel gaps. Labels and descriptions remain live HTML above the artwork.
 
 ## Creature asset
 

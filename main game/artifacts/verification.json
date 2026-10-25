@@ -2,12 +2,12 @@
   "passed": true,
   "checks": [
     "Default Play/Resume selection and reference card positioning",
-    "Five distinct portrait environments load across the screenshot's full 1001px card row",
+    "Four distinct portrait environments load across the 800px card row",
     "Arrow navigation, focused Enter activation, Escape and modal closure",
     "Create local demo save and load it after a reload",
     "Quality and motion preferences persist; Low removes WebGL particles",
     "Browse opens an honest unavailable state",
-    "Host opens its unavailable state and keyboard navigation wraps through all five cards",
+    "Host is absent and keyboard navigation wraps through all four cards",
     "Reference desktop and 1920px browser renders",
     "OS reduced motion honored",
     "No JavaScript or console errors during the menu flow"

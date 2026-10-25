@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "viewport": {
+    "width": 844,
+    "height": 390
+  },
+  "cards": [
+    {
+      "label": "New",
+      "x": 148.34375,
+      "y": 114.296875,
+      "width": 107.59375,
+      "height": 161.40625
+    },
+    {
+      "label": "Resume",
+      "x": 258.109375,
+      "y": 114.296875,
+      "width": 107.59375,
+      "height": 161.40625
+    },
+    {
+      "label": "Load game",
+      "x": 367.875,
+      "y": 114.296875,
+      "width": 107.59375,
+      "height": 161.40625
+    },
+    {
+      "label": "Browse",
+      "x": 477.640625,
+      "y": 114.296875,
+      "width": 107.59375,
+      "height": 161.40625
+    }
+  ],
+  "actualModelLoaded": true,
+  "errors": []
+}

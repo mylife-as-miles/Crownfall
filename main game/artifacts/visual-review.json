@@ -1,5 +1,5 @@
 {
-  "revision": "Five-card menu with actual user-supplied creature GLB",
+  "revision": "Four-card menu with actual user-supplied creature GLB",
   "reviewer": "independent visual critic agent",
   "reference": "artifacts/references/play-options.jpg",
   "reviewedScreenshot": "artifacts/final-1280x720.png",
@@ -10,20 +10,20 @@
   },
   "score": 9.1,
   "scoreOutOf": 10,
-  "assessmentType": "Subjective visual assessment of actual-model integration in the current user-authorized five-card composition. Not an objective pixel-match score.",
+  "assessmentType": "Subjective visual assessment of actual-model integration in the current user-authorized four-card composition. Not an objective pixel-match score.",
   "exactReferenceMatch": false,
   "rubric": [
     {
       "category": "Environment artwork and portfolio inspiration",
       "maximum": 3.0,
       "score": 2.85,
-      "notes": "The same five original environment portraits remain unchanged for this model-integration revision. Distinct waterfall, manor, submerged garden, basalt coast and floating-monument motifs retain cohesive atmospheric depth."
+      "notes": "Four original portraits remain: spring waterfall, ornate amber manor, cyan submerged garden and sculpted basalt coast. Atmospheric depth and visual cohesion are unchanged; Host has been removed as requested."
     },
     {
-      "category": "Five-card row geometry and composition",
+      "category": "Four-card row geometry and composition",
       "maximum": 2.0,
       "score": 2.0,
-      "notes": "The approved five-card row remains at left edges 139, 340, 541, 742, 943; top 211; width 197; height 298; gap 4 at 1280x720. Resume is selected initially. The real creature renders behind every card."
+      "notes": "The corrected row contains only New, Resume, Load Game and Browse at left edges 139, 340, 541, 742; top 211; width 197; height 298; gap 4 at 1280x720. Resume is selected initially. Actual creature remains behind every card, with more of its right-side shoulder and torso visible after removing Host."
     },
     {
       "category": "Typography and control readability",
@@ -35,7 +35,7 @@
       "category": "Actual creature framing and integration",
       "maximum": 1.5,
       "score": 1.25,
-      "notes": "The supplied animated GLB is now visible rather than the illustrated stand-in. Crown, eye, orbital rings, outer arm, hands and robe establish the intended silhouette behind the cards. Lowering the model slightly resolves the initial top-edge crown clipping. Some outer hand and lower robe cropping remains; pose and geometry differences from the first illustration are intentional features of the supplied asset."
+      "notes": "Actual animated GLB remains correctly framed behind all four cards. Crown, eye, orbital rings, shoulder, outer arm, hands and robe establish the intended silhouette. Removing Host reveals more of the torso and shoulder without covering menu labels. Outer hand and lower robe cropping remain intentional framing choices."
     },
     {
       "category": "Palette, lighting and atmospheric cohesion",
@@ -52,22 +52,11 @@
   ],
   "iterationHistory": [
     {
-      "iteration": "Actual GLB pass 1",
-      "screenshot": "artifacts/glb-iteration-1.png",
-      "score": null,
-      "findings": "Root identified overexposure and corrected the lighting before independent numerical review."
-    },
-    {
-      "iteration": "Actual GLB pass 2",
-      "screenshot": "artifacts/glb-iteration-2.png",
-      "score": 9.0,
-      "findings": "Exposure, placement, menu readability and behind-card layering were acceptable. Critic requested approximately 6-10px extra clearance for the tallest crown tip."
-    },
-    {
-      "iteration": "Actual GLB final production pass",
+      "iteration": "Four-card count correction production pass",
       "screenshot": "artifacts/final-1280x720.png",
+      "additionalScreenshot": "artifacts/final-1920x1080.png",
       "score": 9.1,
-      "findings": "Crown lowered and final production renders inspected at 1280x720 and 1920x1080. Current real-model integration meets the subjective 9/10 target."
+      "findings": "Both fresh production captures independently inspected. Exactly four approved cards are visible; Host is absent. Existing artwork, actual model, particle effects, geometry and readability remain unchanged. Current 9.1 score is retained."
     }
   ],
   "model": {
@@ -115,18 +104,13 @@
       "title": "Stone Wave Cliffs",
       "url": "https://carleaf.artstation.com/projects/DLKBny",
       "motifs": "Sculpted basalt cliffs and luminous coastal passage"
-    },
-    {
-      "card": "Host",
-      "title": "The Monolith",
-      "url": "https://carleaf.artstation.com/projects/zxoo46",
-      "motifs": "Floating fractured monument above a ceremonial valley"
     }
   ],
   "authorizedDifferences": [
+    "Latest user correction requires exactly four cards: New, Resume, Load Game and Browse. Host is removed. The later five-card source screenshot is historical guidance for card proportions, not the current approved count.",
     "The actual supplied creature model replaces the earlier 2D creature stand-in. Model geometry, materials and pose may differ from the original illustration.",
-    "Creature remains behind all five cards as explicitly requested.",
-    "The five existing portfolio-inspired environment artworks are unchanged in this turn; the user may provide replacement card images later.",
+    "Creature remains behind all four cards as explicitly requested.",
+    "The four retained portfolio-inspired environment artworks are unchanged in this count-correction turn; the user may provide replacement card images later.",
     "The warm gold background is retained and the later reference example's blue explanatory banner is omitted.",
     "Desktop and phone landscape composition only; no portrait redesign."
   ],
@@ -138,7 +122,15 @@
   ],
   "historicalReviews": [
     "artifacts/visual-review-four-card.json",
-    "artifacts/visual-review-five-card-artwork.json"
+    "artifacts/visual-review-five-card-artwork.json",
+    "artifacts/visual-review-five-card-glb.json"
   ],
-  "verdict": "Meets the subjective 9/10 target for the current five-card menu with the actual supplied creature GLB integrated."
+  "verdict": "Meets the subjective 9/10 target for the corrected four-card menu with the actual supplied creature GLB integrated.",
+  "cardCount": 4,
+  "cards": [
+    "New",
+    "Resume",
+    "Load Game",
+    "Browse"
+  ]
 }

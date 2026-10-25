@@ -264,9 +264,6 @@ a {
 .card-browse .card-art {
   background-image: url("/assets/environments/card-browse.webp");
 }
-.card-host .card-art {
-  background-image: url("/assets/environments/card-host.webp");
-}
 .game-card:hover .card-art {
   transform: scale(1.035);
 }
