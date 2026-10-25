@@ -1,0 +1,893 @@
+{
+  "passed": true,
+  "scope": "DOM-only model=none menu transitions, interruptions, focus, reduced motion and simulated standard-controller behavior. Actual visual recording is captured separately by the coordinating agent.",
+  "checks": [
+    "Normal screen entry has real intermediate motion, one inert aria-hidden exit layer, live incoming focus, unique IDs and complete cleanup",
+    "Rapid interrupted Home/Play/Settings navigation settles on the last requested screen without stale exits, duplicate live controls or lost selection",
+    "Rapid category entry and Back retain incoming row/grid focus and selected category through animation interruptions",
+    "Q/E and standard-controller LB/RB keep the four-tab order and restore reachable incoming content after Settings Back",
+    "Mode dialogs open once per click, close/reopen cleanly during interruptions and restore selection/focus without empty or duplicate modals",
+    "All four screens remain within desktop and landscape page bounds during motion, interruption and settled layouts",
+    "OS reduced motion and saved Ambient Motion off skip transitions immediately, clean outgoing layers and close dialogs without an exit delay",
+    "No JavaScript or console errors; test intentionally uses model=none and preserves actual-renderer captures"
+  ],
+  "samples": [
+    {
+      "label": "first normal Home animation frame",
+      "state": "running",
+      "ghostChildren": 1,
+      "activeAnimations": 5,
+      "livePoses": [
+        {
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, -10, 0)"
+        }
+      ]
+    },
+    {
+      "label": "normal Home entry focus/accessibility",
+      "key": "home",
+      "state": "running",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, -10, 0)"
+        }
+      ],
+      "activeAnimations": 5
+    },
+    {
+      "label": "settled Home",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "interrupted Play",
+      "key": "play",
+      "state": "running",
+      "focus": "Chapters",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
+        }
+      ],
+      "activeAnimations": 6
+    },
+    {
+      "label": "interrupted Settings",
+      "key": "settings:grid",
+      "state": "idle",
+      "focus": "General",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 1
+    },
+    {
+      "label": "interrupted Home",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "interrupted Settings",
+      "key": "settings:grid",
+      "state": "idle",
+      "focus": "General",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 1
+    },
+    {
+      "label": "interrupted Play",
+      "key": "play",
+      "state": "idle",
+      "focus": "Chapters",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "interrupted Home",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "interrupted Play",
+      "key": "play",
+      "state": "idle",
+      "focus": "Chapters",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "rapid navigation settled",
+      "key": "play",
+      "state": "idle",
+      "focus": "Chapters",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "settled nav indicator",
+      "pointerEvents": "none",
+      "hidden": "true",
+      "x": 247.984375,
+      "width": 86.015625,
+      "activeX": 247.984375,
+      "activeWidth": 86.015625
+    },
+    {
+      "label": "General detail entry",
+      "key": "settings:general",
+      "state": "running",
+      "focus": "Language: English, read only",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0.327095,
+          "transform": "matrix(1, 0, 0, 1, 6.72905, 0)"
+        }
+      ],
+      "activeAnimations": 3
+    },
+    {
+      "label": "Video detail entry",
+      "key": "settings:video",
+      "state": "idle",
+      "focus": "Screen Resolution: 1280 × 720, read only",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "Controls detail entry",
+      "key": "settings:controls",
+      "state": "idle",
+      "focus": "Move left: ←. Change binding",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 1
+    },
+    {
+      "label": "Audio detail entry",
+      "key": "settings:audio",
+      "state": "idle",
+      "focus": "Audio Device: System default, read only",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1280px Home in motion",
+      "key": "home",
+      "state": "running",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0.326425,
+          "transform": "matrix(1, 0, 0, 1, -6.73575, 0)"
+        }
+      ],
+      "activeAnimations": 5
+    },
+    {
+      "label": "1280px Home settled",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1280px Play in motion",
+      "key": "play",
+      "state": "idle",
+      "focus": "Online Duel",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1280px Play settled",
+      "key": "play",
+      "state": "idle",
+      "focus": "Online Duel",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1280px Showcase in motion",
+      "key": "showcase:overview",
+      "state": "running",
+      "focus": "AI Battles",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0.327998,
+          "transform": "matrix(1, 0, 0, 1, 6.72002, 0)"
+        }
+      ],
+      "activeAnimations": 5
+    },
+    {
+      "label": "1280px Showcase settled",
+      "key": "showcase:overview",
+      "state": "idle",
+      "focus": "AI Battles",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1280px Settings in motion",
+      "key": "settings:grid",
+      "state": "idle",
+      "focus": "Audio",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1280px Settings settled",
+      "key": "settings:grid",
+      "state": "idle",
+      "focus": "Audio",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1920px Home in motion",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1920px Home settled",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1920px Play in motion",
+      "key": "play",
+      "state": "running",
+      "focus": "Online Duel",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0.325286,
+          "transform": "matrix(1, 0, 0, 1, 6.74714, 0)"
+        }
+      ],
+      "activeAnimations": 6
+    },
+    {
+      "label": "1920px Play settled",
+      "key": "play",
+      "state": "idle",
+      "focus": "Online Duel",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1920px Showcase in motion",
+      "key": "showcase:overview",
+      "state": "idle",
+      "focus": "AI Battles",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1920px Showcase settled",
+      "key": "showcase:overview",
+      "state": "idle",
+      "focus": "AI Battles",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "1920px Settings in motion",
+      "key": "settings:grid",
+      "state": "running",
+      "focus": "Audio",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
+        }
+      ],
+      "activeAnimations": 9
+    },
+    {
+      "label": "1920px Settings settled",
+      "key": "settings:grid",
+      "state": "idle",
+      "focus": "Audio",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "844px Home in motion",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "844px Home settled",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "844px Play in motion",
+      "key": "play",
+      "state": "running",
+      "focus": "Online Duel",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
+        }
+      ],
+      "activeAnimations": 6
+    },
+    {
+      "label": "844px Play settled",
+      "key": "play",
+      "state": "idle",
+      "focus": "Online Duel",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "844px Showcase in motion",
+      "key": "showcase:overview",
+      "state": "running",
+      "focus": "AI Battles",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
+        }
+      ],
+      "activeAnimations": 5
+    },
+    {
+      "label": "844px Showcase settled",
+      "key": "showcase:overview",
+      "state": "idle",
+      "focus": "AI Battles",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "844px Settings in motion",
+      "key": "settings:grid",
+      "state": "running",
+      "focus": "Audio",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0.328232,
+          "transform": "matrix(1, 0, 0, 1, 6.71769, 0)"
+        }
+      ],
+      "activeAnimations": 9
+    },
+    {
+      "label": "844px Settings settled",
+      "key": "settings:grid",
+      "state": "idle",
+      "focus": "Audio",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "OS reduced Home",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "OS reduced Play",
+      "key": "play",
+      "state": "idle",
+      "focus": "Online Duel",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "OS reduced Showcase",
+      "key": "showcase:overview",
+      "state": "idle",
+      "focus": "AI Battles",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "OS reduced Settings",
+      "key": "settings:grid",
+      "state": "idle",
+      "focus": "Audio",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "saved reduced Home",
+      "key": "home",
+      "state": "idle",
+      "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "saved reduced Settings",
+      "key": "settings:grid",
+      "state": "idle",
+      "focus": "General",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "saved reduced Play",
+      "key": "play",
+      "state": "idle",
+      "focus": "Online Duel",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    }
+  ],
+  "errors": []
+}

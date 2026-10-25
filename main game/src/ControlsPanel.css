@@ -1,7 +1,5 @@
 .controls-detail .controls-binding-list {
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #c4c0b6 transparent;
 }
 .controls-detail .controls-binding-row {
   width: 100%;
@@ -16,7 +14,11 @@
   text-align: center;
   font-family: "Barlow", Arial, sans-serif;
   font-weight: 500;
+  transition:
+    color 140ms cubic-bezier(.2, .65, .35, 1),
+    transform 100ms cubic-bezier(.2, .65, .35, 1);
 }
+.controls-binding-row:active .controls-binding-value { transform: scale(.98); }
 .controls-detail .controls-binding-row:nth-child(even) {
   background: rgba(35, 31, 25, .45);
 }
@@ -24,6 +26,11 @@
   outline: 1px solid #db8b28;
   outline-offset: 0.3cqw;
   color: #db8b28;
+  animation: controls-binding-ready 160ms cubic-bezier(.2, .65, .35, 1);
+}
+@keyframes controls-binding-ready {
+  from { opacity: .55; }
+  to { opacity: 1; }
 }
 .controls-detail .controls-binding-row:focus-visible {
   outline-offset: -2px;
@@ -49,3 +56,9 @@
   font-size: 0.85em;
   font-weight: 700;
 }
+@media (prefers-reduced-motion: reduce) {
+  .controls-binding-value { transition: none; }
+  .controls-binding-row:active .controls-binding-value { transform: none; }
+  .controls-detail .controls-binding-row.is-capturing .controls-binding-value { animation: none; }
+}
+.reduce-motion .controls-binding-row:active .controls-binding-value { transform: none; }

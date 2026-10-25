@@ -24,61 +24,61 @@
         {
           "label": "General",
           "x": 107,
-          "y": 159,
+          "y": 158.984375,
           "width": 299.328125,
-          "height": 218,
+          "height": 217.984375,
           "right": 406.328125,
-          "bottom": 377,
+          "bottom": 376.96875,
           "titleFits": true
         },
         {
           "label": "Controls",
           "x": 406.328125,
-          "y": 159,
+          "y": 158.984375,
           "width": 299.328125,
-          "height": 218,
+          "height": 217.984375,
           "right": 705.65625,
-          "bottom": 377,
+          "bottom": 376.96875,
           "titleFits": true
         },
         {
           "label": "Input",
           "x": 705.65625,
-          "y": 159,
+          "y": 158.984375,
           "width": 299.34375,
-          "height": 218,
+          "height": 217.984375,
           "right": 1005,
-          "bottom": 377,
+          "bottom": 376.96875,
           "titleFits": true
         },
         {
           "label": "Video",
           "x": 107,
-          "y": 377,
+          "y": 376.96875,
           "width": 299.328125,
           "height": 218,
           "right": 406.328125,
-          "bottom": 595,
+          "bottom": 594.96875,
           "titleFits": true
         },
         {
           "label": "Audio",
           "x": 406.328125,
-          "y": 377,
+          "y": 376.96875,
           "width": 299.328125,
           "height": 218,
           "right": 705.65625,
-          "bottom": 595,
+          "bottom": 594.96875,
           "titleFits": true
         },
         {
           "label": "Credits",
           "x": 705.65625,
-          "y": 377,
+          "y": 376.96875,
           "width": 299.34375,
           "height": 218,
           "right": 1005,
-          "bottom": 595,
+          "bottom": 594.96875,
           "titleFits": true
         }
       ]
@@ -94,61 +94,61 @@
         {
           "label": "General",
           "x": 160,
-          "y": 238,
+          "y": 237.984375,
           "width": 449.328125,
-          "height": 327.5,
+          "height": 327.484375,
           "right": 609.328125,
-          "bottom": 565.5,
+          "bottom": 565.46875,
           "titleFits": true
         },
         {
           "label": "Controls",
           "x": 609.328125,
-          "y": 238,
+          "y": 237.984375,
           "width": 449.328125,
-          "height": 327.5,
+          "height": 327.484375,
           "right": 1058.65625,
-          "bottom": 565.5,
+          "bottom": 565.46875,
           "titleFits": true
         },
         {
           "label": "Input",
           "x": 1058.65625,
-          "y": 238,
+          "y": 237.984375,
           "width": 449.34375,
-          "height": 327.5,
+          "height": 327.484375,
           "right": 1508,
-          "bottom": 565.5,
+          "bottom": 565.46875,
           "titleFits": true
         },
         {
           "label": "Video",
           "x": 160,
-          "y": 565.5,
+          "y": 565.46875,
           "width": 449.328125,
           "height": 327.5,
           "right": 609.328125,
-          "bottom": 893,
+          "bottom": 892.96875,
           "titleFits": true
         },
         {
           "label": "Audio",
           "x": 609.328125,
-          "y": 565.5,
+          "y": 565.46875,
           "width": 449.328125,
           "height": 327.5,
           "right": 1058.65625,
-          "bottom": 893,
+          "bottom": 892.96875,
           "titleFits": true
         },
         {
           "label": "Credits",
           "x": 1058.65625,
-          "y": 565.5,
+          "y": 565.46875,
           "width": 449.34375,
           "height": 327.5,
           "right": 1508,
-          "bottom": 893,
+          "bottom": 892.96875,
           "titleFits": true
         }
       ]
@@ -166,9 +166,9 @@
           "x": 131.3125,
           "y": 86.578125,
           "width": 163.1875,
-          "height": 117.625,
+          "height": 117.609375,
           "right": 294.5,
-          "bottom": 204.203125,
+          "bottom": 204.1875,
           "titleFits": true
         },
         {
@@ -176,9 +176,9 @@
           "x": 294.5,
           "y": 86.578125,
           "width": 163.1875,
-          "height": 117.625,
+          "height": 117.609375,
           "right": 457.6875,
-          "bottom": 204.203125,
+          "bottom": 204.1875,
           "titleFits": true
         },
         {
@@ -186,39 +186,39 @@
           "x": 457.6875,
           "y": 86.578125,
           "width": 163.1875,
-          "height": 117.625,
+          "height": 117.609375,
           "right": 620.875,
-          "bottom": 204.203125,
+          "bottom": 204.1875,
           "titleFits": true
         },
         {
           "label": "Video",
           "x": 131.3125,
-          "y": 204.203125,
+          "y": 204.1875,
           "width": 163.1875,
           "height": 117.625,
           "right": 294.5,
-          "bottom": 321.828125,
+          "bottom": 321.8125,
           "titleFits": true
         },
         {
           "label": "Audio",
           "x": 294.5,
-          "y": 204.203125,
+          "y": 204.1875,
           "width": 163.1875,
           "height": 117.625,
           "right": 457.6875,
-          "bottom": 321.828125,
+          "bottom": 321.8125,
           "titleFits": true
         },
         {
           "label": "Credits",
           "x": 457.6875,
-          "y": 204.203125,
+          "y": 204.1875,
           "width": 163.1875,
           "height": 117.625,
           "right": 620.875,
-          "bottom": 321.828125,
+          "bottom": 321.8125,
           "titleFits": true
         }
       ]
@@ -233,17 +233,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 106,
-        "y": 150,
+        "y": 149.984375,
         "right": 650,
-        "bottom": 299.6875,
+        "bottom": 299.671875,
         "width": 544,
         "height": 149.6875
       },
       "info": {
         "x": 787.1875,
-        "y": 150,
+        "y": 149.984375,
         "right": 1081.578125,
-        "bottom": 385.390625,
+        "bottom": 385.375,
         "width": 294.390625,
         "height": 235.390625
       },
@@ -268,17 +268,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 106,
-        "y": 150,
+        "y": 149.984375,
         "right": 650,
-        "bottom": 519.90625,
+        "bottom": 519.890625,
         "width": 544,
         "height": 369.90625
       },
       "info": {
         "x": 787.1875,
-        "y": 150,
+        "y": 149.984375,
         "right": 1081.578125,
-        "bottom": 431.40625,
+        "bottom": 431.390625,
         "width": 294.390625,
         "height": 281.40625
       },
@@ -324,17 +324,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 106,
-        "y": 150,
+        "y": 149.984375,
         "right": 650,
-        "bottom": 546,
+        "bottom": 545.984375,
         "width": 544,
         "height": 396
       },
       "info": {
         "x": 787.1875,
-        "y": 150,
+        "y": 149.984375,
         "right": 1081.578125,
-        "bottom": 302.609375,
+        "bottom": 302.59375,
         "width": 294.390625,
         "height": 152.609375
       },
@@ -359,17 +359,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 106,
-        "y": 150,
+        "y": 149.984375,
         "right": 650,
-        "bottom": 373.09375,
+        "bottom": 373.078125,
         "width": 544,
         "height": 223.09375
       },
       "info": {
         "x": 787.1875,
-        "y": 150,
+        "y": 149.984375,
         "right": 1081.578125,
-        "bottom": 273.8125,
+        "bottom": 273.796875,
         "width": 294.390625,
         "height": 123.8125
       },
@@ -394,17 +394,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 106,
-        "y": 150,
+        "y": 149.984375,
         "right": 650,
-        "bottom": 336.390625,
+        "bottom": 336.375,
         "width": 544,
         "height": 186.390625
       },
       "info": {
         "x": 787.1875,
-        "y": 150,
+        "y": 149.984375,
         "right": 1081.578125,
-        "bottom": 273.8125,
+        "bottom": 273.796875,
         "width": 294.390625,
         "height": 123.8125
       },
@@ -429,17 +429,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 130.3125,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 427.4375,
-        "bottom": 186.671875,
+        "bottom": 186.65625,
         "width": 297.125,
         "height": 105.421875
       },
       "info": {
         "x": 491.90625,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 687.65625,
-        "bottom": 243.21875,
+        "bottom": 243.203125,
         "width": 195.75,
         "height": 161.96875
       },
@@ -464,17 +464,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 130.3125,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 427.4375,
-        "bottom": 303.546875,
+        "bottom": 303.53125,
         "width": 297.125,
         "height": 222.296875
       },
       "info": {
         "x": 491.90625,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 687.65625,
-        "bottom": 303.078125,
+        "bottom": 303.0625,
         "width": 195.75,
         "height": 221.828125
       },
@@ -520,17 +520,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 130.3125,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 427.4375,
-        "bottom": 303.546875,
+        "bottom": 303.53125,
         "width": 297.125,
         "height": 222.296875
       },
       "info": {
         "x": 491.90625,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 687.65625,
-        "bottom": 192.390625,
+        "bottom": 192.375,
         "width": 195.75,
         "height": 111.140625
       },
@@ -555,17 +555,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 130.3125,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 427.4375,
-        "bottom": 238.609375,
+        "bottom": 238.59375,
         "width": 297.125,
         "height": 157.359375
       },
       "info": {
         "x": 491.90625,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 687.65625,
-        "bottom": 192.390625,
+        "bottom": 192.375,
         "width": 195.75,
         "height": 111.140625
       },
@@ -590,17 +590,17 @@
       "horizontalOverflow": false,
       "list": {
         "x": 130.3125,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 427.4375,
-        "bottom": 212.640625,
+        "bottom": 212.625,
         "width": 297.125,
         "height": 131.390625
       },
       "info": {
         "x": 491.90625,
-        "y": 81.25,
+        "y": 81.234375,
         "right": 687.65625,
-        "bottom": 170.796875,
+        "bottom": 170.78125,
         "width": 195.75,
         "height": 89.546875
       },

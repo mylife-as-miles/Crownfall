@@ -55,9 +55,9 @@ try {
   assert.equal(await page.locator("dialog").evaluate((element) => element.open), false);
   await page.getByRole("tab", { name: "Play", exact: true }).click();
   await page.keyboard.press("e");
-  await page.getByRole("heading", { name: "Showcase", exact: true }).waitFor();
-  assert.match(await page.locator("dialog").innerText(), /Showcase matches are not connected/);
-  assert.equal(await page.locator("dialog button").count(), 2);
+  await page.getByRole("region", { name: "Showcase options", exact: true }).waitFor();
+  assert.deepEqual(await page.getByRole("region", { name: "Showcase options", exact: true }).getByRole("button").evaluateAll((buttons) => buttons.map((button) => button.getAttribute("aria-label"))), ["AI Battles", "Arenas", "Match Replays"]);
+  assert.equal(await page.locator("dialog").evaluate((dialog) => dialog.open), false);
   await page.keyboard.press("e");
   await grid(page).waitFor();
   assert.equal(await page.locator("dialog").evaluate((dialog) => dialog.open), false);
@@ -68,7 +68,7 @@ try {
   await page.getByRole("region", { name: "Home options", exact: true }).waitFor();
   await page.keyboard.press("Escape");
   await page.getByRole("region", { name: "Play options", exact: true }).waitFor();
-  record("Home/Play/Showcase/Settings navigation, open-dialog tab shortcuts and Back return to the correct screen");
+  record("Home/Play/Showcase/Settings screen navigation, tab shortcuts and Back return to the correct screen");
 
   const cardBounds = await page.locator(".game-card").evaluateAll((elements) => elements.map((element) => {
     const { x, y, width, height } = element.getBoundingClientRect();

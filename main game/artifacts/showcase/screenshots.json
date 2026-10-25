@@ -1,0 +1,111 @@
+{
+  "captures": [
+    {
+      "path": "artifacts/showcase/overview-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/showcase/battles-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/showcase/arenas-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/showcase/arena04-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/showcase/replays-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/showcase/overview-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/showcase/battles-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/showcase/arenas-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/showcase/arena04-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/showcase/replays-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/showcase/overview-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/showcase/battles-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/showcase/arenas-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/showcase/arena04-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/showcase/replays-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    }
+  ],
+  "errors": [],
+  "rendering": "Actual supplied GLB, static reduced motion, high particles and default resolution."
+}

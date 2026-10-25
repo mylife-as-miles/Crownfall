@@ -111,9 +111,11 @@ export const ControlsPanel = forwardRef<SettingsPageHandle, ControlsPanelProps>(
         ))}
       </div>
       <aside className="settings-detail-info">
+        <div key={actions[selected]} className="settings-description-swap">
         <h1 className="settings-description-title">{BINDING_LABELS[actions[selected]]}</h1>
         <p id="controls-row-description">{descriptions[actions[selected]]}</p>
         <p className="controls-binding-instructions">Select a binding, then press its new key. These controls apply to the Crownfall menu.</p>
+        </div>
         <p id="controls-binding-status" className="controls-binding-status" role="status" aria-live="polite">{message}</p>
       </aside>
       <footer className="settings-detail-footer">

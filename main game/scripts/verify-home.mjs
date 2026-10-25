@@ -164,13 +164,12 @@ try {
     assert.equal(await page.locator("dialog button").count(), 2, "Home dialog offers close/back only, with no unsupported launch");
     dialogs.push({ title: name, text });
   };
-  const showcaseDialog = async () => {
-    await page.getByRole("heading", { name: "Showcase", exact: true }).waitFor();
-    const text = await page.locator("dialog").innerText();
-    assert.match(text, /Showcase matches are not connected/);
-    assert.equal(await page.locator("dialog button").count(), 2);
-    assert.equal(await page.locator("dialog input, dialog form").count(), 0);
-    dialogs.push({ title: "Showcase", text });
+  const showcaseScreen = async () => {
+    const options = page.getByRole("region", { name: "Showcase options", exact: true });
+    await options.waitFor();
+    assert.deepEqual(await options.getByRole("button").evaluateAll((buttons) => buttons.map((button) => button.getAttribute("aria-label"))), ["AI Battles", "Arenas", "Match Replays"]);
+    assert.equal(await page.locator("dialog").evaluate((dialog) => dialog.open), false);
+    assert.equal(await page.getByRole("region", { name: "Showcase", exact: true }).locator("video,audio,iframe,form").count(), 0);
   };
   await page.getByRole("button", { name: "Chronicles", exact: true }).hover();
   await selected("Chronicles");
@@ -190,15 +189,15 @@ try {
   record("Pointer hover→Enter and clicks open each truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news");
 
   await page.getByRole("tab", { name: "Showcase", exact: true }).click();
-  await showcaseDialog();
-  assert.equal(await page.locator(".home-grid").count(), 1);
+  await showcaseScreen();
+  assert.equal(await page.locator(".home-grid").count(), 0);
   assert.equal(await page.locator(".game-cards").count(), 0);
-  await page.getByRole("button", { name: /Back to Home/ }).click();
+  await page.getByRole("region", { name: "Showcase", exact: true }).getByRole("button", { name: "Back", exact: true }).click();
   await closed();
   await activeTab("Home");
   await selected("Herald Board", false);
   assert.notEqual(await page.evaluate(() => document.activeElement?.tagName), "BODY");
-  record("Showcase is an honest close/back preview and returns to its originating Home selection");
+  record("Showcase is a dedicated three-destination screen and Back returns to its originating Home selection");
 
   await page.getByRole("tab", { name: "Settings", exact: true }).click();
   await grid(page).waitFor();
@@ -243,11 +242,11 @@ try {
   await pad(1, async () => { await activeTab("Play"); await selected("Chapters"); });
   await pad(4, async () => { await activeTab("Home"); await selected("Herald Board"); });
   await pad(4, () => grid(page).waitFor());
-  await pad(4, showcaseDialog);
+  await pad(4, showcaseScreen);
   await pad(1, async () => { await closed(); await activeTab("Settings"); await grid(page).waitFor(); });
   await pad(1, async () => { await activeTab("Home"); await selected("Herald Board"); });
   await pad(5, async () => { await activeTab("Play"); await selected("Chapters"); });
-  await pad(5, showcaseDialog);
+  await pad(5, showcaseScreen);
   await pad(1, async () => { await closed(); await activeTab("Play"); await selected("Chapters"); });
   await pad(4, async () => { await activeTab("Home"); await selected("Herald Board"); });
   record("Simulated standard controller supports all four D-pad directions, remembered-row/clamp behavior, A/B dialogs, Home Back and four-tab bumper transitions through Showcase with preserved Home/Play selections");
@@ -255,7 +254,7 @@ try {
   await activeTab("Play");
   await selected("Chapters");
   await page.keyboard.press("e");
-  await showcaseDialog();
+  await showcaseScreen();
   await activeTab("Showcase");
   await page.keyboard.press("e");
   await grid(page).waitFor();
@@ -275,15 +274,15 @@ try {
   await page.keyboard.press("q");
   await grid(page).waitFor();
   await page.keyboard.press("q");
-  await showcaseDialog();
+  await showcaseScreen();
   await activeTab("Showcase");
-  await page.getByRole("button", { name: /Back to Settings/ }).click();
+  await page.getByRole("region", { name: "Showcase", exact: true }).getByRole("button", { name: "Back", exact: true }).click();
   await closed();
   await grid(page).waitFor();
   await page.keyboard.press("Escape");
   await activeTab("Home");
   await selected("Herald Board");
-  record("Q/E cycles all four tabs through open information dialogs, ignores focused selects and preserves originating Home/Play context");
+  record("Q/E cycles all four screens, ignores focused selects and preserves originating Home/Play/Settings context");
   assert.deepEqual(errors, []);
   record("No JavaScript or console errors");
 } catch (error) {

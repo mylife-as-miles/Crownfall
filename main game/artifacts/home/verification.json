@@ -7,10 +7,10 @@
     "Restored 600×434 Home grid matches 298×434 + stacked 298×215 tiles with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports",
     "Keyboard spatial movement, remembered right row, clamped outer edges and Home/End retain one selected tab stop and actual focus",
     "Pointer hover→Enter and clicks open each truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news",
-    "Showcase is an honest close/back preview and returns to its originating Home selection",
+    "Showcase is a dedicated three-destination screen and Back returns to its originating Home selection",
     "Home→Settings returns to Home selection; Home Back returns to preserved Play selection/geometry; Play confirmation returns to Home with focus",
     "Simulated standard controller supports all four D-pad directions, remembered-row/clamp behavior, A/B dialogs, Home Back and four-tab bumper transitions through Showcase with preserved Home/Play selections",
-    "Q/E cycles all four tabs through open information dialogs, ignores focused selects and preserves originating Home/Play context",
+    "Q/E cycles all four screens, ignores focused selects and preserves originating Home/Play/Settings context",
     "No JavaScript or console errors"
   ],
   "layouts": [
@@ -77,11 +77,11 @@
       ],
       "grid": {
         "x": 105.328125,
-        "y": 160,
+        "y": 159.984375,
         "width": 600,
         "height": 434,
         "right": 705.328125,
-        "bottom": 594
+        "bottom": 593.984375
       },
       "gap": 4,
       "scrollWidth": 600,
@@ -91,33 +91,33 @@
         {
           "label": "My Legacy",
           "x": 105.328125,
-          "y": 160,
+          "y": 159.984375,
           "width": 298,
           "height": 434,
           "right": 403.328125,
-          "bottom": 594,
+          "bottom": 593.984375,
           "titleFits": true,
           "visible": true
         },
         {
           "label": "Chronicles",
           "x": 407.328125,
-          "y": 160,
+          "y": 159.984375,
           "width": 298,
           "height": 215,
           "right": 705.328125,
-          "bottom": 375,
+          "bottom": 374.984375,
           "titleFits": true,
           "visible": true
         },
         {
           "label": "Herald Board",
           "x": 407.328125,
-          "y": 379,
+          "y": 378.984375,
           "width": 298,
           "height": 215,
           "right": 705.328125,
-          "bottom": 594,
+          "bottom": 593.984375,
           "titleFits": true,
           "visible": true
         }
@@ -186,11 +186,11 @@
       ],
       "grid": {
         "x": 158,
-        "y": 240,
+        "y": 239.984375,
         "width": 900,
         "height": 651,
         "right": 1058,
-        "bottom": 891
+        "bottom": 890.984375
       },
       "gap": 6,
       "scrollWidth": 900,
@@ -200,33 +200,33 @@
         {
           "label": "My Legacy",
           "x": 158,
-          "y": 240,
+          "y": 239.984375,
           "width": 447,
           "height": 651,
           "right": 605,
-          "bottom": 891,
+          "bottom": 890.984375,
           "titleFits": true,
           "visible": true
         },
         {
           "label": "Chronicles",
           "x": 611,
-          "y": 240,
+          "y": 239.984375,
           "width": 447,
           "height": 322.5,
           "right": 1058,
-          "bottom": 562.5,
+          "bottom": 562.484375,
           "titleFits": true,
           "visible": true
         },
         {
           "label": "Herald Board",
           "x": 611,
-          "y": 568.5,
+          "y": 568.484375,
           "width": 447,
           "height": 322.5,
           "right": 1058,
-          "bottom": 891,
+          "bottom": 890.984375,
           "titleFits": true,
           "visible": true
         }
@@ -360,28 +360,8 @@
       "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack"
     },
     {
-      "title": "Showcase",
-      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Home\n>\nB\nBack"
-    },
-    {
       "title": "Herald Board",
       "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack"
-    },
-    {
-      "title": "Showcase",
-      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Settings\n>\nB\nBack"
-    },
-    {
-      "title": "Showcase",
-      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Play\n>\nB\nBack"
-    },
-    {
-      "title": "Showcase",
-      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Play\n>\nB\nBack"
-    },
-    {
-      "title": "Showcase",
-      "text": "×\nCROWNFALL\nShowcase\n\nShowcase matches are not connected to this menu.\n\nBack to Settings\n>\nB\nBack"
     }
   ],
   "errors": []

@@ -74,6 +74,9 @@ a {
     #110d09 96%
   );
 }
+.scene-wash,
+.creature-stage,
+.atmosphere { transition: filter .22s ease; }
 .scene-wash:after {
   content: "";
   position: absolute;
@@ -95,6 +98,7 @@ a {
   width: 51.5625cqw;
   display: flex;
   align-items: center;
+  transition: opacity .16s ease, visibility .16s;
 }
 .shoulder-button {
   width: 1.72cqw;
@@ -131,6 +135,7 @@ a {
 }
 .nav-item {
   position: relative;
+  z-index: 1;
   height: 100%;
   width: 100%;
   padding: 0;
@@ -146,13 +151,19 @@ a {
 }
 .nav-item:hover { color: #e6dacc; }
 .nav-item.is-active {
-  background: #f87b00;
   color: #19120a;
-  box-shadow: 0 0 0.5cqw #d269001c;
   font-weight: 500;
 }
+.nav-active-indicator {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: #f87b00;
+  box-shadow: 0 0 0.5cqw #d269001c;
+  pointer-events: none;
+  transition: transform .24s cubic-bezier(.22, 1, .36, 1), width .24s cubic-bezier(.22, 1, .36, 1);
+}
 .shoulder-next { position: absolute; left: 49.84375cqw; }
-.settings-detail-open .main-nav { visibility: hidden; }
+.settings-detail-open .main-nav { opacity: 0; visibility: hidden; pointer-events: none; }
 .settings-detail-open .scene-wash,
 .settings-detail-open .creature-stage,
 .settings-detail-open .atmosphere {
@@ -189,7 +200,8 @@ a {
   box-shadow: inset 0 0 0 1px #c8bda222;
   transition:
     filter 0.18s,
-    box-shadow 0.18s;
+    box-shadow 0.18s,
+    transform 0.1s;
   filter: brightness(0.82);
 }
 .game-card.is-selected {
@@ -200,11 +212,14 @@ a {
   z-index: 1;
 }
 .game-card:focus-visible {
+  transition-property: filter, transform;
   outline: none;
   box-shadow:
     0 0 0 0.15cqw #f39422,
     0 0 0.8cqw #dc8d2055;
 }
+.game-card:active { transform: scale(.997); }
+.card-title { transition: color .14s ease; }
 .card-art {
   position: absolute;
   z-index: -2;
@@ -344,11 +359,34 @@ a {
   color: #ded6c7;
   box-shadow: 0 30px 100px #000b;
   overflow: auto;
+  opacity: 0;
+  transform: translate3d(0, 10px, 0) scale(.985);
+  transition:
+    opacity .18s ease,
+    transform .22s cubic-bezier(.22, 1, .36, 1),
+    display .22s allow-discrete,
+    overlay .22s allow-discrete;
 }
+.menu-dialog[open] { opacity: 1; transform: none; }
+.menu-dialog:not([open]) { pointer-events: none; }
 .menu-dialog::backdrop {
   background: #080805a8;
   backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity .2s ease, display .22s allow-discrete, overlay .22s allow-discrete;
 }
+.menu-dialog[open]::backdrop { opacity: 1; }
+@starting-style {
+  .menu-dialog[open] { opacity: 0; transform: translate3d(0, 10px, 0) scale(.985); }
+  .menu-dialog[open]::backdrop { opacity: 0; }
+}
+.controller-hints button,
+.dialog-close,
+.secondary-action { transition: color .14s ease, background .14s ease, transform .1s ease; }
+.primary-action:active,
+.secondary-action:active,
+.dialog-close:active,
+.controller-hints button:active { transform: scale(.98); }
 .dialog-inner {
   position: relative;
   padding: 42px 36px 24px;

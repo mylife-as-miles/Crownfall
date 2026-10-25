@@ -20,7 +20,8 @@ try {
     window.__settingsPadReads = 0;
     Object.defineProperty(navigator, "getGamepads", { configurable: true, value: () => {
       window.__settingsPadReads++;
-      return window.__settingsPadConnected ? [{ index: 0, id: "Test standard controller", mapping: "standard", connected: true, axes: [0, 0], buttons: Array.from({ length: 17 }, (_, index) => ({ pressed: window.__settingsPadButtons.includes(index), touched: false, value: window.__settingsPadButtons.includes(index) ? 1 : 0 })) }] : [];
+      const pressed = [...window.__settingsPadButtons]; window.__settingsPadButtons = [];
+      return window.__settingsPadConnected ? [{ index: 0, id: "Test standard controller", mapping: "standard", connected: true, axes: [0, 0], buttons: Array.from({ length: 17 }, (_, index) => ({ pressed: pressed.includes(index), touched: false, value: pressed.includes(index) ? 1 : 0 })) }] : [];
     } });
   });
   page.on("pageerror", (error) => errors.push(error.message));

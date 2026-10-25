@@ -26,11 +26,13 @@ try {
       configurable: true,
       value: () => {
         window.__padReads++;
+        const pressed = [...window.__pressedButtons];
+        window.__pressedButtons = [];
         return [{
         connected: true, mapping: "standard", index: 0,
         axes: [0, 0],
         buttons: Array.from({ length: 17 }, (_, index) => ({
-          pressed: window.__pressedButtons.includes(index),
+          pressed: pressed.includes(index),
         })),
       }];
       },

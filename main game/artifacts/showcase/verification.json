@@ -1,0 +1,170 @@
+{
+  "passed": true,
+  "scope": "DOM-only model=none Showcase screen, supplied-artwork gallery, honest unavailable playback states, origin/focus navigation and simulated standard controller.",
+  "checks": [
+    "Showcase is its own selected screen with three honest overview destinations and no modal or gameplay launch",
+    "AI Battles and Match Replays disclose their unavailable playback/library states; both genuine Explore Arenas shortcuts open the artwork gallery",
+    "All four arena selections load the exact supplied environment-artwork hashes at original dimensions and contain the full image without invented arenas or playback",
+    "Keyboard first/last and arrow navigation plus controller D-pad/A/B move between overview, gallery and preserved Play focus",
+    "Showcase Back remembers Home/Play and Settings detail origins without creating a Settings/Showcase back loop",
+    "Overview, both library empty states and arena gallery keep readable text, reachable Back controls and no horizontal overflow on desktop and landscape",
+    "No JavaScript or console errors; Showcase never starts a game, fabricates a replay or changes the current URL"
+  ],
+  "artwork": [
+    {
+      "name": "Arena 01",
+      "source": "http://localhost:4173/assets/environments/card-new.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "contain",
+      "sha256": "6680a64b955edbc989d8a0feabcc620fbdadfd78896767f333f6f572286e2f63"
+    },
+    {
+      "name": "Arena 02",
+      "source": "http://localhost:4173/assets/environments/card-resume.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "contain",
+      "sha256": "50b356b5e3433c9ca6716a8c369da1276ac0a7e83042caa1235487aca45c9412"
+    },
+    {
+      "name": "Arena 03",
+      "source": "http://localhost:4173/assets/environments/card-load.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "contain",
+      "sha256": "0db6c8c014c8e1754326b4d4148112806ebf1772940bc3e508b6554df433338c"
+    },
+    {
+      "name": "Arena 04",
+      "source": "http://localhost:4173/assets/environments/card-browse.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "contain",
+      "sha256": "5a828742d27f8dc47f53209299e444fd97dc4d4750f97e1e1736d9d325ff8088"
+    }
+  ],
+  "layouts": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "view": "overview",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "view": "AI Battles",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "view": "Arenas",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "view": "Match Replays",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "view": "overview",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "view": "AI Battles",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "view": "Arenas",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "view": "Match Replays",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "overview",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "AI Battles",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "Arenas",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "view": "Match Replays",
+      "overflow": false,
+      "clipped": [],
+      "backReachable": true
+    }
+  ],
+  "errors": []
+}

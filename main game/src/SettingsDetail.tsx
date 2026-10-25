@@ -64,7 +64,7 @@ const PreferencePage = forwardRef<SettingsPageHandle, SettingsDetailProps>(funct
   if (category === "general") {
     rows = [
       { id: "language", label: "Language", value: "English", description: "Crownfall’s menu is currently available in English. Additional translations are not included in this build." },
-      { id: "ambient-motion", label: "Ambient Motion", value: p.motion ? "On" : "Off", kind: "toggle", change: () => update({ motion: !p.motion }), adjust: () => update({ motion: !p.motion }), description: "Animate the sorcerer and ambient particles. Your device’s reduced-motion preference always takes priority." },
+      { id: "ambient-motion", label: "Ambient Motion", value: p.motion ? "On" : "Off", kind: "toggle", change: () => update({ motion: !p.motion }), adjust: () => update({ motion: !p.motion }), description: "Animate menu transitions, the sorcerer, and ambient particles. Your device’s reduced-motion preference always takes priority." },
       { id: "show-hints", label: "Control Hints", value: p.showHints ? "On" : "Off", kind: "toggle", change: () => update({ showHints: !p.showHints }), adjust: () => update({ showHints: !p.showHints }), description: "Show the control prompts along the bottom of the menu." },
       { id: "save-preferences", label: "Save Preferences", value: "Automatic", description: "Menu preferences are saved automatically on this device. Browser storage must be available to keep them between visits." },
     ];
@@ -166,9 +166,11 @@ const PreferencePage = forwardRef<SettingsPageHandle, SettingsDetailProps>(funct
       </div>)}
     </div>
     <aside className="settings-detail-info" aria-live="polite">
+      <div key={current.id} className="settings-description-swap">
       <h1 className="settings-description-title">{current.label}</h1>
       <p id="settings-description">{current.description}</p>
       {category === "general" && current.id === "language" && <div className="settings-language-list"><p>Available languages:</p><p>· English</p></div>}
+      </div>
     </aside>
     <footer className="settings-detail-footer">
       <button type="button" className="settings-footer-button" aria-label="Back" onClick={onBack}><span className="settings-prompt" aria-hidden="true">B</span>Back</button>

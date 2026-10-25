@@ -9,7 +9,7 @@ npm run dev
 
 Open `http://localhost:5173`. `npm run build` checks TypeScript and produces `dist/`. `npm run preview` serves that build.
 
-The layout targets desktop and landscape phones. The creature sits behind the menu as requested. Play offers CLASSIC, LOCAL DUEL, CHAPTERS and ONLINE DUEL in the supplied artwork order. Each card opens a matching mode preview, with integration limits stated inside the dialog. No gameplay or matchmaking launches here, and the former demo-save creation/resume UI is removed; existing browser data is left untouched. Home, Play, Showcase and Settings form the top navigation. Showcase opens a mode-preview state; Home/Play context and selection are preserved. Arrow keys select Play cards and wrap; Home/End chooses the first/last card. Enter activates, Escape goes back, and Q/E switches sections. Settings persist on this browser. Low quality disables shader particles; ambient motion and OS reduced motion stop animation.
+The layout targets desktop and landscape phones. The creature sits behind the menu as requested. Play offers CLASSIC, LOCAL DUEL, CHAPTERS and ONLINE DUEL in the supplied artwork order. Each card opens a matching mode preview, with integration limits stated inside the dialog. No gameplay or matchmaking launches here, and the former demo-save creation/resume UI is removed; existing browser data is left untouched. Home, Play, Showcase and Settings form the top navigation. Showcase provides cinematic-library, arena-artwork and future replay-archive paths; menu context and selection are preserved. Arrow keys select Play cards and wrap; Home/End chooses the first/last card. Enter activates, Escape goes back, and Q/E switches sections. Settings persist on this browser. Low quality disables shader particles; ambient motion and OS reduced motion stop animation.
 
 ## Home screen
 
@@ -18,6 +18,14 @@ Home uses one 298 × 434 tile on the left and two 298 × 215 tiles stacked on th
 Each tile opens a clear unavailable-state dialog. The menu does not implement legacy profiles, chronicles or a herald feed. Home selection and the last right-hand row are remembered across navigation. Left/right moves between columns; up/down moves between the stacked tiles. Home/End selects the first/last tile. Keyboard, pointer and controller selection keep focus aligned. Settings returns to its originating screen. Back from Home returns to Play; Back from Play retains the Home confirmation.
 
 `src/home-content.ts` configures the three content slots, image fit and supported actions. The original JPEGs are preserved byte-for-byte outside Git under `/workspace/crownfall-home-originals/`. Separate full-resolution WebP delivery copies are in `public/assets/home/`; mapping, hashes and display fits are in `artifacts/home-artwork.json`. The private Page and reference image remain unchanged and outside the repository.
+
+## Showcase and motion
+
+Showcase has three destinations: AI Battles, Arenas and Match Replays. Arenas is a working gallery of the four supplied environment artworks, shown in full with selectable thumbnails and a crossfade. AI Battles has a cinematic-library page with an explicit unavailable-playback state and an Explore Arenas shortcut. Match Replays is a future archive, with no fabricated records or playback controls. Back returns through the Showcase overview to its originating Home, Play or Settings view. This is a menu flow; it does not add an AI chess engine or replay service.
+
+Screen changes use a short fade and directional glide, with restrained card staggering. The exit view is a noninteractive DOM snapshot, keeping incoming refs and state live without duplicate React trees. Interrupted changes settle on the latest request, with no queued tour of skipped screens. The nav highlight moves between fixed tab bounds. Selection/press feedback, changing descriptions, arena-image crossfades, background defocus and native dialog enter/exit complete the motion. Both the OS reduced-motion preference and the in-app switch remove this choreography immediately. Scrollbars use recessed bronze rails and amber thumbs while retaining native scrolling.
+
+`artifacts/showcase/` contains actual-GLB captures at desktop and landscape sizes. `artifacts/motion/menu-transitions.webm` records the menu sequence; its renderer settings and preparation trim are disclosed in `recording.json`. Browser motion checks do not establish physical-device GPU performance. Visual review uses the user's subjective 9/10 target.
 
 ## Settings
 
@@ -69,10 +77,12 @@ node scripts/verify-home.mjs
 node scripts/verify-copy.mjs
 node scripts/verify-model.mjs
 node scripts/verify-settings.mjs
+node scripts/verify-showcase.mjs
+node scripts/verify-motion.mjs
 node scripts/verify-render-controls.mjs
 node scripts/verify-framing.mjs
 ```
 
-Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Current screenshots and verification results are saved in `artifacts/`. Copy checks cover the remaining preview dialogs and settings detail pages at desktop and landscape sizes, including all four mode previews, without horizontal clipping. The visual critic reviews actual browser screenshots; scores are subjective and distinct from automated functionality checks. The current layout is the restored four-visible-card row. Files in `artifacts/carousel/` and archived visual reviews document the superseded carousel iteration; its recording predates the final creature transform. Software WebGL verification does not establish physical-device GPU performance.
+Tests use Playwright and `/usr/bin/chromium`; set `CHROMIUM_PATH` for another Chromium installation and `CROWNFALL_TEST_URL` for another server. Current screenshots and verification results are saved in `artifacts/`. Copy checks cover the remaining preview dialogs at desktop and landscape sizes, including all four mode previews, without horizontal clipping. Settings and Showcase detail layouts are verified in their dedicated suites. The visual critic reviews actual browser screenshots; scores are subjective and distinct from automated functionality checks. The current layout is the restored four-visible-card row. Files in `artifacts/carousel/` and archived visual reviews document the superseded carousel iteration; its recording predates the final creature transform. Software WebGL verification does not establish physical-device GPU performance.
 
 `verify-framing.mjs` requires the Vite development server (`CROWNFALL_FRAMING_URL`, default `http://localhost:5173`). It intercepts the development module only inside its Playwright session to seek exact Idle poses and project actual skinned vertices. It writes no production debug hooks. The probe checks authored Idle key times and midpoints against independent ambient sway/yaw extremes, with geometric crown/face/eye proxies and calibration images. Dense sampled bounds are supporting evidence rather than a continuous mathematical guarantee or semantic face detection.

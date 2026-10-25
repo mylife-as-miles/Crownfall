@@ -1,13 +1,14 @@
 {
-  "revision": "Reference-style six-category Settings hub and detail pages added",
-  "latestReviewScope": "Settings",
+  "revision": "Standalone Showcase flow, themed native scrolling and coordinated menu transitions",
+  "latestReviewScope": "Showcase, native scrollbar theme and menu motion",
   "score": 9.1,
-  "scoreScope": "Settings only; prior approved Home and Play assessments remain distinct.",
+  "scoreScope": "Latest menu-motion design assessment only. Screen and scrollbar scores remain separate; this is not an aggregate score or a performance benchmark.",
   "scoreOutOf": 10,
   "screenScores": {
     "Home": 9.2,
     "Play": 9.3,
-    "Settings": 9.1
+    "Settings": 9.1,
+    "Showcase": 9.2
   },
   "reviewer": "independent visual critic agent",
   "homeReview": {
@@ -169,7 +170,7 @@
           "artifacts/home/home-844x390.png"
         ],
         "score": 9.2,
-        "findings": "Right tiles increased 298\u2192358px, left and stacked heights/gaps unchanged. All titles fit at desktop and landscape sizes; creature face/crown stay clear. Chronicles full-map sidebars widen by design; Herald Board shows more scene context. No further adjustment requested."
+        "findings": "Right tiles increased 298→358px, left and stacked heights/gaps unchanged. All titles fit at desktop and landscape sizes; creature face/crown stay clear. Chronicles full-map sidebars widen by design; Herald Board shows more scene context. No further adjustment requested."
       },
       {
         "iteration": "Restore original right widths and add Showcase nav",
@@ -384,11 +385,16 @@
       "sourceEvidence": "artifacts/menu-copy.json",
       "modalFitEvidence": "artifacts/copy-fit-verification.json",
       "showcase": {
-        "heading": "Showcase",
-        "paragraph": "Showcase matches are not connected to this menu.",
-        "onlyAction": "Back to the originating Home or Play screen.",
-        "screenshot": "artifacts/home-restore/showcase-preview-1280.png",
-        "notes": "Honest informational preview; no fabricated running demo or match launch."
+        "screen": "Standalone Showcase overview",
+        "destinations": [
+          "AI Battles",
+          "Arenas",
+          "Match Replays"
+        ],
+        "battleDisclosure": "Cinematic AI battle playback is not connected in this build.",
+        "replayDisclosure": "Match replays are planned for a future update.",
+        "workingDestination": "Arenas is a four-image artwork gallery using the actual supplied environment images.",
+        "notes": "Supersedes the old Showcase informational dialog. No fabricated battle playback, replay library, matchmaking or gameplay launch is offered."
       }
     },
     "suppliedArtwork": {
@@ -558,7 +564,7 @@
     ],
     "verdict": "Retains the subjective 9.3/10 mode-preview Play assessment with readable four-entry navigation. Gameplay integration remains absent and disclosed; no blocking visual or wording issue."
   },
-  "verdict": "Settings meets 9.1/10 after actual screenshot/reference review. Approved Home 9.2 and Play 9.3 remain separate; latest shared navigation spacing is intentional. Scores are subjective and functional verification is recorded separately.",
+  "verdict": "Latest changes meet the subjective 9/10 visual target: Showcase 9.2, native scrollbar theme 9.3 and menu-motion design 9.1. Home 9.2, Play 9.3 and Settings 9.1 remain separate assessments. No blocking visual issue or further redesign requested. Actual software-rendered recording is evidence of composition and settled states, not hardware frame pacing or an AAA certification.",
   "sharedNavigationReview": {
     "labels": [
       "Home",
@@ -574,10 +580,10 @@
       "artifacts/final-1920x1080.png",
       "artifacts/final-landscape-844x390.png"
     ],
-    "showcaseDialog": "artifacts/home-restore/showcase-preview-1280.png",
     "sourceInventory": "artifacts/menu-copy.json",
-    "finding": "All four labels fit Home and Play at 1280,1920 and844px landscape widths. Showcase is explicitly unconnected and returns to the originating screen. Current mode labels, actual images and approved creature are retained.",
-    "latestSpacing": "Fixed-width navigation boxes with24px gaps at 1280, as requested for the Settings revision. Category/reference labels do not replace approved Home/Play/Showcase/Settings names."
+    "finding": "Four fixed-width shared navigation labels remain clear. Showcase now opens a real menu screen rather than the superseded informational dialog. A moving amber indicator coordinates tab changes without changing settled navigation geometry. Current Home/Play artwork and approved creature framing remain.",
+    "latestSpacing": "Fixed-width navigation boxes with24px gaps at 1280, as requested for the Settings revision. Category/reference labels do not replace approved Home/Play/Showcase/Settings names.",
+    "showcaseFlow": "Standalone Showcase overview with AI Battles, Arenas and Match Replays; see showcaseReview."
   },
   "settingsReview": {
     "scope": "New six-category Settings hub and reference-style detail screens. Home and Play assessments remain separate.",
@@ -616,9 +622,11 @@
       "artifacts/settings/credits-844x390.png"
     ],
     "supplementalNativeScrollbarInspection": {
-      "image": "/tmp/settings-scrollbar-native.png",
-      "finding": "Actual native white scrollbar is visible after capture stops suppressing scrollbars. Initial absence came from Playwright default --hide-scrollbars. No custom decorative scroll cue is retained.",
-      "latestSourceInspection": "Optimized-texture wording and square/thin native scrollbar styling inspected in source. Final production Video-only screenshot refresh is handled by the parent capture workflow."
+      "historicalBaselineImage": "/tmp/settings-scrollbar-native.png",
+      "historicalFinding": "White native-thumb confirmation established that the earlier missing scrollbar came from Playwright --hide-scrollbars, not absent native scrolling. That white style is superseded.",
+      "currentFinding": "Current actual Video desktop/landscape and Controls landscape captures show recessed bronze native rails with rounded amber/gold thumbs. Controls shares the same styling; no custom decorative scrollbar cue is retained.",
+      "currentReview": "scrollbarReview",
+      "latestSourceInspection": "Shared native list/description scrollbar selectors, gradient hover/active thumb states and removal of the Controls white override inspected. Native scrolling remains the underlying control."
     },
     "hubGeometryAt1280": {
       "x": 106,
@@ -721,14 +729,15 @@
         "src/SettingsDetail.tsx",
         "src/SettingsDetail.css"
       ],
-      "notes": "Visual critic independently inspected the actual screenshot set and disclosure source. Passing or failing runtime checks belong to the separate verification artifacts, which the parent workflow finalizes; this visual score does not assert unobserved runtime success."
+      "notes": "Actual Settings screenshots and disclosure source were independently inspected. The separate Settings verification artifact currently passes nine groups; the visual score remains distinct from runtime and hardware performance."
     },
     "approvedDifferences": [
       "Existing user-supplied sorcerer remains rather than importing the reference mannequin.",
       "Descriptions reflect browser capabilities and current menu scope, replacing engine-only placeholder controls and unsupported languages/gameplay actions.",
       "Shared navigation now uses fixed-width boxes and 24px gaps at 1280.",
       "Credits follow the same detail language with factual project attribution.",
-      "Desktop and phone-landscape layouts remain the supported presentation."
+      "Desktop and phone-landscape layouts remain the supported presentation.",
+      "Latest explicit user request replaces the reference white scrollbar with a themed bronze rail and gold/amber native thumb; see separate scrollbarReview."
     ],
     "limits": [
       "Icon silhouettes and repeating pattern density are approximations rather than exact source artwork.",
@@ -737,5 +746,209 @@
       "The 9.1 score is subjective visual judgment, not proof of functional correctness or hardware performance."
     ],
     "verdict": "Meets the subjective 9/10 visual target for Settings after the focused fixes. No blocking visual issue or further redesign requested."
+  },
+  "interactionScores": {
+    "Native scrollbar theme": 9.3,
+    "Menu motion design": 9.1
+  },
+  "showcaseReview": {
+    "scope": "Current standalone Showcase overview, unavailable cinematic battle library, supplied-art arena gallery and future replay archive.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective theme, composition, readability and truthful-flow review of all 15 actual-GLB captures. This is not a claim that battle playback or replay recording exists.",
+    "reviewedScreenshots": [
+      "artifacts/showcase/overview-1280x720.png",
+      "artifacts/showcase/battles-1280x720.png",
+      "artifacts/showcase/arenas-1280x720.png",
+      "artifacts/showcase/arena04-1280x720.png",
+      "artifacts/showcase/replays-1280x720.png",
+      "artifacts/showcase/overview-1920x1080.png",
+      "artifacts/showcase/battles-1920x1080.png",
+      "artifacts/showcase/arenas-1920x1080.png",
+      "artifacts/showcase/arena04-1920x1080.png",
+      "artifacts/showcase/replays-1920x1080.png",
+      "artifacts/showcase/overview-844x390.png",
+      "artifacts/showcase/battles-844x390.png",
+      "artifacts/showcase/arenas-844x390.png",
+      "artifacts/showcase/arena04-844x390.png",
+      "artifacts/showcase/replays-844x390.png"
+    ],
+    "layout": "Overview, library and gallery use the existing 800 by 298 Play envelope at 1280. Creature remains behind the menu, with crown and eye clear. Desktop and phone-landscape only.",
+    "rubric": [
+      {
+        "category": "Overview hierarchy and navigation",
+        "maximum": 2.5,
+        "score": 2.3,
+        "notes": "Three distinct destinations, compact headings, amber selection and reachable Back retain the established menu language."
+      },
+      {
+        "category": "Composition and creature balance",
+        "maximum": 2,
+        "score": 1.85,
+        "notes": "Panels remain subordinate to the exposed face, crown and four-arm silhouette. Bronze borders, dark library surfaces and restrained emblems fit the scene."
+      },
+      {
+        "category": "Actual supplied artwork and gallery framing",
+        "maximum": 2,
+        "score": 1.85,
+        "notes": "All four original environment artworks are available. Large previews contain the full compositions; thumbnails and a counter communicate selection."
+      },
+      {
+        "category": "Typography and landscape readability",
+        "maximum": 1.5,
+        "score": 1.3,
+        "notes": "Headings, status, descriptions and controls fit all three viewports. Thumbnail labels and some supporting text remain small on phone landscape."
+      },
+      {
+        "category": "Truthful flow and status",
+        "maximum": 2,
+        "score": 1.9,
+        "notes": "AI Battles explicitly discloses unconnected playback; Match Replays says future update. Explore Arenas is a genuine gallery shortcut. No fake playing match, saved replay or unsupported launch action appears."
+      }
+    ],
+    "copyAudit": {
+      "AI Battles": "Cinematic AI battle playback is not connected in this build.",
+      "Arenas": "Environment artwork preview; four actual supplied images rather than playable arena scenes.",
+      "Match Replays": "Match replays are planned for a future update.",
+      "sharedWorkingAction": "Explore Arenas",
+      "back": "Returns through the Showcase overview to the originating screen."
+    },
+    "evidence": {
+      "actualGLBCaptures": "artifacts/showcase/screenshots.json",
+      "functional": "artifacts/showcase/verification.json",
+      "artwork": "artifacts/card-artwork.json",
+      "source": [
+        "src/Showcase.tsx",
+        "src/Showcase.css"
+      ],
+      "functionalStatusAtReview": "Separate Showcase verification passes seven groups."
+    },
+    "captureStateNote": "At 1920 and 844, the generic arenas capture retains Arena04 selected from preceding interaction. Those are valid retained-state gallery captures, not fresh Arena01 evidence.",
+    "limits": [
+      "Some phone-landscape supporting and thumbnail text is small.",
+      "Battle playback and replay recording/library functionality remain unavailable and are disclosed.",
+      "Score is subjective visual judgment, not a pixel-match or performance benchmark."
+    ],
+    "verdict": "Meets 9.2/10 for the current theme and flow. No blocking visual issue or further polish requested."
+  },
+  "scrollbarReview": {
+    "scope": "Latest themed native scrollbars in Settings lists, Controls bindings and description panes.",
+    "score": 9.3,
+    "scoreOutOf": 10,
+    "reviewedScreenshots": [
+      "artifacts/settings/video-1280x720.png",
+      "artifacts/settings/video-844x390.png",
+      "artifacts/settings/controls-844x390.png"
+    ],
+    "finding": "Rounded gold/amber thumbs remain clearly visible on inset bronze rails without competing with selected-row text. Consistent width and palette survive phone landscape. The former Controls white override is removed.",
+    "implementationKind": "Browser-native scrollbar styling; no custom decorative scroll cue or replacement scroll logic.",
+    "sourceInspection": [
+      "src/SettingsDetail.css",
+      "src/ControlsPanel.css"
+    ],
+    "states": "Gradient thumb, recessed track and brighter hover/pressed colors inspected in CSS; resting actual browser captures inspected visually.",
+    "functionalEvidence": "artifacts/settings/verification.json",
+    "limit": "Native scrollbar shape/state rendering depends on browser and operating system. The visual score does not independently certify every device scroll gesture.",
+    "verdict": "Meets 9.3/10 for this narrow theme revision. No visual correction requested."
+  },
+  "motionReview": {
+    "scope": "Coordinated screen entrances/exits, option feedback, modal transitions, description changes and Showcase image fades.",
+    "score": 9.1,
+    "scoreOutOf": 10,
+    "assessmentType": "Subjective choreography and scene-cohesion assessment from decoded actual recording frames, source inspection and separate functional evidence. No hardware frame-rate, frame-pacing or AAA certification is implied.",
+    "recording": "artifacts/motion/menu-transitions.webm",
+    "recordingMetadata": "artifacts/motion/recording.json",
+    "finalFrame": "artifacts/motion/recording-final-frame.png",
+    "recordingConditions": {
+      "durationSeconds": 29.96,
+      "viewport": [
+        960,
+        540
+      ],
+      "actualCreature": "Actual supplied GLB and Idle",
+      "particleQuality": "Low",
+      "sceneResolutionPercent": 50,
+      "sceneFrameCap": 30,
+      "uiMotionEnabled": true,
+      "softwareWebGL": true,
+      "trimmed": false
+    },
+    "reviewMethod": "Decoded representative real frames throughout the full recording and denser sequences around screen changes, mode dialog, Video detail and rapid return. Inspection-frame encoded times are distinct from metadata action wall-clock times.",
+    "reviewedEncodedSequencesSeconds": [
+      {
+        "from": 7.25,
+        "to": 7.75,
+        "observation": "Play to Home handoff; short glide/fade preserves the creature and settles to the approved grid."
+      },
+      {
+        "from": 10.5,
+        "to": 11,
+        "observation": "Home to Play settles without changing approved card geometry."
+      },
+      {
+        "from": 11.25,
+        "to": 11.75,
+        "observation": "Complete Chapters mode dialog, readable content and defocused backdrop."
+      },
+      {
+        "from": 13.25,
+        "to": 13.75,
+        "observation": "Showcase overview entrance retains scene continuity and amber hierarchy."
+      },
+      {
+        "from": 17.25,
+        "to": 17.75,
+        "observation": "AI Battles library entrance remains composed and readable."
+      },
+      {
+        "from": 23,
+        "to": 24,
+        "observation": "Video detail and description changes retain clear columns while the existing scene defocuses."
+      },
+      {
+        "from": 24.25,
+        "to": 25.75,
+        "observation": "Rapid requests pass through transitional background samples and recover to stable Play with Chapters selected."
+      },
+      {
+        "from": 26,
+        "to": 28,
+        "observation": "Final Play state remains visible and stable; the recording tail is retained."
+      }
+    ],
+    "choreography": {
+      "screenExitMs": 180,
+      "screenEntryMs": 280,
+      "tileStaggerMs": 16,
+      "maximumStaggeredSettleMs": 300,
+      "optionFeedbackMs": "100–160",
+      "navigationIndicatorMs": 240,
+      "arenaImageFadeMs": 280,
+      "notes": "Low-amplitude easing and restrained press feedback fit the menu. Incoming live controls receive focus immediately; outgoing DOM snapshots are inert and hidden from assistive technology."
+    },
+    "evidence": {
+      "functional": "artifacts/motion/verification.json",
+      "functionalStatusAtReview": "Separate motion verification passes eight groups, including interruptions, live focus, unique IDs, cleanup, dialog reopen, controller navigation and both OS/app reduced-motion paths.",
+      "source": [
+        "src/MenuTransition.tsx",
+        "src/MenuTransition.css",
+        "src/App.tsx",
+        "src/styles.css",
+        "src/HomeGrid.css",
+        "src/SettingsGrid.css",
+        "src/SettingsDetail.css",
+        "src/ControlsPanel.css",
+        "src/Showcase.css"
+      ]
+    },
+    "reducedMotion": "Source and passing separate tests show OS reduced motion or saved Ambient Motion off bypasses screen choreography and CSS micro-motion immediately. The normal-motion recording is not reduced-motion footage.",
+    "captureCorrection": "Initial 21-second software-rendered capture had a dropped visual tail and unusable action/video timing alignment. It was replaced by the full untrimmed 29.96-second lower-fill capture. Current metadata correctly labels action times as wall clock, not encoded seek positions.",
+    "limits": [
+      "Software capture repeats or skips intermediate visual samples; it does not establish physical-device frame pacing or 60fps performance.",
+      "The recovered recording retains the final state but does not clearly preserve every short gallery image-crossfade step. Gallery settled states were separately inspected at all three viewports; fade behavior is also present in source.",
+      "Rapid interrupted navigation includes short transitional background-only samples before the final requested view. The separate functional report confirms cleanup and final live focus; capture timing is not a latency bound.",
+      "The score assesses motion design and cohesion, not a claim of AAA production quality."
+    ],
+    "verdict": "Meets 9.1/10 for restrained, coordinated menu-motion design. No blocking visual issue or further polish requested; hardware smoothness remains outside this software capture assessment."
   }
 }
