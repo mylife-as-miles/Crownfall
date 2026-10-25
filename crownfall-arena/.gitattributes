@@ -1,3 +1,4 @@
-*.blend filter=lfs diff=lfs merge=lfs -text
-*.blend.zip filter=lfs diff=lfs merge=lfs -text
-*.glb filter=lfs diff=lfs merge=lfs -text
+*.blend -filter -diff -merge -text
+*.glb -filter -diff -merge -text
+*.zip -filter -diff -merge -text
+*.part* -filter -diff -merge -text

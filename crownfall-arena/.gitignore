@@ -9,3 +9,7 @@ runpod/
 .env*
 .claude*
 cloud_setup_report.json
+.cloud_runtime/
+main/Crownfall_Main_v029_sorcerer.blend
+*.part
+main/Crownfall_Main_v029_sorcerer.blend.zip
