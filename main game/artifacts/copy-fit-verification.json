@@ -1,7 +1,7 @@
 {
   "passed": true,
   "domOnly": true,
-  "scope": "Four mode previews, three Home panels and Back at desktop and landscape. Settings and Showcase now have dedicated screen verification. DOM-only model=none probe; actual GLB menu renders verified separately.",
+  "scope": "Three mode previews, two chapter previews, three Home panels and Back at desktop and landscape. Settings, Showcase and Chapters have dedicated screen verification. DOM-only model=none probe; actual GLB menu renders verified separately.",
   "results": [
     {
       "viewport": {
@@ -63,17 +63,6 @@
         "width": 1280,
         "height": 720
       },
-      "state": "chapters",
-      "text": "×\nCROWNFALL\nChapters\n\nCrownfall's campaign chapters are not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
-      "horizontalOverflow": false,
-      "verticalScrollAvailable": false,
-      "offenders": []
-    },
-    {
-      "viewport": {
-        "width": 1280,
-        "height": 720
-      },
       "state": "online",
       "text": "×\nCROWNFALL\nOnline Duel\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
       "horizontalOverflow": false,
@@ -87,6 +76,28 @@
       },
       "state": "back",
       "text": "×\nCROWNFALL\nReturn to Home?\n\nYour menu preferences stay on this device.\n\nStay in Play\nGo to Home\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "chapter-01",
+      "text": "×\nCROWNFALL\nChapter 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "chapter-02",
+      "text": "×\nCROWNFALL\nChapter 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -151,17 +162,6 @@
         "width": 844,
         "height": 390
       },
-      "state": "chapters",
-      "text": "×\nCROWNFALL\nChapters\n\nCrownfall's campaign chapters are not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
-      "horizontalOverflow": false,
-      "verticalScrollAvailable": false,
-      "offenders": []
-    },
-    {
-      "viewport": {
-        "width": 844,
-        "height": 390
-      },
       "state": "online",
       "text": "×\nCROWNFALL\nOnline Duel\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
       "horizontalOverflow": false,
@@ -175,6 +175,28 @@
       },
       "state": "back",
       "text": "×\nCROWNFALL\nReturn to Home?\n\nYour menu preferences stay on this device.\n\nStay in Play\nGo to Home\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "chapter-01",
+      "text": "×\nCROWNFALL\nChapter 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "chapter-02",
+      "text": "×\nCROWNFALL\nChapter 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []

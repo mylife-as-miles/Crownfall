@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { grid, openCategory, leaveSettings, setMotion } from "./settings-helpers.mjs";
 import { waitForBootReady } from "./boot-helpers.mjs";
+import { chapterGrid, chaptersRegion, chapterName } from "./chapters-helpers.mjs";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
 const domOnly = process.env.CROWNFALL_DOM_ONLY === "1";
@@ -112,15 +113,36 @@ try {
   assert.equal(await chapters.getAttribute("aria-pressed"), "true");
   assert.equal(await chapters.evaluate((element) => element === document.activeElement), true);
   await page.keyboard.press("Enter");
-  await page.getByRole("heading", { name: "Chapters", exact: true }).waitFor();
-  await page.keyboard.press("Escape");
+  await chapterGrid(page).waitFor();
+  assert.equal(await chapterGrid(page).getByRole("button").count(), 14);
   assert.equal(await page.locator("dialog").evaluate((element) => element.open), false);
-  record("Arrow navigation, focused Enter activation, Escape and modal closure work for the new modes");
+  await page.keyboard.press("Escape");
+  await page.getByRole("region", { name: "Play options", exact: true }).waitFor();
+  assert.equal(await chapters.getAttribute("aria-pressed"), "true");
+  assert.equal(await page.locator("dialog").evaluate((element) => element.open), false);
+  record("Arrow navigation and focused Enter open the fourteen-chapter screen; Escape returns to the selected Chapters card");
 
   const initialSave = await page.evaluate((key) => localStorage.getItem(key), saveKey);
   assert.equal(initialSave, null, "fresh context has no legacy demo save");
   for (const name of modes) {
     await page.getByRole("button", { name, exact: true }).click();
+    if (name === "Chapters") {
+      await chapterGrid(page).waitFor();
+      assert.equal(await chapterGrid(page).getByRole("button").count(), 14);
+      assert.equal(await chapterGrid(page).locator('[aria-disabled="true"]').count(), 12);
+      await chapterGrid(page).getByRole("button", { name: chapterName(1), exact: true }).click();
+      await page.getByRole("heading", { name: chapterName(1), exact: true }).waitFor();
+      assert.match(await page.locator("dialog").innerText(), /not connected|unavailable/i);
+      assert.equal(await page.locator("dialog button").count(), 2);
+      assert.equal(await page.locator("dialog input, dialog form, dialog .save-slot").count(), 0);
+      previews.push({ mode: name, screen: "Fourteen-chapter selection", preview: await page.locator("dialog").innerText() });
+      await page.keyboard.press("Escape");
+      await chapterGrid(page).waitFor();
+      await chaptersRegion(page).getByRole("button", { name: "Back", exact: true }).click();
+      await page.getByRole("region", { name: "Play options", exact: true }).waitFor();
+      assert.equal(await page.evaluate((key) => localStorage.getItem(key), saveKey), initialSave);
+      continue;
+    }
     await page.getByRole("heading", { name, exact: true }).waitFor();
     const text = await page.locator("dialog").innerText();
     assert.match(text, /not(?: yet)? (?:connected|available)|unavailable/i);
@@ -133,7 +155,7 @@ try {
     assert.equal(await page.evaluate((key) => localStorage.getItem(key), saveKey), initialSave);
   }
   assert.equal(await page.getByRole("button", { name: "New Gambit", exact: true }).count(), 0);
-  record("All four mode previews truthfully disclose unavailable gameplay and offer no launch or demo-save form");
+  record("Three mode previews and the fourteen-chapter screen truthfully disclose unavailable gameplay and offer no launch or demo-save form");
 
   const legacySave = JSON.stringify({ name: "Existing record", chapter: "Legacy demo", updatedAt: "2026-01-01T00:00:00.000Z" });
   await page.evaluate(({ key, value }) => localStorage.setItem(key, value), { key: saveKey, value: legacySave });

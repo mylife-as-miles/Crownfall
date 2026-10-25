@@ -100,7 +100,7 @@ export default class MenuTransition extends Component<MenuTransitionProps, Recor
         { opacity: 0, transform: `translate3d(${10 * direction}px, 0, 0)` },
         { opacity: 1, transform: "translate3d(0, 0, 0)" },
       ], { duration: 280, easing: "cubic-bezier(.16, 1, .3, 1)", fill: "both" }));
-      const tiles = node.querySelectorAll(":scope > .game-card, :scope > .home-tile, :scope > .settings-tile, :scope > .showcase-overview > .showcase-tile");
+      const tiles = node.querySelectorAll(":scope > .game-card, :scope > .home-tile, :scope > .settings-tile, :scope > .showcase-overview > .showcase-tile, :scope > .chapters-grid > .chapter-tile");
       tiles.forEach((tile, index) => {
         this.animations.push(tile.animate([
           { opacity: 0, transform: "translate3d(0, 7px, 0)" },

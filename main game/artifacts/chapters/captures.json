@@ -1,0 +1,85 @@
+{
+  "captures": [
+    {
+      "path": "artifacts/chapters/play-before-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/chapters/grid-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/chapters/locked-selected-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/chapters/chapter02-preview-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/chapters/grid-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/chapters/locked-selected-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/chapters/chapter02-preview-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "path": "artifacts/chapters/grid-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/chapters/locked-selected-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/chapters/chapter02-preview-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/chapters/play-after-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    }
+  ],
+  "errors": [],
+  "reference": "279178.jpg — user-supplied 5+5+4 chapter layout (reference not bundled)",
+  "rendering": "Actual supplied GLB. Static captures use high particles and reduced motion. Full untrimmed960x540 flow recording uses Low particles,50% scene resolution and30fps scene cap for software capture; target-device frame performance is unbenchmarked.",
+  "recording": "artifacts/chapters/chapters-flow.webm"
+}

@@ -5,8 +5,8 @@
     "Default Play/Local Duel selection and reference card positioning",
     "Home/Play/Showcase/Settings screen navigation, tab shortcuts and Back return to the correct screen",
     "Four mode labels, bold amber/gray typography, original geometry and supplied-artwork fingerprints are correct",
-    "Arrow navigation, focused Enter activation, Escape and modal closure work for the new modes",
-    "All four mode previews truthfully disclose unavailable gameplay and offer no launch or demo-save form",
+    "Arrow navigation and focused Enter open the fourteen-chapter screen; Escape returns to the selected Chapters card",
+    "Three mode previews and the fourteen-chapter screen truthfully disclose unavailable gameplay and offer no launch or demo-save form",
     "Mode activation and reload have no local-demo-save creation, restoration or overwrite side effects",
     "Quality and motion preferences persist across detail pages/reload; Low releases the particle renderer",
     "Mode navigation wraps correctly; Home/End select the endpoints without an added Host or Story card",
@@ -24,7 +24,8 @@
     },
     {
       "mode": "Chapters",
-      "text": "×\nCROWNFALL\nChapters\n\nCrownfall's campaign chapters are not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack"
+      "screen": "Fourteen-chapter selection",
+      "preview": "×\nCROWNFALL\nChapter 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack"
     },
     {
       "mode": "Online Duel",

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Atmosphere from "./Atmosphere";
 import CreatureStage from "./CreatureStage";
 import HomeGrid from "./HomeGrid";
+import Chapters from "./Chapters";
+import type { ChapterItem } from "./chapters-content";
 import LoadingScreen from "./LoadingScreen";
 import useBootLoading from "./useBootLoading";
 import MenuTransition from "./MenuTransition";
@@ -15,14 +17,14 @@ import "./styles.css";
 type Panel =
   | "classic"
   | "local-duel"
-  | "chapters"
+  | "chapter-preview"
   | "online-duel"
   | "legacy"
   | "chronicles"
   | "herald"
   | "quit"
   | null;
-type Screen = "home" | "play" | "showcase" | "settings";
+type Screen = "home" | "play" | "showcase" | "settings" | "chapters";
 
 const preferencesKey = "crownfall.main-game.preferences";
 const initialPreferences = INITIAL_PREFERENCES;
@@ -107,6 +109,8 @@ export default function App() {
   const [selected, setSelected] = useState<number>(1);
   const [screen, setScreen] = useState<Screen>("play");
   const [homeSelected, setHomeSelected] = useState(0);
+  const [chapterSelected, setChapterSelected] = useState(0);
+  const [chapterPreview, setChapterPreview] = useState<ChapterItem | null>(null);
   const [showcaseView, setShowcaseView] = useState<ShowcaseView>("overview");
   const [transitionDirection, setTransitionDirection] = useState(1);
   const [systemReducedMotion, setSystemReducedMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -124,7 +128,8 @@ export default function App() {
   const dialog = useRef<HTMLDialogElement>(null);
   const lastPanel = useRef<Panel>(null);
   const showcaseRef = useRef<SettingsPageHandle>(null);
-  const showcaseOrigin = useRef<"home" | "play" | "settings">("play");
+  const chaptersRef = useRef<SettingsPageHandle>(null);
+  const showcaseOrigin = useRef<"home" | "play" | "settings" | "chapters">("play");
   const previousShowcaseView = useRef<ShowcaseView>(showcaseView);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const homeRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -188,7 +193,8 @@ export default function App() {
       setShowcaseView("overview");
     } else if (index === 3) {
       if (screen === "home" || screen === "play") settingsOrigin.current = screen;
-      else if (screen === "showcase" && showcaseOrigin.current !== "settings") settingsOrigin.current = showcaseOrigin.current;
+      else if (screen === "chapters") settingsOrigin.current = "play";
+      else if (screen === "showcase" && showcaseOrigin.current !== "settings") settingsOrigin.current = showcaseOrigin.current === "chapters" ? "play" : showcaseOrigin.current;
       setScreen("settings");
       setSettingsCategory(null);
     }
@@ -204,7 +210,17 @@ export default function App() {
   const activate = useCallback((index: number) => {
     if (boot.blocking) return;
     setSelected(index);
-    setPanel(cards[index].id);
+    if (cards[index].id === "chapters") {
+      setTransitionDirection(1);
+      setPanel(null);
+      setScreen("chapters");
+      setActiveTab(1);
+    } else setPanel(cards[index].id);
+  }, [boot.blocking]);
+  const previewChapter = useCallback((chapter: ChapterItem) => {
+    if (boot.blocking) return;
+    setChapterPreview(chapter);
+    setPanel("chapter-preview");
   }, [boot.blocking]);
   const activateHome = useCallback((index: number) => {
     if (boot.blocking) return;
@@ -217,6 +233,7 @@ export default function App() {
     if (boot.blocking) return;
     if (panel) { closePanel(); return; }
     setTransitionDirection(-1);
+    if (screen === "chapters") { openTab(1, -1); return; }
     if (screen === "showcase") {
       if (showcaseRef.current?.cancel()) return;
       if (showcaseView !== "overview") setShowcaseView("overview");
@@ -237,6 +254,7 @@ export default function App() {
     if (boot.blocking) return;
     if (screen === "home") activateHome(homeSelected);
     else if (screen === "showcase") showcaseRef.current?.activate();
+    else if (screen === "chapters") chaptersRef.current?.activate();
     else if (screen === "settings") {
       if (settingsCategory) detailRef.current?.activate();
       else activateSettings(settingsSelected);
@@ -265,6 +283,7 @@ export default function App() {
     restoreFocus.current = false;
     if (panel) return;
     if (screen === "showcase") { showcaseRef.current?.focus(); return; }
+    if (screen === "chapters") { chaptersRef.current?.focus(); return; }
     if (screen === "settings" && settingsCategory) { detailRef.current?.focus(); return; }
     const target = screen === "home" ? homeRefs.current[homeSelected] : screen === "settings" ? settingsRefs.current[settingsSelected] : cardRefs.current[selected];
     target?.focus({ preventScroll: true });
@@ -300,6 +319,7 @@ export default function App() {
         event.preventDefault();
         if (screen === "home") moveHome(direction);
         else if (screen === "showcase") showcaseRef.current?.move(direction);
+        else if (screen === "chapters") chaptersRef.current?.move(direction);
         else if (screen === "settings") {
           if (settingsCategory) detailRef.current?.move(direction);
           else moveSettings(direction);
@@ -313,6 +333,7 @@ export default function App() {
         else if (screen === "settings" && !settingsCategory) selectSettings(first ? 0 : 5);
         else if (screen === "settings") detailRef.current?.edge?.(!first);
         else if (screen === "showcase") showcaseRef.current?.edge?.(!first);
+        else if (screen === "chapters") chaptersRef.current?.edge?.(!first);
         else if (screen === "play") selectCard(first ? 0 : cards.length - 1);
       }
       if (action === "select" && !((event.code === "Enter" || event.code === "Space") && event.target instanceof HTMLButtonElement)) {
@@ -355,6 +376,7 @@ export default function App() {
         if (!panel && direction && (screen !== "play" || left || right)) {
           if (screen === "home") moveHome(direction);
           else if (screen === "showcase") showcaseRef.current?.move(direction);
+          else if (screen === "chapters") chaptersRef.current?.move(direction);
           else if (screen === "settings") {
             if (settingsCategory) detailRef.current?.move(direction);
             else moveSettings(direction);
@@ -380,12 +402,13 @@ export default function App() {
     return () => cancelAnimationFrame(frame);
   }, [panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectCard, boot.blocking, boot.canContinue, boot.degraded, continueBoot, retryBoot]);
 
+  const detailScreenOpen = screen === "chapters" || screen === "settings" && !!settingsCategory;
   const displayedPanel = panel || lastPanel.current;
   const activeMode = cards.find((mode) => mode.id === displayedPanel);
   const viewKey = screen === "settings" ? `settings:${settingsCategory || "grid"}` : screen === "showcase" ? `showcase:${showcaseView}` : screen;
 
   return (
-    <main data-boot-state={boot.visible ? boot.leaving ? "leaving" : boot.degraded ? "degraded" : "loading" : "ready"} className={`menu-shell ${preferences.motion ? "" : "reduce-motion"} ${screen === "settings" ? "is-settings" : ""} ${screen === "settings" && settingsCategory ? "settings-detail-open" : ""} ${preferences.showHints ? "" : "hide-control-hints"}`}>
+    <main data-boot-state={boot.visible ? boot.leaving ? "leaving" : boot.degraded ? "degraded" : "loading" : "ready"} className={`menu-shell ${preferences.motion ? "" : "reduce-motion"} ${screen === "settings" ? "is-settings" : ""} ${screen === "settings" && settingsCategory ? "settings-detail-open" : ""} ${detailScreenOpen ? "detail-screen-open" : ""} ${preferences.showHints ? "" : "hide-control-hints"}`}>
       <div className="menu-stage">
         <div className="scene-wash" aria-hidden="true" />
         <Atmosphere
@@ -396,7 +419,7 @@ export default function App() {
         />
         <CreatureStage reducedMotion={!preferences.motion} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} onLoadState={boot.onModelState} loadAttempt={boot.attempt} />
         <div className="menu-content" inert={boot.blocking} aria-hidden={boot.blocking || undefined}>
-        <nav className={`main-nav${screen === "home" ? " main-nav--home" : ""}`} aria-label="Main menu" inert={screen === "settings" && !!settingsCategory}>
+        <nav className={`main-nav${screen === "home" ? " main-nav--home" : ""}`} aria-label="Main menu" inert={detailScreenOpen}>
           <button
             className="shoulder-button"
             aria-label="Previous menu tab"
@@ -436,6 +459,8 @@ export default function App() {
             onActivate={(_item, index) => activateHome(index)}
             tileRefs={homeRefs}
           />
+        ) : screen === "chapters" ? (
+          <Chapters ref={chaptersRef} selected={chapterSelected} onSelect={setChapterSelected} onPreview={previewChapter} onBack={back} reducedMotion={reducedMotion} />
         ) : screen === "showcase" ? (
           <Showcase ref={showcaseRef} view={showcaseView} onViewChange={changeShowcaseView} onBackRoot={back} reducedMotion={reducedMotion} />
         ) : screen === "settings" ? (
@@ -487,7 +512,7 @@ export default function App() {
 
         </MenuTransition>
 
-        {screen !== "showcase" && !(screen === "settings" && settingsCategory) && <footer className="controller-hints" aria-label="Menu controls">
+        {screen !== "showcase" && screen !== "chapters" && !(screen === "settings" && settingsCategory) && <footer className="controller-hints" aria-label="Menu controls">
           <button aria-label="Select" onClick={activateSelected}>
             <span className="controller-key" aria-hidden="true">
               A
@@ -533,6 +558,14 @@ export default function App() {
                 <button className="primary-action" onClick={closePanel}>
                   Back to Play <span aria-hidden="true">&gt;</span>
                 </button>
+              </>
+            )}
+            {displayedPanel === "chapter-preview" && chapterPreview && (
+              <>
+                <h1 id="dialog-heading">{chapterPreview.title}</h1>
+                <p>Chapter gameplay is not connected in this build.</p>
+                <p className="dialog-note">This is a chapter-selection preview. Campaign progress and unlocks are not recorded.</p>
+                <button className="primary-action" onClick={closePanel}>Back to Chapters <span aria-hidden="true">&gt;</span></button>
               </>
             )}
             {(displayedPanel === "legacy" || displayedPanel === "chronicles" || displayedPanel === "herald") && (

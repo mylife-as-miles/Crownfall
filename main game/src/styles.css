@@ -168,10 +168,10 @@ a {
   transition: transform .24s cubic-bezier(.22, 1, .36, 1), width .24s cubic-bezier(.22, 1, .36, 1);
 }
 .shoulder-next { position: absolute; left: 49.84375cqw; }
-.settings-detail-open .main-nav { opacity: 0; visibility: hidden; pointer-events: none; }
-.settings-detail-open .scene-wash,
-.settings-detail-open .creature-stage,
-.settings-detail-open .atmosphere {
+.detail-screen-open .main-nav { opacity: 0; visibility: hidden; pointer-events: none; }
+.detail-screen-open .scene-wash,
+.detail-screen-open .creature-stage,
+.detail-screen-open .atmosphere {
   filter: blur(14px) brightness(0.42);
 }
 .hide-control-hints .controller-key,

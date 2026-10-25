@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 import { waitForBootReady } from "./boot-helpers.mjs";
+import { chapterGrid, chaptersRegion, chapterName } from "./chapters-helpers.mjs";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
 const domOnly = process.env.CROWNFALL_DOM_ONLY === "1";
@@ -32,9 +33,10 @@ try {
     assert.equal(result.horizontalOverflow, false, `${state}: dialog overflow`);
     assert.deepEqual(result.offenders, [], `${state}: clipped text`);
     assert.doesNotMatch(result.text, /EXAMPLE|Fallen Crown|journey|other worlds/i);
-    if (["classic", "local", "chapters", "online"].includes(state)) {
+    if (["classic", "local", "online", "chapter-01", "chapter-02"].includes(state)) {
       assert.match(result.text, /not(?: yet)? (?:connected|available)|unavailable/i);
-      assert.match(result.text, /no gameplay will start here/i);
+      if (state.startsWith("chapter-")) assert.match(result.text, /chapter-selection preview.*progress and unlocks are not recorded/is);
+      else assert.match(result.text, /no gameplay will start here/i);
       assert.equal(await page.locator("dialog input, dialog form, dialog .save-slot").count(), 0);
       assert.equal(await page.locator("dialog button").count(), 2);
     }
@@ -62,7 +64,6 @@ try {
     for (const [state, role, name] of [
       ["classic", "button", "Classic"],
       ["local", "button", "Local Duel"],
-      ["chapters", "button", "Chapters"],
       ["online", "button", "Online Duel"],
       ["back", "button", "Back"],
     ]) {
@@ -71,9 +72,17 @@ try {
       await inspect(state, viewport);
       await page.keyboard.press("Escape");
     }
-
+    await page.getByRole("button", { name: "Chapters", exact: true }).click();
+    await chapterGrid(page).waitFor();
+    for (const number of [1, 2]) {
+      await chapterGrid(page).getByRole("button", { name: chapterName(number), exact: true }).click();
+      await page.getByRole("heading", { name: chapterName(number), exact: true }).waitFor();
+      await inspect(`chapter-0${number}`, viewport);
+      await page.keyboard.press("Escape");
+    }
+    await chaptersRegion(page).getByRole("button", { name: "Back", exact: true }).click();
   }
-  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, domOnly, scope: "Four mode previews, three Home panels and Back at desktop and landscape. Settings and Showcase now have dedicated screen verification. DOM-only model=none probe; actual GLB menu renders verified separately.", results }, null, 2) + "\n");
+  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, domOnly, scope: "Three mode previews, two chapter previews, three Home panels and Back at desktop and landscape. Settings, Showcase and Chapters have dedicated screen verification. DOM-only model=none probe; actual GLB menu renders verified separately.", results }, null, 2) + "\n");
   console.log(`PASS ${results.length} modal copy states: no horizontal overflow or clipped text; truthful Home and mode-preview copy; desktop and landscape.`);
 } finally {
   await browser.close();

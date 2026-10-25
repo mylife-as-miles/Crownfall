@@ -7,6 +7,7 @@
     "Rapid category entry and Back retain incoming row/grid focus and selected category through animation interruptions",
     "Q/E and standard-controller LB/RB keep the four-tab order and restore reachable incoming content after Settings Back",
     "Mode dialogs open once per click, close/reopen cleanly during interruptions and restore selection/focus without empty or duplicate modals",
+    "Chapters entry and preview/back transitions keep incoming focus and return to the selected chapter and original Play card",
     "All four screens remain within desktop and landscape page bounds during motion, interruption and settled layouts",
     "OS reduced motion and saved Ambient Motion off skip transitions immediately, clean outgoing layers and close dialogs without an exit delay",
     "No JavaScript or console errors; test intentionally uses model=none and preserves actual-renderer captures"
@@ -27,21 +28,21 @@
     {
       "label": "normal Home entry focus/accessibility",
       "key": "home",
-      "state": "idle",
+      "state": "running",
       "focus": "My Legacy",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 0,
+      "ghostChildren": 1,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 1,
-          "transform": "none"
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, -10, 0)"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 5
     },
     {
       "label": "settled Home",
@@ -136,7 +137,7 @@
           "transform": "none"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 1
     },
     {
       "label": "interrupted Play",
@@ -160,8 +161,27 @@
     {
       "label": "interrupted Home",
       "key": "home",
-      "state": "idle",
+      "state": "running",
       "focus": "My Legacy",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 1,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, -10, 0)"
+        }
+      ],
+      "activeAnimations": 5
+    },
+    {
+      "label": "interrupted Play",
+      "key": "play",
+      "state": "idle",
+      "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 0,
@@ -175,25 +195,6 @@
         }
       ],
       "activeAnimations": 0
-    },
-    {
-      "label": "interrupted Play",
-      "key": "play",
-      "state": "running",
-      "focus": "Chapters",
-      "focusInGhost": false,
-      "focusInLive": true,
-      "ghostChildren": 1,
-      "ghostHidden": true,
-      "duplicateIds": [],
-      "overflow": false,
-      "livePoses": [
-        {
-          "opacity": 0,
-          "transform": "matrix(1, 0, 0, 1, 10, 0)"
-        }
-      ],
-      "activeAnimations": 6
     },
     {
       "label": "rapid navigation settled",
@@ -236,8 +237,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.327279,
-          "transform": "matrix(1, 0, 0, 1, 6.72721, 0)"
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
         }
       ],
       "activeAnimations": 3
@@ -259,13 +260,51 @@
           "transform": "none"
         }
       ],
-      "activeAnimations": 1
+      "activeAnimations": 0
     },
     {
       "label": "Controls detail entry",
       "key": "settings:controls",
-      "state": "running",
+      "state": "idle",
       "focus": "Move left: ←. Change binding",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "Audio detail entry",
+      "key": "settings:audio",
+      "state": "idle",
+      "focus": "Audio Device: System default, read only",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 0
+    },
+    {
+      "label": "Chapters incoming focus",
+      "key": "chapters",
+      "state": "running",
+      "focus": "Chapter 01",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 1,
@@ -278,45 +317,26 @@
           "transform": "matrix(1, 0, 0, 1, 10, 0)"
         }
       ],
-      "activeAnimations": 3
-    },
-    {
-      "label": "Audio detail entry",
-      "key": "settings:audio",
-      "state": "running",
-      "focus": "Audio Device: System default, read only",
-      "focusInGhost": false,
-      "focusInLive": true,
-      "ghostChildren": 1,
-      "ghostHidden": true,
-      "duplicateIds": [],
-      "overflow": false,
-      "livePoses": [
-        {
-          "opacity": 0.328115,
-          "transform": "matrix(1, 0, 0, 1, 6.71885, 0)"
-        }
-      ],
-      "activeAnimations": 3
+      "activeAnimations": 16
     },
     {
       "label": "1280px Home in motion",
       "key": "home",
-      "state": "running",
+      "state": "idle",
       "focus": "My Legacy",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 1,
+      "ghostChildren": 0,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.325403,
-          "transform": "matrix(1, 0, 0, 1, -6.74597, 0)"
+          "opacity": 1,
+          "transform": "none"
         }
       ],
-      "activeAnimations": 5
+      "activeAnimations": 0
     },
     {
       "label": "1280px Home settled",
@@ -340,27 +360,27 @@
     {
       "label": "1280px Play in motion",
       "key": "play",
-      "state": "running",
-      "focus": "Online Duel",
+      "state": "idle",
+      "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 1,
+      "ghostChildren": 0,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0,
-          "transform": "matrix(1, 0, 0, 1, 10, 0)"
+          "opacity": 1,
+          "transform": "none"
         }
       ],
-      "activeAnimations": 6
+      "activeAnimations": 0
     },
     {
       "label": "1280px Play settled",
       "key": "play",
       "state": "idle",
-      "focus": "Online Duel",
+      "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 0,
@@ -388,8 +408,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.326509,
-          "transform": "matrix(1, 0, 0, 1, 6.73491, 0)"
+          "opacity": 0.326291,
+          "transform": "matrix(1, 0, 0, 1, 6.73709, 0)"
         }
       ],
       "activeAnimations": 5
@@ -416,21 +436,21 @@
     {
       "label": "1280px Settings in motion",
       "key": "settings:grid",
-      "state": "running",
+      "state": "idle",
       "focus": "Audio",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 1,
+      "ghostChildren": 0,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.32671,
-          "transform": "matrix(1, 0, 0, 1, 6.7329, 0)"
+          "opacity": 1,
+          "transform": "none"
         }
       ],
-      "activeAnimations": 9
+      "activeAnimations": 0
     },
     {
       "label": "1280px Settings settled",
@@ -493,7 +513,7 @@
       "label": "1920px Play in motion",
       "key": "play",
       "state": "running",
-      "focus": "Online Duel",
+      "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 1,
@@ -512,7 +532,7 @@
       "label": "1920px Play settled",
       "key": "play",
       "state": "idle",
-      "focus": "Online Duel",
+      "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 0,
@@ -568,21 +588,21 @@
     {
       "label": "1920px Settings in motion",
       "key": "settings:grid",
-      "state": "running",
+      "state": "idle",
       "focus": "Audio",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 1,
+      "ghostChildren": 0,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.326609,
-          "transform": "matrix(1, 0, 0, 1, 6.73391, 0)"
+          "opacity": 1,
+          "transform": "none"
         }
       ],
-      "activeAnimations": 9
+      "activeAnimations": 1
     },
     {
       "label": "1920px Settings settled",
@@ -601,7 +621,7 @@
           "transform": "none"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 1
     },
     {
       "label": "844px Home in motion",
@@ -645,7 +665,7 @@
       "label": "844px Play in motion",
       "key": "play",
       "state": "running",
-      "focus": "Online Duel",
+      "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 1,
@@ -664,7 +684,7 @@
       "label": "844px Play settled",
       "key": "play",
       "state": "idle",
-      "focus": "Online Duel",
+      "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 0,
@@ -692,8 +712,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.326944,
-          "transform": "matrix(1, 0, 0, 1, 6.73056, 0)"
+          "opacity": 0.326392,
+          "transform": "matrix(1, 0, 0, 1, 6.73608, 0)"
         }
       ],
       "activeAnimations": 5
@@ -730,11 +750,11 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.996333,
-          "transform": "matrix(1, 0, 0, 1, 0.0366729, 0)"
+          "opacity": 0.326693,
+          "transform": "matrix(1, 0, 0, 1, 6.73307, 0)"
         }
       ],
-      "activeAnimations": 7
+      "activeAnimations": 9
     },
     {
       "label": "844px Settings settled",
@@ -778,7 +798,7 @@
       "label": "OS reduced Play",
       "key": "play",
       "state": "idle",
-      "focus": "Online Duel",
+      "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 0,
@@ -873,7 +893,7 @@
       "label": "saved reduced Play",
       "key": "play",
       "state": "idle",
-      "focus": "Online Duel",
+      "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 0,

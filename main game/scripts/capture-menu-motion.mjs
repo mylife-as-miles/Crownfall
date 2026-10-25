@@ -28,9 +28,11 @@ try {
  await step('Home destination dialog entrance', () => key('Enter'));
  await step('Dialog exit', () => key('Escape'), 400);
  await step('Play screen entrance', () => tab('Play'));
- await step('Play option selection', () => key('ArrowRight'), 250);
- await step('Mode dialog entrance', () => key('Enter'));
- await step('Mode dialog exit', () => key('Escape'), 400);
+ await step('Chapters card selection', () => key('ArrowRight'), 250);
+ await step('Chapters grid entrance', () => key('Enter'));
+ await step('Chapter 01 preview entrance', () => key('Enter'));
+ await step('Chapter preview exit', () => key('Escape'), 400);
+ await step('Chapters back to Play', () => key('Escape'), 400);
  await step('Showcase overview entrance', () => tab('Showcase'));
  await step('Arena category selection', () => key('ArrowRight'), 200);
  await step('Arena gallery entrance', () => key('Enter'));

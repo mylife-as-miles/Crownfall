@@ -4,6 +4,7 @@ import { chromium } from "playwright";
 import { grid, openCategory, leaveSettings, setMotion } from "./settings-helpers.mjs";
 import { waitForMenuIdle, waitForDialogClosed } from "./motion-helpers.mjs";
 import { waitForBootReady } from "./boot-helpers.mjs";
+import { chapterGrid, chapterName } from "./chapters-helpers.mjs";
 
 const target = new URL(process.env.CROWNFALL_TEST_URL || "http://localhost:5173");
 target.searchParams.set("model", "none");
@@ -160,7 +161,7 @@ try {
   record("Q/E and standard-controller LB/RB keep the four-tab order and restore reachable incoming content after Settings Back");
 
   await clickTab("Play");
-  for (const name of ["Classic", "Chapters", "Local Duel"]) {
+  for (const name of ["Classic", "Online Duel", "Local Duel"]) {
     const before = await page.evaluate(() => window.__motionDialogOpens);
     await current(`button[aria-label="${name}"]`).click();
     await page.getByRole("heading", { name, exact: true }).waitFor();
@@ -188,6 +189,18 @@ try {
   assert.match(await page.locator("dialog").innerText(), /unavailable/);
   await page.keyboard.press("Escape"); await waitForDialogClosed(page);
   record("Mode dialogs open once per click, close/reopen cleanly during interruptions and restore selection/focus without empty or duplicate modals");
+
+  await current('button[aria-label="Chapters"]').click();
+  await chapterGrid(page).waitFor(); await assertFocus();
+  await inspect("Chapters incoming focus"); await waitForMenuIdle(page);
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("Enter");
+  await page.getByRole("heading", { name: chapterName(2), exact: true }).waitFor();
+  await page.keyboard.press("Escape"); await waitForDialogClosed(page);
+  assert.equal(await chapterGrid(page).getByRole("button", { name: chapterName(2), exact: true }).evaluate((button) => button === document.activeElement), true);
+  await page.keyboard.press("Escape"); await waitForMenuIdle(page); await assertFocus();
+  assert.equal(await current('.game-card[aria-pressed="true"]').getAttribute("aria-label"), "Chapters");
+  record("Chapters entry and preview/back transitions keep incoming focus and return to the selected chapter and original Play card");
 
   for (const viewport of [{ width: 1280, height: 720 }, { width: 1920, height: 1080 }, { width: 844, height: 390 }]) {
     await page.setViewportSize(viewport);

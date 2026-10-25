@@ -1,15 +1,16 @@
 {
-  "revision": "Crownfall cinematic loading screen with real asset preparation and menu handoff",
-  "latestReviewScope": "Loading screen and boot handoff",
+  "revision": "Reference-style fourteen-slot Chapters selection screen",
+  "latestReviewScope": "Chapters selection, locked states and preview flow",
   "score": 9.2,
-  "scoreScope": "Loading screen only. Prior screen and interaction scores remain separate; this is not an aggregate or hardware performance score.",
+  "scoreScope": "Chapters only. Earlier screen and interaction scores remain separate; no aggregate or hardware performance score is implied.",
   "scoreOutOf": 10,
   "screenScores": {
     "Home": 9.2,
     "Play": 9.3,
     "Settings": 9.1,
     "Showcase": 9.2,
-    "Loading": 9.2
+    "Loading": 9.2,
+    "Chapters": 9.2
   },
   "reviewer": "independent visual critic agent",
   "homeReview": {
@@ -208,7 +209,7 @@
   },
   "playReview": {
     "revision": "Classic / Local Duel / Chapters / Online Duel with four-entry shared navigation",
-    "scope": "Current mode-preview Play screen; four-card geometry/art and approved creature retained, navigation intentionally adds Showcase.",
+    "scope": "Current four-card Play screen with the new fourteen-slot Chapters selection route. Card geometry, supplied art and approved creature remain; three other modes retain their honest informational previews.",
     "score": 9.3,
     "scoreOutOf": 10,
     "assessmentType": "Independent subjective visual and wording assessment of the new mode labels in actual-GLB desktop and phone-landscape screenshots. Not a claim that gameplay is integrated or that full-frame Play pixels are unchanged.",
@@ -361,15 +362,6 @@
             "opens": "play"
           }
         },
-        "chapters": {
-          "heading": "Chapters",
-          "paragraph": "Crownfall's campaign chapters are not connected to this menu.",
-          "note": "Menu preview only. No gameplay will start here.",
-          "action": {
-            "label": "Back to Play",
-            "opens": "play"
-          }
-        },
         "online-duel": {
           "heading": "Online Duel",
           "paragraph": "Online play is unavailable in this build. No matchmaking service is connected.",
@@ -380,7 +372,7 @@
           }
         }
       },
-      "functionalBoundary": "All four activations are honest mode previews. No gameplay launch, local-duel engine hookup, campaign integration, matchmaking service or backend is offered.",
+      "functionalBoundary": "Classic, Local Duel and Online Duel retain informational mode dialogs. Chapters opens a fourteen-slot selection preview with two previewable and twelve locked slots. No gameplay launch, campaign integration, progress save, unlock or matchmaking service is offered.",
       "obsoleteFlowRemoved": "Old New/Resume/Load save-preview actions and save metadata UI are removed; only menu preferences persist.",
       "settings": "Particle quality and motion describe actual effects. Audio is explicitly a saved preference with no connected audio.",
       "sourceEvidence": "artifacts/menu-copy.json",
@@ -396,6 +388,15 @@
         "replayDisclosure": "Match replays are planned for a future update.",
         "workingDestination": "Arenas is a four-image artwork gallery using the actual supplied environment images.",
         "notes": "Supersedes the old Showcase informational dialog. No fabricated battle playback, replay library, matchmaking or gameplay launch is offered."
+      },
+      "chaptersDestination": {
+        "screen": "Fourteen-slot chapter-selection preview",
+        "firstTwoSlots": "Chapter 01 and Chapter 02 open informational previews.",
+        "remainingSlots": "Chapter 03 through Chapter 14 remain locked; activation announces that campaign progression is not connected.",
+        "previewParagraph": "Chapter gameplay is not connected in this build.",
+        "previewNote": "This is a chapter-selection preview. Campaign progress and unlocks are not recorded.",
+        "previewAction": "Back to Chapters",
+        "gridBack": "Returns to Play with the Chapters card selected and focused."
       }
     },
     "suppliedArtwork": {
@@ -532,7 +533,8 @@
       "artwork": "artifacts/card-artwork.json",
       "model": "artifacts/model-verification.json",
       "fourEntryNavigation": "artifacts/layout-verification.json",
-      "settingsRevisionPreservation": "artifacts/settings/preservation.json"
+      "settingsRevisionPreservation": "artifacts/settings/preservation.json",
+      "chaptersRoute": "artifacts/chapters/verification.json"
     },
     "iterationHistory": [
       {
@@ -563,9 +565,9 @@
       "The 9.3 score is subjective visual judgment, not a performance benchmark.",
       "Navigation intentionally gains Showcase and shifts Settings/RB. Historical pixel-preservation reports predating the four-entry nav are not current evidence."
     ],
-    "verdict": "Retains the subjective 9.3/10 mode-preview Play assessment with readable four-entry navigation. Gameplay integration remains absent and disclosed; no blocking visual or wording issue."
+    "verdict": "Retains the subjective 9.3/10 Play composition assessment. Chapters now opens a reference-style selection screen rather than the superseded direct mode dialog. Gameplay integration remains absent and disclosed; no blocking visual issue."
   },
-  "verdict": "Loading meets the subjective 9/10 visual target at 9.2 after actual preparation, unknown-length, recovery and menu-handoff review. Previous Home, Play, Showcase, Settings, scrollbar and menu-motion scores remain distinct. No blocking visual issue or further polish requested.",
+  "verdict": "Chapters meets the subjective 9/10 visual target at 9.2 after reference and actual desktop/landscape review. All prior screen and interaction scores remain distinct. Numbered chapter slots and supplied environment art are placeholders; gameplay, campaign progress and unlocks remain unconnected and disclosed. No blocking visual issue or further polish requested.",
   "sharedNavigationReview": {
     "labels": [
       "Home",
@@ -584,7 +586,8 @@
     "sourceInventory": "artifacts/menu-copy.json",
     "finding": "Four fixed-width shared navigation labels remain clear. Showcase now opens a real menu screen rather than the superseded informational dialog. A moving amber indicator coordinates tab changes without changing settled navigation geometry. Current Home/Play artwork and approved creature framing remain.",
     "latestSpacing": "Fixed-width navigation boxes with24px gaps at 1280, as requested for the Settings revision. Category/reference labels do not replace approved Home/Play/Showcase/Settings names.",
-    "showcaseFlow": "Standalone Showcase overview with AI Battles, Arenas and Match Replays; see showcaseReview."
+    "showcaseFlow": "Standalone Showcase overview with AI Battles, Arenas and Match Replays; see showcaseReview.",
+    "chaptersSubscreen": "Chapters remains in the Play context, hides the top navigation to match the reference, and exposes a Back footer. Back restores the Chapters card and actual focus in Play; ordinary root navigation is retained elsewhere."
   },
   "settingsReview": {
     "scope": "New six-category Settings hub and reference-style detail screens. Home and Play assessments remain separate.",
@@ -929,7 +932,7 @@
     },
     "evidence": {
       "functional": "artifacts/motion/verification.json",
-      "functionalStatusAtReview": "Separate motion verification passes eight groups, including interruptions, live focus, unique IDs, cleanup, dialog reopen, controller navigation and both OS/app reduced-motion paths.",
+      "functionalStatusAtReview": "Current separate motion verification passes nine groups, including the new Chapters integration. The retained 9.1 motion-design score and original motion recording remain distinct from the dedicated Chapters flow review.",
       "source": [
         "src/MenuTransition.tsx",
         "src/MenuTransition.css",
@@ -1088,5 +1091,155 @@
       "Software-rendered capture is not a physical GPU smoothness, frame-pacing or load-speed benchmark."
     ],
     "verdict": "Meets 9.2/10 for the actual loading presentation and ready-menu handoff design. No blocking visual issue or additional redesign requested."
+  },
+  "chaptersReview": {
+    "scope": "Reference-style fourteen-slot chapter grid, selected locked state, honest preview dialogs and return to the existing Play screen.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective reference-to-screenshot visual and wording review. Not a pixel-identical character/art reproduction, gameplay integration claim or hardware performance benchmark.",
+    "reference": {
+      "fileName": "279178.jpg",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "privateUserAttachment": true,
+      "bundledInRepository": false,
+      "observedStructure": "Contiguous five/five/four chapter tiles, two brighter early tiles, twelve dim locked tiles, amber selection, blurred warm scene, hidden top navigation and a single Back footer."
+    },
+    "reviewedScreenshots": [
+      "artifacts/chapters/grid-1280x720.png",
+      "artifacts/chapters/locked-selected-1280x720.png",
+      "artifacts/chapters/chapter02-preview-1280x720.png",
+      "artifacts/chapters/grid-1920x1080.png",
+      "artifacts/chapters/locked-selected-1920x1080.png",
+      "artifacts/chapters/chapter02-preview-1920x1080.png",
+      "artifacts/chapters/grid-844x390.png",
+      "artifacts/chapters/locked-selected-844x390.png",
+      "artifacts/chapters/chapter02-preview-844x390.png"
+    ],
+    "reviewedPlayReturnScreenshots": [
+      "artifacts/chapters/play-before-1280x720.png",
+      "artifacts/chapters/play-after-844x390.png"
+    ],
+    "layoutAt1280": {
+      "x": 105,
+      "y": 112,
+      "width": 936,
+      "height": 419.984375,
+      "columns": 5,
+      "rowCounts": [
+        5,
+        5,
+        4
+      ],
+      "tileWidthApproximately": 187.2,
+      "tileHeightApproximately": 140,
+      "gap": 0,
+      "backX": 104.953125,
+      "backY": 612,
+      "backHitHeight": 24,
+      "scrolling": false,
+      "overflow": false
+    },
+    "rubric": [
+      {
+        "category": "Reference geometry and hierarchy",
+        "maximum": 3,
+        "score": 2.85,
+        "notes": "Five/five/four density, equal contiguous tiles, upper-left alignment, hidden navigation and isolated Back footer closely match the supplied reference."
+      },
+      {
+        "category": "Amber selection and locked-state clarity",
+        "maximum": 2,
+        "score": 1.9,
+        "notes": "First selected preview is clear; twelve locked tiles retain dim imagery and centered locks. Selecting a locked tile emphasizes its title and lock without brightening it into an available chapter."
+      },
+      {
+        "category": "Supplied art, palette and scene blur",
+        "maximum": 2,
+        "score": 1.75,
+        "notes": "Actual supplied environment art is reused with deliberate crops; no reference characters are imported. Strongly defocused actual sorcerer and bronze/teal scene preserve menu identity. Different image subjects and clearer locked labels remain intentional approximations."
+      },
+      {
+        "category": "Typography and desktop/landscape readability",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Bold compact numbered headings fit every tile at 1280,1920 and844 landscape. Lock icons and Back remain recognizable. Phone-landscape labels are small but legible; all preview copy and actions fit."
+      },
+      {
+        "category": "Honest preview and return flow",
+        "maximum": 1,
+        "score": 0.9,
+        "notes": "Chapter 01/02 dialogs explicitly disclose unconnected gameplay and unrecorded progress/unlocks. Locked activation does not launch or unlock. Back returns to the existing Play selection."
+      }
+    ],
+    "contentBoundary": {
+      "titles": "Chapter 01 through Chapter 14 are numbered preview-slot placeholders, not asserted final canonical chapter titles.",
+      "artwork": "Four approved user-supplied environment images are repeated with distinct cover crops. Dedicated chapter illustrations are not invented.",
+      "previewableSlots": [
+        1,
+        2
+      ],
+      "lockedSlots": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "previewParagraph": "Chapter gameplay is not connected in this build.",
+      "previewNote": "This is a chapter-selection preview. Campaign progress and unlocks are not recorded.",
+      "lockedAnnouncement": "Chapter 14 is locked in this menu preview. Campaign progression is not connected.",
+      "availableActions": "View an honest early-slot preview, inspect locked selection or return to Play. No gameplay, campaign save or unlock action is offered."
+    },
+    "flowRecordingReview": {
+      "file": "artifacts/chapters/chapters-flow.webm",
+      "finalFrame": "artifacts/chapters/recording-final-frame.png",
+      "durationSeconds": 17.2,
+      "viewport": [
+        960,
+        540
+      ],
+      "conditions": "Actual supplied GLB; Low particles, 50 percent scene resolution and 30fps scene cap for software capture. Full untrimmed recording.",
+      "method": "Inspected real decoded frames at encoded 6,8,10,12,14 and 16 seconds. Encoded positions are inspection references, not latency measurements.",
+      "observations": "Recording includes actual loading completion, Chapters grid/selection, complete Chapter 02 preview dialog, and stable return to Play with Chapters selected. Intermediate samples can show fading prior selection outlines during rapid navigation; settled captures retain one clear selection.",
+      "limit": "Software capture does not establish physical frame pacing or resolve every short transition frame."
+    },
+    "evidence": {
+      "actualGLBCaptures": "artifacts/chapters/captures.json",
+      "functional": "artifacts/chapters/verification.json",
+      "functionalStatusAtReview": "Separate Chapters verification passes eight groups: actual supplied-art hashes, three-viewport layout, spatial keyboard/controller focus, preview versus locks, navigation/back behavior and no campaign/URL side effects.",
+      "copyFit": "artifacts/copy-fit-verification.json",
+      "motionIntegration": "artifacts/motion/verification.json",
+      "source": [
+        "src/Chapters.tsx",
+        "src/Chapters.css",
+        "src/chapters-content.ts",
+        "src/App.tsx"
+      ],
+      "notes": "Reference, all nine actual-GLB grid/locked/preview renders, both Play context images, exact preview source copy and real decoded flow frames were independently inspected. Functional assertions remain separate from the visual score."
+    },
+    "approvedDifferences": [
+      "Numbered placeholders replace generic Chapter Name text; no complete fourteen-chapter canon is asserted.",
+      "Existing actual user environment artwork replaces reference character thumbnails.",
+      "Existing actual sorcerer remains behind the blurred scene.",
+      "Locked title/lock visibility is slightly clearer than the low-contrast reference while preserving its dim hierarchy.",
+      "Desktop and phone-landscape presentation only; no portrait redesign."
+    ],
+    "limits": [
+      "Four supplied images repeat across fourteen slots; dedicated chapter artwork and final chapter titles remain future content.",
+      "Supporting text and lock icons are small on phone landscape.",
+      "Gameplay, saved campaign progression and unlock systems remain unconnected and explicitly disclosed.",
+      "The 9.2 score is subjective reference/theme assessment, not a pixel-match or hardware-performance claim."
+    ],
+    "verdict": "Meets 9.2/10 for the current reference-style Chapters presentation. No blocking visual issue or further polish requested."
   }
 }

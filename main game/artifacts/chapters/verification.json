@@ -1,0 +1,629 @@
+{
+  "passed": true,
+  "scope": "DOM-only model=none fourteen-chapter screen, supplied-artwork thumbnails, honest preview/lock states, spatial focus, simulated standard controller, layouts and reduced motion. Actual GLB visuals are captured separately.",
+  "checks": [
+    "Chapters opens a separate fourteen-tile screen; only01/02 are previewable, twelve locked tiles remain focusable, and hidden nav has one reachable Back action",
+    "All fourteen thumbnail images decode and retain the exact four approved environment-artwork hashes with deliberate cover crops",
+    "The grid keeps five/five/four equal tiles, fitting titles, reachable Back and no scrolling or overflow at desktop and landscape sizes",
+    "Keyboard movement clamps all edges, preserves the fifth preferred column across the short final row, supports Home/End and retains one focused tab stop",
+    "Only01/02 open one honest preview per click; repeated locked Enter and physical locked-tile clicks announce unavailable progression without launch, unlock or save changes",
+    "Controller four-way/A/B and LB/RB plus Q/E keep Chapters tied to Play, restore its selection from Showcase and avoid Settings Back loops",
+    "Rapid screen entry/back and both reduced-motion controls retain focus, the persistent creature and completed boot; Play keeps its original four197×298 cards and no carousel",
+    "No JavaScript or console errors; no gameplay, campaign save, unlock or URL side effects"
+  ],
+  "layouts": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "overflow": false,
+      "grid": {
+        "x": 105,
+        "y": 112,
+        "width": 936,
+        "height": 419.984375,
+        "right": 1041,
+        "bottom": 531.984375
+      },
+      "scrollable": false,
+      "back": {
+        "x": 104.953125,
+        "y": 612,
+        "width": 57.1875,
+        "height": 24,
+        "right": 162.140625,
+        "bottom": 636
+      },
+      "tiles": [
+        {
+          "name": "Chapter 01",
+          "x": 105,
+          "y": 112,
+          "width": 187.1875,
+          "height": 139.984375,
+          "right": 292.1875,
+          "bottom": 251.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 02",
+          "x": 292.1875,
+          "y": 112,
+          "width": 187.203125,
+          "height": 139.984375,
+          "right": 479.390625,
+          "bottom": 251.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 03",
+          "x": 479.390625,
+          "y": 112,
+          "width": 187.203125,
+          "height": 139.984375,
+          "right": 666.59375,
+          "bottom": 251.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 04",
+          "x": 666.59375,
+          "y": 112,
+          "width": 187.203125,
+          "height": 139.984375,
+          "right": 853.796875,
+          "bottom": 251.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 05",
+          "x": 853.796875,
+          "y": 112,
+          "width": 187.1875,
+          "height": 139.984375,
+          "right": 1040.984375,
+          "bottom": 251.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 06",
+          "x": 105,
+          "y": 251.984375,
+          "width": 187.1875,
+          "height": 140,
+          "right": 292.1875,
+          "bottom": 391.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 07",
+          "x": 292.1875,
+          "y": 251.984375,
+          "width": 187.203125,
+          "height": 140,
+          "right": 479.390625,
+          "bottom": 391.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 08",
+          "x": 479.390625,
+          "y": 251.984375,
+          "width": 187.203125,
+          "height": 140,
+          "right": 666.59375,
+          "bottom": 391.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 09",
+          "x": 666.59375,
+          "y": 251.984375,
+          "width": 187.203125,
+          "height": 140,
+          "right": 853.796875,
+          "bottom": 391.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 10",
+          "x": 853.796875,
+          "y": 251.984375,
+          "width": 187.1875,
+          "height": 140,
+          "right": 1040.984375,
+          "bottom": 391.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 11",
+          "x": 105,
+          "y": 391.984375,
+          "width": 187.1875,
+          "height": 140,
+          "right": 292.1875,
+          "bottom": 531.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 12",
+          "x": 292.1875,
+          "y": 391.984375,
+          "width": 187.203125,
+          "height": 140,
+          "right": 479.390625,
+          "bottom": 531.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 13",
+          "x": 479.390625,
+          "y": 391.984375,
+          "width": 187.203125,
+          "height": 140,
+          "right": 666.59375,
+          "bottom": 531.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 14",
+          "x": 666.59375,
+          "y": 391.984375,
+          "width": 187.203125,
+          "height": 140,
+          "right": 853.796875,
+          "bottom": 531.984375,
+          "textFits": true
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "overflow": false,
+      "grid": {
+        "x": 157.5,
+        "y": 168,
+        "width": 1404,
+        "height": 629.984375,
+        "right": 1561.5,
+        "bottom": 797.984375
+      },
+      "scrollable": false,
+      "back": {
+        "x": 157.4375,
+        "y": 918,
+        "width": 85.78125,
+        "height": 26.953125,
+        "right": 243.21875,
+        "bottom": 944.953125
+      },
+      "tiles": [
+        {
+          "name": "Chapter 01",
+          "x": 157.5,
+          "y": 168,
+          "width": 280.796875,
+          "height": 209.984375,
+          "right": 438.296875,
+          "bottom": 377.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 02",
+          "x": 438.296875,
+          "y": 168,
+          "width": 280.796875,
+          "height": 209.984375,
+          "right": 719.09375,
+          "bottom": 377.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 03",
+          "x": 719.09375,
+          "y": 168,
+          "width": 280.796875,
+          "height": 209.984375,
+          "right": 999.890625,
+          "bottom": 377.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 04",
+          "x": 999.890625,
+          "y": 168,
+          "width": 280.796875,
+          "height": 209.984375,
+          "right": 1280.6875,
+          "bottom": 377.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 05",
+          "x": 1280.6875,
+          "y": 168,
+          "width": 280.796875,
+          "height": 209.984375,
+          "right": 1561.484375,
+          "bottom": 377.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 06",
+          "x": 157.5,
+          "y": 377.984375,
+          "width": 280.796875,
+          "height": 210,
+          "right": 438.296875,
+          "bottom": 587.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 07",
+          "x": 438.296875,
+          "y": 377.984375,
+          "width": 280.796875,
+          "height": 210,
+          "right": 719.09375,
+          "bottom": 587.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 08",
+          "x": 719.09375,
+          "y": 377.984375,
+          "width": 280.796875,
+          "height": 210,
+          "right": 999.890625,
+          "bottom": 587.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 09",
+          "x": 999.890625,
+          "y": 377.984375,
+          "width": 280.796875,
+          "height": 210,
+          "right": 1280.6875,
+          "bottom": 587.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 10",
+          "x": 1280.6875,
+          "y": 377.984375,
+          "width": 280.796875,
+          "height": 210,
+          "right": 1561.484375,
+          "bottom": 587.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 11",
+          "x": 157.5,
+          "y": 587.984375,
+          "width": 280.796875,
+          "height": 210,
+          "right": 438.296875,
+          "bottom": 797.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 12",
+          "x": 438.296875,
+          "y": 587.984375,
+          "width": 280.796875,
+          "height": 210,
+          "right": 719.09375,
+          "bottom": 797.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 13",
+          "x": 719.09375,
+          "y": 587.984375,
+          "width": 280.796875,
+          "height": 210,
+          "right": 999.890625,
+          "bottom": 797.984375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 14",
+          "x": 999.890625,
+          "y": 587.984375,
+          "width": 280.796875,
+          "height": 210,
+          "right": 1280.6875,
+          "bottom": 797.984375,
+          "textFits": true
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "overflow": false,
+      "grid": {
+        "x": 129.765625,
+        "y": 60.65625,
+        "width": 511.234375,
+        "height": 227.484375,
+        "right": 641,
+        "bottom": 288.140625
+      },
+      "scrollable": false,
+      "back": {
+        "x": 129.75,
+        "y": 331.5,
+        "width": 35.125,
+        "height": 24,
+        "right": 164.875,
+        "bottom": 355.5
+      },
+      "tiles": [
+        {
+          "name": "Chapter 01",
+          "x": 129.765625,
+          "y": 60.65625,
+          "width": 102.234375,
+          "height": 75.828125,
+          "right": 232,
+          "bottom": 136.484375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 02",
+          "x": 232,
+          "y": 60.65625,
+          "width": 102.25,
+          "height": 75.828125,
+          "right": 334.25,
+          "bottom": 136.484375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 03",
+          "x": 334.25,
+          "y": 60.65625,
+          "width": 102.25,
+          "height": 75.828125,
+          "right": 436.5,
+          "bottom": 136.484375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 04",
+          "x": 436.5,
+          "y": 60.65625,
+          "width": 102.25,
+          "height": 75.828125,
+          "right": 538.75,
+          "bottom": 136.484375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 05",
+          "x": 538.75,
+          "y": 60.65625,
+          "width": 102.234375,
+          "height": 75.828125,
+          "right": 640.984375,
+          "bottom": 136.484375,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 06",
+          "x": 129.765625,
+          "y": 136.484375,
+          "width": 102.234375,
+          "height": 75.828125,
+          "right": 232,
+          "bottom": 212.3125,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 07",
+          "x": 232,
+          "y": 136.484375,
+          "width": 102.25,
+          "height": 75.828125,
+          "right": 334.25,
+          "bottom": 212.3125,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 08",
+          "x": 334.25,
+          "y": 136.484375,
+          "width": 102.25,
+          "height": 75.828125,
+          "right": 436.5,
+          "bottom": 212.3125,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 09",
+          "x": 436.5,
+          "y": 136.484375,
+          "width": 102.25,
+          "height": 75.828125,
+          "right": 538.75,
+          "bottom": 212.3125,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 10",
+          "x": 538.75,
+          "y": 136.484375,
+          "width": 102.234375,
+          "height": 75.828125,
+          "right": 640.984375,
+          "bottom": 212.3125,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 11",
+          "x": 129.765625,
+          "y": 212.3125,
+          "width": 102.234375,
+          "height": 75.828125,
+          "right": 232,
+          "bottom": 288.140625,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 12",
+          "x": 232,
+          "y": 212.3125,
+          "width": 102.25,
+          "height": 75.828125,
+          "right": 334.25,
+          "bottom": 288.140625,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 13",
+          "x": 334.25,
+          "y": 212.3125,
+          "width": 102.25,
+          "height": 75.828125,
+          "right": 436.5,
+          "bottom": 288.140625,
+          "textFits": true
+        },
+        {
+          "name": "Chapter 14",
+          "x": 436.5,
+          "y": 212.3125,
+          "width": 102.25,
+          "height": 75.828125,
+          "right": 538.75,
+          "bottom": 288.140625,
+          "textFits": true
+        }
+      ]
+    }
+  ],
+  "artwork": [
+    {
+      "chapter": "Chapter 01",
+      "source": "http://localhost:4173/assets/environments/card-new.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "42% 50%"
+    },
+    {
+      "chapter": "Chapter 02",
+      "source": "http://localhost:4173/assets/environments/card-resume.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "53% 50%"
+    },
+    {
+      "chapter": "Chapter 03",
+      "source": "http://localhost:4173/assets/environments/card-load.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "60% 50%"
+    },
+    {
+      "chapter": "Chapter 04",
+      "source": "http://localhost:4173/assets/environments/card-browse.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "42% 50%"
+    },
+    {
+      "chapter": "Chapter 05",
+      "source": "http://localhost:4173/assets/environments/card-new.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "75% 45%"
+    },
+    {
+      "chapter": "Chapter 06",
+      "source": "http://localhost:4173/assets/environments/card-resume.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "22% 50%"
+    },
+    {
+      "chapter": "Chapter 07",
+      "source": "http://localhost:4173/assets/environments/card-load.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "15% 50%"
+    },
+    {
+      "chapter": "Chapter 08",
+      "source": "http://localhost:4173/assets/environments/card-browse.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "78% 50%"
+    },
+    {
+      "chapter": "Chapter 09",
+      "source": "http://localhost:4173/assets/environments/card-new.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "12% 50%"
+    },
+    {
+      "chapter": "Chapter 10",
+      "source": "http://localhost:4173/assets/environments/card-resume.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "84% 50%"
+    },
+    {
+      "chapter": "Chapter 11",
+      "source": "http://localhost:4173/assets/environments/card-load.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "36% 50%"
+    },
+    {
+      "chapter": "Chapter 12",
+      "source": "http://localhost:4173/assets/environments/card-browse.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "18% 50%"
+    },
+    {
+      "chapter": "Chapter 13",
+      "source": "http://localhost:4173/assets/environments/card-new.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "62% 50%"
+    },
+    {
+      "chapter": "Chapter 14",
+      "source": "http://localhost:4173/assets/environments/card-resume.webp",
+      "width": 2048,
+      "height": 1143,
+      "fit": "cover",
+      "position": "65% 50%"
+    }
+  ],
+  "errors": []
+}
