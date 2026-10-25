@@ -1,0 +1,88 @@
+{
+  "archive_name": "Crownfall_Main_v029_sorcerer.blend.zip",
+  "archive_bytes": 751775996,
+  "archive_sha256": "199a7cf53baedc271ba748dc23e94bdce66346452028a780463913f57ea9372c",
+  "parts": [
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part001",
+      "bytes": 47185920,
+      "sha256": "5214b7b0627210c5383bb3010e6c4e3ec6d5fe7211f396b2f86ffafe4337faae"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part002",
+      "bytes": 47185920,
+      "sha256": "0e353676bdc84abd49cc2f83f48b9928cf28d057644642bace137a5c7b0e48af"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part003",
+      "bytes": 47185920,
+      "sha256": "1a40fb0e20b41c2e5c25df94615f9f3f34bb227024c241c20cf0b04ca64518e2"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part004",
+      "bytes": 47185920,
+      "sha256": "0dc58fb86611020a40e60f724f8aadab11fb10a45cad15c2b5c749fe60754946"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part005",
+      "bytes": 47185920,
+      "sha256": "d8ff68cfca87e9ceabb21312a586e714cb238e131f58dd4956a8ffe8634accd7"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part006",
+      "bytes": 47185920,
+      "sha256": "58d2cf5f3dfa1a002825aebaf39986f6782bf5f6feee0d933285e1649533083c"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part007",
+      "bytes": 47185920,
+      "sha256": "902b0e0ae7dd568d82b07cb8da42c2ee3f8421609519e5ad23873138228c26ed"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part008",
+      "bytes": 47185920,
+      "sha256": "e4324d1a78b77009a378dd8160de0a254db5fae355106d594c23e16720d1351e"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part009",
+      "bytes": 47185920,
+      "sha256": "aea6cfe06aab4596f60389fc041323a787b33efb78b6c09f2838648a8ee3198f"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part010",
+      "bytes": 47185920,
+      "sha256": "c5c242ff2097c245c3ba1d75279fcf2105d30ed58064a98fc38a40fb0a32f7f6"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part011",
+      "bytes": 47185920,
+      "sha256": "fbfb562b92e00d64a1ee29d346ab0a2a4fd7d9df01ed968b363c5334944f6560"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part012",
+      "bytes": 47185920,
+      "sha256": "3cb844be0c7474337377685bdf1d9c90dd69ba07c2f97fcd4f860a6f64fdc2f4"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part013",
+      "bytes": 47185920,
+      "sha256": "2aaca7597a525d952178f3dbdd9efa7d37373484d9478605e9d1ad3e76e9c7b5"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part014",
+      "bytes": 47185920,
+      "sha256": "1030fe399b30f78bb93508f66770ef73c59a97ce16e5ee7a3ef1abc570606604"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part015",
+      "bytes": 47185920,
+      "sha256": "90907fb58125b7162baff9089be228ec8221ec4e3e5a79053bd865124935df4e"
+    },
+    {
+      "path": "Crownfall_Main_v029_sorcerer.blend.zip.part016",
+      "bytes": 43987196,
+      "sha256": "efdc4c0379b0a91be11ce013e3672b81ee3fd92c8ac605ac83f79902341dd817"
+    }
+  ],
+  "storage": "ordinary Git chunks; GitHub LFS budget exhausted"
+}

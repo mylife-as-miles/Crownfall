@@ -909,5 +909,14 @@
     "reason": "repository exceeded its LFS budget",
     "fallback": "ordinary Git chunks"
   },
-  "snapshot_status": "Scripts and small binaries plus recovery setup; full scene chunks are staged locally and pending subsequent Git transfer. Confirm all16 parts are remote before treating the packed scene as backed up."
+  "snapshot_status": "Partial scene transfer: 2/16 chunks in this commit. Full packed scene is not recoverable until all16 are remote.",
+  "scene_chunk_transfer": {
+    "parts_in_this_commit": [
+      "Crownfall_Main_v029_sorcerer.blend.zip.part001",
+      "Crownfall_Main_v029_sorcerer.blend.zip.part002"
+    ],
+    "parts_count": 2,
+    "parts_total": 16,
+    "archive_complete_in_this_commit": false
+  }
 }
