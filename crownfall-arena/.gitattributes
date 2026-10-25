@@ -2,3 +2,4 @@
 *.glb -filter -diff -merge -text
 *.zip -filter -diff -merge -text
 *.part* -filter -diff -merge -text
+USER_HANDOFF_AS_SUPPLIED.txt -text
