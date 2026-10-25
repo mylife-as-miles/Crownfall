@@ -16,7 +16,7 @@ await mkdir("artifacts", { recursive: true });
 const results = [];
 try {
   const page = await browser.newPage({
-    viewport: { width: 1280, height: 714 },
+    viewport: { width: 1280, height: 720 },
     deviceScaleFactor: 1,
   });
   const errors = [];
@@ -51,10 +51,51 @@ try {
     .getByRole("button", { name: "Resume", exact: true })
     .boundingBox();
   assert.ok(
-    bounds && Math.abs(bounds.x - 341) < 3 && Math.abs(bounds.y - 209) < 3,
+    bounds && Math.abs(bounds.x - 340) < 2 && Math.abs(bounds.y - 211) < 2,
     JSON.stringify(bounds),
   );
   results.push("Default Play/Resume selection and reference card positioning");
+
+  const cardBounds = await page.locator(".game-card").evaluateAll((elements) =>
+    elements.map((element) => {
+      const { x, y, width, height } = element.getBoundingClientRect();
+      return { x, y, width, height };
+    }),
+  );
+  assert.equal(cardBounds.length, 5, "five cards including Host");
+  for (const [index, rect] of cardBounds.entries()) {
+    assert.ok(Math.abs(rect.x - (139 + index * 201)) < 1, JSON.stringify(rect));
+    assert.ok(
+      Math.abs(rect.y - 211) < 1 &&
+        Math.abs(rect.width - 197) < 1 &&
+        Math.abs(rect.height - 298) < 1,
+      JSON.stringify(rect),
+    );
+  }
+  const artworks = await page
+    .locator(".card-art")
+    .evaluateAll(async (elements) =>
+      Promise.all(
+        elements.map(async (element) => {
+          const source = getComputedStyle(element).backgroundImage.slice(5, -2);
+          const image = new Image();
+          image.src = source;
+          await image.decode();
+          return {
+            source,
+            width: image.naturalWidth,
+            height: image.naturalHeight,
+          };
+        }),
+      ),
+    );
+  assert.equal(new Set(artworks.map((art) => art.source)).size, 5);
+  assert.ok(
+    artworks.every((art) => art.width >= 400 && art.height > art.width),
+  );
+  results.push(
+    "Five distinct portrait environments load across the screenshot's full 1001px card row",
+  );
 
   await page.keyboard.press("ArrowRight");
   assert.equal(
@@ -110,11 +151,37 @@ try {
   await page.keyboard.press("Escape");
   results.push("Browse opens an honest unavailable state");
 
+  await page.getByRole("button", { name: "Host", exact: true }).click();
+  await page.getByRole("heading", { name: "Host a game." }).waitFor();
+  assert.match(
+    await page.locator("dialog").innerText(),
+    /Online hosting is not available yet/,
+  );
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "Host", exact: true }).focus();
+  await page.keyboard.press("ArrowRight");
+  assert.equal(
+    await page
+      .getByRole("button", { name: "New", exact: true })
+      .getAttribute("aria-pressed"),
+    "true",
+  );
+  await page.keyboard.press("ArrowLeft");
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Host", exact: true })
+      .getAttribute("aria-pressed"),
+    "true",
+  );
+  results.push(
+    "Host opens its unavailable state and keyboard navigation wraps through all five cards",
+  );
+
   await page.evaluate(() => localStorage.clear());
   await page.mouse.move(0, 0);
   await page.reload();
   await page.waitForTimeout(650);
-  await page.screenshot({ path: "artifacts/final-1280x714.png" });
+  await page.screenshot({ path: "artifacts/final-1280x720.png" });
   await page.setViewportSize({ width: 1920, height: 1080 });
   await page.screenshot({ path: "artifacts/final-1920x1080.png" });
   results.push("Reference desktop and 1920px browser renders");

@@ -207,18 +207,18 @@ a {
   position: absolute;
   z-index: 2;
   left: 10.86cqw;
-  top: 29.27cqh;
+  top: 29.31cqh;
   display: flex;
-  gap: 0.39cqw;
-  height: 41.6cqh;
+  gap: 0.3125cqw;
+  height: 41.39cqh;
 }
 .game-card {
   position: relative;
   display: block;
   isolation: isolate;
   overflow: hidden;
-  flex: 0 0 15.39cqw;
-  width: 15.39cqw;
+  flex: 0 0 15.390625cqw;
+  width: 15.390625cqw;
   height: 100%;
   padding: 0;
   border: 0;
@@ -248,22 +248,24 @@ a {
   position: absolute;
   z-index: -2;
   inset: 0;
-  background-image: url("/assets/reference.jpg");
+  background-image: url("/assets/environments/card-new.webp");
   background-repeat: no-repeat;
-  background-size: 649.75% 326.03%;
-  background-position-x: 12.83%;
-  background-position-y: 50.3%;
+  background-size: cover;
+  background-position: center;
   transform: scale(1.015);
   transition: transform 0.8s ease;
 }
 .card-resume .card-art {
-  background-position-x: 31.4%;
+  background-image: url("/assets/environments/card-resume.webp");
 }
 .card-load .card-art {
-  background-position-x: 50%;
+  background-image: url("/assets/environments/card-load.webp");
 }
 .card-browse .card-art {
-  background-position-x: 68.5%;
+  background-image: url("/assets/environments/card-browse.webp");
+}
+.card-host .card-art {
+  background-image: url("/assets/environments/card-host.webp");
 }
 .game-card:hover .card-art {
   transform: scale(1.035);
@@ -274,20 +276,19 @@ a {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(15, 14, 10, 0.48),
-    transparent 28%,
-    transparent 72%,
-    rgba(14, 13, 7, 0.58)
+    rgba(12, 12, 10, 0.72) 0%,
+    rgba(12, 12, 10, 0.3) 14%,
+    transparent 30%,
+    transparent 66%,
+    rgba(12, 12, 10, 0.45) 82%,
+    rgba(12, 12, 10, 0.86) 100%
   );
 }
-.card-resume .card-shade {
-  background: linear-gradient(
-    180deg,
-    rgba(20, 19, 14, 0.17),
-    transparent 28%,
-    transparent 71%,
-    rgba(38, 33, 20, 0.38)
-  );
+.card-heading,
+.card-description {
+  text-shadow:
+    0 1px 2px #000,
+    0 0 6px #0009;
 }
 .card-heading {
   position: absolute;
@@ -299,13 +300,13 @@ a {
 }
 .card-title {
   font-family: "Barlow", Arial, sans-serif;
-  font-size: 1.33cqw;
+  font-size: 1.40625cqw;
   line-height: 1.15;
   font-weight: 300;
   letter-spacing: 0.005cqw;
 }
 .card-subtitle {
-  font-size: 0.55cqw;
+  font-size: 0.586cqw;
   line-height: 1.15;
   letter-spacing: 0.007cqw;
   opacity: 0.83;
@@ -316,10 +317,10 @@ a {
   left: 0.86cqw;
   bottom: 1.2cqh;
   right: 0.68cqw;
-  font-size: 0.535cqw;
-  line-height: 1.1;
-  color: #d4cfbe;
-  opacity: 0.8;
+  font-size: 0.625cqw;
+  line-height: 1.2;
+  color: #e8e0cc;
+  opacity: 0.92;
   max-width: 13.4cqw;
 }
 .card-resume .card-description {
@@ -652,29 +653,4 @@ a {
     transition: none !important;
     scroll-behavior: auto !important;
   }
-}
-
-/* Clean scenery keeps the foreground cards separate from the creature. */
-.card-load .card-art,
-.card-browse .card-art {
-  background-image: url("/assets/environment-panels.webp");
-  background-size: 200% 100%;
-  background-position: 0 50%;
-  filter: blur(0.75px) contrast(0.78) saturate(0.8);
-}
-.card-browse .card-art {
-  background-position: 100% 50%;
-}
-
-.card-load .card-shade,
-.card-browse .card-shade {
-  background:
-    linear-gradient(rgba(135, 128, 99, 0.12), rgba(135, 128, 99, 0.12)),
-    linear-gradient(
-      180deg,
-      rgba(15, 14, 10, 0.48),
-      transparent 28%,
-      transparent 72%,
-      rgba(14, 13, 7, 0.58)
-    );
 }

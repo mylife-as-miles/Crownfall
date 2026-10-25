@@ -1,36 +1,45 @@
 {
+  "revision": "Five-card portfolio-inspired environments",
   "reviewer": "independent visual critic agent",
-  "reference": "public/assets/reference.jpg",
-  "reviewedScreenshot": "artifacts/iteration-4-1280x714.png",
-  "viewport": { "width": 1280, "height": 714 },
-  "score": 9.0,
+  "reference": "artifacts/references/play-options.jpg",
+  "reviewedScreenshot": "artifacts/five-card-iteration-2.png",
+  "viewport": { "width": 1280, "height": 720 },
+  "score": 9.3,
   "scoreOutOf": 10,
-  "assessmentType": "Subjective visual assessment against reference, adjusted for explicit subsequent user changes; not an objective pixel-match score.",
+  "assessmentType": "Subjective visual assessment of the latest user-authorized composition and portfolio-inspired art direction; not an objective pixel-match score.",
   "exactReferenceMatch": false,
   "rubric": [
-    { "category": "Composition and positions", "maximum": 2.5, "score": 2.45, "notes": "Nav, cards, selection and footer closely follow reference geometry. Creature behind cards is an explicitly requested change." },
-    { "category": "Creature silhouette and layering", "maximum": 2.0, "score": 1.84, "notes": "Strong silhouette, framing and softened teal/gold character grading. Reference-derived 2D reconstruction is temporary pending the user's actual GLB." },
-    { "category": "Card artwork and framing", "maximum": 1.5, "score": 1.32, "notes": "Framing and selected border closely match. Load Game and Browse use reconstructed landscapes because original source artwork was occluded; subjects differ from the reference. Final softening and warm veil improve consistency." },
-    { "category": "Typography and menu controls", "maximum": 1.0, "score": 0.96, "notes": "Labels, nav spacing, light narrow headings and controller hints are close to reference; some copy and font shapes differ." },
-    { "category": "Light, palette and vignette", "maximum": 1.5, "score": 1.46, "notes": "Warm atmospheric right-side fog, dark left vignette, subdued card grading and cyan haze closely reproduce the overall palette." },
-    { "category": "Particles, feathers and motion", "maximum": 1.0, "score": 0.97, "notes": "Visible additive teal cores and halos, restrained gold dust and soft feather wisps reproduce the magical atmosphere. Placement is animated and varies between captures." }
+    { "category": "Environment artwork and portfolio inspiration", "maximum": 3.0, "score": 2.85, "notes": "All five original portraits are distinct and cohesive: spring waterfall, ornate amber manor, cyan surreal submerged garden, sculpted basalt coast and floating monument. Atmospheric scale, layered depth and rendered realism respond well to the studied portfolio. Compositions are original rather than reproductions." },
+    { "category": "Five-card row geometry and composition", "maximum": 2.0, "score": 2.0, "notes": "New, Resume, Load Game, Browse and Host occupy the reference row: left edges 139, 340, 541, 742, 943; top 211; width 197; height 298; gap 4; total width 1001, approximately 1002 including edge rounding. Resume is selected initially." },
+    { "category": "Typography and control readability", "maximum": 1.0, "score": 0.88, "notes": "Heading hierarchy and control positions remain close to the references. Unified dark edge scrims and text shadows improve readability, especially Resume's description over the golden floor. Supporting copy remains deliberately very small at this viewport." },
+    { "category": "Creature framing and user-requested layering", "maximum": 1.5, "score": 1.37, "notes": "Creature remains behind all five cards as explicitly requested, with crown, eye, hair, outer arm and lower robe visible. Temporary 2D creature artwork is still used pending the actual GLB." },
+    { "category": "Palette, lighting and atmospheric cohesion", "maximum": 1.5, "score": 1.30, "notes": "Warm gold background and teal aura retain the first reference's atmosphere, while the five environmental color stories remain distinct. Dense image detail and some bright interior highlights create modest variation in visual weight." },
+    { "category": "Particles, feathers and motion", "maximum": 1.0, "score": 0.90, "notes": "Teal cores, soft halos, restrained gold dust and feather wisps maintain the magical atmosphere without preventing menu interaction. Exact placement varies with animation." }
   ],
   "iterationHistory": [
-    { "iteration": "1", "screenshot": "artifacts/iteration-1-1280x714.png", "score": 8.0, "findings": "Nav drift, sparse tiny teal particles, overly sharp saturated creature." },
-    { "iteration": "2 before effects tuning", "screenshot": "artifacts/iteration-2-1280x714.png", "score": 8.4, "findings": "Fixed nav and headings; remaining atmosphere and grading differences." },
-    { "iteration": "2 after effects tuning", "screenshot": "artifacts/effects-tune.png", "score": 8.8, "findings": "Improved foreground particles and creature grading; additional diffuse fog needed." },
-    { "iteration": "3", "screenshot": "artifacts/iteration-3-1280x714.png", "score": 8.9, "findings": "User-requested creature-behind-card composition, stronger fog and clean reconstructed card backgrounds; new landscapes needed softer grading." },
-    { "iteration": "4", "screenshot": "artifacts/iteration-4-1280x714.png", "score": 9.0, "findings": "Reconstructed card artwork softened and warmed, resolving major remaining visual cohesion gap." }
+    { "iteration": "Five-card pass 1", "screenshot": "artifacts/five-card-iteration-1.png", "score": 9.1, "findings": "Correct expanded five-card row and cohesive original portfolio-inspired artwork. Resume description and cyan Load Game heading needed stronger local contrast." },
+    { "iteration": "Five-card pass 2", "screenshot": "artifacts/five-card-iteration-2.png", "score": 9.3, "findings": "Unified upper and lower edge scrims, stronger footer opacity and text shadows improve readability while preserving the art's rendered detail." }
+  ],
+  "sourceInspirations": [
+    { "card": "New", "title": "Spring Meadows", "url": "https://carleaf.artstation.com/projects/bg3r2v", "motifs": "Mossy sanctuary, spring growth and misty waterfall" },
+    { "card": "Resume", "title": "The Manor", "url": "https://carleaf.artstation.com/projects/vbQLJx", "motifs": "Warm manor hall and grand stairway" },
+    { "card": "Load Game", "title": "Flying Waters", "url": "https://carleaf.artstation.com/projects/wrKlJO", "motifs": "Dreamlike submerged garden and turquoise light" },
+    { "card": "Browse", "title": "Stone Wave Cliffs", "url": "https://carleaf.artstation.com/projects/DLKBny", "motifs": "Sculpted basalt cliffs and luminous coastal passage" },
+    { "card": "Host", "title": "The Monolith", "url": "https://carleaf.artstation.com/projects/zxoo46", "motifs": "Floating fractured monument above a ceremonial valley" }
   ],
   "authorizedDifferences": [
-    "Creature appears behind all four cards rather than overlapping their faces.",
+    "Five cards including Host, as explicitly confirmed by the user.",
+    "All five card images use original generated environments inspired by Carla Deveze's portfolio rather than the older reference's game scenes.",
+    "Creature remains behind all cards rather than overlapping their faces.",
+    "The earlier warm gold background and magical creature atmosphere remain; the later example's blue explanatory banner is omitted.",
     "Desktop and phone landscape composition only; no portrait redesign."
   ],
   "remainingLimits": [
-    "Actual user-supplied creature GLB has not been received, so model appearance, materials and animations cannot be assessed yet.",
-    "Two menu card scenes are reconstructed landscapes, not exact original game artwork.",
-    "Temporary creature art differs subtly in pose, ornament and lighting from the reference.",
-    "The 9.0 score is a critic's subjective assessment and does not claim exact or pixel-identical reproduction."
+    "The actual user-supplied creature GLB has not been received, so its final appearance, materials and animations cannot yet be assessed.",
+    "Card artworks are original inspired compositions, not exact reproductions of Carla Deveze's artworks or either screenshot.",
+    "Supporting copy is very small at 1280x720, following the reference's scale.",
+    "The 9.3 score is a critic's subjective assessment, not a claim of pixel-identical reproduction."
   ],
-  "verdict": "Meets the subjective 9/10 visual target for the current authorized composition. Actual GLB integration remains pending."
+  "historicalReview": "artifacts/visual-review-four-card.json",
+  "verdict": "Meets the requested 9/10 visual target for the current five-card revision. Actual creature GLB integration remains pending."
 }

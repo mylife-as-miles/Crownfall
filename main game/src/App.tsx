@@ -8,6 +8,7 @@ type Panel =
   | "resume"
   | "load"
   | "browse"
+  | "host"
   | "home"
   | "examples"
   | "community"
@@ -52,6 +53,13 @@ const cards = [
     title: "BROWSE",
     subtitle: "Search for any online Games.",
     description: "Discover other worlds. Find your next adventure.",
+  },
+  {
+    id: "host",
+    title: "HOST",
+    subtitle: "Start your own online game.",
+    description:
+      "Bring your own world to life. A gathering place for your next adventure.",
   },
 ] as const;
 const tabs: { label: string; panel: Panel; aria: string }[] = [
@@ -469,6 +477,19 @@ export default function App() {
                 <div className="empty-state">
                   The gates are still closed.
                   <small>Online games are not available yet.</small>
+                </div>
+                <button className="primary-action" onClick={closePanel}>
+                  Return to your world <span>↗</span>
+                </button>
+              </>
+            )}
+            {panel === "host" && (
+              <>
+                <h1 id="dialog-heading">Host a game.</h1>
+                <p>A world is better when shared.</p>
+                <div className="empty-state">
+                  Online hosting is not available yet.
+                  <small>No server or online lobby has been created.</small>
                 </div>
                 <button className="primary-action" onClick={closePanel}>
                   Return to your world <span>↗</span>
