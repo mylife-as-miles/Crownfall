@@ -66,10 +66,10 @@
         "objectPosition": "50% 50%",
         "background": "#1b1914",
         "cardDesignSize": {
-          "width": 298,
+          "width": 358,
           "height": 215
         },
-        "rationale": "Retain all four map regions, edge labels and decorative frame. At this card size, contain leaves approximately 5px of subtle background at each side."
+        "rationale": "Contain preserves the complete four-region map. The wider 358\u00d7215 tile adds dark side gutters without cropping source context."
       },
       "displayFitApplied": true
     },
@@ -102,10 +102,10 @@
         "objectPosition": "50% 50%",
         "background": "#1b1914",
         "cardDesignSize": {
-          "width": 298,
+          "width": 358,
           "height": 215
         },
-        "rationale": "A centered horizontal crop retains the sorcerer and large portal. Approximately 22.6% of source width is outside the target frame; the delivery asset itself is uncropped."
+        "rationale": "Centered cover retains the sorcerer and portal; the wider tile reveals more of the unchanged source image."
       },
       "displayFitApplied": true
     }

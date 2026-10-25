@@ -1,16 +1,35 @@
 {
   "passed": true,
+  "domOnly": true,
   "checks": [
-    "Default Play/Resume Gambit selection and reference card positioning",
+    "Default Play/Local Duel selection and reference card positioning",
     "Home/Play/Settings navigation, tab shortcuts and Back return to the correct screen",
-    "Four supplied images load in order in the fixed four-card row",
-    "Arrow navigation, focused Enter activation, Escape and modal closure",
-    "Create local demo save and load it after a reload",
-    "Quality and motion preferences persist; Low removes WebGL particles",
-    "Browse opens an honest unavailable state",
-    "Host is absent; card navigation wraps at endpoints and Home/End select the first/last option",
-    "Reference desktop and 1920px browser renders",
-    "OS reduced motion honored",
+    "Four mode labels, bold amber/gray typography, original geometry and supplied-artwork fingerprints are correct",
+    "Arrow navigation, focused Enter activation, Escape and modal closure work for the new modes",
+    "All four mode previews truthfully disclose unavailable gameplay and offer no launch or demo-save form",
+    "Mode activation and reload have no local-demo-save creation, restoration or overwrite side effects",
+    "Quality and motion preferences persist; Low releases the particle renderer",
+    "Mode navigation wraps correctly; Home/End select the endpoints without an added Host or Story card",
+    "OS reduced motion is honored independently of saved preferences",
     "No JavaScript or console errors during the menu flow"
-  ]
+  ],
+  "previews": [
+    {
+      "mode": "Classic",
+      "text": "×\nCROWNFALL\nClassic\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack"
+    },
+    {
+      "mode": "Local Duel",
+      "text": "×\nCROWNFALL\nLocal Duel\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack"
+    },
+    {
+      "mode": "Chapters",
+      "text": "×\nCROWNFALL\nChapters\n\nCrownfall's campaign chapters are not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack"
+    },
+    {
+      "mode": "Online Duel",
+      "text": "×\nCROWNFALL\nOnline Duel\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack"
+    }
+  ],
+  "errors": []
 }

@@ -6,10 +6,10 @@ import { HOME_CONTENT, getNextHomeTile, type HomeDirection } from "./home-conten
 import "./styles.css";
 
 type Panel =
-  | "new"
-  | "resume"
-  | "load"
-  | "browse"
+  | "classic"
+  | "local-duel"
+  | "chapters"
+  | "online-duel"
   | "legacy"
   | "chronicles"
   | "herald"
@@ -18,10 +18,8 @@ type Panel =
   | null;
 type Quality = "low" | "medium" | "high";
 type Screen = "home" | "play";
-type SaveGame = { name: string; chapter: string; updatedAt: string };
 type Preferences = { quality: Quality; volume: number; motion: boolean };
 
-const saveKey = "crownfall.main-game.save";
 const preferencesKey = "crownfall.main-game.preferences";
 const initialPreferences: Preferences = {
   quality: "high",
@@ -30,32 +28,40 @@ const initialPreferences: Preferences = {
 };
 const cards = [
   {
-    id: "new",
-    title: "NEW GAMBIT",
-    label: "New Gambit",
-    subtitle: "Begin a new gambit.",
-    description: "Choose your opening. Every move has a cost.",
+    id: "classic",
+    artwork: "new",
+    title: "CLASSIC",
+    label: "Classic",
+    subtitle: "Make your opening move.",
+    description: "Traditional chess against the computer.",
+    preview: "Classic chess against the computer is not connected to this menu.",
   },
   {
-    id: "resume",
-    title: "RESUME GAMBIT",
-    label: "Resume Gambit",
-    subtitle: "Return to your gambit.",
-    description: "Continue where you left the board.",
+    id: "local-duel",
+    artwork: "resume",
+    title: "LOCAL DUEL",
+    label: "Local Duel",
+    subtitle: "Share the board.",
+    description: "Two players. One device.",
+    preview: "Two-player chess on one device is not connected to this menu.",
   },
   {
-    id: "load",
-    title: "LOAD GAMBIT",
-    label: "Load Gambit",
-    subtitle: "Choose a saved gambit.",
-    description: "Return to a saved position.",
+    id: "chapters",
+    artwork: "load",
+    title: "CHAPTERS",
+    label: "Chapters",
+    subtitle: "Choose a chapter.",
+    description: "Tactical missions and lasting consequences.",
+    preview: "Crownfall's campaign chapters are not connected to this menu.",
   },
   {
-    id: "browse",
-    title: "BROWSE GAMBITS",
-    label: "Browse Gambits",
+    id: "online-duel",
+    artwork: "browse",
+    title: "ONLINE DUEL",
+    label: "Online Duel",
     subtitle: "Unavailable in this build.",
     description: "",
+    preview: "Online play is unavailable in this build. No matchmaking service is connected.",
   },
 ] as const;
 const tabs: { label: string; panel: Panel; aria: string }[] = [
@@ -69,28 +75,6 @@ const homeDirections: Partial<Record<string, HomeDirection>> = {
   ArrowUp: "up",
   ArrowDown: "down",
 };
-
-function getSave(): SaveGame | null {
-  try {
-    const value: unknown = JSON.parse(localStorage.getItem(saveKey) || "null");
-    if (
-      !value ||
-      typeof value !== "object" ||
-      !("name" in value) ||
-      !("chapter" in value) ||
-      !("updatedAt" in value)
-    )
-      return null;
-    return typeof value.name === "string" &&
-      typeof value.chapter === "string" &&
-      typeof value.updatedAt === "string" &&
-      Number.isFinite(Date.parse(value.updatedAt))
-      ? (value as SaveGame)
-      : null;
-  } catch {
-    return null;
-  }
-}
 
 function getPreferences(): Preferences {
   try {
@@ -126,10 +110,7 @@ export default function App() {
   const [homeSelected, setHomeSelected] = useState(0);
   const [activeTab, setActiveTab] = useState<number>(1);
   const [panel, setPanel] = useState<Panel>(null);
-  const [save, setSave] = useState<SaveGame | null>(getSave);
   const [preferences, setPreferences] = useState<Preferences>(getPreferences);
-  const [playerName, setPlayerName] = useState<string>("Player");
-  const [notice, setNotice] = useState<string>("");
   const dialog = useRef<HTMLDialogElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const homeRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -140,7 +121,6 @@ export default function App() {
   const closePanel = useCallback(() => {
     setPanel(null);
     setActiveTab(screen === "home" ? 0 : 1);
-    setNotice("");
   }, [screen]);
   const selectCard = useCallback((index: number) => {
     const next = ((index % cards.length) + cards.length) % cards.length;
@@ -159,7 +139,6 @@ export default function App() {
   const openTab = useCallback((index: number) => {
     setActiveTab(index);
     setPanel(tabs[index].panel);
-    setNotice("");
     if (index < 2) setScreen(index === 0 ? "home" : "play");
   }, []);
   const changeTab = useCallback((direction: number) => {
@@ -167,14 +146,12 @@ export default function App() {
   }, [activeTab, openTab]);
   const activate = useCallback((index: number) => {
     setSelected(index);
-    setNotice("");
     setPanel(cards[index].id);
   }, []);
   const activateHome = useCallback((index: number) => {
     const item = HOME_CONTENT[index];
     if (!item?.action || !item.title || !item.imageSrc) return;
     setHomeSelected(index);
-    setNotice("");
     setPanel(item.action);
   }, []);
   const back = useCallback(() => {
@@ -282,31 +259,7 @@ export default function App() {
     return () => cancelAnimationFrame(frame);
   }, [panel, screen, selected, homeSelected, activate, activateHome, back, changeTab, moveHome, selectCard]);
 
-  function createDemoSave() {
-    const next: SaveGame = {
-      name: playerName.trim() || "Player",
-      chapter: "Crownfall · Demo save",
-      updatedAt: new Date().toISOString(),
-    };
-    try {
-      localStorage.setItem(saveKey, JSON.stringify(next));
-    } catch {
-      setNotice(
-        "Demo save kept for this session. Browser storage is unavailable.",
-      );
-    }
-    setSave(next);
-    setPanel("resume");
-    try {
-      setNotice(
-        localStorage.getItem(saveKey)
-          ? "Demo save created on this device."
-          : "Demo save kept for this session.",
-      );
-    } catch {
-      setNotice("Demo save kept for this session.");
-    }
-  }
+  const activeMode = cards.find((mode) => mode.id === panel);
 
   return (
     <main className={`menu-shell ${preferences.motion ? "" : "reduce-motion"}`}>
@@ -365,7 +318,7 @@ export default function App() {
               }}
               type="button"
               tabIndex={selected === index ? 0 : -1}
-              className={`game-card card-${card.id} ${selected === index ? "is-selected" : ""}`}
+              className={`game-card card-${card.artwork} ${selected === index ? "is-selected" : ""}`}
               aria-label={card.label}
               aria-pressed={selected === index}
               onPointerMove={(event) => {
@@ -426,112 +379,11 @@ export default function App() {
               ×
             </button>
             <span className="dialog-eyebrow">CROWNFALL</span>
-            {panel === "new" && (
+            {activeMode && (
               <>
-                <h1 id="dialog-heading">New Gambit</h1>
-                <p>Choose a name for your Crownfall demo save.</p>
-                {save && (
-                  <p className="dialog-note">
-                    This replaces the demo save on this device.
-                  </p>
-                )}
-                <label className="field-label" htmlFor="player-name">
-                  Your name
-                </label>
-                <input
-                  id="player-name"
-                  value={playerName}
-                  maxLength={32}
-                  onChange={(event) => setPlayerName(event.target.value)}
-                />
-                <p className="dialog-note">
-                  This preview saves your setup. It does not start a chess game.
-                </p>
-                <button className="primary-action" onClick={createDemoSave}>
-                  Create demo save <span aria-hidden="true">&gt;</span>
-                </button>
-              </>
-            )}
-            {panel === "resume" && (
-              <>
-                <h1 id="dialog-heading">
-                  {save ? "Resume Gambit" : "No saved gambit yet"}
-                </h1>
-                <p>
-                  {save
-                    ? `${save.name} · Local demo save`
-                    : "Create a new gambit to save a setup on this device."}
-                </p>
-                {save && (
-                  <div className="save-slot">
-                    <span className="save-mark">♜</span>
-                    <div>
-                      <strong>Crownfall · Demo save</strong>
-                      <small>
-                        {save.name} · Saved{" "}
-                        {new Date(save.updatedAt).toLocaleDateString()}
-                      </small>
-                    </div>
-                  </div>
-                )}
-                <p className="dialog-note">
-                  This preview does not restore a chess position or launch gameplay.
-                </p>
-                <button
-                  className="primary-action"
-                  onClick={() => (save ? closePanel() : setPanel("new"))}
-                >
-                  {save ? "Back to Play" : "New Gambit"}
-                  <span aria-hidden="true">&gt;</span>
-                </button>
-              </>
-            )}
-            {panel === "load" && (
-              <>
-                <h1 id="dialog-heading">Load Gambit</h1>
-                <p>
-                  One local demo save slot. Chess positions cannot be restored
-                  in this preview.
-                </p>
-                {save ? (
-                  <button
-                    className="save-slot save-button"
-                    onClick={() => setPanel("resume")}
-                  >
-                    <span className="save-mark">♜</span>
-                    <span>
-                      <strong>Crownfall · Demo save</strong>
-                      <small>
-                        {save.name} ·{" "}
-                        {new Date(save.updatedAt).toLocaleDateString()}
-                      </small>
-                    </span>
-                    <span aria-hidden="true">&gt;</span>
-                  </button>
-                ) : (
-                  <div className="empty-state">
-                    No saved gambit yet.
-                    <small>Create a new gambit to add a demo save.</small>
-                  </div>
-                )}
-                {!save && (
-                  <button
-                    className="primary-action"
-                    onClick={() => setPanel("new")}
-                  >
-                    New Gambit <span aria-hidden="true">&gt;</span>
-                  </button>
-                )}
-              </>
-            )}
-            {panel === "browse" && (
-              <>
-                <h1 id="dialog-heading">Browse Gambits</h1>
-                <p>Online play is not connected in this preview.</p>
-                <div className="empty-state">
-                  No online matches available.
-                  <small>This menu supports local demo saves only.</small>
-                </div>
+                <h1 id="dialog-heading">{activeMode.label}</h1>
+                <p>{activeMode.preview}</p>
+                <p className="dialog-note">Menu preview only. No gameplay will start here.</p>
                 <button className="primary-action" onClick={closePanel}>
                   Back to Play <span aria-hidden="true">&gt;</span>
                 </button>
@@ -620,7 +472,7 @@ export default function App() {
             {panel === "quit" && (
               <>
                 <h1 id="dialog-heading">Return to Home?</h1>
-                <p>Your local demo save stays on this device.</p>
+                <p>Your menu preferences stay on this device.</p>
                 <div className="dialog-actions">
                   <button className="secondary-action" onClick={closePanel}>
                     Stay in Play
@@ -633,11 +485,6 @@ export default function App() {
                   </button>
                 </div>
               </>
-            )}
-            {notice && (
-              <p className="save-notice" role="status">
-                {notice}
-              </p>
             )}
             <div className="dialog-footer">
               <span className="controller-key">B</span>

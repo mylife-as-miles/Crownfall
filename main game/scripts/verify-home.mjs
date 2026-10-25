@@ -67,7 +67,7 @@ try {
       controls: document.querySelectorAll(".card-carousel, .carousel-controls").length,
     }));
     assert.equal(play.cards.length, 4);
-    assert.deepEqual(play.cards.map((card) => card.label), ["New Gambit", "Resume Gambit", "Load Gambit", "Browse Gambits"]);
+    assert.deepEqual(play.cards.map((card) => card.label), ["Classic", "Local Duel", "Chapters", "Online Duel"]);
     near(play.width, 800, "fixed Play row width");
     play.cards.forEach((card) => { near(card.width, 197, "Play card width"); near(card.height, 298, "Play card height"); });
     assert.equal(play.controls, 0);
@@ -79,7 +79,7 @@ try {
   await activeTab("Play");
   const initialPlay = await inspectPlay();
   await page.keyboard.press("ArrowRight");
-  await selected("Load Gambit");
+  await selected("Chapters");
   record("Default Play retains its four original-size cards, current wording and no carousel");
   await page.getByRole("tab", { name: "Home", exact: true }).click();
   await page.locator(".home-grid").waitFor();
@@ -136,14 +136,14 @@ try {
     near(feature.right + layout.gap, upper.x, "column gap");
     near(upper.bottom + layout.gap, lower.y, "row gap");
     if (viewport.width === 1280) {
-      near(layout.grid.width, 600, "Home grid width"); near(layout.grid.height, 434, "Home grid height"); near(layout.gap, 4, "Home grid gap");
+      near(layout.grid.width, 660, "Home grid width"); near(layout.grid.height, 434, "Home grid height"); near(layout.gap, 4, "Home grid gap");
       near(feature.width, 298, "feature width"); near(feature.height, 434, "feature height");
-      near(upper.width, 298, "upper width"); near(upper.height, 215, "upper height");
-      near(lower.width, 298, "lower width"); near(lower.height, 215, "lower height");
+      near(upper.width, 358, "upper width"); near(upper.height, 215, "upper height");
+      near(lower.width, 358, "lower width"); near(lower.height, 215, "lower height");
     }
     layouts.push({ viewport, ...layout });
   }
-  record("600×434 Home grid matches 298×434 + stacked 298×215 tiles with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports");
+  record("660×434 Home grid keeps My Legacy at 298×434 and widens both right tiles to 358×215 with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports");
   await page.setViewportSize({ width: 1280, height: 720 });
   for (const [key, name] of [["ArrowRight", "Chronicles"], ["ArrowDown", "Herald Board"], ["ArrowLeft", "My Legacy"], ["ArrowRight", "Herald Board"], ["ArrowUp", "Chronicles"], ["ArrowUp", "Chronicles"], ["ArrowRight", "Chronicles"], ["ArrowLeft", "My Legacy"], ["ArrowUp", "My Legacy"], ["ArrowDown", "My Legacy"], ["End", "Herald Board"], ["ArrowDown", "Herald Board"], ["Home", "My Legacy"]]) {
     await page.keyboard.press(key);
@@ -187,7 +187,7 @@ try {
   await selected("Chronicles");
   await page.getByRole("button", { name: "Back", exact: true }).click();
   await activeTab("Play");
-  await selected("Load Gambit");
+  await selected("Chapters");
   const returnedPlay = await inspectPlay();
   assert.deepEqual(returnedPlay, initialPlay);
   await page.getByRole("button", { name: "Back", exact: true }).click();
@@ -214,16 +214,16 @@ try {
   for (const [button, name] of [[15, "Chronicles"], [13, "Herald Board"], [14, "My Legacy"], [15, "Herald Board"], [12, "Chronicles"], [15, "Chronicles"], [13, "Herald Board"]]) await pad(button, () => selected(name));
   await pad(0, () => limitedDialog("Herald Board"));
   await pad(1, async () => { await closed(); await selected("Herald Board"); });
-  await pad(1, async () => { await activeTab("Play"); await selected("Load Gambit"); });
+  await pad(1, async () => { await activeTab("Play"); await selected("Chapters"); });
   await pad(4, async () => { await activeTab("Home"); await selected("Herald Board"); });
   await pad(4, () => page.getByRole("heading", { name: "Settings", exact: true }).waitFor());
   await pad(1, async () => { await closed(); await activeTab("Home"); await selected("Herald Board"); });
-  await pad(5, async () => { await activeTab("Play"); await selected("Load Gambit"); });
+  await pad(5, async () => { await activeTab("Play"); await selected("Chapters"); });
   await pad(4, async () => { await activeTab("Home"); await selected("Herald Board"); });
   record("Simulated standard controller supports all four D-pad directions, remembered-row/clamp behavior, A/B dialogs, Home Back and bumper transitions with preserved Home/Play selections");
   await page.keyboard.press("e");
   await activeTab("Play");
-  await selected("Load Gambit");
+  await selected("Chapters");
   await page.keyboard.press("q");
   await activeTab("Home");
   await selected("Herald Board");

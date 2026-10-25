@@ -4,11 +4,11 @@
   "sources": {
     "ui": {
       "path": "src/App.tsx",
-      "sha256": "d3db338aa022d762b51482c1f5903264237d5ce4716934d7debbde985c47654e"
+      "sha256": "d184f6681e34188471a9170a488a9989e576ccd0684ee7e3de95d9a0690dfd5f"
     },
     "document": {
       "path": "index.html",
-      "sha256": "e7e52f6a7c3921a1f97aae59724d2152f0bc17300db2f46263fab8f90c528404"
+      "sha256": "6935d626617604a319c9a9a308ba07fcb98708928bf3f2a35a94126b7f517b55"
     },
     "canonical_readme": {
       "path": "../README.md",
@@ -61,30 +61,34 @@
   },
   "cards": [
     {
-      "id": "new",
-      "title": "NEW GAMBIT",
-      "label": "New Gambit",
-      "subtitle": "Begin a new gambit.",
-      "description": "Choose your opening. Every move has a cost."
+      "id": "classic",
+      "artwork": "new",
+      "title": "CLASSIC",
+      "label": "Classic",
+      "subtitle": "Make your opening move.",
+      "description": "Traditional chess against the computer."
     },
     {
-      "id": "resume",
-      "title": "RESUME GAMBIT",
-      "label": "Resume Gambit",
-      "subtitle": "Return to your gambit.",
-      "description": "Continue where you left the board."
+      "id": "local-duel",
+      "artwork": "resume",
+      "title": "LOCAL DUEL",
+      "label": "Local Duel",
+      "subtitle": "Share the board.",
+      "description": "Two players. One device."
     },
     {
-      "id": "load",
-      "title": "LOAD GAMBIT",
-      "label": "Load Gambit",
-      "subtitle": "Choose a saved gambit.",
-      "description": "Return to a saved position."
+      "id": "chapters",
+      "artwork": "load",
+      "title": "CHAPTERS",
+      "label": "Chapters",
+      "subtitle": "Choose a chapter.",
+      "description": "Tactical missions and lasting consequences."
     },
     {
-      "id": "browse",
-      "title": "BROWSE GAMBITS",
-      "label": "Browse Gambits",
+      "id": "online-duel",
+      "artwork": "browse",
+      "title": "ONLINE DUEL",
+      "label": "Online Duel",
       "subtitle": "Unavailable in this build.",
       "description": ""
     }
@@ -106,79 +110,6 @@
     "primary_action_suffix_html_entity": "&gt;"
   },
   "modals": {
-    "new": {
-      "heading": "New Gambit",
-      "paragraph": "Choose a name for your Crownfall demo save.",
-      "existing_save_note": "This replaces the demo save on this device.",
-      "field": {
-        "label": "Your name",
-        "default_value": "Player",
-        "empty_value_fallback": "Player",
-        "maximum_length": 32
-      },
-      "note": "This preview saves your setup. It does not start a chess game.",
-      "action": {
-        "label": "Create demo save",
-        "opens": "resume"
-      }
-    },
-    "resume": {
-      "saved": {
-        "heading": "Resume Gambit",
-        "paragraph_template": "{name} · Local demo save",
-        "save_slot": {
-          "title": "Crownfall · Demo save",
-          "details_template": "{name} · Saved {localizedDate}"
-        },
-        "action": {
-          "label": "Back to Play",
-          "opens": "play"
-        }
-      },
-      "empty": {
-        "heading": "No saved gambit yet",
-        "paragraph": "Create a new gambit to save a setup on this device.",
-        "action": {
-          "label": "New Gambit",
-          "opens": "new"
-        }
-      },
-      "note_in_both_states": "This preview does not restore a chess position or launch gameplay."
-    },
-    "load": {
-      "heading": "Load Gambit",
-      "paragraph": "One local demo save slot. Chess positions cannot be restored in this preview.",
-      "saved": {
-        "save_slot_button": {
-          "title": "Crownfall · Demo save",
-          "details_template": "{name} · {localizedDate}",
-          "trailing_symbol": ">",
-          "opens": "resume",
-          "trailing_symbol_aria_hidden": true,
-          "trailing_symbol_html_entity": "&gt;"
-        }
-      },
-      "empty": {
-        "message": "No saved gambit yet.",
-        "helper": "Create a new gambit to add a demo save.",
-        "action": {
-          "label": "New Gambit",
-          "opens": "new"
-        }
-      }
-    },
-    "browse": {
-      "heading": "Browse Gambits",
-      "paragraph": "Online play is not connected in this preview.",
-      "empty": {
-        "message": "No online matches available.",
-        "helper": "This menu supports local demo saves only."
-      },
-      "action": {
-        "label": "Back to Play",
-        "opens": "play"
-      }
-    },
     "settings": {
       "heading": "Settings",
       "paragraph": "Adjust menu effects. Preferences save automatically.",
@@ -226,7 +157,7 @@
     "quit": {
       "entry_label": "Back",
       "heading": "Return to Home?",
-      "paragraph": "Your local demo save stays on this device.",
+      "paragraph": "Your menu preferences stay on this device.",
       "actions": [
         {
           "label": "Stay in Play",
@@ -261,6 +192,42 @@
         "label": "Back to Home",
         "opens": "home"
       }
+    },
+    "classic": {
+      "heading": "Classic",
+      "paragraph": "Classic chess against the computer is not connected to this menu.",
+      "note": "Menu preview only. No gameplay will start here.",
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
+    },
+    "local-duel": {
+      "heading": "Local Duel",
+      "paragraph": "Two-player chess on one device is not connected to this menu.",
+      "note": "Menu preview only. No gameplay will start here.",
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
+    },
+    "chapters": {
+      "heading": "Chapters",
+      "paragraph": "Crownfall's campaign chapters are not connected to this menu.",
+      "note": "Menu preview only. No gameplay will start here.",
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
+    },
+    "online-duel": {
+      "heading": "Online Duel",
+      "paragraph": "Online play is unavailable in this build. No matchmaking service is connected.",
+      "note": "Menu preview only. No gameplay will start here.",
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
     }
   },
   "menu_footer": {
@@ -280,25 +247,6 @@
       }
     ]
   },
-  "save_notices": [
-    {
-      "text": "Demo save created on this device.",
-      "condition": "A local save is found after creation."
-    },
-    {
-      "text": "Demo save kept for this session.",
-      "condition": "No persisted save is found, or checking browser storage throws."
-    },
-    {
-      "text": "Demo save kept for this session. Browser storage is unavailable.",
-      "condition": "Source sets this message when the storage write throws; the final status check can replace it in the same action."
-    }
-  ],
-  "stored_save_label": "Crownfall · Demo save",
-  "template_values": {
-    "name": "save.name: trimmed player input, falling back to Player.",
-    "localizedDate": "new Date(save.updatedAt).toLocaleDateString(); follows the browser locale."
-  },
   "document": {
     "language": "en",
     "title": "Crownfall — A King's Gambit Story",
@@ -306,7 +254,7 @@
       "charset": "UTF-8",
       "viewport": "width=device-width, initial-scale=1.0",
       "theme-color": "#16120c",
-      "description": "Crownfall — A King's Gambit Story. A cinematic chess menu preview with local demo saves."
+      "description": "Crownfall — A King's Gambit Story. A cinematic chess menu preview."
     }
   },
   "canon_evidence": [
@@ -344,22 +292,20 @@
       "path": "../web/index.html",
       "line": 7,
       "exact_text": "A story-driven tactical chess RPG where every sacrifice has a name and every survivor remembers.",
-      "supports": "Home identity statement Every sacrifice has a name."
+      "supports": "Canonical project tone; this is evidence, not extra visible menu copy."
     }
   ],
   "functional_boundaries": [
-    "This separate menu preview does not launch the chess game or campaign in ../web.",
-    "New creates one device-local demo save containing name, chapter label and timestamp; it replaces the previous slot.",
-    "Resume and Load display demo-save metadata; neither restores a chess position, moves or campaign progress.",
-    "Browse has an unavailable state only. There is no online match list, lobby, multiplayer, hosting or replay feature in this menu.",
-    "Particle quality and ambient motion affect menu presentation. Ambient volume persists a preference but is not connected to audio.",
-    "Home, Play and Settings are the only tabs. Placeholder EXAMPLE and community tabs and their notification badge are removed.",
-    "Back opens a Home confirmation. It does not close the browser or delete the save.",
-    "Gambit is the user-requested menu label; the preview does not expose or simulate the canonical campaign oath mechanic.",
-    "All four fixed 197 by 298 pixel cards remain visible at 1280 by 720, with four-pixel gaps and an 800-pixel row. This inventory does not change layout or artwork.",
-    "Home is a separate three-tile screen using the exact supplied titles and artwork. Tile activations display unavailable-state information only, without profile statistics, lore entries, news feeds or gameplay launches."
+    "This separate menu preview does not launch chess gameplay or campaign content from ../web.",
+    "Classic, Local Duel, Chapters and Online Duel each open a mode-specific preview/unavailable dialog. No mode secretly creates, resumes or loads a demo save.",
+    "Existing legacy demo-save browser data is left untouched. The old save-creation and resume/load UI has been removed.",
+    "The separate web game supports Classic versus AI, local two-player hotseat and one campaign chapter. Online is explicitly unavailable; no backend is implemented here.",
+    "Particle quality and ambient motion affect presentation. Volume persists a preference without connected audio.",
+    "Home retains the supplied three labels and images, with honest unavailable-state dialogs for profiles, chronicles and the herald feed.",
+    "Only Home, Play and Settings tabs exist. Home/Play selections and Settings origin are preserved.",
+    "Play retains four 197 by 298 pixel cards, 4px gaps and the same artwork order and typography at1280 by720."
   ],
-  "card_copy_intent": "Player-facing destination intentions, as requested; activation dialogs disclose local demo saves, absent gameplay integration and unavailable online play. No unsupported launch action is offered.",
+  "card_copy_intent": "Cards identify intended chess modes. Activation dialogs clearly disclose that this standalone menu does not launch gameplay or matchmaking; there is no STORY mode label.",
   "home_tiles": [
     {
       "title": "My Legacy",
@@ -381,6 +327,40 @@
       "description": null,
       "eyebrow": null,
       "action": "herald"
+    }
+  ],
+  "mode_capability_evidence": [
+    {
+      "label": "Classic",
+      "existingWebCapability": "Standard chess against AI with strength/color/clock settings",
+      "evidence": [
+        "../README.md:181",
+        "../web/src/ui/MainMenu.tsx:179"
+      ]
+    },
+    {
+      "label": "Local Duel",
+      "existingWebCapability": "Two-player hotseat on one device",
+      "evidence": [
+        "../README.md:182",
+        "../web/src/ui/MainMenu.tsx:195"
+      ]
+    },
+    {
+      "label": "Chapters",
+      "existingWebCapability": "One campaign chapter with three tactical missions",
+      "evidence": [
+        "../README.md:19",
+        "../web/src/ui/GameShell.tsx:302"
+      ]
+    },
+    {
+      "label": "Online Duel",
+      "existingWebCapability": "Explicitly unavailable; no network backend",
+      "evidence": [
+        "../README.md:34",
+        "../web/src/ui/MainMenu.tsx:150"
+      ]
     }
   ]
 }

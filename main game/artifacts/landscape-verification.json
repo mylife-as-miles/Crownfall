@@ -1,6 +1,7 @@
 {
   "passed": true,
-  "mode": "Four cards visible together at original size",
+  "mode": "Four Play modes visible together at original size",
+  "domOnly": false,
   "results": [
     {
       "viewport": {
@@ -17,7 +18,7 @@
       "activeAnimation": "Idle",
       "cards": [
         {
-          "label": "New Gambit",
+          "label": "Classic",
           "x": 148.34375,
           "y": 114.296875,
           "width": 107.59375,
@@ -25,13 +26,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "CLASSIC",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Resume Gambit",
+          "label": "Local Duel",
           "x": 258.109375,
           "y": 114.296875,
           "width": 107.59375,
@@ -39,13 +42,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "LOCAL DUEL",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Load Gambit",
+          "label": "Chapters",
           "x": 367.875,
           "y": 114.296875,
           "width": 107.59375,
@@ -53,13 +58,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "CHAPTERS",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Browse Gambits",
+          "label": "Online Duel",
           "x": 477.640625,
           "y": 114.296875,
           "width": 107.59375,
@@ -67,6 +74,8 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "ONLINE DUEL",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143

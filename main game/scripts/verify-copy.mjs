@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
+const domOnly = process.env.CROWNFALL_DOM_ONLY === "1";
 const browser = await chromium.launch({
   executablePath: process.env.CHROMIUM_PATH || "/usr/bin/chromium",
   args: ["--no-sandbox", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"],
@@ -14,7 +15,7 @@ try {
   const inspect = async (state, viewport) => {
     const result = await page.locator("dialog").evaluate((dialog) => {
       const box = dialog.getBoundingClientRect();
-      const offenders = [...dialog.querySelectorAll("h1, p, label, button, .empty-state, .save-slot")]
+      const offenders = [...dialog.querySelectorAll("h1, p, label, button, .empty-state")]
         .filter((element) => {
           const rect = element.getBoundingClientRect();
           return rect.width > 0 && (element.scrollWidth > element.clientWidth + 1 || rect.left < box.left || rect.right > box.right);
@@ -30,8 +31,14 @@ try {
     assert.equal(result.horizontalOverflow, false, `${state}: dialog overflow`);
     assert.deepEqual(result.offenders, [], `${state}: clipped text`);
     assert.doesNotMatch(result.text, /EXAMPLE|Fallen Crown|journey|other worlds/i);
+    if (["classic", "local", "chapters", "online"].includes(state)) {
+      assert.match(result.text, /not(?: yet)? (?:connected|available)|unavailable/i);
+      assert.match(result.text, /no gameplay will start here/i);
+      assert.equal(await page.locator("dialog input, dialog form, dialog .save-slot").count(), 0);
+      assert.equal(await page.locator("dialog button").count(), 2);
+    }
     results.push({ viewport, state, ...result });
-    if ((viewport.width === 1280 && ["legacy", "browse"].includes(state)) || (viewport.width === 844 && state === "settings")) {
+    if (!domOnly && ((viewport.width === 1280 && ["legacy", "online"].includes(state)) || (viewport.width === 844 && state === "settings"))) {
       await page.locator("dialog").screenshot({ path: `artifacts/copy/${state}-${viewport.width}.png` });
     }
   };
@@ -51,10 +58,10 @@ try {
     }
     await page.getByRole("tab", { name: "Play", exact: true }).click();
     for (const [state, role, name] of [
-      ["new", "button", "New Gambit"],
-      ["resume-empty", "button", "Resume Gambit"],
-      ["load-empty", "button", "Load Gambit"],
-      ["browse", "button", "Browse Gambits"],
+      ["classic", "button", "Classic"],
+      ["local", "button", "Local Duel"],
+      ["chapters", "button", "Chapters"],
+      ["online", "button", "Online Duel"],
       ["settings", "tab", "Settings"],
       ["back", "button", "Back"],
     ]) {
@@ -63,20 +70,10 @@ try {
       await inspect(state, viewport);
       await page.keyboard.press("Escape");
     }
-    await page.getByRole("button", { name: "New Gambit", exact: true }).click();
-    await page.getByLabel("Your name", { exact: true }).fill("Copy Check");
-    await page.getByRole("button", { name: /Create demo save/ }).click();
-    await page.getByRole("heading", { name: "Resume Gambit", exact: true }).waitFor();
-    await inspect("resume-saved", viewport);
-    await page.keyboard.press("Escape");
-    for (const [state, name] of [["load-saved", "Load Gambit"], ["new-replace", "New Gambit"]]) {
-      await page.getByRole("button", { name, exact: true }).click();
-      await inspect(state, viewport);
-      await page.keyboard.press("Escape");
-    }
+
   }
-  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, scope: "All modal copy in empty/saved/replacement states at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.", results }, null, 2) + "\n");
-  console.log(`PASS ${results.length} modal copy states: no horizontal overflow or clipped text; honest Crownfall copy; desktop and landscape.`);
+  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, domOnly, scope: "Four mode previews, three Home panels, Settings and Back at desktop and landscape; DOM-only model=none probe. Actual GLB menu renders verified separately.", results }, null, 2) + "\n");
+  console.log(`PASS ${results.length} modal copy states: no horizontal overflow or clipped text; truthful Home and mode-preview copy; desktop and landscape.`);
 } finally {
   await browser.close();
 }

@@ -1,8 +1,8 @@
 {
-  "revision": "Actual-image Home grid added; approved Play composition retained",
-  "latestReviewScope": "Home",
+  "revision": "Wider Home right tiles and updated Play mode previews",
+  "latestReviewScope": "Home width and Play mode labels",
   "score": 9.2,
-  "scoreScope": "Home only",
+  "scoreScope": "Home; current Play assessment is separately 9.3",
   "scoreOutOf": 10,
   "screenScores": {
     "Home": 9.2,
@@ -10,7 +10,7 @@
   },
   "reviewer": "independent visual critic agent",
   "homeReview": {
-    "scope": "New Home screen only; the approved Play assessment remains separate and unchanged.",
+    "scope": "Current Home review after increasing only both right tile widths; Play mode-label review is separate.",
     "score": 9.2,
     "scoreOutOf": 10,
     "assessmentType": "Independent subjective comparison of the supplied Home layout reference, actual supplied image subjects, and final actual-GLB browser captures. Not a pixel-match score or a claim that unavailable destination systems are implemented.",
@@ -20,7 +20,7 @@
       "height": 540,
       "privateLocalReferenceOnly": true,
       "imageIncludedInRepository": false,
-      "notes": "Reference proportions and tile hierarchy only; no reference characters or placeholder copy imported."
+      "notes": "Tall-left/stacked-right reference hierarchy retained. Latest authorized width change deliberately makes each right tile wider than the reference; no reference characters or placeholder copy imported."
     },
     "reviewedScreenshots": [
       "artifacts/home/home-1280x720.png",
@@ -30,7 +30,7 @@
     "layoutAt1280": {
       "gridX": 105.328125,
       "gridY": 160,
-      "gridWidth": 600,
+      "gridWidth": 660,
       "gridHeight": 434,
       "gap": 4,
       "leftTile": {
@@ -40,12 +40,12 @@
       },
       "upperRightTile": {
         "title": "Chronicles",
-        "width": 298,
+        "width": 358,
         "height": 215
       },
       "lowerRightTile": {
         "title": "Herald Board",
-        "width": 298,
+        "width": 358,
         "height": 215
       },
       "equalOuterHeights": true,
@@ -56,13 +56,13 @@
         "category": "Reference layout and visual hierarchy",
         "maximum": 3.0,
         "score": 2.95,
-        "notes": "Tall selected left tile and two equal right tiles match the supplied layout proportions; right stack plus gutter equals the left height. Home tab and amber selection state read clearly."
+        "notes": "Tall left tile and equal stacked right tiles retain the reference hierarchy. Latest requested right widths are 358px rather than 298px at 1280, with left size, outer heights, gaps and positions unchanged. Wider right stack remains balanced with the existing creature."
       },
       {
         "category": "Actual supplied artwork and useful framing",
         "maximum": 2.0,
         "score": 1.85,
-        "notes": "Portrait king/throne, complete four-region map and sorcerer/portal are distinct and recognizable. Chronicles contain framing preserves all regions with narrow sidebars; the small embedded upper-left map label partially shares the title area but does not prevent the Chronicles UI heading from reading. No crop adjustment warranted."
+        "notes": "Actual portrait king/throne, full map and sorcerer/portal remain recognizable. Herald Board gains useful horizontal context from the wider cover area. Chronicles keeps the same height-constrained complete map, so wider sidebars are expected under unchanged contain framing. No image regeneration or focal-policy adjustment."
       },
       {
         "category": "Titles, readability and honest destination states",
@@ -123,8 +123,8 @@
       ],
       "framing": {
         "My Legacy": "Centered cover; king and throne retained.",
-        "Chronicles": "Contain; full source map retained with approximately 5px sidebars at 1280 design size.",
-        "Herald Board": "Centered cover; sorcerer, portal and floating rune stones retained."
+        "Chronicles": "Contain; complete source map retained at the 215px card height, with approximately 35px sidebars per side in the 358px-wide 1280 design tile.",
+        "Herald Board": "Centered cover; wider tile reveals more horizontal portal/sorcerer scene context."
       }
     },
     "destinationDisclosures": {
@@ -139,8 +139,8 @@
       "modalCopyFit": "artifacts/copy-fit-verification.json",
       "copyInventory": "artifacts/menu-copy.json",
       "notes": "Critic independently inspected source artwork, all three Home renders and unavailable-state source wording. Keyboard/controller/pointer focus and geometry assertions are supported by the separate passing Home verification artifact.",
-      "playRegression": "artifacts/home/play-regression.json",
-      "modelRetention": "artifacts/home/model-retention.json"
+      "playRegression": "artifacts/home-width/play-preservation.json",
+      "widthComparison": "artifacts/home-width/dimensions.json"
     },
     "iterationHistory": [
       {
@@ -158,6 +158,16 @@
         ],
         "score": 9.2,
         "findings": "All titles, complete tile grid, actual supplied image subjects and existing creature are clear. Root corrected a focus-restoration ordering issue; Home verification now passes. No blocking visual issue."
+      },
+      {
+        "iteration": "Wider right Home tiles",
+        "screenshots": [
+          "artifacts/home/home-1280x720.png",
+          "artifacts/home/home-1920x1080.png",
+          "artifacts/home/home-844x390.png"
+        ],
+        "score": 9.2,
+        "findings": "Right tiles increased 298\u2192358px, left and stacked heights/gaps unchanged. All titles fit at desktop and landscape sizes; creature face/crown stay clear. Chronicles full-map sidebars widen by design; Herald Board shows more scene context. No further adjustment requested."
       }
     ],
     "limits": [
@@ -166,138 +176,255 @@
       "Reference characters and placeholder copy are intentionally excluded; actual user imagery and existing sorcerer are retained.",
       "The 9.2 score is subjective visual assessment of Home, distinct from Play's retained 9.3 assessment."
     ],
-    "verdict": "Meets the subjective 9/10 target for the new actual-image Home screen. No further visual changes requested.",
+    "verdict": "Retains the subjective 9.2/10 Home assessment after the requested wider right tiles. No blocking balance, title-fit or creature-clearance issue identified.",
     "preservedPlayEvidence": {
-      "report": "artifacts/home/play-regression.json",
+      "report": "artifacts/home-width/play-preservation.json",
       "passed": true,
-      "baselineCommit": "23b984a48fa5b5a248b9a28eda6b4dd95b36e0f7",
-      "method": "Full-frame matched reduced-motion Idle0 production renders using the same resize path.",
-      "pixelIdenticalViewports": [
+      "baselineCommit": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
+      "scope": "Play text intentionally changed. Creature, navigation, card frames and image-center pixels match baseline outside excluded card text bands; full-frame pixel identity is not claimed.",
+      "excludedBands": "Top and bottom 30% of each card, including changed text and shadows.",
+      "verifiedViewports": [
         "1280x720",
         "1920x1080",
         "844x390"
       ],
-      "scope": "Evidence that adding Home preserved approved Play pixels under the matched capture setup; does not claim universal pixel identity across arbitrary timing/devices."
+      "additionalChecks": "Actual image hashes, focal policies and card dimensions independently checked by layout/artwork verification."
     },
-    "modelRetentionEvidence": {
-      "report": "artifacts/home/model-retention.json",
-      "rendererRetainedAcross": [
-        "Play",
-        "Home",
-        "Settings",
-        "Home",
-        "Play"
+    "widthChange": {
+      "evidence": "artifacts/home-width/dimensions.json",
+      "baselineCommit": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
+      "rightWidthBefore": 298,
+      "rightWidthAfter": 358,
+      "rightWidthIncreasePx": 60,
+      "rightWidthIncreasePercent": 20.13422818791946,
+      "unchangedLeftSize": [
+        298,
+        434
       ],
-      "additionalGLBRequests": 0,
-      "activeAnimation": "Idle"
+      "unchangedRightHeight": 215,
+      "unchangedGap": 4,
+      "beforeScreenshots": [
+        "artifacts/home-width/before-1280x720.png",
+        "artifacts/home-width/before-844x390.png"
+      ]
     }
   },
   "playReview": {
-    "revision": "Final fixed four-card Gambit menu with creature raised slightly for clearer face visibility",
-    "reviewer": "independent visual critic agent",
-    "reference": "public/assets/reference.jpg",
-    "reviewedScreenshot": "artifacts/final-1280x720.png",
-    "additionalReviewedScreenshot": "artifacts/final-1920x1080.png",
-    "viewport": {
-      "width": 1280,
-      "height": 720
-    },
+    "revision": "Classic / Local Duel / Chapters / Online Duel mode previews",
+    "scope": "Current Play screen after deliberate mode-label and preview-flow changes; original card geometry, actual artwork, typography and creature remain.",
     "score": 9.3,
     "scoreOutOf": 10,
-    "assessmentType": "Independent subjective assessment of Crownfall-specific copy, honest action labels, and the requested card-heading size, weight and state colors. Current desktop and phone-landscape screenshots inspected against the original scene and the new private typography reference. Not a pixel-match or performance score.",
-    "exactReferenceMatch": false,
+    "assessmentType": "Independent subjective visual and wording assessment of the new mode labels in actual-GLB desktop and phone-landscape screenshots. Not a claim that gameplay is integrated or that full-frame Play pixels are unchanged.",
+    "reviewedScreenshots": [
+      "artifacts/final-1280x720.png",
+      "artifacts/final-1920x1080.png",
+      "artifacts/final-landscape-844x390.png"
+    ],
+    "cards": [
+      "Classic",
+      "Local Duel",
+      "Chapters",
+      "Online Duel"
+    ],
+    "cardCount": 4,
+    "visibleCardCount": 4,
+    "defaultSelection": "Local Duel, index 1",
+    "cardGeometry": {
+      "viewportWidth": 1280,
+      "viewportHeight": 720,
+      "leftEdges": [
+        139,
+        340,
+        541,
+        742
+      ],
+      "top": 211,
+      "width": 197,
+      "height": 298,
+      "gap": 4,
+      "rowWidth": 800,
+      "rightEdge": 939,
+      "bottomEdge": 509,
+      "allCardsVisible": true,
+      "carousel": false,
+      "scrollControls": false
+    },
+    "navigation": [
+      "Home",
+      "Play",
+      "Settings"
+    ],
+    "headingTypography": {
+      "fontFamily": "Self-hosted Barlow",
+      "fontWeight": 600,
+      "fontSizeCSS": "max(1.458333cqw, 11px)",
+      "fontSizeAt1280": 18.67,
+      "fontSizeAt960": 14,
+      "selectedColor": "#bf791a shared with card accent border",
+      "inactiveColor": "#b5b2ac",
+      "disabledColor": "#817d73",
+      "currentDisabledCards": 0,
+      "notes": "All four cards open actual preview or informational dialogs, so no card was artificially disabled merely to mimic the unavailable Continue example."
+    },
+    "typographyReference": {
+      "fileName": "card-typography-reference.jpg",
+      "sourceWidth": 960,
+      "sourceHeight": 540,
+      "sourceBytes": 79084,
+      "sourceSha256": "a5c9948c26b68679c4c689d2a58de8d62b9617bd210bac22291577279459b519",
+      "privateLocalReferenceOnly": true,
+      "imageIncludedInRepository": false,
+      "observedStyle": "Compact approximately 14px bold uppercase heading at 960px; selected amber, inactive muted gray, availability-disabled Continue dimmer."
+    },
     "rubric": [
       {
-        "category": "Restored fixed four-card composition",
+        "category": "Fixed four-card composition",
         "maximum": 2.5,
         "score": 2.4,
-        "notes": "All four actual-image Gambit cards remain visible at once in the fixed 197x298 row. At 1280x720 the row remains 800px wide with 4px gaps and no carousel controls. Desktop and letterboxed phone-landscape captures preserve the complete row."
+        "notes": "All four modes fit the existing 197x298 row at 1280 with 4px gaps and no carousel. Selected Local Duel remains in the same second-card position. Desktop and landscape preserve complete cards."
       },
       {
         "category": "Actual supplied artwork and focal crops",
         "maximum": 2.0,
         "score": 1.85,
-        "notes": "Existing actual JPEG imagery and portrait focal positions remain unchanged. Wheel, blue gateway, timber bridges and crystal cliffs remain identifiable. Panoramic context is necessarily omitted by the portrait crops."
+        "notes": "Existing wheel, blue gateway, timber bridges and crystal cliffs retain their source pixels, focal policies and portrait proportions. Only the mode labels and preview copy change."
       },
       {
-        "category": "Reference typography, truthful Crownfall copy and readability",
+        "category": "Compact mode typography and truthful preview copy",
         "maximum": 1.5,
         "score": 1.4,
-        "notes": "Compact Barlow600 headings remain amber for selected Resume Gambit and muted gray for inactive cards. All titles, approved destination-intention subtitles and short bodies fit desktop and 844px landscape views. Browse has the approved unavailable subtitle and no body. Activation dialogs retain explicit demo-only limits; supporting copy remains small on landscape phones."
+        "notes": "Classic, Local Duel, Chapters and Online Duel headings fit all three viewports without wrapping or clipping. Amber selection and muted-gray inactive states remain. Descriptions identify intended modes; all activation dialogs explicitly disclose that gameplay is not connected and offer only Back to Play."
       },
       {
-        "category": "Creature direction, framing and coordinated arm tilt",
+        "category": "Approved creature direction and safe framing",
         "maximum": 2.0,
         "score": 1.85,
-        "notes": "The actual creature is raised only by +0.055 parent world-Y units at the approved 5.6784 normalized height. Face/eye and lower orbital ring are more exposed above the card row. Desktop and landscape screenshots retain crown clearance; dense sampled Idle/ambient-extrema proxy bounds are positive at all three aspects. Approved yaw/lean, coordinated arm pose, rig and animation are unchanged."
+        "notes": "Actual creature size, upward anchor, leftward yaw/lean and coordinated arms remain unchanged. Face/crown remain clear; prior dense sampled Idle framing evidence remains available."
       },
       {
         "category": "Lighting, particles and atmospheric cohesion",
         "maximum": 2.0,
         "score": 1.8,
-        "notes": "Existing warm gold fog and teal particles remain cohesive with the supplied images and actual model. The slightly leftward creature attention improves its relationship to the cards. Materials and geometry still differ from the original illustrated reference by design."
+        "notes": "Existing warm gold fog, teal model and particles remain coherent with the supplied images. Matching non-text pixel evidence supports preservation outside the deliberately changed copy bands."
       }
     ],
-    "iterationHistory": [
-      {
-        "iteration": "Initial copy source audit",
-        "score": null,
-        "findings": "Crownfall/Gambit naming and functional boundaries were accurate. Critic suggested the precise New subtitle Name your gambit and less repetitive Browse unavailability copy."
+    "copyAudit": {
+      "result": "Pass",
+      "currentCardCopy": [
+        {
+          "id": "classic",
+          "artwork": "new",
+          "title": "CLASSIC",
+          "label": "Classic",
+          "subtitle": "Make your opening move.",
+          "description": "Traditional chess against the computer."
+        },
+        {
+          "id": "local-duel",
+          "artwork": "resume",
+          "title": "LOCAL DUEL",
+          "label": "Local Duel",
+          "subtitle": "Share the board.",
+          "description": "Two players. One device."
+        },
+        {
+          "id": "chapters",
+          "artwork": "load",
+          "title": "CHAPTERS",
+          "label": "Chapters",
+          "subtitle": "Choose a chapter.",
+          "description": "Tactical missions and lasting consequences."
+        },
+        {
+          "id": "online-duel",
+          "artwork": "browse",
+          "title": "ONLINE DUEL",
+          "label": "Online Duel",
+          "subtitle": "Unavailable in this build.",
+          "description": ""
+        }
+      ],
+      "modeDialogs": {
+        "classic": {
+          "heading": "Classic",
+          "paragraph": "Classic chess against the computer is not connected to this menu.",
+          "note": "Menu preview only. No gameplay will start here.",
+          "action": {
+            "label": "Back to Play",
+            "opens": "play"
+          }
+        },
+        "local-duel": {
+          "heading": "Local Duel",
+          "paragraph": "Two-player chess on one device is not connected to this menu.",
+          "note": "Menu preview only. No gameplay will start here.",
+          "action": {
+            "label": "Back to Play",
+            "opens": "play"
+          }
+        },
+        "chapters": {
+          "heading": "Chapters",
+          "paragraph": "Crownfall's campaign chapters are not connected to this menu.",
+          "note": "Menu preview only. No gameplay will start here.",
+          "action": {
+            "label": "Back to Play",
+            "opens": "play"
+          }
+        },
+        "online-duel": {
+          "heading": "Online Duel",
+          "paragraph": "Online play is unavailable in this build. No matchmaking service is connected.",
+          "note": "Menu preview only. No gameplay will start here.",
+          "action": {
+            "label": "Back to Play",
+            "opens": "play"
+          }
+        }
       },
-      {
-        "iteration": "Initial modal screenshot review",
-        "score": null,
-        "findings": "Home/Browse screenshots exposed an unsupported decorative diagonal-arrow glyph. Root replaced it with a supported aria-hidden ASCII chevron. Landscape modal content supports vertical scrolling without horizontal overflow."
-      },
-      {
-        "iteration": "Final copy and typography reference review",
-        "screenshot": "artifacts/final-1280x720.png",
-        "additionalScreenshots": [
-          "artifacts/final-1920x1080.png",
-          "artifacts/final-landscape-844x390.png"
-        ],
-        "score": 9.3,
-        "findings": "Selected amber and inactive gray bold compact headings match the new reference style. All Gambit titles fit the unchanged four-card row at desktop and landscape sizes. Source copy remains truthful, concise and rooted in existing Crownfall identity. No blocking issue."
-      },
-      {
-        "iteration": "Final narrow card-wording polish",
-        "screenshot": "artifacts/final-1280x720.png",
-        "additionalScreenshots": [
-          "artifacts/final-1920x1080.png",
-          "artifacts/final-landscape-844x390.png"
-        ],
-        "score": 9.3,
-        "findings": "Independently inspected all three refreshed screenshots and exact source/inventory wording. Short approved card text and empty Browse body fit cleanly. Explicit New/Resume/Load activation disclosures remain, including the new Load inability-to-restore sentence. No styling or layout change; prior 9.3 assessment retained."
-      },
-      {
-        "iteration": "Final narrow 5% creature-size adjustment",
-        "beforeScreenshots": [
-          "artifacts/creature-size/before-1280x720.png",
-          "artifacts/creature-size/before-844x390.png"
-        ],
-        "afterScreenshots": [
-          "artifacts/final-1280x720.png",
-          "artifacts/final-1920x1080.png",
-          "artifacts/final-landscape-844x390.png"
-        ],
-        "score": 9.3,
-        "findings": "Final -.96 anchor reviewed after rejecting an initially top-clipped placement. Exact 5% uniform enlargement reads as a modest presence increase. Crown and eye remain safe, approved pose is preserved, and cards/copy/typography/art are unchanged. Existing 9.3 assessment retained."
-      },
-      {
-        "iteration": "Final narrow upward creature-anchor adjustment",
-        "beforeScreenshots": [
-          "artifacts/creature-height/before-1280x720.png",
-          "artifacts/creature-height/before-844x390.png"
-        ],
-        "afterScreenshots": [
-          "artifacts/final-1280x720.png",
-          "artifacts/final-1920x1080.png",
-          "artifacts/final-landscape-844x390.png"
-        ],
-        "score": 9.3,
-        "findings": "Raising parent world Y by 0.055 improves face/lower-ring exposure without changing size or pose. Critic withheld final approval until dense Idle/ambient-extrema sampling completed; all sampled crown/face-proxy/eye-proxy clearances are positive. Calibration and sampled-worst screenshots independently inspected. No further adjustment needed; score retained."
-      }
-    ],
+      "functionalBoundary": "All four activations are honest mode previews. No gameplay launch, local-duel engine hookup, campaign integration, matchmaking service or backend is offered.",
+      "obsoleteFlowRemoved": "Old New/Resume/Load save-preview actions and save metadata UI are removed; only menu preferences persist.",
+      "settings": "Particle quality and motion describe actual effects. Audio is explicitly a saved preference with no connected audio.",
+      "sourceEvidence": "artifacts/menu-copy.json",
+      "modalFitEvidence": "artifacts/copy-fit-verification.json"
+    },
+    "suppliedArtwork": {
+      "evidence": "artifacts/card-artwork.json",
+      "mapping": [
+        {
+          "mode": "CLASSIC",
+          "assetKey": "new",
+          "sourceFile": "288933.jpg",
+          "sourceSha256": "716d44458e280d8f7922214f7d60494ce7d3822818af944ae40f7d727ef0d159",
+          "deliveryFile": "public/assets/environments/card-new.webp",
+          "backgroundPosition": "15% 50%"
+        },
+        {
+          "mode": "LOCAL DUEL",
+          "assetKey": "resume",
+          "sourceFile": "288939.jpg",
+          "sourceSha256": "6c1b25c4691fbd62d82334de018190d7507fdd155773ee1b4a8d876f4dcae423",
+          "deliveryFile": "public/assets/environments/card-resume.webp",
+          "backgroundPosition": "82% 50%"
+        },
+        {
+          "mode": "CHAPTERS",
+          "assetKey": "load",
+          "sourceFile": "288943.jpg",
+          "sourceSha256": "40c2c0b0c52b1749ba6ecc45c455e2b250aba321b3232a9623b91976783cc040",
+          "deliveryFile": "public/assets/environments/card-load.webp",
+          "backgroundPosition": "58% 50%"
+        },
+        {
+          "mode": "ONLINE DUEL",
+          "assetKey": "browse",
+          "sourceFile": "289365.jpg",
+          "sourceSha256": "404ff647175ba14d094a7d27dbb8857d9733d39e1778553633cc5d07153b48ba",
+          "deliveryFile": "public/assets/environments/card-browse.webp",
+          "backgroundPosition": "64% 50%"
+        }
+      ]
+    },
     "model": {
       "status": "Actual user-supplied GLB integrated",
       "sourceFile": "Crownfall_Sorcerer_Digits_v3_1(1).glb",
@@ -319,99 +446,6 @@
       "geometryCompression": "Draco with self-hosted decoder",
       "fallback": "Illustration retained for unavailable or unsupported model rendering"
     },
-    "authorizedDifferences": [
-      "Cards use the latest approved Gambit destination-intention subtitles and short bodies, including an empty Browse body; prototype limitations remain explicit in activation dialogs.",
-      "Home / Play / Settings replace placeholder example tabs; Back replaces the misleading Quit label.",
-      "Card-heading typography changes only to compact bold size/weight and amber/gray availability states based on the new private reference.",
-      "Exactly four 197x298 cards, actual supplied images, focal crops, creature transform and atmosphere remain unchanged.",
-      "Modal descriptions honestly state that the menu stores demo setup metadata, gameplay and online play are not connected, and the saved audio preference has no connected audio.",
-      "Desktop and phone landscape composition only; no portrait redesign.",
-      "Latest narrow adjustment uniformly enlarges only the creature by exactly 5% from normalized height 5.408 to 5.6784, with vertical anchor -.82 to -.96 for crown clearance; no yaw, lean, rig, copy, layout, style or artwork change.",
-      "Latest narrow adjustment adds +0.055 world units to the parent vertical anchor so the face and lower orbit ring show more clearly, preserving the approved 5.6784 height, -.96 model center, yaw/lean, arms, cards, text and artwork."
-    ],
-    "remainingLimits": [
-      "Supporting copy remains very small on phone landscape; long modal content uses vertical scrolling in short viewports.",
-      "Card wording describes the intended full-game destinations. Current preview actions only create/view demo setup metadata or navigate; they do not start or restore chess gameplay. Online play and audio remain unconnected and are disclosed in activation/settings dialogs.",
-      "Portrait crops and actual creature materials differ from the original illustration; exact screenshot reproduction is not claimed.",
-      "The private typography reference is retained locally and is not included as an image in the repository.",
-      "The 9.3 score is subjective visual judgment for the current copy/typography revision; prior designs are historical.",
-      "Idle framing clearances are supported by dense authored-key/midpoint and ambient-extrema samples of geometric proxy regions, not a continuous or semantic-detection guarantee."
-    ],
-    "historicalReviews": [
-      "artifacts/visual-review-four-card.json",
-      "artifacts/visual-review-five-card-artwork.json",
-      "artifacts/visual-review-five-card-glb.json",
-      "artifacts/visual-review-four-card-generated-artwork.json",
-      "artifacts/visual-review-four-visible-supplied-artwork.json",
-      "artifacts/visual-review-three-visible-carousel.json",
-      "artifacts/visual-review-fixed-row-before-copy-type.json"
-    ],
-    "verdict": "Retains the subjective 9.3/10 assessment after the slight upward creature shift. Face and lower orbit ring are clearer above the cards; crown remains visible in screenshots and all dense sampled Idle bounds. Approved scale/pose and menu remain unchanged; no blocking framing issue identified.",
-    "cardCount": 4,
-    "cards": [
-      "New Gambit",
-      "Resume Gambit",
-      "Load Gambit",
-      "Browse Gambits"
-    ],
-    "cardGeometry": {
-      "viewportWidth": 1280,
-      "viewportHeight": 720,
-      "leftEdges": [
-        139,
-        340,
-        541,
-        742
-      ],
-      "top": 211,
-      "width": 197,
-      "height": 298,
-      "gap": 4,
-      "rowWidth": 800,
-      "rightEdge": 939,
-      "bottomEdge": 509,
-      "allCardsVisible": true,
-      "carousel": false,
-      "scrollControls": false
-    },
-    "suppliedArtwork": {
-      "sourceInspection": "Four original JPEG files visually inspected at /workspace/crownfall-card-originals before reviewing browser crops. Delivery image dimensions and provenance hashes documented separately.",
-      "evidence": "artifacts/card-artwork.json",
-      "cards": [
-        {
-          "card": "new",
-          "sourceFile": "288933.jpg",
-          "sourceSha256": "716d44458e280d8f7922214f7d60494ce7d3822818af944ae40f7d727ef0d159",
-          "deliveryFile": "public/assets/environments/card-new.webp",
-          "backgroundPosition": "15% 50%"
-        },
-        {
-          "card": "resume",
-          "sourceFile": "288939.jpg",
-          "sourceSha256": "6c1b25c4691fbd62d82334de018190d7507fdd155773ee1b4a8d876f4dcae423",
-          "deliveryFile": "public/assets/environments/card-resume.webp",
-          "backgroundPosition": "82% 50%"
-        },
-        {
-          "card": "load",
-          "sourceFile": "288943.jpg",
-          "sourceSha256": "40c2c0b0c52b1749ba6ecc45c455e2b250aba321b3232a9623b91976783cc040",
-          "deliveryFile": "public/assets/environments/card-load.webp",
-          "backgroundPosition": "58% 50%"
-        },
-        {
-          "card": "browse",
-          "sourceFile": "289365.jpg",
-          "sourceSha256": "404ff647175ba14d094a7d27dbb8857d9733d39e1778553633cc5d07153b48ba",
-          "deliveryFile": "public/assets/environments/card-browse.webp",
-          "backgroundPosition": "64% 50%"
-        }
-      ]
-    },
-    "visibleCardCount": 4,
-    "additionalReviewedViews": [
-      "artifacts/final-landscape-844x390.png"
-    ],
     "creatureTransform": {
       "baselineCommit": "3b3f594",
       "normalizedHeightBefore": 5.6784,
@@ -434,123 +468,6 @@
       "parentVerticalAnchorDelta": 0.055,
       "ambientSwayYAmplitude": 0.012,
       "method": "Only an additive parent world-Y anchor is raised; existing ambient Y sway remains additive. Scale, model center, approved yaw/lean, rig, all four arm poses, Idle clip, materials, cards and artwork are unchanged."
-    },
-    "creatureComparison": {
-      "purpose": "Narrow matched-pose face/ring visibility and crown-clearance comparison after raising the parent anchor by 0.055 world units.",
-      "beforeDesktop": "artifacts/creature-height/before-1280x720.png",
-      "afterDesktop": "artifacts/final-1280x720.png",
-      "beforeLandscape": "artifacts/creature-height/before-844x390.png",
-      "afterLandscape": "artifacts/final-landscape-844x390.png",
-      "additionalAfter": "artifacts/final-1920x1080.png",
-      "matchedPose": "Idle at time 0 with OS reduced motion",
-      "findings": "Eye/face sits farther above the card tops and the lower orbital-ring edge is more exposed. Static crown margin remains visible at desktop and phone-landscape sizes. Approved size, leftward yaw/lean and coordinated arms are preserved."
-    },
-    "currentEvidence": {
-      "menuVerification": "artifacts/verification.json",
-      "layoutAndLandscapeVerification": "artifacts/landscape-verification.json",
-      "modelVerification": "artifacts/model-verification.json",
-      "artworkProvenance": "artifacts/card-artwork.json",
-      "scope": "Visual critic independently inspected screenshots and matched before/after creature captures. Functional assertions are supported by the separate verification artifacts.",
-      "copyInventory": "artifacts/menu-copy.json",
-      "modalCopyFit": "artifacts/copy-fit-verification.json",
-      "copyScreenshots": [
-        "artifacts/copy/home-1280.png",
-        "artifacts/copy/browse-1280.png",
-        "artifacts/copy/settings-844.png"
-      ],
-      "idleFraming": "artifacts/creature-height/idle-framing.json",
-      "homeAdditionPixelRegression": "artifacts/home/play-regression.json",
-      "homeTransitionModelRetention": "artifacts/home/model-retention.json"
-    },
-    "navigation": [
-      "Home",
-      "Play",
-      "Settings"
-    ],
-    "typographyReference": {
-      "fileName": "card-typography-reference.jpg",
-      "sourceWidth": 960,
-      "sourceHeight": 540,
-      "sourceBytes": 79084,
-      "sourceSha256": "a5c9948c26b68679c4c689d2a58de8d62b9617bd210bac22291577279459b519",
-      "privateLocalReferenceOnly": true,
-      "imageIncludedInRepository": false,
-      "observedStyle": "Compact approximately 14px bold uppercase heading at 960px; selected amber, inactive muted gray, availability-disabled Continue dimmer."
-    },
-    "headingTypography": {
-      "fontFamily": "Self-hosted Barlow",
-      "fontWeight": 600,
-      "fontSizeCSS": "max(1.458333cqw, 11px)",
-      "fontSizeAt1280": 18.67,
-      "fontSizeAt960": 14,
-      "selectedColor": "#bf791a shared with card accent border",
-      "inactiveColor": "#b5b2ac",
-      "disabledColor": "#817d73",
-      "currentDisabledCards": 0,
-      "notes": "All four cards open actual preview or informational dialogs, so no card was artificially disabled merely to mimic the unavailable Continue example."
-    },
-    "copyAudit": {
-      "result": "Pass",
-      "identity": "Crownfall \u2014 A King's Gambit Story; Every sacrifice has a name; cinematic chess. No new factions or characters invented.",
-      "navigation": "Home / Play / Settings only. Duplicate EXAMPLE tabs and fake notification removed. Footer Back accurately names the Home-return action.",
-      "cards": {
-        "New Gambit": "Approved destination-intention wording: Begin a new gambit. / Choose your opening. Every move has a cost. Activation still explicitly creates demo setup metadata rather than starting chess gameplay.",
-        "Resume Gambit": "Approved destination-intention wording: Return to your gambit. / Continue where you left the board. Activation still explicitly cannot restore a chess position or launch gameplay.",
-        "Load Gambit": "Approved destination-intention wording: Choose a saved gambit. / Return to a saved position. Load dialog explicitly says: One local demo save slot. Chess positions cannot be restored in this preview.",
-        "Browse Gambits": "Approved subtitle: Unavailable in this build. Body is empty. Activation retains the online-unavailable informational state."
-      },
-      "settings": "Particle quality and motion describe actual menu effects. Volume is explicitly a saved preference with audio not connected.",
-      "copyPolish": "Latest user-approved destination-intention card text applied exactly, with empty Browse body. Prototype limitations remain in activation dialogs and actual CTA labels. Supported aria-hidden ASCII chevrons remain in use. No CSS, typography, geometry, model or artwork changes.",
-      "sourceEvidence": "artifacts/menu-copy.json",
-      "modalFitEvidence": "artifacts/copy-fit-verification.json",
-      "latestApprovedCardCopy": [
-        {
-          "id": "new",
-          "title": "NEW GAMBIT",
-          "label": "New Gambit",
-          "subtitle": "Begin a new gambit.",
-          "description": "Choose your opening. Every move has a cost."
-        },
-        {
-          "id": "resume",
-          "title": "RESUME GAMBIT",
-          "label": "Resume Gambit",
-          "subtitle": "Return to your gambit.",
-          "description": "Continue where you left the board."
-        },
-        {
-          "id": "load",
-          "title": "LOAD GAMBIT",
-          "label": "Load Gambit",
-          "subtitle": "Choose a saved gambit.",
-          "description": "Return to a saved position."
-        },
-        {
-          "id": "browse",
-          "title": "BROWSE GAMBITS",
-          "label": "Browse Gambits",
-          "subtitle": "Unavailable in this build.",
-          "description": ""
-        }
-      ]
-    },
-    "previousCreatureDirectionComparison": {
-      "before": "artifacts/creature-direction/before-first.png",
-      "after": "artifacts/creature-direction/after-first.png",
-      "matchedPose": "Idle at time 0 with OS reduced motion",
-      "interpretation": "The held-constant carousel layout in this matched pair predates the latest restored small-card row. Use the pair only to isolate creature scale, turn, lean and arm tilt. Current UI is represented by the final screenshots above.",
-      "findings": "Eye and orbital rings turn toward the cards; subtle top-left lean and matching arm tilt read naturally. Final lower placement restores crown clearance; no additional transform change needed."
-    },
-    "previousCreatureSizeComparison": {
-      "purpose": "Narrow matched-pose size and framing comparison against the immediately approved baseline, not a new pose or broad design review.",
-      "beforeDesktop": "artifacts/creature-size/before-1280x720.png",
-      "afterDesktop": "artifacts/final-1280x720.png",
-      "beforeLandscape": "artifacts/creature-size/before-844x390.png",
-      "afterLandscape": "artifacts/final-landscape-844x390.png",
-      "additionalAfter": "artifacts/final-1920x1080.png",
-      "matchedPose": "Idle at time 0 with OS reduced motion",
-      "exactRelativeScale": "5.6784 / 5.408 = 1.05, exactly 5% above baseline",
-      "findings": "Modestly larger head, torso and arms; clear crown top margin and fully visible eye above the card row at all three reviewed viewports. Approved leftward yaw and world-space lean remain unchanged. Extra outer-arm/robe cropping is consistent with the requested uniform enlargement. No further adjustment requested."
     },
     "creatureIdleFramingEvidence": {
       "report": "artifacts/creature-height/idle-framing.json",
@@ -595,7 +512,50 @@
       ],
       "interpretation": "All sampled crown, face-proxy and eye-proxy clearances are positive across the reviewed aspects. Sampled worst desktop images also visually retain the crown and visible eye above the cards.",
       "limits": "Dense sampled geometric evidence, not a continuous mathematical guarantee or semantic face/ring detector. Applies to the menu Idle clip and tested ambient extrema."
-    }
+    },
+    "preservationEvidence": {
+      "report": "artifacts/home-width/play-preservation.json",
+      "passed": true,
+      "baselineCommit": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
+      "scope": "Play text intentionally changed. Creature, navigation, card frames and image-center pixels match baseline outside excluded card text bands; full-frame pixel identity is not claimed.",
+      "excludedBands": "Top and bottom 30% of each card, including changed text and shadows.",
+      "verifiedViewports": [
+        "1280x720",
+        "1920x1080",
+        "844x390"
+      ],
+      "additionalChecks": "Actual image hashes, focal policies and card dimensions independently checked by layout/artwork verification."
+    },
+    "currentEvidence": {
+      "menu": "artifacts/verification.json",
+      "layout": "artifacts/layout-verification.json",
+      "landscape": "artifacts/landscape-verification.json",
+      "copy": "artifacts/copy-fit-verification.json",
+      "modeInventory": "artifacts/menu-copy.json",
+      "artwork": "artifacts/card-artwork.json",
+      "nonTextPixels": "artifacts/home-width/play-preservation.json",
+      "model": "artifacts/model-verification.json"
+    },
+    "iterationHistory": [
+      {
+        "iteration": "New mode labels and honest mode previews",
+        "screenshots": [
+          "artifacts/final-1280x720.png",
+          "artifacts/final-1920x1080.png",
+          "artifacts/final-landscape-844x390.png"
+        ],
+        "score": 9.3,
+        "findings": "All mode titles and concise descriptions fit at desktop and landscape sizes. Default Local Duel amber state is clear. Exact source wording and preview disclosures independently inspected. No further visual or wording adjustment requested."
+      }
+    ],
+    "remainingLimits": [
+      "Modes describe intended destinations; actual gameplay integration is absent and disclosed on activation.",
+      "Supporting text remains small on phone landscape.",
+      "Source image cover crops omit panoramic context.",
+      "Play copy deliberately differs from the baseline. Preservation evidence excludes top/bottom 30% text bands; full-frame identity is not claimed.",
+      "The 9.3 score is subjective visual judgment, not a performance benchmark."
+    ],
+    "verdict": "Retains the subjective 9.3/10 Play assessment for the new mode labels and honest preview flows. No blocking text-fit or visual issue identified."
   },
-  "verdict": "Home meets 9.2/10 after independent three-viewport review. The separate approved Play assessment remains 9.3/10. Scores are subjective; Home destination systems are explicitly unavailable."
+  "verdict": "Wider Home meets 9.2/10 and updated mode-preview Play meets 9.3/10. Both scores are subjective. Existing artwork/geometry/model are preserved; Play copy intentionally changes and all unavailable gameplay destinations are disclosed."
 }

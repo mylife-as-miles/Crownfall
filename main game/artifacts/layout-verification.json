@@ -1,6 +1,7 @@
 {
   "passed": true,
-  "mode": "Four cards visible together at original size",
+  "mode": "Four Play modes visible together at original size",
+  "domOnly": false,
   "results": [
     {
       "viewport": {
@@ -17,7 +18,7 @@
       "activeAnimation": "Idle",
       "cards": [
         {
-          "label": "New Gambit",
+          "label": "Classic",
           "x": 139,
           "y": 211.03125,
           "width": 196.984375,
@@ -25,13 +26,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "CLASSIC",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Resume Gambit",
+          "label": "Local Duel",
           "x": 339.984375,
           "y": 211.03125,
           "width": 196.984375,
@@ -39,13 +42,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "LOCAL DUEL",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Load Gambit",
+          "label": "Chapters",
           "x": 540.96875,
           "y": 211.03125,
           "width": 196.984375,
@@ -53,13 +58,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "CHAPTERS",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Browse Gambits",
+          "label": "Online Duel",
           "x": 741.953125,
           "y": 211.03125,
           "width": 196.984375,
@@ -67,6 +74,8 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "ONLINE DUEL",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
@@ -89,7 +98,7 @@
       "activeAnimation": "Idle",
       "cards": [
         {
-          "label": "New Gambit",
+          "label": "Classic",
           "x": 208.5,
           "y": 316.546875,
           "width": 295.484375,
@@ -97,13 +106,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "CLASSIC",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Resume Gambit",
+          "label": "Local Duel",
           "x": 509.984375,
           "y": 316.546875,
           "width": 295.484375,
@@ -111,13 +122,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "LOCAL DUEL",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Load Gambit",
+          "label": "Chapters",
           "x": 811.46875,
           "y": 316.546875,
           "width": 295.484375,
@@ -125,13 +138,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "CHAPTERS",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Browse Gambits",
+          "label": "Online Duel",
           "x": 1112.953125,
           "y": 316.546875,
           "width": 295.484375,
@@ -139,6 +154,8 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "ONLINE DUEL",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
@@ -161,7 +178,7 @@
       "activeAnimation": "Idle",
       "cards": [
         {
-          "label": "New Gambit",
+          "label": "Classic",
           "x": 148.34375,
           "y": 114.296875,
           "width": 107.59375,
@@ -169,13 +186,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "CLASSIC",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Resume Gambit",
+          "label": "Local Duel",
           "x": 258.109375,
           "y": 114.296875,
           "width": 107.59375,
@@ -183,13 +202,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "LOCAL DUEL",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Load Gambit",
+          "label": "Chapters",
           "x": 367.875,
           "y": 114.296875,
           "width": 107.59375,
@@ -197,13 +218,15 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "CHAPTERS",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
           }
         },
         {
-          "label": "Browse Gambits",
+          "label": "Online Duel",
           "x": 477.640625,
           "y": 114.296875,
           "width": 107.59375,
@@ -211,6 +234,8 @@
           "visible": true,
           "textFits": true,
           "headingFits": true,
+          "title": "ONLINE DUEL",
+          "fontWeight": "600",
           "image": {
             "width": 2048,
             "height": 1143
@@ -222,7 +247,7 @@
   "checks": [
     "All four supplied images and text fit together at desktop and landscape sizes; no scrolling, carousel controls or page overflow",
     "Keyboard wraps both ends, Home/End work, and selected card retains actual focus after resize",
-    "Simulated standard gamepad D-pad wraps and focuses cards; A/B open and close Browse with focus restored",
+    "Simulated standard gamepad D-pad wraps and focuses cards; A/B open and close Online Duel with focus restored",
     "No JavaScript or console errors"
   ],
   "errors": []

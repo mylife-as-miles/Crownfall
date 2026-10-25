@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "source": "Production build with actual supplied GLB, original approved pose and reduced-motion Idle0",
+  "source": "Production actual GLB and supplied artwork; wider right tiles with unchanged left and stack height",
   "results": [
     {
       "viewport": {
@@ -11,7 +11,7 @@
       "grid": {
         "x": 105.328125,
         "y": 159.984375,
-        "width": 600,
+        "width": 660,
         "height": 434
       },
       "tiles": [
@@ -22,25 +22,28 @@
           "width": 298,
           "height": 434,
           "imageLoaded": true,
-          "fit": "cover"
+          "fit": "cover",
+          "titleSize": "18.6666px"
         },
         {
           "label": "Chronicles",
           "x": 407.328125,
           "y": 159.984375,
-          "width": 298,
+          "width": 358,
           "height": 215,
           "imageLoaded": true,
-          "fit": "contain"
+          "fit": "contain",
+          "titleSize": "18.6666px"
         },
         {
           "label": "Herald Board",
           "x": 407.328125,
           "y": 378.984375,
-          "width": 298,
+          "width": 358,
           "height": 215,
           "imageLoaded": true,
-          "fit": "cover"
+          "fit": "cover",
+          "titleSize": "18.6666px"
         }
       ],
       "actualModelLoaded": true,
@@ -57,7 +60,7 @@
       "grid": {
         "x": 158,
         "y": 239.984375,
-        "width": 900,
+        "width": 990,
         "height": 651
       },
       "tiles": [
@@ -68,25 +71,28 @@
           "width": 447,
           "height": 651,
           "imageLoaded": true,
-          "fit": "cover"
+          "fit": "cover",
+          "titleSize": "27.9999px"
         },
         {
           "label": "Chronicles",
           "x": 611,
           "y": 239.984375,
-          "width": 447,
+          "width": 537,
           "height": 322.5,
           "imageLoaded": true,
-          "fit": "contain"
+          "fit": "contain",
+          "titleSize": "27.9999px"
         },
         {
           "label": "Herald Board",
           "x": 611,
           "y": 568.484375,
-          "width": 447,
+          "width": 537,
           "height": 322.5,
           "imageLoaded": true,
-          "fit": "cover"
+          "fit": "cover",
+          "titleSize": "27.9999px"
         }
       ],
       "actualModelLoaded": true,
@@ -103,7 +109,7 @@
       "grid": {
         "x": 129.953125,
         "y": 86.65625,
-        "width": 327.71875,
+        "width": 360.484375,
         "height": 235.078125
       },
       "tiles": [
@@ -114,25 +120,28 @@
           "width": 162.765625,
           "height": 235.078125,
           "imageLoaded": true,
-          "fit": "cover"
+          "fit": "cover",
+          "titleSize": "11px"
         },
         {
           "label": "Chronicles",
           "x": 294.890625,
           "y": 86.65625,
-          "width": 162.78125,
+          "width": 195.546875,
           "height": 116.453125,
           "imageLoaded": true,
-          "fit": "contain"
+          "fit": "contain",
+          "titleSize": "11px"
         },
         {
           "label": "Herald Board",
           "x": 294.890625,
           "y": 205.28125,
-          "width": 162.78125,
+          "width": 195.546875,
           "height": 116.453125,
           "imageLoaded": true,
-          "fit": "cover"
+          "fit": "cover",
+          "titleSize": "11px"
         }
       ],
       "actualModelLoaded": true,

@@ -30,5 +30,7 @@
       "baselineSha256": "e103c63711d5c62fd9985e596daa0fdd20a51030e250d61925684ab5f887b8ba",
       "currentSha256": "e103c63711d5c62fd9985e596daa0fdd20a51030e250d61925684ab5f887b8ba"
     }
-  ]
+  ],
+  "historical": true,
+  "scope": "Historical Home-addition evidence before mode labels changed. Current intentional Play copy changes and preserved artwork/layout/model are verified in artifacts/home-width/play-preservation.json."
 }

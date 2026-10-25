@@ -24,7 +24,7 @@
     "disabledRule": "#817d73",
     "disabledState": "All four current buttons open real preview/info dialogs and remain enabled. Disabled styling is available without making an unavailable gameplay claim.",
     "unchanged": [
-      "Four 197×298 cards at1280, 4px gaps, 800px row",
+      "Four 197\u00d7298 cards at1280, 4px gaps, 800px row",
       "Supplied images and crop positions",
       "Creature rig, pose, animation, camera, lights and particles"
     ]
@@ -37,7 +37,7 @@
       },
       "cards": [
         {
-          "label": "New Gambit",
+          "label": "Classic",
           "selected": false,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -49,7 +49,7 @@
           "textFits": true
         },
         {
-          "label": "Resume Gambit",
+          "label": "Local Duel",
           "selected": true,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -61,7 +61,7 @@
           "textFits": true
         },
         {
-          "label": "Load Gambit",
+          "label": "Chapters",
           "selected": false,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -73,7 +73,7 @@
           "textFits": true
         },
         {
-          "label": "Browse Gambits",
+          "label": "Online Duel",
           "selected": false,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -93,7 +93,7 @@
       },
       "cards": [
         {
-          "label": "New Gambit",
+          "label": "Classic",
           "selected": false,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -105,7 +105,7 @@
           "textFits": true
         },
         {
-          "label": "Resume Gambit",
+          "label": "Local Duel",
           "selected": true,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -117,7 +117,7 @@
           "textFits": true
         },
         {
-          "label": "Load Gambit",
+          "label": "Chapters",
           "selected": false,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -129,7 +129,7 @@
           "textFits": true
         },
         {
-          "label": "Browse Gambits",
+          "label": "Online Duel",
           "selected": false,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -149,7 +149,7 @@
       },
       "cards": [
         {
-          "label": "New Gambit",
+          "label": "Classic",
           "selected": false,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -161,7 +161,7 @@
           "textFits": true
         },
         {
-          "label": "Resume Gambit",
+          "label": "Local Duel",
           "selected": true,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -173,7 +173,7 @@
           "textFits": true
         },
         {
-          "label": "Load Gambit",
+          "label": "Chapters",
           "selected": false,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -185,7 +185,7 @@
           "textFits": true
         },
         {
-          "label": "Browse Gambits",
+          "label": "Online Duel",
           "selected": false,
           "disabled": false,
           "fontFamily": "Barlow, Arial, sans-serif",
@@ -204,5 +204,12 @@
     "Computed colors are CSS values before existing card brightness filters and atmospheric compositing.",
     "The reference uses different artwork and card count; only heading size, weight and colors are the requested styling target.",
     "DOM style probe uses model=none; actual-GLB final screenshots and layout checks are separate."
-  ]
+  ],
+  "currentModes": [
+    "Classic",
+    "Local Duel",
+    "Chapters",
+    "Online Duel"
+  ],
+  "currentVerification": "Current mode title fit, 600 weight and selected amber/inactive gray are asserted by scripts/verify.mjs and layout verification; CSS sizing/colors are unchanged."
 }

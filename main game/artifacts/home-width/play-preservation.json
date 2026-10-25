@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "baselineCommit": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
+  "scope": "Play labels intentionally changed. Creature, navigation, card frames and image center regions match baseline exactly; image hashes/focal policies and dimensions are verified separately.",
+  "results": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "unchangedPixelsOutsideCardTextBands": true,
+      "comparedPixelCount": 778429,
+      "excludedBands": "Top and bottom 30% of each card, encompassing changed heading/subtitle/description text and shadows."
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "unchangedPixelsOutsideCardTextBands": true,
+      "comparedPixelCount": 1753380,
+      "excludedBands": "Top and bottom 30% of each card, encompassing changed heading/subtitle/description text and shadows."
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "unchangedPixelsOutsideCardTextBands": true,
+      "comparedPixelCount": 286628,
+      "excludedBands": "Top and bottom 30% of each card, encompassing changed heading/subtitle/description text and shadows."
+    }
+  ]
+}

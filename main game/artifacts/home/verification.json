@@ -4,7 +4,7 @@
   "checks": [
     "Default Play retains its four original-size cards, current wording and no carousel",
     "All three final Home titles and exact supplied-image delivery hashes load; Chronicles preserves its map with contain",
-    "600×434 Home grid matches 298×434 + stacked 298×215 tiles with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports",
+    "660×434 Home grid keeps My Legacy at 298×434 and widens both right tiles to 358×215 with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports",
     "Keyboard spatial movement, remembered right row, clamped outer edges and Home/End retain one selected tab stop and actual focus",
     "Pointer hover→Enter and clicks open each truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news",
     "Home→Settings returns to Home selection; Home Back returns to preserved Play selection/geometry; Play confirmation returns to Home with focus",
@@ -68,14 +68,14 @@
       "grid": {
         "x": 105.328125,
         "y": 160,
-        "width": 600,
+        "width": 660,
         "height": 434,
-        "right": 705.328125,
+        "right": 765.328125,
         "bottom": 594
       },
       "gap": 4,
-      "scrollWidth": 600,
-      "clientWidth": 600,
+      "scrollWidth": 660,
+      "clientWidth": 660,
       "pageOverflow": false,
       "tiles": [
         {
@@ -93,9 +93,9 @@
           "label": "Chronicles",
           "x": 407.328125,
           "y": 160,
-          "width": 298,
+          "width": 358,
           "height": 215,
-          "right": 705.328125,
+          "right": 765.328125,
           "bottom": 375,
           "titleFits": true,
           "visible": true
@@ -104,9 +104,9 @@
           "label": "Herald Board",
           "x": 407.328125,
           "y": 379,
-          "width": 298,
+          "width": 358,
           "height": 215,
-          "right": 705.328125,
+          "right": 765.328125,
           "bottom": 594,
           "titleFits": true,
           "visible": true
@@ -168,14 +168,14 @@
       "grid": {
         "x": 158,
         "y": 240,
-        "width": 900,
+        "width": 990,
         "height": 651,
-        "right": 1058,
+        "right": 1148,
         "bottom": 891
       },
       "gap": 6,
-      "scrollWidth": 900,
-      "clientWidth": 900,
+      "scrollWidth": 990,
+      "clientWidth": 990,
       "pageOverflow": false,
       "tiles": [
         {
@@ -193,9 +193,9 @@
           "label": "Chronicles",
           "x": 611,
           "y": 240,
-          "width": 447,
+          "width": 537,
           "height": 322.5,
-          "right": 1058,
+          "right": 1148,
           "bottom": 562.5,
           "titleFits": true,
           "visible": true
@@ -204,9 +204,9 @@
           "label": "Herald Board",
           "x": 611,
           "y": 568.5,
-          "width": 447,
+          "width": 537,
           "height": 322.5,
-          "right": 1058,
+          "right": 1148,
           "bottom": 891,
           "titleFits": true,
           "visible": true
@@ -268,14 +268,14 @@
       "grid": {
         "x": 129.953125,
         "y": 86.65625,
-        "width": 327.71875,
+        "width": 360.484375,
         "height": 235.078125,
-        "right": 457.671875,
+        "right": 490.4375,
         "bottom": 321.734375
       },
       "gap": 2.18481,
-      "scrollWidth": 328,
-      "clientWidth": 328,
+      "scrollWidth": 360,
+      "clientWidth": 360,
       "pageOverflow": false,
       "tiles": [
         {
@@ -293,9 +293,9 @@
           "label": "Chronicles",
           "x": 294.890625,
           "y": 86.65625,
-          "width": 162.78125,
+          "width": 195.546875,
           "height": 116.453125,
-          "right": 457.671875,
+          "right": 490.4375,
           "bottom": 203.109375,
           "titleFits": true,
           "visible": true
@@ -304,9 +304,9 @@
           "label": "Herald Board",
           "x": 294.890625,
           "y": 205.28125,
-          "width": 162.78125,
+          "width": 195.546875,
           "height": 116.453125,
-          "right": 457.671875,
+          "right": 490.4375,
           "bottom": 321.734375,
           "titleFits": true,
           "visible": true

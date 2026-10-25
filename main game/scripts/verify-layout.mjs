@@ -3,6 +3,9 @@ import { writeFile } from "node:fs/promises";
 import { chromium } from "playwright";
 
 const origin = process.env.CROWNFALL_TEST_URL || "http://localhost:5173";
+const domOnly = process.env.CROWNFALL_DOM_ONLY === "1";
+const target = new URL(origin);
+if (domOnly) target.searchParams.set("model", "none");
 const browser = await chromium.launch({
   executablePath: process.env.CHROMIUM_PATH || "/usr/bin/chromium",
   args: ["--no-sandbox", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"],
@@ -32,12 +35,12 @@ try {
   page.on("console", (message) => {
     if (message.type() === "error") errors.push(message.text());
   });
-  await page.goto(origin);
+  await page.goto(target.href);
   await page.evaluate(() => document.fonts.ready);
-  await page.locator(".creature-model--loaded").waitFor({ timeout: 60000 });
-  await page.waitForFunction(() =>
-    getComputedStyle(document.querySelector(".creature-model")).opacity === "1",
-  );
+  if (!domOnly) {
+    await page.locator(".creature-model--loaded").waitFor({ timeout: 60000 });
+    await page.waitForFunction(() => getComputedStyle(document.querySelector(".creature-model")).opacity === "1");
+  }
 
   for (const viewport of [
     { width: 1280, height: 720 },
@@ -60,13 +63,15 @@ try {
         const title = card.querySelector(".card-title");
         const subtitle = card.querySelector(".card-subtitle");
         const headingBox = heading.getBoundingClientRect();
-        const textBox = text.getBoundingClientRect();
+        const textBox = text?.getBoundingClientRect();
         return {
           label: card.getAttribute("aria-label"),
           x: box.x, y: box.y, width: box.width, height: box.height,
           visible: box.left >= rect.left - 1 && box.right <= rect.right + 1 && box.top >= 0 && box.bottom <= innerHeight,
-          textFits: text.scrollHeight <= text.clientHeight + 1 && text.scrollWidth <= text.clientWidth + 1,
-          headingFits: [title, subtitle].every((element) => element.scrollWidth <= element.clientWidth + 1) && headingBox.bottom < textBox.top && headingBox.left >= box.left && headingBox.right <= box.right,
+          textFits: !text || (text.scrollHeight <= text.clientHeight + 1 && text.scrollWidth <= text.clientWidth + 1),
+          headingFits: [title, subtitle].filter(Boolean).every((element) => element.scrollWidth <= element.clientWidth + 1) && headingBox.bottom < (textBox?.top ?? box.bottom) && headingBox.left >= box.left && headingBox.right <= box.right,
+          title: title.innerText,
+          fontWeight: getComputedStyle(title).fontWeight,
           image: { width: art.naturalWidth, height: art.naturalHeight },
         };
       }));
@@ -88,11 +93,16 @@ try {
     assert.equal(state.scrollSnapType, "none");
     assert.equal(state.pageOverflow, false);
     assert.equal(state.carouselControls, 0);
-    assert.equal(state.actualModelLoaded, true);
-    assert.equal(state.activeAnimation, "Idle");
+    assert.deepEqual(state.cards.map((card) => card.label), ["Classic", "Local Duel", "Chapters", "Online Duel"]);
+    assert.deepEqual(state.cards.map((card) => card.title), ["CLASSIC", "LOCAL DUEL", "CHAPTERS", "ONLINE DUEL"]);
+    assert.ok(state.cards.every((card) => card.fontWeight === "600"));
+    if (!domOnly) {
+      assert.equal(state.actualModelLoaded, true);
+      assert.equal(state.activeAnimation, "Idle");
+    }
     const screenshot = `artifacts/final-${viewport.width === 844 ? "landscape-" : ""}${viewport.width}x${viewport.height}.png`;
-    await page.screenshot({ path: screenshot });
-    results.push({ viewport, screenshot, ...state });
+    if (!domOnly) await page.screenshot({ path: screenshot });
+    results.push({ viewport, ...(domOnly ? {} : { screenshot }), ...state });
   }
   checks.push("All four supplied images and text fit together at desktop and landscape sizes; no scrolling, carousel controls or page overflow");
 
@@ -102,13 +112,13 @@ try {
     assert.equal(await card.getAttribute("aria-pressed"), "true");
   };
   await page.keyboard.press("Home");
-  await selected("New Gambit");
+  await selected("Classic");
   await page.keyboard.press("ArrowLeft");
-  await selected("Browse Gambits");
+  await selected("Online Duel");
   await page.keyboard.press("ArrowRight");
-  await selected("New Gambit");
+  await selected("Classic");
   await page.keyboard.press("End");
-  await selected("Browse Gambits");
+  await selected("Online Duel");
   checks.push("Keyboard wraps both ends, Home/End work, and selected card retains actual focus after resize");
 
   const pad = async (button, name) => {
@@ -116,24 +126,24 @@ try {
     await page.evaluate((index) => { window.__pressedButtons = [index]; }, button);
     try {
       if (name) await selected(name);
-      else if (button === 0) await page.getByRole("heading", { name: "Browse Gambits" }).waitFor();
+      else if (button === 0) await page.getByRole("heading", { name: "Online Duel" }).waitFor();
       else await page.waitForFunction(() => !document.querySelector("dialog").open);
     } finally {
       await page.evaluate(() => { window.__pressedButtons = []; });
     }
   };
-  await pad(15, "New Gambit");
-  await pad(14, "Browse Gambits");
-  await pad(14, "Load Gambit");
-  await pad(15, "Browse Gambits");
+  await pad(15, "Classic");
+  await pad(14, "Online Duel");
+  await pad(14, "Chapters");
+  await pad(15, "Online Duel");
   await pad(0);
   await pad(1);
-  await selected("Browse Gambits");
-  checks.push("Simulated standard gamepad D-pad wraps and focuses cards; A/B open and close Browse with focus restored");
+  await selected("Online Duel");
+  checks.push("Simulated standard gamepad D-pad wraps and focuses cards; A/B open and close Online Duel with focus restored");
   assert.deepEqual(errors, []);
   checks.push("No JavaScript or console errors");
-  await writeFile("artifacts/layout-verification.json", JSON.stringify({ passed: true, mode: "Four cards visible together at original size", results, checks, errors }, null, 2) + "\n");
-  await writeFile("artifacts/landscape-verification.json", JSON.stringify({ passed: true, mode: "Four cards visible together at original size", results: results.filter((result) => result.viewport.width === 844), errors }, null, 2) + "\n");
+  await writeFile("artifacts/layout-verification.json", JSON.stringify({ passed: true, mode: "Four Play modes visible together at original size", domOnly, results, checks, errors }, null, 2) + "\n");
+  await writeFile("artifacts/landscape-verification.json", JSON.stringify({ passed: true, mode: "Four Play modes visible together at original size", domOnly, results: results.filter((result) => result.viewport.width === 844), errors }, null, 2) + "\n");
   console.log(checks.map((check) => `PASS ${check}`).join("\n"));
 } finally {
   await browser.close();

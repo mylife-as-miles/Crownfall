@@ -14,7 +14,8 @@
       "deliveryWidth": 2048,
       "deliveryHeight": 1143,
       "backgroundPosition": "15% 50%",
-      "originalPreserved": true
+      "originalPreserved": true,
+      "modeLabel": "CLASSIC"
     },
     {
       "card": "resume",
@@ -29,7 +30,8 @@
       "deliveryWidth": 2048,
       "deliveryHeight": 1143,
       "backgroundPosition": "82% 50%",
-      "originalPreserved": true
+      "originalPreserved": true,
+      "modeLabel": "LOCAL DUEL"
     },
     {
       "card": "load",
@@ -44,7 +46,8 @@
       "deliveryWidth": 2048,
       "deliveryHeight": 1143,
       "backgroundPosition": "58% 50%",
-      "originalPreserved": true
+      "originalPreserved": true,
+      "modeLabel": "CHAPTERS"
     },
     {
       "card": "browse",
@@ -59,7 +62,14 @@
       "deliveryWidth": 2048,
       "deliveryHeight": 1143,
       "backgroundPosition": "64% 50%",
-      "originalPreserved": true
+      "originalPreserved": true,
+      "modeLabel": "ONLINE DUEL"
     }
+  ],
+  "currentModeOrder": [
+    "CLASSIC",
+    "LOCAL DUEL",
+    "CHAPTERS",
+    "ONLINE DUEL"
   ]
 }
