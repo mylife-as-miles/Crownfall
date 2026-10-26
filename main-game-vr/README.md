@@ -22,7 +22,7 @@ Open the page in a Quest browser, enable hand tracking and select Enter VR with 
 
 The first visit explains pointing and pinching, and direct fingertip presses on nearby controls. Start a short three-arena visit or skip to the menu. Next and Previous are hand buttons; Finish creates a visibly distinct completion state. Home also offers Short visit so the moment can be replayed. Back returns to the menu, and Exit VR returns to the browser. There are no timed gates or artificial waiting periods, and the visit can finish well within ten minutes. This is an artwork/menu experience: chess, campaign progression, online duels and replay playback are not connected.
 
-All Home, Play, Showcase, chapter, settings and modal controls are native spatial UIKitML buttons. Both `RayInteractable` and `PokeInteractable` are authored on the panel. Back, Pause, Recenter and Exit VR remain discoverable without a keyboard or controller. Covered menu views are removed from layout and hit-testing when a modal is open.
+All Home, Play, Showcase, chapter, settings and modal controls are native spatial UIKitML buttons. Their design follows the desktop1280×720 canvas: full artwork with the same focal crops, overlaid Barlow headings, original card/grid proportions, unboxed navigation, patterned settings tiles and borderless dialogs. The whole canvas scales uniformly in world space so compact35-unit rows remain hand-sized; controls do not become a different dashboard. Both `RayInteractable` and `PokeInteractable` are authored on the panel. Back, Pause, Recenter and Exit VR remain discoverable without a keyboard or controller. Covered actions are blocked while outgoing views briefly fade.
 
 The menu stays in world space, rather than following every head movement. Recenter places the room in front of the current view without moving or tilting the viewer. Either hand works; the other hand may remain out of view. Losing both tracked hands or backgrounding the immersive session pauses and retains the current menu, dialog and visit step. Bring a hand back and select Resume. Explicit Exit and re-entry retain the in-memory place; completed onboarding and comfort preferences persist on this browser.
 
@@ -30,7 +30,7 @@ The menu stays in world space, rather than following every head movement. Recent
 
 The six categories retain Crownfall's labels but use headset-appropriate controls. General contains ambient motion, hand hints and contrast. Controls explains pointing/pinching, touch, Back, Pause, Recenter and Exit; Input reports actual current wrist tracking. Video offers render quality, larger menu/text sizes, menu distance and seated/standing placement. Headset resolution and frame timing stay managed by the immersive session; desktop frame caps and fullscreen controls are not applied to VR. Render quality adjusts preview resolution and headset foveation where supported. Audio volume is a saved preference with its currently absent playback disclosed. Credits identifies the supplied assets and SDK.
 
-The real sorcerer loads lazily through IWSDK's `AssetManager`, after the menu is usable. Its named Idle loops at authored speed. Model failure leaves the menu operational and exposes Retry creature. The existing local Draco decoders are remapped through the public loading manager. Pausing and reduced motion stop animation without reloading the model.
+The real sorcerer loads lazily through IWSDK's `AssetManager`, after the menu is usable. Its named Idle loops at authored speed. The warm background wash, teal/gold shader motes, aura and light palette follow desktop. Quality changes particle density; pausing/reduced motion freeze their clock and the rig. Model failure leaves the menu operational and exposes Retry creature. The existing local Draco decoders are remapped through the public loading manager.
 
 ## Shared updates
 
@@ -46,8 +46,7 @@ npm run test
 npm run build
 npx @iwsdk/cli dev up --headless --timeout 45000
 npx @iwsdk/cli runtime wait --timeout 45000
-npx @iwsdk/cli xr enter --input-json '{}'
-npx @iwsdk/cli xr set-input-mode --input-json '{"mode":"hand"}'
+# Select the page's Enter VR control, then use native hand input.
 ```
 
 The pure state suite checks routes, unsupported/locked previews, modal isolation, comfort values, pause/resume context and guarded completion. Immersive behavior must additionally be exercised through actual emulated hand inputs and named application state; flat preview screenshots do not prove it. The runtime component `CrownfallQuestState` exposes the selected view, dialog, tracking, visit progress, comfort values and animation time for inspection.
@@ -62,7 +61,9 @@ For software-only headless emulation, an untracked `.env.local` may set `VITE_CR
 
 ## Screenshot gallery
 
-The complete menu/state gallery is in [artifacts/screens/README.md](artifacts/screens/README.md), with individual PNGs, a PDF and an offline HTML gallery in the ZIP. These are actual runtime captures with a closer 45-degree emulator field of view for reading, using mono software rendering. The product layout is unchanged.
+Current desktop-design verification and fresh renders are in `artifacts/parity/`, driven by `node scripts/verify-parity.mjs`. It starts through the explicit browser Enter VR button because automatic session offering is disabled, then uses actual hand inputs. Compact inspection sizes allow a .002-unit Float32 tolerance.
+
+The earlier complete33-screen menu/state gallery in [artifacts/screens/README.md](artifacts/screens/README.md) records the previous visual adaptation at9817e3f. Its PDF/PNGs remain available as historical evidence; they do not show the restored desktop design.
 
 To refresh it in the managed test browser, enable `--allow-browser-automation` when starting the headless runtime, run `npx @iwsdk/cli browser run scripts/prepare-gallery.mjs`, then `node scripts/capture-all-screens.mjs`. Preparation clears only the test browser's completed-onboarding flag; the real visit completes it again. Capture uses actual hand selections and named state assertions. `python scripts/build-screen-gallery.py` packages the files and requires Pillow. The gallery runner expects a fresh browser preview with no active immersive session.
 

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { enterQuestXR } from './enter-quest.mjs';
 const directory = 'artifacts/hands'; await mkdir(directory, { recursive: true });
 const evidence = { passed: false, profile: { sdk: '1.1.0-rc.2', runtime: 'IWER Meta Quest 3', inputs: 'hand ray + pinch only; no controller selection', developmentFramebufferScale: .25, pinchHoldSeconds: .01, physicalHeadset: false }, checks: [], interactions: [], limitations: ['Physical Quest tracking, comfort, cold start and GPU frame pacing are unmeasured.', 'Default direct-poke helper exceeded its 800ms contact window under software rendering; direct touch is not claimed as a passed runtime test.'] };
 function cli(domain, action, input, extra = []) {
@@ -30,7 +31,7 @@ function pinch(id, expected, device = 'hand-right') {
   throw Error(`Hand pinch did not produce the expected state for ${id}`);
 }
 try {
-  let status = cli('xr', 'status'); if (!status.sessionActive) cli('xr', 'enter', {});
+  let status = cli('xr', 'status'); if (!status.sessionActive) enterQuestXR(cli);
   cli('xr', 'set-input-mode', { mode: 'hand' });
   for (const device of ['controller-left', 'controller-right']) cli('xr', 'set-connected', { device, connected: false });
   cli('xr', 'set-transform', { device: 'headset', position: { x: 0, y: 1.6, z: 0 }, orientation: { x: 0, y: 0, z: 0, w: 1 } });

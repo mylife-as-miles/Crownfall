@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { enterQuestXR } from './enter-quest.mjs';
 
 const directory = 'artifacts/final';
 await mkdir(directory, { recursive: true });
@@ -10,7 +11,7 @@ function cli(domain, action, input, extra = []) {
   if (!response.ok) throw Error(JSON.stringify(response.error));
   return response.data.result ?? response.data;
 }
-if (!cli('xr', 'status').sessionActive) cli('xr', 'enter', {});
+enterQuestXR(cli);
 cli('xr', 'set-input-mode', { mode: 'hand' });
 for (const device of ['controller-left', 'controller-right']) cli('xr', 'set-connected', { device, connected: false });
 for (const device of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device, connected: true });

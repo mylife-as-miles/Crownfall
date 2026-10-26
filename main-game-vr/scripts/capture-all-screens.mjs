@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { enterQuestXR } from './enter-quest.mjs';
 
 const directory = 'artifacts/screens';
 await mkdir(directory, { recursive: true });
 const resume = process.argv.includes('--resume');
-const evidence = resume ? JSON.parse(await readFile(`${directory}/manifest.json`, 'utf8')) : { complete: false, sourceCommit: process.env.CROWNFALL_SOURCE_COMMIT || '9817e3faa4c882401288570cbad30c8e978f3032', profile: { runtime: 'IWSDK-managed IWER Meta Quest 3', physicalHeadset: false, rendering: 'mono software emulator', captureFov: 45, note: 'Closer emulator field of view for reading screenshots; this is not a physical Quest field-of-view or performance measurement. No product layout was changed.' }, captures: [], interactions: [] };
+const evidence = resume ? JSON.parse(await readFile(`${directory}/manifest.json`, 'utf8')) : { complete: false, sourceCommit: process.env.CROWNFALL_SOURCE_COMMIT || spawnSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).stdout.trim(), workingTreeDirty: Boolean(spawnSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).stdout.trim()), profile: { runtime: 'IWSDK-managed IWER Meta Quest 3', physicalHeadset: false, rendering: 'mono software emulator', captureFov: 60, note: 'Closer emulator field of view for reading screenshots; this is not a physical Quest field-of-view or performance measurement. No product layout was changed.' }, captures: [], interactions: [] };
 if (evidence.error) { (evidence.previousErrors ||= []).push(evidence.error); delete evidence.error; }
 const hasCapture = title => evidence.captures.some(item => item.title === title);
 const continueSettings = resume && hasCapture('Settings');
@@ -48,11 +49,11 @@ try {
   if (!resume) {
   assert.equal(cli('xr', 'status').sessionActive, false, 'Start this gallery from the browser preview');
   await capture('browser-entry', 'Browser entry', 'Entry & visit');
-  cli('xr', 'enter', {});
+  enterQuestXR(cli);
   cli('xr', 'set-input-mode', { mode: 'hand' });
   for (const device of ['controller-left', 'controller-right']) cli('xr', 'set-connected', { device, connected: false });
   for (const device of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device, connected: true });
-  cli('xr', 'set-device-state', { state: { stereoEnabled: false, fov: 45 } });
+  cli('xr', 'set-device-state', { state: { stereoEnabled: false, fov: 60 } });
   cli('xr', 'set-transform', { device: 'headset', position: { x: 0, y: 1.6, z: 0 }, orientation: { x: 0, y: 0, z: 0, w: 1 } });
   if (state().paused) pinch('Btn_Resume', s => !s.paused);
   assert.equal(state().screen, 'onboarding');

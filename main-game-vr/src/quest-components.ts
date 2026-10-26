@@ -1,5 +1,6 @@
 import { createComponent, Types } from '@iwsdk/core';
 export const CrownfallQuestState = createComponent('CrownfallQuestState', {
+  selectedControl: { type: Types.String, default: '' },
   screen: { type: Types.String, default: 'home' },
   modal: { type: Types.String, default: '' },
   category: { type: Types.String, default: '' },

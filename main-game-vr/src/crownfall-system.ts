@@ -11,7 +11,16 @@ import {
   QUEST_PREFERENCES_KEY, QUEST_VISIT_ARENAS, QUEST_VISIT_STEPS, reduceQuestState,
 } from './quest-state.js';
 import type { QuestEvent, QuestPreferences, QuestState } from './quest-state.js';
-import { QUEST_VIEW_IDS, QUEST_SETTING_ROWS } from './ui-contract.js';
+import { QUEST_UI_LAYOUT, QUEST_VIEW_IDS, QUEST_SETTING_ROWS } from './ui-contract.js';
+import { CrownfallAtmosphere } from './atmosphere.js';
+
+const SELECTION_GROUPS = {
+  home: HOME_CONTENT.map(item => `Home_${item.action}`),
+  play: PLAY_CARDS.map(item => `Play_${item.id}`),
+  showcase: SHOWCASE_CATEGORIES.map(item => `Showcase_${item.id}`),
+  chapters: CHAPTERS.map(item => `Chapter_${item.id}`),
+  settings: SETTINGS_CATEGORIES.map(category => `Settings_${category}`),
+} as const;
 
 const VISIT_KEY = 'crownfall.quest.visit-complete';
 const publicUrl = (path: string) => new URL(`${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`, document.baseURI).href;
@@ -28,6 +37,8 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   private anchor!: Object3D;
   private menuObject!: Object3D;
   private heroAnchor!: Object3D;
+  private atmosphere!: CrownfallAtmosphere;
+  private atmosphereObject!: Object3D;
   private elements = new Map<string, UIKit.Text>();
   private state: QuestState = createQuestState();
   private preferences = readPreferences();
@@ -41,7 +52,22 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   private lastHandTime = 0;
   private needRecenter = false;
   private settingsIndex = 0;
+  private selected = { home: 'Home_legacy', play: 'Play_local-duel', showcase: 'Showcase_battles', chapters: 'Chapter_chapter-01', settings: 'Settings_general' };
+  private sceneDim = 0;
+  private sceneTint = 0x0a0805;
+  private activeView: string | null = null;
+  private outgoingView: string | null = null;
+  private transitionTime = 0;
+  private fadeIn = Array.from({ length: 61 }, (_, index) => {
+    const progress = 1 - Math.pow(1 - index / 60, 3);
+    return { opacity: progress, positionLeft: 16 * (1 - progress), pointerEvents: 'auto' as const };
+  });
+  private fadeOut = Array.from({ length: 61 }, (_, index) => {
+    const progress = 1 - Math.pow(1 - index / 60, 3);
+    return { opacity: 1 - progress, positionLeft: -12 * progress, pointerEvents: 'none' as const };
+  });
   private activeTime = 0;
+  private atmosphereTime = 0;
   private observationTime = 0;
   private canEnter = false;
   private entering = false;
@@ -56,20 +82,25 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.anchor = this.world.requireSceneEntity('experience-anchor').object3D!;
     this.menuObject = this.stateEntity.object3D!;
     this.heroAnchor = this.world.requireSceneEntity('sorcerer-anchor').object3D!;
+    this.atmosphereObject = this.world.requireSceneObject<Object3D>('atmosphere-anchor');
+    this.atmosphere = new CrownfallAtmosphere(this.atmosphereObject);
     const bind = (id: string, callback: () => void) => {
       const element = this.element(id);
       element.name = id;
-      element.addEventListener('click', callback);
-      this.cleanupFuncs.push(() => element.removeEventListener('click', callback));
+      const activate = () => { this.selectControl(id); callback(); };
+      element.addEventListener('click', activate);
+      element.setProperties({ onHoverChange: (hover: boolean) => { if (hover) this.selectControl(id); } });
+      this.cleanupFuncs.push(() => { element.removeEventListener('click', activate); element.setProperties({ onHoverChange: undefined }); });
     };
     for (const tab of NAV_TABS) bind(`Nav_${tab.aria}`, () => this.dispatch({ type: 'nav', screen: tab.aria.toLowerCase() as 'home' | 'play' | 'showcase' | 'settings' }));
     for (const item of HOME_CONTENT) bind(`Home_${item.action}`, () => this.dispatch({ type: 'home', panel: item.action as HomeTileAction }));
     for (const item of PLAY_CARDS) bind(`Play_${item.id}`, () => this.dispatch({ type: 'play', id: item.id }));
     CHAPTERS.forEach((_, index) => bind(`Chapter_${CHAPTERS[index].id}`, () => {
       this.dispatch({ type: 'chapter', index });
-      if (CHAPTERS[index].locked) this.text('Status_Boot', `${CHAPTERS[index].title} is locked in this preview.`);
+      if (CHAPTERS[index].locked) { this.text('Status_Boot', `${CHAPTERS[index].title} is locked in this preview.`); this.display('Status_Boot', true); }
     }));
     for (const item of SHOWCASE_CATEGORIES) bind(`Showcase_${item.id}`, () => this.dispatch({ type: 'showcase', view: item.id }));
+    bind('Btn_ExploreArenas', () => this.dispatch({ type: 'showcase', view: 'arenas' }));
     ARENAS.forEach((_, index) => bind(`Arena_${index}`, () => this.dispatch({ type: 'arena', index })));
     for (const category of SETTINGS_CATEGORIES) bind(`Settings_${category}`, () => { this.settingsIndex = 0; this.dispatch({ type: 'category', category }); });
     for (let index = 0; index < QUEST_SETTING_ROWS; index++) bind(`Setting_${index}`, () => this.adjustSetting(index));
@@ -97,7 +128,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.cleanupFuncs.push(() => this.reducedMotion.removeEventListener('change', onMotion));
     this.cleanupFuncs.push(this.world.visibilityState.subscribe(visibility => this.onVisibility(visibility)));
     this.cleanupFuncs.push(this.world.onXRFrame(frame => this.onHandsFrame(frame)));
-    this.cleanupFuncs.push(() => { this.alive = false; this.mixer?.stopAllAction(); if (this.hero) this.hero.dispose(); });
+    this.cleanupFuncs.push(() => { this.alive = false; this.atmosphere.dispose(); this.mixer?.stopAllAction(); if (this.hero) this.hero.dispose(); });
     if (navigator.xr) void navigator.xr.isSessionSupported('immersive-vr').then(supported => { this.canEnter = supported; this.render(); }).catch(() => this.browserStatus('VR availability could not be checked. Try opening this page in your headset browser.'));
     // Explicit development-only accommodation for software headset emulation.
     // Production headset rendering keeps the native framebuffer scale.
@@ -117,6 +148,61 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   }
   private text(id: string, value: string): void { this.element(id).setProperties({ text: ascii(value) }); }
   private display(id: string, visible: boolean): void { this.element(id).setProperties({ display: visible ? 'flex' : 'none' }); }
+  private finishTransition(): void {
+    if (this.outgoingView) {
+      this.display(this.outgoingView, false);
+      this.element(this.outgoingView).setProperties({ opacity: 1, positionLeft: 0, pointerEvents: 'none' });
+    }
+    this.outgoingView = null;
+    if (this.activeView) this.element(this.activeView).setProperties({ opacity: 1, positionLeft: 0, pointerEvents: 'auto' });
+  }
+  private showView(view: string): void {
+    const motion = this.preferences.motion && !this.reducedMotion.matches;
+    if (this.activeView === view) { if (!motion) this.finishTransition(); return; }
+    this.finishTransition();
+    const previous = this.activeView;
+    this.activeView = view;
+    for (const id of QUEST_VIEW_IDS) this.display(id, id === view || motion && id === previous);
+    if (previous && motion) {
+      this.outgoingView = previous; this.transitionTime = 0;
+      this.element(view).setProperties(this.fadeIn[0]);
+      this.element(previous).setProperties(this.fadeOut[0]);
+    } else this.element(view).setProperties({ opacity: 1, positionLeft: 0, pointerEvents: 'auto' });
+  }
+  private selectControl(id: string): void {
+    if (this.state.modal || this.state.paused) return;
+    if (id.startsWith('Setting_') && this.state.settingsCategory) {
+      const index = Number(id.slice('Setting_'.length));
+      if (Number.isInteger(index) && this.settingsIndex !== index) {
+        this.settingsIndex = index; this.renderSettings(this.state.settingsCategory); this.writeState();
+      }
+      return;
+    }
+    for (const group of Object.keys(SELECTION_GROUPS) as (keyof typeof SELECTION_GROUPS)[]) {
+      if (SELECTION_GROUPS[group].includes(id) && this.selected[group] !== id) {
+        this.selected[group] = id; this.styleSelections(); this.writeState(); return;
+      }
+    }
+  }
+  private styleSelections(): void {
+    for (const group of Object.keys(SELECTION_GROUPS) as (keyof typeof SELECTION_GROUPS)[]) {
+      for (const id of SELECTION_GROUPS[group]) {
+        const selected = this.selected[group] === id;
+        const settings = group === 'settings';
+        const locked = group === 'chapters' && CHAPTERS.find(item => `Chapter_${item.id}` === id)?.locked;
+        this.element(id).setProperties({
+          borderWidth: selected ? 1.6 : .5,
+          borderColor: selected ? settings ? '#c88917' : MENU_THEME.colors.accent : '#39352a',
+        });
+        this.panel.getElementById<UIKit.Text>(`${id}_Title`)?.setProperties({ color: locked ? '#777268' : selected ? settings ? '#d99320' : MENU_THEME.colors.accent : settings ? '#a29c8e' : MENU_THEME.colors.inactiveHeading });
+        if (!settings) this.panel.getElementById<UIKit.Image>(`${id}_Art`)?.setProperties({ color: '#ffffff', opacity: group === 'chapters' ? locked ? .1166 : selected ? .7616 : .4896 : selected ? 1 : .82 });
+        if (settings) {
+          const category = id.slice('Settings_'.length);
+          this.panel.getElementById<UIKit.Image>(`${id}_Icon`)?.setProperties({ src: publicUrl(`assets/decorations/settings-${category}-${selected ? 'selected' : 'inactive'}.svg`) });
+        }
+      }
+    }
+  }
   private dispatch(event: QuestEvent): void {
     const next = reduceQuestState(this.state, event);
     if (next === this.state) return;
@@ -130,21 +216,26 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     const view = s.paused ? 'View_Pause' : s.modal ? 'View_Modal'
       : s.screen === 'settings' && s.settingsCategory ? 'View_SettingsDetail'
       : ({ home: 'View_Home', play: 'View_Play', showcase: 'View_Showcase', chapters: 'View_Chapters', settings: 'View_Settings', arenas: 'View_Arenas', library: 'View_Library', onboarding: 'View_Onboarding', visit: 'View_Visit', pause: 'View_Pause' } as const)[s.screen];
-    for (const id of QUEST_VIEW_IDS) this.display(id, id === view);
-    const navigationVisible = !s.modal && !s.paused && s.screen !== 'onboarding' && s.screen !== 'visit';
+    this.showView(view);
+    const detail = s.screen === 'chapters' || s.screen === 'settings' && !!s.settingsCategory;
+    const navigationVisible = !s.modal && !s.paused && !detail && s.screen !== 'onboarding' && s.screen !== 'visit';
     for (const tab of NAV_TABS) {
       const id = `Nav_${tab.aria}`;
       this.display(id, navigationVisible);
       const selected = s.screen === tab.aria.toLowerCase() || tab.aria === 'Play' && s.screen === 'chapters' || tab.aria === 'Showcase' && (s.screen === 'arenas' || s.screen === 'library');
-      this.element(id).setProperties({ backgroundColor: selected ? MENU_THEME.colors.activeTab : MENU_THEME.colors.surface, color: selected ? MENU_THEME.colors.background : MENU_THEME.colors.inactiveHeading });
+      this.element(id).setProperties({ borderWidth: 0 });
+      this.element(`${id}_Plate`).setProperties({ opacity: selected ? 1 : 0 });
+      this.element(`${id}_Title`).setProperties({ color: selected ? '#19120a' : '#c1bbac', opacity: selected ? 1 : .54 });
     }
     this.display('Btn_VisitReplay', s.screen === 'home' && !s.modal && !s.paused);
     this.display('Btn_Pause', s.entered && !s.paused);
     this.display('Btn_Recenter', s.entered);
     this.display('Btn_Exit', s.entered);
     this.display('Btn_EnterVR', !s.entered && this.canEnter);
-    this.display('Btn_Back', !s.paused);
-    this.display('Status_Hint', this.preferences.showHints);
+    this.display('Btn_Back', !s.paused && !s.modal);
+    this.display('Status_Hint', false);
+    this.display('Status_Tracking', false);
+    this.display('Status_Boot', this.modelFailed);
     this.display('Btn_RetryCreature', this.modelFailed);
     this.text('Status_Hint', 'Point and pinch, or touch a button.');
     this.text('Status_Tracking', s.entered ? this.trackingLabel() : 'Hands-first / no controller required');
@@ -155,9 +246,14 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     }
     if (s.screen === 'settings' && s.settingsCategory) this.renderSettings(s.settingsCategory);
     if (s.screen === 'library') {
+      this.display('Library_Art', s.library === 'battles');
+      this.display('Library_Archive', s.library === 'replays');
+      this.display('Library_Battles_Emblem', s.library === 'battles');
+      this.display('Library_Replays_Emblem', s.library === 'replays');
       this.text('Library_Title', s.library === 'battles' ? 'AI BATTLES' : 'MATCH REPLAYS');
       this.text('Library_Description', s.library === 'battles' ? 'Cinematic AI battle playback is not connected in this build.' : 'Match replays are planned for a future update.');
     }
+    this.display('Btn_ExploreArenas', s.screen === 'library' && !s.modal && !s.paused);
     if (s.screen === 'arenas') {
       this.panel.requireElementById<UIKit.Image>('Arena_Image').setProperties({ src: publicUrl(ARENAS[s.arenaIndex].source) });
       this.text('Arena_Title', ARENAS[s.arenaIndex].label);
@@ -173,13 +269,17 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
       this.display('Btn_VisitBack', s.visitStep > 0 && !s.visitComplete);
       this.display('Btn_VisitNext', s.visitStep < QUEST_VISIT_STEPS - 1 && !s.visitComplete);
       this.display('Btn_VisitFinish', s.visitStep === QUEST_VISIT_STEPS - 1 && !s.visitComplete);
-      this.element('View_Visit').setProperties({ backgroundColor: s.visitComplete ? '#173d2ce6' : '#100d0800' });
+      this.element('Visit_Scrim').setProperties({ opacity: 0 });
     }
     if (s.paused) {
       this.text('Pause_Title', 'PAUSED'); this.text('Pause_Body', s.pauseReason);
       this.display('Btn_Resume', !s.entered || this.leftTracked || this.rightTracked);
     }
-    this.element('Crownfall_UI').setProperties({ backgroundColor: s.modal || s.paused || this.preferences.contrast === 'high' ? '#100d08f0' : '#100d0833' });
+    this.element('Scene_Scrim').setProperties({ opacity: 0 });
+    const complete = s.screen === 'visit' && s.visitComplete;
+    this.sceneDim = s.modal || s.paused ? .8 : detail ? .58 : this.preferences.contrast === 'high' ? .65 : complete ? .3 : 0;
+    this.sceneTint = complete && !s.modal && !s.paused ? 0x39270c : 0x0a0805;
+    this.styleSelections();
     document.body.dataset.xr = s.entered ? 'presenting' : 'browser';
     const entry = document.getElementById('enter-vr') as HTMLButtonElement | null;
     if (entry) entry.disabled = !this.canEnter || this.entering;
@@ -192,13 +292,19 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   private renderSettings(category: SettingsCategory): void {
     const rows = getQuestSettingsRows(category, this.preferences, this.trackingLabel());
     this.settingsIndex = Math.min(this.settingsIndex, rows.length - 1);
-    this.text('Settings_Title', category.toUpperCase());
+    this.text('Settings_Title', rows[this.settingsIndex]?.label || category.toUpperCase());
+    this.text('Settings_Category', category.toUpperCase());
+    this.display('Settings_Category', category === 'video');
     this.text('Settings_Description', rows[this.settingsIndex]?.description || 'Select a setting.');
     for (let index = 0; index < QUEST_SETTING_ROWS; index++) {
       const row = rows[index]; this.display(`Setting_${index}`, !!row);
       if (!row) continue;
       this.text(`Setting_Label_${index}`, row.label); this.text(`Setting_Value_${index}`, row.value);
-      this.element(`Setting_${index}`).setProperties({ borderColor: index === this.settingsIndex ? MENU_THEME.colors.activeTab : MENU_THEME.colors.accent });
+      const selected = index === this.settingsIndex;
+      this.element(`Setting_${index}`).setProperties({ borderWidth: 0 });
+      this.element(`Setting_${index}_Surface`).setProperties({ backgroundColor: selected ? '#c5bca9' : index % 2 ? '#231f19' : '#1b1813', opacity: selected ? .1 : index % 2 ? .45 : .52 });
+      this.element(`Setting_Label_${index}`).setProperties({ color: selected ? MENU_THEME.colors.accent : '#aaa79d' });
+      this.element(`Setting_Value_${index}`).setProperties({ color: selected ? MENU_THEME.colors.accent : '#aaa79d' });
     }
   }
   private adjustSetting(index: number): void {
@@ -216,9 +322,13 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.render();
   }
   private applyComfort(): void {
-    this.menuObject.scale.setScalar(.1 * this.preferences.textScale / 100);
+    // Enlarge the entire desktop design uniformly. A35-unit detail row is
+    // physically hand-sized without altering the approved visual proportions.
+    this.menuObject.scale.setScalar(QUEST_UI_LAYOUT.authoredScale * this.preferences.textScale / 100);
     this.menuObject.position.set(0, this.preferences.posture === 'seated' ? -.12 : -.2, -this.preferences.panelDistance);
     this.heroAnchor.position.z = -this.preferences.panelDistance - .85;
+    this.atmosphereObject.position.set(0, this.preferences.posture === 'seated' ? -.12 : -.2, -this.preferences.panelDistance - .85);
+    this.atmosphereObject.scale.setScalar(.22 * this.preferences.textScale / 100);
     this.world.renderer.xr.setFoveation({ low: 1, medium: .5, high: 0 }[this.preferences.quality]);
     if (!this.world.renderer.xr.isPresenting) this.world.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5) * { low: .75, medium: 1, high: 1.15 }[this.preferences.quality]);
   }
@@ -245,6 +355,8 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     e.setValue(c, 'handsTracked', this.leftTracked || this.rightTracked);
     e.setValue(c, 'leftTracked', this.leftTracked); e.setValue(c, 'rightTracked', this.rightTracked);
     e.setValue(c, 'modelReady', !!this.hero);
+    const group = s.screen === 'settings' ? 'settings' : s.screen === 'chapters' ? 'chapters' : s.screen === 'showcase' || s.screen === 'arenas' || s.screen === 'library' ? 'showcase' : s.screen === 'play' ? 'play' : 'home';
+    e.setValue(c, 'selectedControl', s.screen === 'settings' && s.settingsCategory ? `Setting_${this.settingsIndex}` : this.selected[group]);
   }
 
   private onVisibility(visibility: VisibilityState): void {
@@ -329,11 +441,22 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     } finally { this.loadingHero = false; }
   }
   update(delta: number): void {
-    if (!this.mixer || this.state.paused || !this.preferences.motion || this.reducedMotion.matches || document.hidden) return;
+    if (this.outgoingView) {
+      this.transitionTime += delta;
+      const frame = Math.min(60, Math.round(this.transitionTime / .24 * 60));
+      this.element(this.activeView!).setProperties(this.fadeIn[frame]);
+      this.element(this.outgoingView).setProperties(this.fadeOut[frame]);
+      if (frame === 60 || !this.preferences.motion || this.reducedMotion.matches) this.finishTransition();
+    }
+    const motion = this.preferences.motion && !this.reducedMotion.matches;
+    const paused = this.state.paused || document.hidden;
+    if (motion && !paused) this.atmosphereTime += delta;
+    this.atmosphere.update(this.atmosphereTime, motion, paused, this.preferences.quality, this.sceneDim, this.sceneTint);
+    if (!this.mixer || paused || !motion) return;
     this.activeTime += delta;
     this.mixer.update(delta);
     this.heroAnchor.rotation.y = -.47 + Math.sin(this.activeTime * .22) * .018;
-    this.heroAnchor.position.y = -2.2 + Math.sin(this.activeTime * .6) * .012;
+    this.heroAnchor.position.y = -2.08 + Math.sin(this.activeTime * .6) * .012;
     this.observationTime += delta;
     if (this.observationTime >= .25) {
       this.observationTime = 0;

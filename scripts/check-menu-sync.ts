@@ -16,6 +16,11 @@ try {
   await generateQuestUI(output);
   const expected = await readFile(output, 'utf8');
   assert.equal(await readFile(join(root, 'main-game-vr/public/ui/menu.uikitml'), 'utf8'), expected, 'Quest UI is stale; rebuild both experiences');
+  const resourcePaths = new Set([
+    ...Array.from(expected.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/g), match => match[1]),
+    ...Array.from(expected.matchAll(/url\(['"]?([^'"\)]+)['"]?\)/g), match => match[1]),
+  ]);
+  for (const path of resourcePaths) await readFile(resolve(root, 'main-game-vr/public/ui', path));
   for (const item of NAV_TABS) assert.ok(expected.includes(`id="Nav_${item.aria}"`));
   for (const item of PLAY_CARDS) assert.ok(expected.includes(`id="Play_${item.id}"`));
   for (const item of HOME_CONTENT) assert.ok(expected.includes(`id="Home_${item.action}"`));
@@ -37,5 +42,5 @@ try {
     }
   };
   for (const path of sharedAssetPaths) await compare(path);
-  console.log(`PASS shared desktop/Quest content, design tokens and ${verifiedFiles} byte-identical assets`);
+  console.log(`PASS shared desktop/Quest content, design tokens, ${verifiedFiles} byte-identical assets and ${resourcePaths.size} resolvable UI resources`);
 } finally { await rm(scratch, { recursive: true, force: true }); }

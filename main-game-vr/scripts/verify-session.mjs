@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { enterQuestXR } from './enter-quest.mjs';
 
 const directory = 'artifacts/hands';
 await mkdir(directory, { recursive: true });
@@ -70,7 +71,7 @@ try {
   assert.equal(managed.browserCommandReady, true, 'Use the already-ready managed browser');
   evidence.observations.managedRuntime = { sessionId: managed.session.sessionId, browserEpoch: managed.session.browser.lifecycle.browserEpoch };
   const initialStatus = cli('xr', 'status');
-  if (!initialStatus.sessionActive) cli('xr', 'enter', {});
+  if (!initialStatus.sessionActive) enterQuestXR(cli);
   cli('xr', 'set-input-mode', { mode: 'hand' });
   for (const device of ['controller-left', 'controller-right']) cli('xr', 'set-connected', { device, connected: false });
   for (const device of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device, connected: true });
@@ -128,7 +129,7 @@ try {
   evidence.observations.exit = { selectionAttempts: 1, acknowledgement: acknowledgement || 'Command completed normally', sessionActive: exitedSession.sessionActive, state: exited, hero: beforeHero };
   record('One real hand Exit ends the immersive session; the expected SDK ended-session acknowledgement is accepted only after inactive-session and entered=false postconditions, without retrying Exit');
 
-  cli('xr', 'enter', {});
+  enterQuestXR(cli);
   cli('xr', 'set-input-mode', { mode: 'hand' });
   for (const device of ['controller-left', 'controller-right']) cli('xr', 'set-connected', { device, connected: false });
   for (const device of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device, connected: true });

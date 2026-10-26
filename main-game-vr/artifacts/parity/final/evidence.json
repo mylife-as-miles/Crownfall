@@ -1,0 +1,456 @@
+{
+  "profile": "Active mono IWER Quest3,60-degree close view; default head pose, one tracked hand lowered for unobstructed composition; both controllers disconnected",
+  "captures": [
+    {
+      "name": "home",
+      "metadata": {
+        "generation": 2,
+        "id": "tab-mvp4mhnc-e3supi",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      },
+      "state": {
+        "selectedControl": "Home_legacy",
+        "screen": "home",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 389.88140869140625
+      }
+    },
+    {
+      "name": "play",
+      "metadata": {
+        "generation": 2,
+        "id": "tab-mvp4mhnc-e3supi",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      },
+      "state": {
+        "selectedControl": "Play_local-duel",
+        "screen": "play",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 430.89459228515625
+      }
+    },
+    {
+      "name": "modal",
+      "metadata": {
+        "generation": 2,
+        "id": "tab-mvp4mhnc-e3supi",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      },
+      "state": {
+        "selectedControl": "Play_classic",
+        "screen": "play",
+        "modal": "classic",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 456.66729736328125
+      }
+    },
+    {
+      "name": "chapters",
+      "metadata": {
+        "generation": 2,
+        "id": "tab-mvp4mhnc-e3supi",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      },
+      "state": {
+        "selectedControl": "Chapter_chapter-01",
+        "screen": "chapters",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 506.8858947753906
+      }
+    },
+    {
+      "name": "showcase",
+      "metadata": {
+        "generation": 2,
+        "id": "tab-mvp4mhnc-e3supi",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      },
+      "state": {
+        "selectedControl": "Showcase_battles",
+        "screen": "showcase",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 561.78369140625
+      }
+    },
+    {
+      "name": "settings",
+      "metadata": {
+        "generation": 2,
+        "id": "tab-mvp4mhnc-e3supi",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      },
+      "state": {
+        "selectedControl": "Settings_general",
+        "screen": "settings",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 596.3167724609375
+      }
+    },
+    {
+      "name": "settings-detail",
+      "metadata": {
+        "generation": 2,
+        "id": "tab-mvp4mhnc-e3supi",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      },
+      "state": {
+        "selectedControl": "Setting_0",
+        "screen": "settings",
+        "modal": "",
+        "category": "video",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 628.4885864257812
+      }
+    }
+  ],
+  "final": {
+    "state": {
+      "selectedControl": "Home_legacy",
+      "screen": "home",
+      "modal": "",
+      "category": "",
+      "entered": true,
+      "paused": false,
+      "pauseReason": "",
+      "visitStep": 0,
+      "chapterIndex": 0,
+      "arenaIndex": 0,
+      "quality": "high",
+      "textScale": 125,
+      "panelDistance": 1.7999999523162842,
+      "posture": "standing",
+      "motion": true,
+      "visitComplete": false,
+      "handsTracked": true,
+      "leftTracked": true,
+      "rightTracked": false,
+      "modelReady": true,
+      "animationTime": 657.5111083984375
+    },
+    "session": {
+      "deviceName": "Meta Quest 3",
+      "isRuntimeInstalled": true,
+      "sessionActive": true,
+      "sessionOffered": false,
+      "sessionMode": "immersive-vr",
+      "enabledFeatures": [
+        "hand-tracking",
+        "local-floor",
+        "bounded-floor",
+        "viewer",
+        "local"
+      ],
+      "visibilityState": "visible",
+      "runtimeKind": "emulated",
+      "browser": {
+        "lifecycle": {
+          "state": "running",
+          "policy": "eager",
+          "sessionId": "f0bf4cf9-e08f-4d61-8579-a2e52c6cf284",
+          "browserEpoch": 1,
+          "revision": 11,
+          "stateEnteredAt": "2026-10-26T10:41:20.769Z",
+          "lastObservedAt": "2026-10-26T10:43:54.945Z",
+          "failures": 0,
+          "cleanupConfirmed": true,
+          "attemptLimit": 3,
+          "historyTruncated": false,
+          "retryEligible": false,
+          "nextAction": "Use runtime_list_targets to inspect endpoint readiness.",
+          "history": [
+            {
+              "revision": 1,
+              "state": "launching",
+              "at": "2026-10-26T10:41:20.460Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 2,
+              "state": "launching",
+              "at": "2026-10-26T10:41:20.460Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 3,
+              "state": "running",
+              "at": "2026-10-26T10:41:20.769Z",
+              "reason": "running"
+            }
+          ],
+          "attemptId": "df588d98-bc43-450d-95cb-832f44af74b7"
+        },
+        "status": "connected",
+        "clients": [
+          {
+            "commandReady": true,
+            "sessionId": "f0bf4cf9-e08f-4d61-8579-a2e52c6cf284",
+            "browserEpoch": 1,
+            "deviceClass": "managed",
+            "pageId": "tab-mvp4mhnc-e3supi",
+            "role": "app",
+            "tabGeneration": 2
+          },
+          {
+            "commandReady": true,
+            "sessionId": "f0bf4cf9-e08f-4d61-8579-a2e52c6cf284",
+            "browserEpoch": 1,
+            "deviceClass": "managed",
+            "pageId": "tab-mvp4mfif-da04gr",
+            "role": "editor",
+            "sceneSessionId": "scene-yqyhl1ervr",
+            "tabGeneration": 1
+          }
+        ],
+        "lastBridgeConnectedAt": "2026-10-26T10:43:54.456Z",
+        "lastCommandReadyAt": "2026-10-26T10:43:54.945Z",
+        "connected": true,
+        "commandReady": true,
+        "connectedClientCount": 2,
+        "lastTransitionAt": "2026-10-26T10:41:20.769Z",
+        "audioMuted": false
+      },
+      "browserConnected": true,
+      "browserCommandReady": true
+    },
+    "device": {
+      "headset": {
+        "position": {
+          "x": 0,
+          "y": 1.600000023841858,
+          "z": 0
+        },
+        "orientation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        }
+      },
+      "inputMode": "hand",
+      "controllers": {
+        "left": {
+          "connected": false,
+          "position": {
+            "x": -0.25,
+            "y": 1.5,
+            "z": -0.4000000059604645
+          },
+          "orientation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          }
+        },
+        "right": {
+          "connected": false,
+          "position": {
+            "x": 0.25,
+            "y": 1.5,
+            "z": -0.4000000059604645
+          },
+          "orientation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          }
+        }
+      },
+      "hands": {
+        "left": {
+          "connected": true,
+          "position": {
+            "x": -0.25,
+            "y": 1.5,
+            "z": -0.4000000059604645
+          },
+          "orientation": {
+            "x": 0.1245008334517479,
+            "y": 0.20526032149791718,
+            "z": -0.0263346116989851,
+            "w": 0.970399022102356
+          },
+          "poseId": "default",
+          "pinchValue": 0
+        },
+        "right": {
+          "connected": false,
+          "position": {
+            "x": 0.25,
+            "y": 1.5,
+            "z": -0.4000000059604645
+          },
+          "orientation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "poseId": "default",
+          "pinchValue": 0
+        }
+      },
+      "stereoEnabled": false,
+      "fov": 59.99999999999999
+    }
+  }
+}

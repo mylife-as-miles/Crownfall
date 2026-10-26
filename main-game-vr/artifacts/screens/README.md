@@ -1,5 +1,7 @@
 # Crownfall Quest — 33 screens
 
+Historical snapshot of the earlier adaptation at9817e3f. The current restored desktop design is shown in [the parity captures](../parity/).
+
 Actual browser-emulator screenshots, using mono rendering and a closer capture field of view for readability. These are not physical-headset photographs. No product layout was changed. Development controls and hand visualization remain visible. Browser entry is a flat preview; the other captures use an active emulated immersive session.
 
 [Complete PDF](Crownfall-Quest-All-Screens.pdf) · [Download gallery](Crownfall-Quest-Screens.zip) · [Capture details](manifest.json)
