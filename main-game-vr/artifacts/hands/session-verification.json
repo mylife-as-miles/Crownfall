@@ -1,0 +1,1198 @@
+{
+  "passed": true,
+  "profile": {
+    "sdk": "1.1.0-rc.2",
+    "runtime": "Existing IWER Meta Quest 3 managed window",
+    "input": "Real hand ray + .01-second pinch; both controllers disconnected",
+    "physicalHeadset": false
+  },
+  "checks": [
+    "The existing immersive runtime enters Home with hand tracking, both controllers disconnected, the real hero loaded and the known comfort preferences retained",
+    "Disconnecting both real emulated hands pauses and freezes Idle while preserving the Classic modal; reconnecting one hand requires an explicit hand Resume, then Cancel returns safely to Play/Home",
+    "The new Home Replay action restarts and completes all three arena steps through real Next/Finish/Back hand selections, without direct progress mutation",
+    "One real hand Exit ends the immersive session; the expected SDK ended-session acknowledgement is accepted only after inactive-session and entered=false postconditions, without retrying Exit",
+    "Exit/reentry preserves Home, exact comfort preferences and the same hero entity; final XR remains active with both controllers disconnected and both hand pinches explicitly released"
+  ],
+  "interactions": [
+    {
+      "id": "Btn_Resume",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "home",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 343.7643127441406
+      }
+    },
+    {
+      "id": "Nav_Play",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "play",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 356.4762878417969
+      }
+    },
+    {
+      "id": "Play_classic",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "play",
+        "modal": "classic",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 364.3804931640625
+      }
+    },
+    {
+      "id": "Btn_Resume",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "play",
+        "modal": "classic",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": false,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 370.0736083984375
+      }
+    },
+    {
+      "id": "Btn_Cancel",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "play",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": false,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 377.5495910644531
+      }
+    },
+    {
+      "id": "Nav_Home",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "home",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": false,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 384.072509765625
+      }
+    },
+    {
+      "id": "Btn_VisitReplay",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "visit",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 391.880615234375
+      }
+    },
+    {
+      "id": "Btn_VisitNext",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "visit",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 1,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 398.62921142578125
+      }
+    },
+    {
+      "id": "Btn_VisitNext",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "visit",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 2,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 405.0871887207031
+      }
+    },
+    {
+      "id": "Btn_VisitFinish",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "visit",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 2,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": true,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 412.87548828125
+      }
+    },
+    {
+      "id": "Btn_Back",
+      "device": "hand-right",
+      "attempt": 1,
+      "after": {
+        "screen": "home",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 2,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": true,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 422.427001953125
+      }
+    }
+  ],
+  "observations": {
+    "managedRuntime": {
+      "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+      "browserEpoch": 1
+    },
+    "initial": {
+      "state": {
+        "screen": "home",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 344.8109130859375
+      },
+      "hero": {
+        "entityIndex": 1,
+        "name": "Crownfall Sorcerer"
+      },
+      "session": {
+        "deviceName": "Meta Quest 3",
+        "isRuntimeInstalled": true,
+        "sessionActive": true,
+        "sessionOffered": false,
+        "sessionMode": "immersive-vr",
+        "enabledFeatures": [
+          "hand-tracking",
+          "local-floor",
+          "bounded-floor",
+          "viewer",
+          "local"
+        ],
+        "visibilityState": "visible",
+        "runtimeKind": "emulated",
+        "browser": {
+          "lifecycle": {
+            "state": "running",
+            "policy": "eager",
+            "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+            "browserEpoch": 1,
+            "revision": 8,
+            "stateEnteredAt": "2026-10-26T06:48:45.065Z",
+            "lastObservedAt": "2026-10-26T06:48:53.308Z",
+            "failures": 0,
+            "cleanupConfirmed": true,
+            "attemptLimit": 3,
+            "historyTruncated": false,
+            "retryEligible": false,
+            "nextAction": "Use runtime_list_targets to inspect endpoint readiness.",
+            "history": [
+              {
+                "revision": 1,
+                "state": "launching",
+                "at": "2026-10-26T06:48:44.670Z",
+                "reason": "launch"
+              },
+              {
+                "revision": 2,
+                "state": "launching",
+                "at": "2026-10-26T06:48:44.670Z",
+                "reason": "prepared"
+              },
+              {
+                "revision": 3,
+                "state": "running",
+                "at": "2026-10-26T06:48:45.065Z",
+                "reason": "running"
+              }
+            ],
+            "attemptId": "5f36a7ab-de6d-4628-9e25-a698ead68ef6"
+          },
+          "status": "connected",
+          "clients": [
+            {
+              "commandReady": true,
+              "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+              "browserEpoch": 1,
+              "deviceClass": "managed",
+              "pageId": "tab-mvowbdho-2rrkof",
+              "role": "app",
+              "tabGeneration": 1
+            },
+            {
+              "commandReady": true,
+              "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+              "browserEpoch": 1,
+              "deviceClass": "managed",
+              "pageId": "tab-mvowbbap-w73j5g",
+              "role": "editor",
+              "sceneSessionId": "scene-0kjop43y21q",
+              "tabGeneration": 1
+            }
+          ],
+          "lastBridgeConnectedAt": "2026-10-26T06:48:49.449Z",
+          "lastCommandReadyAt": "2026-10-26T06:48:53.308Z",
+          "connected": true,
+          "commandReady": true,
+          "connectedClientCount": 2,
+          "lastTransitionAt": "2026-10-26T06:48:45.065Z",
+          "audioMuted": false
+        },
+        "browserConnected": true,
+        "browserCommandReady": true
+      },
+      "device": {
+        "headset": {
+          "position": {
+            "x": 0,
+            "y": 1.600000023841858,
+            "z": 0
+          },
+          "orientation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          }
+        },
+        "inputMode": "hand",
+        "controllers": {
+          "left": {
+            "connected": false,
+            "position": {
+              "x": -0.25,
+              "y": 1.5,
+              "z": -0.4000000059604645
+            },
+            "orientation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            }
+          },
+          "right": {
+            "connected": false,
+            "position": {
+              "x": 0.25,
+              "y": 1.5,
+              "z": -0.4000000059604645
+            },
+            "orientation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            }
+          }
+        },
+        "hands": {
+          "left": {
+            "connected": true,
+            "position": {
+              "x": -0.25,
+              "y": 1.2999999523162842,
+              "z": -0.3499999940395355
+            },
+            "orientation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "poseId": "default",
+            "pinchValue": 0
+          },
+          "right": {
+            "connected": true,
+            "position": {
+              "x": 0.25,
+              "y": 1.2999999523162842,
+              "z": -0.3499999940395355
+            },
+            "orientation": {
+              "x": 0.014260426163673401,
+              "y": 0.1404886543750763,
+              "z": -0.002023710636422038,
+              "w": 0.9899775385856628
+            },
+            "poseId": "default",
+            "pinchValue": 0
+          }
+        },
+        "stereoEnabled": false,
+        "fov": 90
+      }
+    },
+    "trackingLoss": {
+      "lost": {
+        "screen": "pause",
+        "modal": "classic",
+        "category": "",
+        "entered": true,
+        "paused": true,
+        "pauseReason": "Bring a hand into view, then select Resume. Your place is kept.",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": false,
+        "leftTracked": false,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 367.9613037109375
+      },
+      "frozen": {
+        "screen": "pause",
+        "modal": "classic",
+        "category": "",
+        "entered": true,
+        "paused": true,
+        "pauseReason": "Bring a hand into view, then select Resume. Your place is kept.",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": false,
+        "leftTracked": false,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 367.9613037109375
+      },
+      "recovered": {
+        "screen": "pause",
+        "modal": "classic",
+        "category": "",
+        "entered": true,
+        "paused": true,
+        "pauseReason": "Bring a hand into view, then select Resume. Your place is kept.",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": false,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 367.9613037109375
+      },
+      "device": {
+        "headset": {
+          "position": {
+            "x": 0,
+            "y": 1.600000023841858,
+            "z": 0
+          },
+          "orientation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          }
+        },
+        "inputMode": "hand",
+        "controllers": {
+          "left": {
+            "connected": false,
+            "position": {
+              "x": -0.25,
+              "y": 1.5,
+              "z": -0.4000000059604645
+            },
+            "orientation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            }
+          },
+          "right": {
+            "connected": false,
+            "position": {
+              "x": 0.25,
+              "y": 1.5,
+              "z": -0.4000000059604645
+            },
+            "orientation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            }
+          }
+        },
+        "hands": {
+          "left": {
+            "connected": false,
+            "position": {
+              "x": -0.25,
+              "y": 1.2999999523162842,
+              "z": -0.3499999940395355
+            },
+            "orientation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "poseId": "default",
+            "pinchValue": 0
+          },
+          "right": {
+            "connected": false,
+            "position": {
+              "x": 0.25,
+              "y": 1.2999999523162842,
+              "z": -0.3499999940395355
+            },
+            "orientation": {
+              "x": 0.025613347068428993,
+              "y": 0.23715591430664062,
+              "z": -0.006255041342228651,
+              "w": 0.9711137413978577
+            },
+            "poseId": "default",
+            "pinchValue": 0
+          }
+        },
+        "stereoEnabled": false,
+        "fov": 90
+      }
+    },
+    "replayComplete": {
+      "screen": "visit",
+      "modal": "",
+      "category": "",
+      "entered": true,
+      "paused": false,
+      "pauseReason": "",
+      "visitStep": 2,
+      "chapterIndex": 0,
+      "arenaIndex": 0,
+      "quality": "high",
+      "textScale": 125,
+      "panelDistance": 1.7999999523162842,
+      "posture": "standing",
+      "motion": true,
+      "visitComplete": true,
+      "handsTracked": true,
+      "leftTracked": true,
+      "rightTracked": true,
+      "modelReady": true,
+      "animationTime": 412.87548828125
+    },
+    "exit": {
+      "selectionAttempts": 1,
+      "acknowledgement": {
+        "code": "runtime_command_failed",
+        "message": "The XR session ended.",
+        "details": {
+          "browser": {
+            "lifecycle": {
+              "state": "running",
+              "policy": "eager",
+              "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+              "browserEpoch": 1,
+              "revision": 8,
+              "stateEnteredAt": "2026-10-26T06:48:45.065Z",
+              "lastObservedAt": "2026-10-26T06:48:53.308Z",
+              "failures": 0,
+              "cleanupConfirmed": true,
+              "attemptLimit": 3,
+              "historyTruncated": false,
+              "retryEligible": false,
+              "nextAction": "Use runtime_list_targets to inspect endpoint readiness.",
+              "history": [
+                {
+                  "revision": 1,
+                  "state": "launching",
+                  "at": "2026-10-26T06:48:44.670Z",
+                  "reason": "launch"
+                },
+                {
+                  "revision": 2,
+                  "state": "launching",
+                  "at": "2026-10-26T06:48:44.670Z",
+                  "reason": "prepared"
+                },
+                {
+                  "revision": 3,
+                  "state": "running",
+                  "at": "2026-10-26T06:48:45.065Z",
+                  "reason": "running"
+                }
+              ],
+              "attemptId": "5f36a7ab-de6d-4628-9e25-a698ead68ef6"
+            },
+            "status": "connected",
+            "clients": [
+              {
+                "commandReady": true,
+                "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+                "browserEpoch": 1,
+                "deviceClass": "managed",
+                "pageId": "tab-mvowbdho-2rrkof",
+                "role": "app",
+                "tabGeneration": 1
+              },
+              {
+                "commandReady": true,
+                "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+                "browserEpoch": 1,
+                "deviceClass": "managed",
+                "pageId": "tab-mvowbbap-w73j5g",
+                "role": "editor",
+                "sceneSessionId": "scene-0kjop43y21q",
+                "tabGeneration": 1
+              }
+            ],
+            "lastBridgeConnectedAt": "2026-10-26T06:48:49.449Z",
+            "lastCommandReadyAt": "2026-10-26T06:48:53.308Z",
+            "connected": true,
+            "commandReady": true,
+            "connectedClientCount": 2,
+            "lastTransitionAt": "2026-10-26T06:48:45.065Z",
+            "audioMuted": false
+          }
+        }
+      },
+      "sessionActive": false,
+      "state": {
+        "screen": "home",
+        "modal": "",
+        "category": "",
+        "entered": false,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 2,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": true,
+        "handsTracked": false,
+        "leftTracked": false,
+        "rightTracked": false,
+        "modelReady": true,
+        "animationTime": 430.9476013183594
+      },
+      "hero": {
+        "entityIndex": 1,
+        "name": "Crownfall Sorcerer"
+      }
+    },
+    "final": {
+      "session": {
+        "deviceName": "Meta Quest 3",
+        "isRuntimeInstalled": true,
+        "sessionActive": true,
+        "sessionOffered": false,
+        "sessionMode": "immersive-vr",
+        "enabledFeatures": [
+          "hand-tracking",
+          "local-floor",
+          "bounded-floor",
+          "viewer",
+          "local"
+        ],
+        "visibilityState": "visible",
+        "runtimeKind": "emulated",
+        "browser": {
+          "lifecycle": {
+            "state": "running",
+            "policy": "eager",
+            "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+            "browserEpoch": 1,
+            "revision": 8,
+            "stateEnteredAt": "2026-10-26T06:48:45.065Z",
+            "lastObservedAt": "2026-10-26T06:48:53.308Z",
+            "failures": 0,
+            "cleanupConfirmed": true,
+            "attemptLimit": 3,
+            "historyTruncated": false,
+            "retryEligible": false,
+            "nextAction": "Use runtime_list_targets to inspect endpoint readiness.",
+            "history": [
+              {
+                "revision": 1,
+                "state": "launching",
+                "at": "2026-10-26T06:48:44.670Z",
+                "reason": "launch"
+              },
+              {
+                "revision": 2,
+                "state": "launching",
+                "at": "2026-10-26T06:48:44.670Z",
+                "reason": "prepared"
+              },
+              {
+                "revision": 3,
+                "state": "running",
+                "at": "2026-10-26T06:48:45.065Z",
+                "reason": "running"
+              }
+            ],
+            "attemptId": "5f36a7ab-de6d-4628-9e25-a698ead68ef6"
+          },
+          "status": "connected",
+          "clients": [
+            {
+              "commandReady": true,
+              "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+              "browserEpoch": 1,
+              "deviceClass": "managed",
+              "pageId": "tab-mvowbdho-2rrkof",
+              "role": "app",
+              "tabGeneration": 1
+            },
+            {
+              "commandReady": true,
+              "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+              "browserEpoch": 1,
+              "deviceClass": "managed",
+              "pageId": "tab-mvowbbap-w73j5g",
+              "role": "editor",
+              "sceneSessionId": "scene-0kjop43y21q",
+              "tabGeneration": 1
+            }
+          ],
+          "lastBridgeConnectedAt": "2026-10-26T06:48:49.449Z",
+          "lastCommandReadyAt": "2026-10-26T06:48:53.308Z",
+          "connected": true,
+          "commandReady": true,
+          "connectedClientCount": 2,
+          "lastTransitionAt": "2026-10-26T06:48:45.065Z",
+          "audioMuted": false
+        },
+        "browserConnected": true,
+        "browserCommandReady": true
+      },
+      "device": {
+        "headset": {
+          "position": {
+            "x": 0.0028232685290277004,
+            "y": 1.5969749689102173,
+            "z": -0.0005794016178697348
+          },
+          "orientation": {
+            "x": -0.00740934768691659,
+            "y": -0.0036174815613776445,
+            "z": -0.000026804091248777695,
+            "w": 0.999966025352478
+          }
+        },
+        "inputMode": "hand",
+        "controllers": {
+          "left": {
+            "connected": false,
+            "position": {
+              "x": -0.25,
+              "y": 1.5,
+              "z": -0.4000000059604645
+            },
+            "orientation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            }
+          },
+          "right": {
+            "connected": false,
+            "position": {
+              "x": 0.25,
+              "y": 1.5,
+              "z": -0.4000000059604645
+            },
+            "orientation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            }
+          }
+        },
+        "hands": {
+          "left": {
+            "connected": true,
+            "position": {
+              "x": -0.1794252246618271,
+              "y": 0.6962509751319885,
+              "z": -0.07098110765218735
+            },
+            "orientation": {
+              "x": -0.6262785792350769,
+              "y": 0.37724795937538147,
+              "z": 0.5982903838157654,
+              "w": 0.32788363099098206
+            },
+            "poseId": "default",
+            "pinchValue": 0
+          },
+          "right": {
+            "connected": true,
+            "position": {
+              "x": 0.1794252246618271,
+              "y": 0.6962509751319885,
+              "z": -0.07098110765218735
+            },
+            "orientation": {
+              "x": -0.6262785792350769,
+              "y": -0.37724795937538147,
+              "z": -0.5982903838157654,
+              "w": 0.32788363099098206
+            },
+            "poseId": "default",
+            "pinchValue": 0
+          }
+        },
+        "stereoEnabled": false,
+        "fov": 90
+      },
+      "state": {
+        "screen": "home",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 2,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": true,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 453.81451416015625
+      },
+      "hero": {
+        "entityIndex": 1,
+        "name": "Crownfall Sorcerer"
+      },
+      "releases": [
+        {
+          "device": "hand-left",
+          "result": {
+            "completed": true,
+            "cancelled": false,
+            "steps": [
+              {
+                "label": "step 0",
+                "start": 0,
+                "end": 0.15,
+                "startPerf": 596341,
+                "endPerf": 596773.1
+              }
+            ],
+            "events": [],
+            "presses": [],
+            "warnings": [],
+            "pinchValue": 0,
+            "final": {
+              "device": "hand-left",
+              "connected": true,
+              "poseId": "default",
+              "fingers": {},
+              "transition": null,
+              "pinchValue": 0,
+              "pressed": false,
+              "position": {
+                "x": -0.25,
+                "y": 1.2999999523162842,
+                "z": -0.3499999940395355
+              },
+              "orientation": {
+                "x": -1.5342328296696905e-8,
+                "y": 7.960919923277743e-9,
+                "z": 2.1593633547922764e-9,
+                "w": 1
+              },
+              "pin": {
+                "anchor": "target-ray",
+                "target": {
+                  "x": -0.25,
+                  "y": 1.2999999523162842,
+                  "z": -0.3499999940395355
+                }
+              },
+              "anchors": {
+                "wrist": {
+                  "x": -0.29913589358329773,
+                  "y": 1.302146315574646,
+                  "z": -0.23298002779483795
+                },
+                "grip": {
+                  "x": -0.27878567576408386,
+                  "y": 1.3017147779464722,
+                  "z": -0.30463188886642456
+                },
+                "grasp": {
+                  "x": -0.2516503930091858,
+                  "y": 1.2747851610183716,
+                  "z": -0.35890480875968933
+                },
+                "index-tip": {
+                  "x": -0.21637505292892456,
+                  "y": 1.3642141819000244,
+                  "z": -0.38346123695373535
+                },
+                "thumb-tip": {
+                  "x": -0.18799665570259094,
+                  "y": 1.3040695190429688,
+                  "z": -0.3167778551578522
+                }
+              },
+              "axes": {
+                "fingers": {
+                  "x": 0.274112731218338,
+                  "y": 0.4826510548591614,
+                  "z": -0.8318111300468445
+                },
+                "palm": {
+                  "x": -0.0005348721751943231,
+                  "y": -0.8648636937141418,
+                  "z": -0.5020061135292053
+                },
+                "thumb": {
+                  "x": 0.9616973996162415,
+                  "y": -0.13805122673511505,
+                  "z": 0.23681209981441498
+                }
+              }
+            }
+          }
+        },
+        {
+          "device": "hand-right",
+          "result": {
+            "completed": true,
+            "cancelled": false,
+            "steps": [
+              {
+                "label": "step 0",
+                "start": 0,
+                "end": 0.15,
+                "startPerf": 598602,
+                "endPerf": 599363.7
+              }
+            ],
+            "events": [],
+            "presses": [],
+            "warnings": [],
+            "pinchValue": 0,
+            "final": {
+              "device": "hand-right",
+              "connected": true,
+              "poseId": "default",
+              "fingers": {
+                "thumb": {
+                  "poseId": "flat",
+                  "weight": 0.6
+                },
+                "index": {
+                  "poseId": "fist",
+                  "weight": 0.42
+                },
+                "middle": {
+                  "poseId": "fist",
+                  "weight": 0.45
+                },
+                "ring": {
+                  "poseId": "fist",
+                  "weight": 0.48
+                },
+                "pinky": {
+                  "poseId": "fist",
+                  "weight": 0.5
+                }
+              },
+              "transition": null,
+              "pinchValue": 0,
+              "pressed": false,
+              "position": {
+                "x": 0.1794252246618271,
+                "y": 0.6962509751319885,
+                "z": -0.07098110765218735
+              },
+              "orientation": {
+                "x": -0.6262785792350769,
+                "y": -0.37724795937538147,
+                "z": -0.5982903838157654,
+                "w": 0.32788363099098206
+              },
+              "pin": {
+                "anchor": "wrist",
+                "target": {
+                  "x": 0.23999999463558197,
+                  "y": 0.800000011920929,
+                  "z": -0.029999999329447746
+                }
+              },
+              "anchors": {
+                "wrist": {
+                  "x": 0.23999999463558197,
+                  "y": 0.800000011920929,
+                  "z": -0.029999997466802597
+                },
+                "grip": {
+                  "x": 0.20366795361042023,
+                  "y": 0.7368130683898926,
+                  "z": -0.04535242170095444
+                },
+                "grasp": {
+                  "x": 0.15314672887325287,
+                  "y": 0.7013227343559265,
+                  "z": -0.06974747776985168
+                },
+                "index-tip": {
+                  "x": 0.16459080576896667,
+                  "y": 0.6892388463020325,
+                  "z": -0.07687415927648544
+                },
+                "thumb-tip": {
+                  "x": 0.21532858908176422,
+                  "y": 0.6950510740280151,
+                  "z": -0.11275893449783325
+                }
+              },
+              "axes": {
+                "fingers": {
+                  "x": -1.2467458532228193e-7,
+                  "y": -0.9805803894996643,
+                  "z": -0.19611608982086182
+                },
+                "palm": {
+                  "x": -0.9999997615814209,
+                  "y": -2.063763844262212e-7,
+                  "z": -2.136635046667834e-8
+                },
+                "thumb": {
+                  "x": -9.226558006503183e-8,
+                  "y": 0.19611607491970062,
+                  "z": -0.9805806279182434
+                }
+              }
+            }
+          }
+        }
+      ],
+      "releasedBy": "Supported xr run-sequence pinch:0 for both hands"
+    }
+  },
+  "limitations": [
+    "Physical Quest tracking, comfort, cold start and GPU frame pacing are unmeasured.",
+    "Default direct-poke helper exceeded its 800ms contact window under software rendering; direct touch is not claimed as a passed runtime test."
+  ]
+}

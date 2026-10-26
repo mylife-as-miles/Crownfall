@@ -1,0 +1,224 @@
+{
+  "passed": true,
+  "baselineCommit": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
+  "designChange": {
+    "rightWidthBefore": 298,
+    "rightWidthAfter": 358,
+    "rightWidthIncreasePx": 60,
+    "rightWidthIncreasePercent": 20.13422818791946,
+    "leftDimensionsUnchanged": [
+      298,
+      434
+    ],
+    "rightHeightUnchanged": 215,
+    "gapUnchanged": 4
+  },
+  "results": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "before": {
+        "left": {
+          "label": "My Legacy",
+          "x": 105.328125,
+          "y": 159.984375,
+          "width": 298,
+          "height": 434,
+          "imageLoaded": true,
+          "fit": "cover"
+        },
+        "upper": {
+          "label": "Chronicles",
+          "x": 407.328125,
+          "y": 159.984375,
+          "width": 298,
+          "height": 215,
+          "imageLoaded": true,
+          "fit": "contain"
+        },
+        "lower": {
+          "label": "Herald Board",
+          "x": 407.328125,
+          "y": 378.984375,
+          "width": 298,
+          "height": 215,
+          "imageLoaded": true,
+          "fit": "cover"
+        }
+      },
+      "after": {
+        "left": {
+          "label": "My Legacy",
+          "x": 105.328125,
+          "y": 159.984375,
+          "width": 298,
+          "height": 434,
+          "imageLoaded": true,
+          "fit": "cover",
+          "titleSize": "18.6666px"
+        },
+        "upper": {
+          "label": "Chronicles",
+          "x": 407.328125,
+          "y": 159.984375,
+          "width": 358,
+          "height": 215,
+          "imageLoaded": true,
+          "fit": "contain",
+          "titleSize": "18.6666px"
+        },
+        "lower": {
+          "label": "Herald Board",
+          "x": 407.328125,
+          "y": 378.984375,
+          "width": 358,
+          "height": 215,
+          "imageLoaded": true,
+          "fit": "cover",
+          "titleSize": "18.6666px"
+        }
+      },
+      "rightWidthIncreasePx": 60
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "before": {
+        "left": {
+          "label": "My Legacy",
+          "x": 158,
+          "y": 239.984375,
+          "width": 447,
+          "height": 651,
+          "imageLoaded": true,
+          "fit": "cover"
+        },
+        "upper": {
+          "label": "Chronicles",
+          "x": 611,
+          "y": 239.984375,
+          "width": 447,
+          "height": 322.5,
+          "imageLoaded": true,
+          "fit": "contain"
+        },
+        "lower": {
+          "label": "Herald Board",
+          "x": 611,
+          "y": 568.484375,
+          "width": 447,
+          "height": 322.5,
+          "imageLoaded": true,
+          "fit": "cover"
+        }
+      },
+      "after": {
+        "left": {
+          "label": "My Legacy",
+          "x": 158,
+          "y": 239.984375,
+          "width": 447,
+          "height": 651,
+          "imageLoaded": true,
+          "fit": "cover",
+          "titleSize": "27.9999px"
+        },
+        "upper": {
+          "label": "Chronicles",
+          "x": 611,
+          "y": 239.984375,
+          "width": 537,
+          "height": 322.5,
+          "imageLoaded": true,
+          "fit": "contain",
+          "titleSize": "27.9999px"
+        },
+        "lower": {
+          "label": "Herald Board",
+          "x": 611,
+          "y": 568.484375,
+          "width": 537,
+          "height": 322.5,
+          "imageLoaded": true,
+          "fit": "cover",
+          "titleSize": "27.9999px"
+        }
+      },
+      "rightWidthIncreasePx": 90
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "before": {
+        "left": {
+          "label": "My Legacy",
+          "x": 129.953125,
+          "y": 86.65625,
+          "width": 162.765625,
+          "height": 235.078125,
+          "imageLoaded": true,
+          "fit": "cover"
+        },
+        "upper": {
+          "label": "Chronicles",
+          "x": 294.890625,
+          "y": 86.65625,
+          "width": 162.78125,
+          "height": 116.453125,
+          "imageLoaded": true,
+          "fit": "contain"
+        },
+        "lower": {
+          "label": "Herald Board",
+          "x": 294.890625,
+          "y": 205.28125,
+          "width": 162.78125,
+          "height": 116.453125,
+          "imageLoaded": true,
+          "fit": "cover"
+        }
+      },
+      "after": {
+        "left": {
+          "label": "My Legacy",
+          "x": 129.953125,
+          "y": 86.65625,
+          "width": 162.765625,
+          "height": 235.078125,
+          "imageLoaded": true,
+          "fit": "cover",
+          "titleSize": "11px"
+        },
+        "upper": {
+          "label": "Chronicles",
+          "x": 294.890625,
+          "y": 86.65625,
+          "width": 195.546875,
+          "height": 116.453125,
+          "imageLoaded": true,
+          "fit": "contain",
+          "titleSize": "11px"
+        },
+        "lower": {
+          "label": "Herald Board",
+          "x": 294.890625,
+          "y": 205.28125,
+          "width": 195.546875,
+          "height": 116.453125,
+          "imageLoaded": true,
+          "fit": "cover",
+          "titleSize": "11px"
+        }
+      },
+      "rightWidthIncreasePx": 32.765625
+    }
+  ],
+  "historical": true,
+  "scope": "Superseded width-increase/three-tab evidence. Current Home widths are restored and four-tab navigation is intentional."
+}

@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "Desktop wheel scrolls the actual options list",
+    "Desktop native amber thumb remains draggable",
+    "Landscape touch swipe scrolls without horizontal page overflow"
+  ],
+  "scope": "Native browser input smoke check; simulated landscape touch is not a physical-device benchmark."
+}

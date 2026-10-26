@@ -1,0 +1,130 @@
+{
+  "passed": true,
+  "mode": "Four Play modes visible together at original size",
+  "domOnly": true,
+  "results": [
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "navigation": [
+        {
+          "label": "Previous menu tab",
+          "x": 106.25,
+          "y": 46.859375,
+          "right": 118.265625,
+          "bottom": 54.65625
+        },
+        {
+          "label": "Home",
+          "x": 142.3125,
+          "y": 42.03125,
+          "right": 194.734375,
+          "bottom": 59.5
+        },
+        {
+          "label": "Play",
+          "x": 207.828125,
+          "y": 42.03125,
+          "right": 254.796875,
+          "bottom": 59.5
+        },
+        {
+          "label": "Showcase",
+          "x": 267.890625,
+          "y": 42.03125,
+          "right": 353.09375,
+          "bottom": 59.5
+        },
+        {
+          "label": "Settings",
+          "x": 366.1875,
+          "y": 42.03125,
+          "right": 441.5625,
+          "bottom": 59.5
+        },
+        {
+          "label": "Next menu tab",
+          "x": 454.71875,
+          "y": 46.859375,
+          "right": 466.734375,
+          "bottom": 54.65625
+        }
+      ],
+      "rowWidth": 436.953125,
+      "scrollableWidth": 0,
+      "scrollSnapType": "none",
+      "pageOverflow": false,
+      "carouselControls": 0,
+      "actualModelLoaded": false,
+      "cards": [
+        {
+          "label": "Classic",
+          "x": 148.34375,
+          "y": 114.296875,
+          "width": 107.59375,
+          "height": 161.40625,
+          "visible": true,
+          "textFits": true,
+          "headingFits": true,
+          "title": "CLASSIC",
+          "fontWeight": "600",
+          "image": {
+            "width": 2048,
+            "height": 1143
+          }
+        },
+        {
+          "label": "Local Duel",
+          "x": 258.109375,
+          "y": 114.296875,
+          "width": 107.59375,
+          "height": 161.40625,
+          "visible": true,
+          "textFits": true,
+          "headingFits": true,
+          "title": "LOCAL DUEL",
+          "fontWeight": "600",
+          "image": {
+            "width": 2048,
+            "height": 1143
+          }
+        },
+        {
+          "label": "Chapters",
+          "x": 367.875,
+          "y": 114.296875,
+          "width": 107.59375,
+          "height": 161.40625,
+          "visible": true,
+          "textFits": true,
+          "headingFits": true,
+          "title": "CHAPTERS",
+          "fontWeight": "600",
+          "image": {
+            "width": 2048,
+            "height": 1143
+          }
+        },
+        {
+          "label": "Online Duel",
+          "x": 477.640625,
+          "y": 114.296875,
+          "width": 107.59375,
+          "height": 161.40625,
+          "visible": true,
+          "textFits": true,
+          "headingFits": true,
+          "title": "ONLINE DUEL",
+          "fontWeight": "600",
+          "image": {
+            "width": 2048,
+            "height": 1143
+          }
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

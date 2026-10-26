@@ -1,0 +1,205 @@
+{
+  "passed": true,
+  "domOnly": true,
+  "scope": "Three mode previews, two chapter previews, three Home panels and Back at desktop and landscape. Settings, Showcase and Chapters have dedicated screen verification. DOM-only model=none probe; actual GLB menu renders verified separately.",
+  "results": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "legacy",
+      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "chronicles",
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "herald",
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "classic",
+      "text": "CLASSIC\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "local",
+      "text": "LOCAL DUEL\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "online",
+      "text": "ONLINE DUEL\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "back",
+      "text": "RETURN TO HOME?\n\nYour menu preferences stay on this device.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "chapter-01",
+      "text": "CHAPTER 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "chapter-02",
+      "text": "CHAPTER 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "legacy",
+      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "chronicles",
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "herald",
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "classic",
+      "text": "CLASSIC\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "local",
+      "text": "LOCAL DUEL\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "online",
+      "text": "ONLINE DUEL\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "back",
+      "text": "RETURN TO HOME?\n\nYour menu preferences stay on this device.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "chapter-01",
+      "text": "CHAPTER 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "chapter-02",
+      "text": "CHAPTER 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "horizontalOverflow": false,
+      "verticalScrollAvailable": false,
+      "offenders": []
+    }
+  ]
+}

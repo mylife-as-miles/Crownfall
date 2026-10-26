@@ -1,0 +1,247 @@
+{
+  "ok": true,
+  "data": {
+    "workspaceRoot": "/workspace/Crownfall/main-game-vr",
+    "operation": "browser.logs",
+    "result": [
+      {
+        "timestamp": 1793011280767,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/?__iwsdkManagedWorkspace=[redacted]",
+        "args": [
+          "Frame navigated: https://localhost:8081/?__iwsdkManagedWorkspace=[redacted]"
+        ],
+        "frameUrl": "https://localhost:8081/?__iwsdkManagedWorkspace=[redacted]",
+        "kind": "navigation",
+        "url": "https://localhost:8081/?__iwsdkManagedWorkspace=[redacted]"
+      },
+      {
+        "timestamp": 1793011280800,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793011282123,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":false,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793011283845,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793011283868,
+        "level": "info",
+        "message": "Frame navigated: about:blank",
+        "args": [
+          "Frame navigated: about:blank"
+        ],
+        "frameUrl": "about:blank",
+        "kind": "navigation",
+        "url": "about:blank",
+        "repeatCount": 2
+      },
+      {
+        "timestamp": 1793011283935,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793011284408,
+        "level": "warn",
+        "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+        "args": [
+          "\"THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793011284643,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":false,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793011285457,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793011291758,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793011291758,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793011292153,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793011292159,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793011433788,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793011434434,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":false,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793011434872,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793011439388,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793011439389,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793012060854,
+        "level": "warn",
+        "message": "browser_screenshot scroll succeeded, but the previous workspace view could not be restored: Timed out restoring screenshot scroll",
+        "args": [
+          "browser_screenshot scroll succeeded, but the previous workspace view could not be restored: Timed out restoring screenshot scroll"
+        ],
+        "kind": "console",
+        "repeatCount": 4
+      }
+    ]
+  }
+}

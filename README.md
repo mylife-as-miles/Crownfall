@@ -1,5 +1,25 @@
 # Crownfall — A King's Gambit Story
 
+## Desktop and Meta Quest menu versions
+
+The approved desktop/landscape menu lives in `main game/`. The hands-first Immersive Web SDK version lives in `main-game-vr/`. Common navigation, artwork references, chapter slots, modal copy, palette and layout tokens live in `shared/menu/`; changes there feed both versions. Platform-specific interactions remain native to each experience.
+
+These two menu experiences are separate from the playable chess application in `web/`. Mode launches, campaign gameplay, online duels and replay playback are not connected to either menu yet.
+
+Use an SDK-supported Node version (Node 24 recommended; minimum Node 20.19):
+
+```sh
+npm run setup
+npm run dev:desktop   # desktop, port 5173
+npm run dev:quest     # IWSDK-managed Quest preview, HTTPS port 8081
+npm run build        # typecheck/build both versions
+npm run test:quest
+npm run check:sync   # catch stale native UI or differing shared assets
+```
+
+The two apps keep their dependencies separate because IWSDK uses its own exact Three runtime alias. Quest generates its spatial panel and asset copies automatically during Vite startup/build, including direct IWSDK CLI startup. Shared-source changes restart that managed runtime in place. See [Quest usage and limits](main-game-vr/README.md) and [desktop menu details](main%20game/README.md).
+
+
 A cinematic 3D chess game in the browser. Two rival civilisations — a medieval European
 **Ivory Kingdom** and a Mesoamerican **Sun Empire** — face each other as sculpted, rigged
 characters that glide, strike, scream and burn away into dust on a marble-and-basalt board.

@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "domOnly": true,
+  "checks": [
+    "Default Play/Local Duel selection and reference card positioning",
+    "Home/Play/Showcase/Settings screen navigation, tab shortcuts and Back return to the correct screen",
+    "Four mode labels, bold amber/gray typography, original geometry and supplied-artwork fingerprints are correct",
+    "Arrow navigation and focused Enter open the fourteen-chapter screen; Escape returns to the selected Chapters card",
+    "Three mode previews and the fourteen-chapter screen truthfully disclose unavailable gameplay and offer no launch or demo-save form",
+    "Mode activation and reload have no local-demo-save creation, restoration or overwrite side effects",
+    "Quality and motion preferences persist across detail pages/reload; Low releases the particle renderer",
+    "Mode navigation wraps correctly; Home/End select the endpoints without an added Host or Story card",
+    "OS reduced motion is honored independently of saved preferences",
+    "No JavaScript or console errors during the menu flow"
+  ],
+  "previews": [
+    {
+      "mode": "Classic",
+      "text": "CLASSIC\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel"
+    },
+    {
+      "mode": "Local Duel",
+      "text": "LOCAL DUEL\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel"
+    },
+    {
+      "mode": "Chapters",
+      "screen": "Fourteen-chapter selection",
+      "preview": "CHAPTER 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel"
+    },
+    {
+      "mode": "Online Duel",
+      "text": "ONLINE DUEL\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel"
+    }
+  ],
+  "errors": []
+}

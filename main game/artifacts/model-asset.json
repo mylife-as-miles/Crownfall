@@ -1,0 +1,64 @@
+{
+  "sourceFile": "Crownfall_Sorcerer_Digits_v3_1(1).glb",
+  "source": {
+    "bytes": 19382272,
+    "sha256": "bee6065e07555341dea3404ebfdb7ec784df8aad150499985d232a39475959cc",
+    "triangles": 80910,
+    "joints": 142,
+    "clips": [
+      {
+        "name": "Attack",
+        "tracks": 426,
+        "duration": 2.0416666666666665
+      },
+      {
+        "name": "Idle",
+        "tracks": 426,
+        "duration": 3.0416666666666665
+      },
+      {
+        "name": "Threat_Cast",
+        "tracks": 426,
+        "duration": 3.0416666666666665
+      }
+    ],
+    "extensions": []
+  },
+  "deliveredFile": "public/models/crownfall-sorcerer.glb",
+  "delivered": {
+    "bytes": 4217336,
+    "sha256": "ef1d096a650c7e342a11a67c0d7c1038bbde21ee4416188a8ecb338eb677e2ca",
+    "triangles": 80910,
+    "joints": 142,
+    "clips": [
+      {
+        "name": "Attack",
+        "tracks": 426,
+        "duration": 2.0416667461395264
+      },
+      {
+        "name": "Idle",
+        "tracks": 426,
+        "duration": 3.0416667461395264
+      },
+      {
+        "name": "Threat_Cast",
+        "tracks": 426,
+        "duration": 3.0416667461395264
+      }
+    ],
+    "extensions": [
+      "EXT_texture_webp",
+      "KHR_draco_mesh_compression"
+    ]
+  },
+  "optimization": {
+    "textureMaxDimension": 2048,
+    "textureFormat": "WebP",
+    "geometryCompression": "Draco",
+    "simplification": false,
+    "animationResampling": false,
+    "durationComparisonToleranceSeconds": 1e-06,
+    "reductionPercent": 78.2
+  }
+}

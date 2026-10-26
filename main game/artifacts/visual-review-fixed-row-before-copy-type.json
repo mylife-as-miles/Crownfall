@@ -1,0 +1,201 @@
+{
+  "revision": "Restored four small visible cards with slightly larger leftward-leaning actual creature",
+  "reviewer": "independent visual critic agent",
+  "reference": "public/assets/reference.jpg",
+  "reviewedScreenshot": "artifacts/final-1280x720.png",
+  "additionalReviewedScreenshot": "artifacts/final-1920x1080.png",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "score": 9.2,
+  "scoreOutOf": 10,
+  "assessmentType": "Independent subjective visual assessment of the current fixed four-card row and small creature-direction adjustment. Current desktop and phone-landscape screenshots inspected. Not an objective pixel-match score or a performance benchmark.",
+  "exactReferenceMatch": false,
+  "rubric": [
+    {
+      "category": "Restored fixed four-card composition",
+      "maximum": 2.5,
+      "score": 2.4,
+      "notes": "All four actual-image cards are visible at once in the restored 197x298 row. At 1280x720 the row is 800px wide with 4px gaps and no carousel or discovery controls. Desktop and letterboxed phone-landscape captures preserve the complete row."
+    },
+    {
+      "category": "Actual supplied artwork and focal crops",
+      "maximum": 2.0,
+      "score": 1.85,
+      "notes": "Existing actual JPEG imagery and portrait focal positions remain unchanged. Wheel, blue gateway, timber bridges and crystal cliffs remain identifiable. Panoramic context is necessarily omitted by the portrait crops."
+    },
+    {
+      "category": "Typography and menu readability",
+      "maximum": 1.5,
+      "score": 1.3,
+      "notes": "Headings, labels and selected Resume border remain unobscured. Supporting copy fits the smaller cards, including wrapped Resume text. Copy is very small on phone landscape, consistent with the fixed desktop composition scaled into that viewport."
+    },
+    {
+      "category": "Creature direction, framing and coordinated arm tilt",
+      "maximum": 2.0,
+      "score": 1.85,
+      "notes": "The actual creature is subtly larger, turns and leans toward the cards, and all arms follow naturally through the parent transform. Crown and eye have clear space in the reviewed screenshots. Face and orbital rings remain visible above the row; shoulder, arm and robe remain visible around it. No bone-level pose distortion observed."
+    },
+    {
+      "category": "Lighting, particles and atmospheric cohesion",
+      "maximum": 2.0,
+      "score": 1.8,
+      "notes": "Existing warm gold fog and teal particles remain cohesive with the supplied images and actual model. The slightly leftward creature attention improves its relationship to the cards. Materials and geometry still differ from the original illustrated reference by design."
+    }
+  ],
+  "iterationHistory": [
+    {
+      "iteration": "Initial direction comparison",
+      "before": "artifacts/creature-direction/before-first.png",
+      "after": "artifacts/creature-direction/after-first.png",
+      "score": null,
+      "findings": "Matched creature comparison established subtle scale increase and leftward attention. The first adjustment reached the top edge, so root lowered the model to restore crown clearance. Final matched pair uses the corrected lower placement; held-constant UI in these images is historical."
+    },
+    {
+      "iteration": "Final restored fixed-row review",
+      "screenshot": "artifacts/final-1280x720.png",
+      "additionalScreenshots": [
+        "artifacts/final-1920x1080.png",
+        "artifacts/final-landscape-844x390.png"
+      ],
+      "score": 9.2,
+      "findings": "All four smaller cards visible, selected Resume and all text fit, no carousel controls, crown/face clear, and subtly larger leftward creature with coordinated arms. No blocking visual issue or further visual change requested."
+    }
+  ],
+  "model": {
+    "status": "Actual user-supplied GLB integrated",
+    "sourceFile": "Crownfall_Sorcerer_Digits_v3_1(1).glb",
+    "deliveredFile": "public/models/crownfall-sorcerer.glb",
+    "assetEvidence": "artifacts/model-asset.json",
+    "verificationEvidence": "artifacts/model-verification.json",
+    "sourceBytes": 19382272,
+    "deliveredBytes": 4217336,
+    "triangles": 80910,
+    "joints": 142,
+    "retainedClips": [
+      "Attack",
+      "Idle",
+      "Threat_Cast"
+    ],
+    "activeMenuClip": "Idle",
+    "geometrySimplification": false,
+    "textureConversion": "WebP, maximum dimension 2048",
+    "geometryCompression": "Draco with self-hosted decoder",
+    "fallback": "Illustration retained for unavailable or unsupported model rendering"
+  },
+  "authorizedDifferences": [
+    "Carousel removed; exactly four cards are visible simultaneously in the restored 197x298 layout with 4px gaps at 1280x720.",
+    "Actual supplied card images and their established portrait focal crops are retained.",
+    "Actual creature is scaled 4% larger, turned farther left, and given a subtle world-space lean; all four arms follow its parent rig transform.",
+    "Actual creature stays behind the cards and retains its existing Idle animation, materials, lighting and particle atmosphere.",
+    "Desktop and phone landscape composition only; no portrait redesign."
+  ],
+  "remainingLimits": [
+    "Supporting copy remains very small on phone landscape because the fixed desktop composition is scaled into the viewport.",
+    "Portrait cover crops necessarily omit some context from the supplied panoramic images.",
+    "Actual creature materials and geometry differ from the original illustration; exact screenshot reproduction is not claimed.",
+    "The 9.2 score is subjective visual judgment for the current fixed four-card revision. Earlier carousel and larger-card reviews are historical."
+  ],
+  "historicalReviews": [
+    "artifacts/visual-review-four-card.json",
+    "artifacts/visual-review-five-card-artwork.json",
+    "artifacts/visual-review-five-card-glb.json",
+    "artifacts/visual-review-four-card-generated-artwork.json",
+    "artifacts/visual-review-four-visible-supplied-artwork.json",
+    "artifacts/visual-review-three-visible-carousel.json"
+  ],
+  "verdict": "Meets the subjective 9/10 visual target for the current restored four-card row and subtle actual-creature scale, direction and arm-tilt adjustment. No blocking visual issue identified.",
+  "cardCount": 4,
+  "cards": [
+    "New",
+    "Resume",
+    "Load Game",
+    "Browse"
+  ],
+  "cardGeometry": {
+    "viewportWidth": 1280,
+    "viewportHeight": 720,
+    "leftEdges": [
+      139,
+      340,
+      541,
+      742
+    ],
+    "top": 211,
+    "width": 197,
+    "height": 298,
+    "gap": 4,
+    "rowWidth": 800,
+    "rightEdge": 939,
+    "bottomEdge": 509,
+    "allCardsVisible": true,
+    "carousel": false,
+    "scrollControls": false
+  },
+  "suppliedArtwork": {
+    "sourceInspection": "Four original JPEG files visually inspected at /workspace/crownfall-card-originals before reviewing browser crops. Delivery image dimensions and provenance hashes documented separately.",
+    "evidence": "artifacts/card-artwork.json",
+    "cards": [
+      {
+        "card": "new",
+        "sourceFile": "288933.jpg",
+        "sourceSha256": "716d44458e280d8f7922214f7d60494ce7d3822818af944ae40f7d727ef0d159",
+        "deliveryFile": "public/assets/environments/card-new.webp",
+        "backgroundPosition": "15% 50%"
+      },
+      {
+        "card": "resume",
+        "sourceFile": "288939.jpg",
+        "sourceSha256": "6c1b25c4691fbd62d82334de018190d7507fdd155773ee1b4a8d876f4dcae423",
+        "deliveryFile": "public/assets/environments/card-resume.webp",
+        "backgroundPosition": "82% 50%"
+      },
+      {
+        "card": "load",
+        "sourceFile": "288943.jpg",
+        "sourceSha256": "40c2c0b0c52b1749ba6ecc45c455e2b250aba321b3232a9623b91976783cc040",
+        "deliveryFile": "public/assets/environments/card-load.webp",
+        "backgroundPosition": "58% 50%"
+      },
+      {
+        "card": "browse",
+        "sourceFile": "289365.jpg",
+        "sourceSha256": "404ff647175ba14d094a7d27dbb8857d9733d39e1778553633cc5d07153b48ba",
+        "deliveryFile": "public/assets/environments/card-browse.webp",
+        "backgroundPosition": "64% 50%"
+      }
+    ]
+  },
+  "visibleCardCount": 4,
+  "additionalReviewedViews": [
+    "artifacts/final-landscape-844x390.png"
+  ],
+  "creatureTransform": {
+    "normalizedHeightBefore": 5.2,
+    "normalizedHeightAfter": 5.408,
+    "scaleIncreasePercent": 4,
+    "yawBeforeRadians": -0.34,
+    "yawAfterRadians": -0.47,
+    "worldRollBeforeRadians": 0,
+    "worldRollAfterRadians": 0.045,
+    "rotationOrder": "ZYX",
+    "centerYBefore": -0.625,
+    "centerYAfter": -0.82,
+    "method": "Parent transform only; four arms follow the same rig; no bone overrides or animation clip changes."
+  },
+  "creatureComparison": {
+    "before": "artifacts/creature-direction/before-first.png",
+    "after": "artifacts/creature-direction/after-first.png",
+    "matchedPose": "Idle at time 0 with OS reduced motion",
+    "interpretation": "The held-constant carousel layout in this matched pair predates the latest restored small-card row. Use the pair only to isolate creature scale, turn, lean and arm tilt. Current UI is represented by the final screenshots above.",
+    "findings": "Eye and orbital rings turn toward the cards; subtle top-left lean and matching arm tilt read naturally. Final lower placement restores crown clearance; no additional transform change needed."
+  },
+  "currentEvidence": {
+    "menuVerification": "artifacts/verification.json",
+    "layoutAndLandscapeVerification": "artifacts/landscape-verification.json",
+    "modelVerification": "artifacts/model-verification.json",
+    "artworkProvenance": "artifacts/card-artwork.json",
+    "scope": "Visual critic independently inspected screenshots and matched before/after creature captures. Functional assertions are supported by the separate verification artifacts."
+  }
+}

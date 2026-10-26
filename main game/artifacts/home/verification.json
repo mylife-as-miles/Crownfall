@@ -1,0 +1,368 @@
+{
+  "passed": true,
+  "scope": "DOM-focused Home verification with model=none, Low quality and reduced motion; actual-GLB visual captures are separate. Controller input is simulated standard Gamepad API input.",
+  "checks": [
+    "Default Play retains its four original-size cards, current wording and no carousel",
+    "All three final Home titles and exact supplied-image delivery hashes load; Chronicles preserves its map with contain",
+    "Restored 600×434 Home grid matches 298×434 + stacked 298×215 tiles with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports",
+    "Keyboard spatial movement, remembered right row, clamped outer edges and Home/End retain one selected tab stop and actual focus",
+    "Pointer hover→Enter and clicks open each truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news",
+    "Showcase is a dedicated three-destination screen and Back returns to its originating Home selection",
+    "Home→Settings returns to Home selection; Home Back returns to preserved Play selection/geometry; Play confirmation returns to Home with focus",
+    "Simulated standard controller supports all four D-pad directions, remembered-row/clamp behavior, A/B dialogs, Home Back and four-tab bumper transitions through Showcase with preserved Home/Play selections",
+    "Q/E cycles all four screens, ignores focused selects and preserves originating Home/Play/Settings context",
+    "No JavaScript or console errors"
+  ],
+  "layouts": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "navigation": [
+        {
+          "label": "Previous menu tab",
+          "x": 61.9375,
+          "y": 86.53125,
+          "width": 22.015625,
+          "height": 14.390625,
+          "right": 83.953125,
+          "bottom": 100.921875
+        },
+        {
+          "label": "Home",
+          "x": 127.984375,
+          "y": 77.609375,
+          "width": 96,
+          "height": 32.25,
+          "right": 223.984375,
+          "bottom": 109.859375
+        },
+        {
+          "label": "Play",
+          "x": 247.984375,
+          "y": 77.609375,
+          "width": 86.015625,
+          "height": 32.25,
+          "right": 334,
+          "bottom": 109.859375
+        },
+        {
+          "label": "Showcase",
+          "x": 358,
+          "y": 77.609375,
+          "width": 156,
+          "height": 32.25,
+          "right": 514,
+          "bottom": 109.859375
+        },
+        {
+          "label": "Settings",
+          "x": 538,
+          "y": 77.609375,
+          "width": 138,
+          "height": 32.25,
+          "right": 676,
+          "bottom": 109.859375
+        },
+        {
+          "label": "Next menu tab",
+          "x": 699.9375,
+          "y": 86.53125,
+          "width": 22.015625,
+          "height": 14.390625,
+          "right": 721.953125,
+          "bottom": 100.921875
+        }
+      ],
+      "grid": {
+        "x": 105.328125,
+        "y": 159.984375,
+        "width": 600,
+        "height": 434,
+        "right": 705.328125,
+        "bottom": 593.984375
+      },
+      "gap": 4,
+      "scrollWidth": 600,
+      "clientWidth": 600,
+      "pageOverflow": false,
+      "tiles": [
+        {
+          "label": "My Legacy",
+          "x": 105.328125,
+          "y": 159.984375,
+          "width": 298,
+          "height": 434,
+          "right": 403.328125,
+          "bottom": 593.984375,
+          "titleFits": true,
+          "visible": true
+        },
+        {
+          "label": "Chronicles",
+          "x": 407.328125,
+          "y": 159.984375,
+          "width": 298,
+          "height": 215,
+          "right": 705.328125,
+          "bottom": 374.984375,
+          "titleFits": true,
+          "visible": true
+        },
+        {
+          "label": "Herald Board",
+          "x": 407.328125,
+          "y": 378.984375,
+          "width": 298,
+          "height": 215,
+          "right": 705.328125,
+          "bottom": 593.984375,
+          "titleFits": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "navigation": [
+        {
+          "label": "Previous menu tab",
+          "x": 92.921875,
+          "y": 129.8125,
+          "width": 33.015625,
+          "height": 21.59375,
+          "right": 125.9375,
+          "bottom": 151.40625
+        },
+        {
+          "label": "Home",
+          "x": 191.984375,
+          "y": 116.421875,
+          "width": 144,
+          "height": 48.375,
+          "right": 335.984375,
+          "bottom": 164.796875
+        },
+        {
+          "label": "Play",
+          "x": 371.984375,
+          "y": 116.421875,
+          "width": 129.015625,
+          "height": 48.375,
+          "right": 501,
+          "bottom": 164.796875
+        },
+        {
+          "label": "Showcase",
+          "x": 537,
+          "y": 116.421875,
+          "width": 234,
+          "height": 48.375,
+          "right": 771,
+          "bottom": 164.796875
+        },
+        {
+          "label": "Settings",
+          "x": 807,
+          "y": 116.421875,
+          "width": 207,
+          "height": 48.375,
+          "right": 1014,
+          "bottom": 164.796875
+        },
+        {
+          "label": "Next menu tab",
+          "x": 1049.921875,
+          "y": 129.8125,
+          "width": 33.015625,
+          "height": 21.59375,
+          "right": 1082.9375,
+          "bottom": 151.40625
+        }
+      ],
+      "grid": {
+        "x": 158,
+        "y": 239.984375,
+        "width": 900,
+        "height": 651,
+        "right": 1058,
+        "bottom": 890.984375
+      },
+      "gap": 6,
+      "scrollWidth": 900,
+      "clientWidth": 900,
+      "pageOverflow": false,
+      "tiles": [
+        {
+          "label": "My Legacy",
+          "x": 158,
+          "y": 239.984375,
+          "width": 447,
+          "height": 651,
+          "right": 605,
+          "bottom": 890.984375,
+          "titleFits": true,
+          "visible": true
+        },
+        {
+          "label": "Chronicles",
+          "x": 611,
+          "y": 239.984375,
+          "width": 447,
+          "height": 322.5,
+          "right": 1058,
+          "bottom": 562.484375,
+          "titleFits": true,
+          "visible": true
+        },
+        {
+          "label": "Herald Board",
+          "x": 611,
+          "y": 568.484375,
+          "width": 447,
+          "height": 322.5,
+          "right": 1058,
+          "bottom": 890.984375,
+          "titleFits": true,
+          "visible": true
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "navigation": [
+        {
+          "label": "Previous menu tab",
+          "x": 106.25,
+          "y": 46.859375,
+          "width": 12.015625,
+          "height": 7.796875,
+          "right": 118.265625,
+          "bottom": 54.65625
+        },
+        {
+          "label": "Home",
+          "x": 142.3125,
+          "y": 42.03125,
+          "width": 52.421875,
+          "height": 17.46875,
+          "right": 194.734375,
+          "bottom": 59.5
+        },
+        {
+          "label": "Play",
+          "x": 207.828125,
+          "y": 42.03125,
+          "width": 46.96875,
+          "height": 17.46875,
+          "right": 254.796875,
+          "bottom": 59.5
+        },
+        {
+          "label": "Showcase",
+          "x": 267.890625,
+          "y": 42.03125,
+          "width": 85.203125,
+          "height": 17.46875,
+          "right": 353.09375,
+          "bottom": 59.5
+        },
+        {
+          "label": "Settings",
+          "x": 366.1875,
+          "y": 42.03125,
+          "width": 75.375,
+          "height": 17.46875,
+          "right": 441.5625,
+          "bottom": 59.5
+        },
+        {
+          "label": "Next menu tab",
+          "x": 454.71875,
+          "y": 46.859375,
+          "width": 12.015625,
+          "height": 7.796875,
+          "right": 466.734375,
+          "bottom": 54.65625
+        }
+      ],
+      "grid": {
+        "x": 129.953125,
+        "y": 86.65625,
+        "width": 327.71875,
+        "height": 235.078125,
+        "right": 457.671875,
+        "bottom": 321.734375
+      },
+      "gap": 2.18481,
+      "scrollWidth": 328,
+      "clientWidth": 328,
+      "pageOverflow": false,
+      "tiles": [
+        {
+          "label": "My Legacy",
+          "x": 129.953125,
+          "y": 86.65625,
+          "width": 162.765625,
+          "height": 235.078125,
+          "right": 292.71875,
+          "bottom": 321.734375,
+          "titleFits": true,
+          "visible": true
+        },
+        {
+          "label": "Chronicles",
+          "x": 294.890625,
+          "y": 86.65625,
+          "width": 162.78125,
+          "height": 116.453125,
+          "right": 457.671875,
+          "bottom": 203.109375,
+          "titleFits": true,
+          "visible": true
+        },
+        {
+          "label": "Herald Board",
+          "x": 294.890625,
+          "y": 205.28125,
+          "width": 162.78125,
+          "height": 116.453125,
+          "right": 457.671875,
+          "bottom": 321.734375,
+          "titleFits": true,
+          "visible": true
+        }
+      ]
+    }
+  ],
+  "dialogs": [
+    {
+      "title": "Chronicles",
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel"
+    },
+    {
+      "title": "Chronicles",
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel"
+    },
+    {
+      "title": "My Legacy",
+      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel"
+    },
+    {
+      "title": "Herald Board",
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel"
+    },
+    {
+      "title": "Herald Board",
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel"
+    }
+  ],
+  "errors": []
+}

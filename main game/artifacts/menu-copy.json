@@ -1,0 +1,380 @@
+{
+  "schema_version": 1,
+  "purpose": "Exact visible and accessible menu copy inventory. State descriptions and functional boundaries are evidence notes, not additional UI copy.",
+  "sources": {
+    "ui": {
+      "path": "src/App.tsx",
+      "sha256": "e32282c0393612d4fae294431cd9d2f76c9a4561e2a801429605ece526ac8e0b"
+    },
+    "document": {
+      "path": "index.html",
+      "sha256": "6935d626617604a319c9a9a308ba07fcb98708928bf3f2a35a94126b7f517b55"
+    },
+    "canonical_readme": {
+      "path": "../README.md",
+      "sha256": "2f69f50e0fc2fb863c3642f569887040058b59f42d36d6183d699a805a5bace7"
+    },
+    "canonical_game_document": {
+      "path": "../web/index.html",
+      "sha256": "824e084338c018e0c2df6d3968e48714a4f79c2a9057865dd262b64f2698e0e1"
+    },
+    "home_content": {
+      "path": "src/home-content.ts",
+      "sha256": "0c942fc9ac7999a4ef66e9e68c31f27b3f37c6f600b116eb25de043366a02b05"
+    }
+  },
+  "navigation": {
+    "accessible_label": "Main menu",
+    "tablist_accessible_label": "Sections",
+    "tabs": [
+      {
+        "label": "HOME",
+        "panel": null,
+        "screen": "home",
+        "accessible_label": "Home"
+      },
+      {
+        "label": "PLAY",
+        "panel": null,
+        "screen": "play",
+        "accessible_label": "Play"
+      },
+      {
+        "label": "SHOWCASE",
+        "panel": "showcase",
+        "accessible_label": "Showcase"
+      },
+      {
+        "label": "SETTINGS",
+        "panel": "settings",
+        "accessible_label": "Settings"
+      }
+    ],
+    "previous": {
+      "visible_key": "LB",
+      "accessible_label": "Previous menu tab"
+    },
+    "next": {
+      "visible_key": "RB",
+      "accessible_label": "Next menu tab"
+    },
+    "removed_placeholder_tabs": [
+      "EXAMPLE",
+      "EXAMPLE"
+    ],
+    "notification_badge_present": false
+  },
+  "cards": [
+    {
+      "id": "classic",
+      "artwork": "new",
+      "title": "CLASSIC",
+      "label": "Classic",
+      "subtitle": "Make your opening move.",
+      "description": "Traditional chess against the computer."
+    },
+    {
+      "id": "local-duel",
+      "artwork": "resume",
+      "title": "LOCAL DUEL",
+      "label": "Local Duel",
+      "subtitle": "Share the board.",
+      "description": "Two players. One device."
+    },
+    {
+      "id": "chapters",
+      "artwork": "load",
+      "title": "CHAPTERS",
+      "label": "Chapters",
+      "subtitle": "Choose a chapter.",
+      "description": "Tactical missions and lasting consequences."
+    },
+    {
+      "id": "online-duel",
+      "artwork": "browse",
+      "title": "ONLINE DUEL",
+      "label": "Online Duel",
+      "subtitle": "Unavailable in this build.",
+      "description": ""
+    }
+  ],
+  "cards_accessible_group": "Play options",
+  "common_dialog": {
+    "eyebrow": "CROWNFALL",
+    "close": {
+      "visible_symbol": "×",
+      "accessible_label": "Close dialog"
+    },
+    "footer": {
+      "key": "B",
+      "label": "Back"
+    },
+    "primary_action_suffix_symbol": ">",
+    "save_slot_prefix_symbol": "♜",
+    "primary_action_suffix_aria_hidden": true,
+    "primary_action_suffix_html_entity": "&gt;"
+  },
+  "modals": {
+    "settings": {
+      "heading": "Settings",
+      "paragraph": "Adjust menu effects. Preferences save automatically.",
+      "fields": [
+        {
+          "id": "effect-quality",
+          "label": "Particle quality",
+          "helper": "Teal sparks and drifting embers",
+          "options": [
+            {
+              "value": "low",
+              "label": "Low"
+            },
+            {
+              "value": "medium",
+              "label": "Medium"
+            },
+            {
+              "value": "high",
+              "label": "High"
+            }
+          ],
+          "default_value": "high"
+        },
+        {
+          "id": "ambient-volume",
+          "label": "Ambient volume",
+          "helper": "Saved setting; audio is not connected",
+          "minimum": 0,
+          "maximum": 100,
+          "default_value": 65
+        },
+        {
+          "id": "motion-toggle",
+          "label": "Ambient motion",
+          "helper": "Creature and background animation",
+          "default_checked": true
+        }
+      ],
+      "action": {
+        "label_template": "Back to {Home|Play}",
+        "opens": "The screen from which Settings was opened."
+      }
+    },
+    "quit": {
+      "entry_label": "Back",
+      "heading": "Return to Home?",
+      "paragraph": "Your menu preferences stay on this device.",
+      "actions": [
+        {
+          "label": "Stay in Play",
+          "opens": "play"
+        },
+        {
+          "label": "Go to Home",
+          "opens": "home"
+        }
+      ]
+    },
+    "legacy": {
+      "heading": "My Legacy",
+      "paragraph": "Legacy profiles are unavailable in this build.",
+      "action": {
+        "label": "Back to Home",
+        "opens": "home"
+      }
+    },
+    "chronicles": {
+      "heading": "Chronicles",
+      "paragraph": "Chronicles are unavailable in this build.",
+      "action": {
+        "label": "Back to Home",
+        "opens": "home"
+      }
+    },
+    "herald": {
+      "heading": "Herald Board",
+      "paragraph": "The herald board is unavailable in this build.",
+      "action": {
+        "label": "Back to Home",
+        "opens": "home"
+      }
+    },
+    "classic": {
+      "heading": "Classic",
+      "paragraph": "Classic chess against the computer is not connected to this menu.",
+      "note": "Menu preview only. No gameplay will start here.",
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
+    },
+    "local-duel": {
+      "heading": "Local Duel",
+      "paragraph": "Two-player chess on one device is not connected to this menu.",
+      "note": "Menu preview only. No gameplay will start here.",
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
+    },
+    "chapters": {
+      "heading": "Chapters",
+      "paragraph": "Crownfall's campaign chapters are not connected to this menu.",
+      "note": "Menu preview only. No gameplay will start here.",
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
+    },
+    "online-duel": {
+      "heading": "Online Duel",
+      "paragraph": "Online play is unavailable in this build. No matchmaking service is connected.",
+      "note": "Menu preview only. No gameplay will start here.",
+      "action": {
+        "label": "Back to Play",
+        "opens": "play"
+      }
+    },
+    "showcase": {
+      "heading": "Showcase",
+      "paragraph": "Showcase matches are not connected to this menu.",
+      "action": {
+        "label_template": "Back to {Home|Play}",
+        "opens": "Originating Home or Play screen"
+      }
+    }
+  },
+  "menu_footer": {
+    "accessible_label": "Menu controls",
+    "actions": [
+      {
+        "key": "A",
+        "label": "Select",
+        "accessible_label": "Select",
+        "behavior": "Open the selected card dialog."
+      },
+      {
+        "key": "B",
+        "label": "Back",
+        "accessible_label": "Back",
+        "behavior": "Open the Return to Home? dialog."
+      }
+    ]
+  },
+  "document": {
+    "language": "en",
+    "title": "Crownfall — A King's Gambit Story",
+    "meta": {
+      "charset": "UTF-8",
+      "viewport": "width=device-width, initial-scale=1.0",
+      "theme-color": "#16120c",
+      "description": "Crownfall — A King's Gambit Story. A cinematic chess menu preview."
+    }
+  },
+  "canon_evidence": [
+    {
+      "path": "../README.md",
+      "line": 1,
+      "exact_text": "# Crownfall — A King's Gambit Story",
+      "supports": "Product identity."
+    },
+    {
+      "path": "../README.md",
+      "line": 3,
+      "exact_text": "A cinematic 3D chess game in the browser.",
+      "supports": "Cinematic chess vocabulary."
+    },
+    {
+      "path": "../README.md",
+      "line": 20,
+      "exact_text": "The Pawn Who Would Not Die",
+      "supports": "The existing chess campaign has its own named chapter; this menu does not invent or claim to launch a chapter."
+    },
+    {
+      "path": "../README.md",
+      "line": 34,
+      "exact_text": "local-first and single-player; online play, a backend, more chapters, expanded maps, and",
+      "supports": "Online features are future scope in the canonical game."
+    },
+    {
+      "path": "../web/index.html",
+      "line": 6,
+      "exact_text": "Crownfall — A King's Gambit Story",
+      "supports": "Document title identity."
+    },
+    {
+      "path": "../web/index.html",
+      "line": 7,
+      "exact_text": "A story-driven tactical chess RPG where every sacrifice has a name and every survivor remembers.",
+      "supports": "Canonical project tone; this is evidence, not extra visible menu copy."
+    }
+  ],
+  "functional_boundaries": [
+    "This separate menu preview does not launch chess gameplay or campaign content from ../web.",
+    "Classic, Local Duel, Chapters and Online Duel each open a mode-specific preview/unavailable dialog. No mode secretly creates, resumes or loads a demo save.",
+    "Existing legacy demo-save browser data is left untouched. The old save-creation and resume/load UI has been removed.",
+    "The separate web game supports Classic versus AI, local two-player hotseat and one campaign chapter. Online is explicitly unavailable; no backend is implemented here.",
+    "Particle quality and ambient motion affect presentation. Volume persists a preference without connected audio.",
+    "Home retains the supplied three labels and images, with honest unavailable-state dialogs for profiles, chronicles and the herald feed.",
+    "Home, Play, Showcase and Settings are the four top navigation tabs. Home/Play selections and Settings origin are preserved.",
+    "Play retains four 197 by 298 pixel cards, 4px gaps and the same artwork order and typography at1280 by720.",
+    "Showcase opens an honest information preview without starting a match. Q/E and controller bumpers cycle the four tabs; typing in Settings controls does not switch tabs."
+  ],
+  "card_copy_intent": "Cards identify intended chess modes. Activation dialogs clearly disclose that this standalone menu does not launch gameplay or matchmaking; there is no STORY mode label.",
+  "home_tiles": [
+    {
+      "title": "My Legacy",
+      "position": "Tall left",
+      "description": null,
+      "eyebrow": null,
+      "action": "legacy"
+    },
+    {
+      "title": "Chronicles",
+      "position": "Upper right",
+      "description": null,
+      "eyebrow": null,
+      "action": "chronicles"
+    },
+    {
+      "title": "Herald Board",
+      "position": "Lower right",
+      "description": null,
+      "eyebrow": null,
+      "action": "herald"
+    }
+  ],
+  "mode_capability_evidence": [
+    {
+      "label": "Classic",
+      "existingWebCapability": "Standard chess against AI with strength/color/clock settings",
+      "evidence": [
+        "../README.md:181",
+        "../web/src/ui/MainMenu.tsx:179"
+      ]
+    },
+    {
+      "label": "Local Duel",
+      "existingWebCapability": "Two-player hotseat on one device",
+      "evidence": [
+        "../README.md:182",
+        "../web/src/ui/MainMenu.tsx:195"
+      ]
+    },
+    {
+      "label": "Chapters",
+      "existingWebCapability": "One campaign chapter with three tactical missions",
+      "evidence": [
+        "../README.md:19",
+        "../web/src/ui/GameShell.tsx:302"
+      ]
+    },
+    {
+      "label": "Online Duel",
+      "existingWebCapability": "Explicitly unavailable; no network backend",
+      "evidence": [
+        "../README.md:34",
+        "../web/src/ui/MainMenu.tsx:150"
+      ]
+    }
+  ]
+}

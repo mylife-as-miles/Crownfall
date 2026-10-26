@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "scope": "Current production four mode previews and Home/Settings/Play navigation",
+  "steps": [
+    "Classic preview",
+    "Local Duel preview",
+    "Chapters preview",
+    "Online Duel preview",
+    "Home",
+    "Settings",
+    "Home",
+    "Play"
+  ],
+  "rendererRetained": true,
+  "additionalGLBRequests": 0,
+  "activeAnimation": "Idle",
+  "legacySaveUntouched": true,
+  "unsupportedLaunchActions": 0
+}

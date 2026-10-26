@@ -1,0 +1,13 @@
+/* Display-contents hosts preserve the menu-stage container units and stacking. */
+.menu-transition,
+.menu-transition-live,
+.menu-transition-ghost {
+  display: contents;
+}
+.menu-transition-ghost,
+.menu-transition-ghost * {
+  pointer-events: none !important;
+  user-select: none !important;
+  animation: none !important;
+  transition: none !important;
+}

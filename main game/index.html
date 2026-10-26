@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#16120c" />
+    <meta
+      name="description"
+      content="Crownfall — A King's Gambit Story. A cinematic chess menu preview."
+    />
+    <title>Crownfall — A King's Gambit Story</title>
+    <link rel="icon" href="./favicon.png" />
+    <link rel="preload" as="image" href="./assets/environments/card-resume.webp" />
+    <link rel="preload" as="font" href="./fonts/HTx3L3I-JCGChYJ8VI-L6OO_au7B2xY.ttf" type="font/ttf" crossorigin />
+    <style>
+      body { margin: 0; background: #100d08; }
+      .boot-brand { position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; padding-left: 11vw; background: radial-gradient(ellipse at 70% 40%, #253126, #100d08 75%); color: #d7c59c; font-family: Arial, sans-serif; }
+      .boot-brand strong { font-size: clamp(28px, 5.5vw, 80px); font-weight: 400; letter-spacing: .13em; }
+      .boot-brand span { margin-top: 16px; color: #a18b5f; font-size: 12px; letter-spacing: .25em; }
+      .boot-brand p { margin-top: 48px; color: #9e9580; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div class="boot-brand" role="status"><strong>CROWNFALL</strong><span>KING’S GAMBIT</span><p>Preparing the menu</p></div></div>
+    <noscript><p style="position:fixed;bottom:24px;left:11vw;color:#d7c59c;font:14px Arial;z-index:40">Enable JavaScript to open Crownfall.</p></noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

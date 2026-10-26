@@ -1,0 +1,113 @@
+{
+  "source": "Three user-supplied images, preserved as separate optimized delivery copies. Originals and private reference metadata remain outside this repository.",
+  "images": [
+    {
+      "id": "my-legacy",
+      "title": "My Legacy",
+      "sourceFile": "289835.jpg",
+      "sourceBytes": 438748,
+      "sourceSha256": "bec6105924618ada2a49feb0b19d4e52aa6f5600ef30becbdbe0b35320c42b6b",
+      "sourceDimensions": {
+        "width": 1529,
+        "height": 2048
+      },
+      "deliveryPath": "public/assets/home/my-legacy.webp",
+      "deliveryBytes": 215490,
+      "deliverySha256": "f1d29a294f03ae983888369df0c180e1960c7f24eeb83252e3250b2f617d05cf",
+      "deliveryDimensions": {
+        "width": 1529,
+        "height": 2048
+      },
+      "optimization": {
+        "format": "WebP",
+        "quality": 90,
+        "encoder": "Pillow/libwebp",
+        "resized": false,
+        "cropped": false
+      },
+      "displayFit": {
+        "objectFit": "cover",
+        "objectPosition": "50% 50%",
+        "background": "#1b1914",
+        "cardDesignSize": {
+          "width": 298,
+          "height": 434
+        },
+        "rationale": "The portrait king and throne remain centered. This target crops approximately 8% of source width while retaining full source height."
+      },
+      "displayFitApplied": true
+    },
+    {
+      "id": "chronicles",
+      "title": "Chronicles",
+      "sourceFile": "289864.jpg",
+      "sourceBytes": 951202,
+      "sourceSha256": "71acb8f3f9b63a8cd8885386a454f96a030a782a424b229f58bd7f5352f8b529",
+      "sourceDimensions": {
+        "width": 2048,
+        "height": 1529
+      },
+      "deliveryPath": "public/assets/home/chronicles.webp",
+      "deliveryBytes": 615504,
+      "deliverySha256": "2b9efe0642313b548c87801a404ca8534b1e9aa61244a49ec5dbdf5a3501a735",
+      "deliveryDimensions": {
+        "width": 2048,
+        "height": 1529
+      },
+      "optimization": {
+        "format": "WebP",
+        "quality": 90,
+        "encoder": "Pillow/libwebp",
+        "resized": false,
+        "cropped": false
+      },
+      "displayFit": {
+        "objectFit": "contain",
+        "objectPosition": "50% 50%",
+        "background": "#1b1914",
+        "cardDesignSize": {
+          "width": 298,
+          "height": 215
+        },
+        "rationale": "Contain preserves the complete four-region map with narrow dark side gutters at the restored 298\u00d7215 size."
+      },
+      "displayFitApplied": true
+    },
+    {
+      "id": "herald-board",
+      "title": "Herald Board",
+      "sourceFile": "289863.jpg",
+      "sourceBytes": 555738,
+      "sourceSha256": "eafa89409063fcc5a28f4539b367d74603c1dca9887ebc68e99fddc2c31db690",
+      "sourceDimensions": {
+        "width": 2048,
+        "height": 1143
+      },
+      "deliveryPath": "public/assets/home/herald-board.webp",
+      "deliveryBytes": 329880,
+      "deliverySha256": "8d8492b3336e5a97cee62fa57e6b99ce7be6a650e774df18394b22ea1b8b6d70",
+      "deliveryDimensions": {
+        "width": 2048,
+        "height": 1143
+      },
+      "optimization": {
+        "format": "WebP",
+        "quality": 90,
+        "encoder": "Pillow/libwebp",
+        "resized": false,
+        "cropped": false
+      },
+      "displayFit": {
+        "objectFit": "cover",
+        "objectPosition": "50% 50%",
+        "background": "#1b1914",
+        "cardDesignSize": {
+          "width": 298,
+          "height": 215
+        },
+        "rationale": "The original centered cover framing is restored, retaining the sorcerer and portal."
+      },
+      "displayFitApplied": true
+    }
+  ]
+}

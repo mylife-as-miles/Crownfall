@@ -1,0 +1,14 @@
+@font-face { font-family: Barlow; src: url('/fonts/7cHqv4kjgoGqM7E3_-gc4A.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+:root { font-family: Barlow, Arial, sans-serif; color: #cdc6b8; background: #100d08; color-scheme: dark; }
+body { margin: 0; }
+#scene-container { position: fixed; inset: 0; }
+.quest-entry { position: fixed; z-index: 10; left: 24px; bottom: 24px; width: min(400px, calc(100vw - 80px)); padding: 20px; border: 1px solid #bf791a55; background: #100d08e8; box-shadow: 0 16px 44px #0005; }
+.quest-entry h1 { font-size: 17px; color: #d49130; letter-spacing: .08em; margin: 0 0 10px; }
+.quest-entry p { font-size: 15px; line-height: 1.45; margin: 8px 0 14px; }
+.quest-entry button { font: inherit; min-height: 48px; border: 1px solid #bf791a; color: #e0c69c; padding: 10px 22px; background: #32291a; cursor: pointer; }
+.quest-entry button:focus-visible { outline: 2px solid #df8a26; outline-offset: 4px; }
+.quest-entry button:disabled { cursor: default; opacity: .5; }
+body[data-xr='presenting'] .quest-entry { display: none; }
+body[data-boot='loading'] .quest-entry { top: 0; right: 0; bottom: 0; left: 0; width: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #100d08; border: 0; }
+body[data-boot='loading'] .quest-entry h1 { font-size: clamp(28px, 6vw, 64px); font-weight: 400; letter-spacing: .15em; }
+body[data-boot='loading'] .quest-entry button { display: none; }

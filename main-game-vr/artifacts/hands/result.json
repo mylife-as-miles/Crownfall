@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "scope": "Composed runtime closeout: preserved six-group main UI evidence plus verified Exit postconditions and focused hand-only session/replay recovery. The full main gesture loop was not rerun.",
+  "sources": {
+    "main": "artifacts/hands/verification.json",
+    "initialExit": "artifacts/hands/exit-postcondition.json",
+    "session": "artifacts/hands/session-verification.json"
+  },
+  "main": {
+    "rawPassed": false,
+    "passedChecks": [
+      "Active immersive session requires hand tracking, with both controllers disconnected and both hands available",
+      "The three-arena visit reaches explicit completion entirely through hand pinches, with no timer or controller",
+      "Home, mode previews, modal isolation and available/locked Chapters all work with hands and remain honest previews",
+      "All four arena images and the honest future replay view are reachable through hand-only Showcase navigation",
+      "Every settings category and actual comfort changes work with hands; Pause freezes Idle and Resume retains the exact page/preferences",
+      "Hand Confirm and Cancel choose distinct Home/Play destinations without a keyboard or controller"
+    ],
+    "rawFailurePreserved": "Error: {\"code\":\"runtime_command_failed\",\"message\":\"The XR session ended.\",\"details\":{\"browser\":{\"lifecycle\":{\"state\":\"running\",\"policy\":\"eager\",\"sessionId\":\"5b0f1e23-4ff2-45ac-9d23-d34e4e29e998\",\"browserEpoch\":1,\"revision\":8,\"stateEnteredAt\":\"2026-10-26T06:08:05.474Z\",\"lastObservedAt\":\"2026-10-26T06:08:12.911Z\",\"failures\":0,\"cleanupConfirmed\":true,\"attemptLimit\":3,\"historyTruncated\":false,\"retryEligible\":false,\"nextAction\":\"Use runtime_list_targets to inspect endpoint readiness.\",\"history\":[{\"revision\":1,\"state\":\"launching\",\"at\":\"2026-10-26T06:08:05.167Z\",\"reason\":\"launch\"},{\"revision\":2,\"state\":\"launching\",\"at\":\"2026-10-26T06:08:05.167Z\",\"reason\":\"prepared\"},{\"revision\":3,\"state\":\"running\",\"at\":\"2026-10-26T06:08:05.474Z\",\"reason\":\"running\"}],\"attemptId\":\"047d52ed-85b4-4637-b053-a96a3351275c\"},\"status\":\"connected\",\"clients\":[{\"commandReady\":true,\"sessionId\":\"5b0f1e23-4ff2-45ac-9d23-d34e4e29e998\",\"browserEpoch\":1,\"deviceClass\":\"managed\",\"pageId\":\"tab-mvouv2pz-au9ue2\",\"role\":\"app\",\"tabGeneration\":1},{\"commandReady\":true,\"sessionId\":\"5b0f1e23-4ff2-45ac-9d23-d34e4e29e998\",\"browserEpoch\":1,\"deviceClass\":\"managed\",\"pageId\":\"tab-mvouv0kp-19vw2x\",\"role\":\"editor\",\"sceneSessionId\":\"scene-71hr1b1ndkr\",\"tabGeneration\":1}],\"lastBridgeConnectedAt\":\"2026-10-26T06:08:09.311Z\",\"lastCommandReadyAt\":\"2026-10-26T06:08:12.911Z\",\"connected\":true,\"commandReady\":true,\"connectedClientCount\":2,\"lastTransitionAt\":\"2026-10-26T06:08:05.474Z\",\"audioMuted\":false}}}\n    at cli (file:///workspace/Crownfall/main-game-vr/scripts/verify-runtime.mjs:10:27)\n    at file:///workspace/Crownfall/main-game-vr/scripts/verify-runtime.mjs:84:76"
+  },
+  "resolution": {
+    "originalFailureWasEndedSessionAcknowledgement": true,
+    "initialExitPostconditionsPassed": true,
+    "focusedSessionPassed": true,
+    "note": "The initial raw failed report is preserved. Its Exit acknowledgement handling is fixed in the runner; successful application Exit and subsequent hand-only replay/reentry are established by separate named-state evidence, not by silently changing that raw report."
+  },
+  "sessionChecks": [
+    "The existing immersive runtime enters Home with hand tracking, both controllers disconnected, the real hero loaded and the known comfort preferences retained",
+    "Disconnecting both real emulated hands pauses and freezes Idle while preserving the Classic modal; reconnecting one hand requires an explicit hand Resume, then Cancel returns safely to Play/Home",
+    "The new Home Replay action restarts and completes all three arena steps through real Next/Finish/Back hand selections, without direct progress mutation",
+    "One real hand Exit ends the immersive session; the expected SDK ended-session acknowledgement is accepted only after inactive-session and entered=false postconditions, without retrying Exit",
+    "Exit/reentry preserves Home, exact comfort preferences and the same hero entity; final XR remains active with both controllers disconnected and both hand pinches explicitly released"
+  ],
+  "limitations": [
+    "Physical Quest tracking, comfort, cold start and GPU frame pacing are unmeasured.",
+    "Default direct-poke helper exceeded its 800ms contact window under software rendering; direct touch is not claimed as a passed runtime test."
+  ]
+}

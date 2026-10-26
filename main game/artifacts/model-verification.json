@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "asset": "public/models/crownfall-sorcerer.glb",
+  "checks": [
+    "Alternate glTF fixture renders visible pixels without WebGL errors",
+    "Invalid glTF retains the illustration fallback",
+    "Actual compressed GLB loads and selects the named Idle clip",
+    "Actual Idle visibly animates; OS reduced motion freezes its rendered pose",
+    "Motion/quality/render scale/frame limit controls retain the renderer without another GLB request; 50% scale halves its canvas",
+    "Low releases the independent particle renderer",
+    "Explicit illustration preview uses no character WebGL context"
+  ]
+}

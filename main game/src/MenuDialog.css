@@ -1,0 +1,192 @@
+.menu-dialog.menu-dialog--reference {
+  position: fixed;
+  inset: 0;
+  width: 100cqw;
+  height: 100cqh;
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #b2ada1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: none;
+  opacity: 0;
+  transform: none;
+  transition:
+    opacity 0.18s ease,
+    display 0.2s allow-discrete,
+    overlay 0.2s allow-discrete;
+}
+
+.menu-dialog.menu-dialog--reference[open] {
+  opacity: 1;
+  transform: none;
+}
+
+.menu-dialog.menu-dialog--reference:not([open]) {
+  pointer-events: none;
+}
+
+.menu-dialog.menu-dialog--reference::backdrop {
+  background: rgba(10, 8, 5, 0.8);
+  backdrop-filter: blur(16px) saturate(0.55) brightness(0.7);
+  opacity: 0;
+  transition:
+    opacity 0.18s ease,
+    display 0.2s allow-discrete,
+    overlay 0.2s allow-discrete;
+}
+
+.menu-dialog.menu-dialog--reference[open]::backdrop {
+  opacity: 1;
+}
+
+.menu-dialog--reference .dialog-inner {
+  position: relative;
+  top: 22.222222cqh;
+  width: min(82cqw, 940px);
+  margin: 0 auto;
+  padding: 0 0 max(24px, 4cqh);
+  text-align: center;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.menu-dialog--reference .dialog-inner h1 {
+  margin: 0;
+  font-family: var(--menu-font-primary, "Barlow"), Arial, sans-serif;
+  font-size: max(16px, var(--menu-modal-heading-size, 1.5625cqw));
+  font-weight: var(--menu-heading-weight, 600);
+  line-height: 1.2;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  color: var(--menu-modal-heading, #d49130);
+}
+
+.menu-dialog--reference .dialog-copy {
+  width: min(64cqw, 760px);
+  min-height: 11.527778cqh;
+  margin: max(24px, 5.833333cqh) auto 0;
+}
+
+.menu-dialog--reference .dialog-description,
+.menu-dialog--reference .dialog-note {
+  margin: 0;
+  font-family: var(--menu-font-primary, "Barlow"), Arial, sans-serif;
+  font-size: max(13px, var(--menu-modal-body-size, 1.25cqw));
+  font-weight: 400;
+  line-height: max(21px, 3.333333cqh);
+  color: var(--menu-modal-text, #aaa79d);
+  letter-spacing: 0;
+  text-wrap: balance;
+  white-space: pre-line;
+}
+
+.menu-dialog--reference .dialog-note {
+  margin-top: max(4px, 0.555556cqh);
+}
+
+.menu-dialog--reference .dialog-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: max(24px, var(--menu-modal-action-gap, 5cqw));
+  margin: max(21px, 5.416667cqh) 0 0;
+}
+
+.menu-dialog--reference .dialog-actions > button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  gap: max(4px, 0.4cqw);
+  width: max(112px, var(--menu-modal-action-width, 10cqw));
+  height: max(32px, var(--menu-modal-action-height, 4.444444cqh));
+  min-height: 32px;
+  margin: 0;
+  padding: 0 max(8px, 0.7cqw);
+  border: 1px solid #86765038;
+  border-radius: 0;
+  background: #17140e26;
+  box-shadow: none;
+  color: #aaa79c;
+  font-family: var(--menu-font-primary, "Barlow"), Arial, sans-serif;
+  font-size: max(14px, var(--menu-modal-action-size, 1.40625cqw));
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  text-decoration: none;
+  transition:
+    color 0.14s ease,
+    border-color 0.14s ease,
+    background 0.14s ease,
+    transform 0.1s ease;
+}
+
+.menu-dialog--reference .dialog-actions > button:hover {
+  border-color: #b08b4d88;
+  background: #5b45292e;
+  color: #d0c6b3;
+}
+
+.menu-dialog--reference .dialog-actions > button:focus-visible {
+  outline: 1px solid #ce9849;
+  outline-offset: 4px;
+}
+
+.menu-dialog--reference .dialog-actions > button:active {
+  transform: scale(0.98);
+}
+
+.menu-dialog--reference .dialog-key {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: max(15px, 1.40625cqw);
+  height: max(15px, 1.40625cqw);
+  border: 1px solid #ae742b;
+  border-radius: 50%;
+  background: #a56821;
+  color: #2c1a09;
+  font-family: var(--menu-font-primary, "Barlow"), Arial, sans-serif;
+  font-size: max(10px, 0.9375cqw);
+  font-weight: 600;
+  line-height: 1;
+}
+
+@starting-style {
+  .menu-dialog.menu-dialog--reference[open],
+  .menu-dialog.menu-dialog--reference[open]::backdrop {
+    opacity: 0;
+    transform: none;
+  }
+}
+
+.menu-dialog.menu-dialog--still,
+.menu-dialog.menu-dialog--still::backdrop,
+.menu-dialog--still .dialog-actions > button {
+  transition: none;
+}
+
+.menu-dialog--still .dialog-actions > button:active {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-dialog.menu-dialog--reference,
+  .menu-dialog.menu-dialog--reference::backdrop,
+  .menu-dialog--reference .dialog-actions > button {
+    transition: none;
+  }
+
+  .menu-dialog--reference .dialog-actions > button:active {
+    transform: none;
+  }
+}

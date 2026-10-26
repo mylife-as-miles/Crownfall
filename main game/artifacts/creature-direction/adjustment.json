@@ -1,0 +1,54 @@
+{
+  "revision": "Creature-only direction adjustment, retained when original four-card sizing was restored",
+  "beforeCommit": "e11066f40f2df7c56daf3a9afbdb1f64bf5f675c",
+  "before": {
+    "normalizedHeight": 5.2,
+    "yawRadians": -0.34,
+    "rollRadians": 0,
+    "rotationOrder": "XYZ",
+    "modelCenterYOffset": -0.625
+  },
+  "after": {
+    "normalizedHeight": 5.408,
+    "yawRadians": -0.47,
+    "rollRadians": 0.045,
+    "rotationOrder": "ZYX",
+    "modelCenterYOffset": -0.82
+  },
+  "delta": {
+    "scalePercent": 4,
+    "yawDegrees": -7.448451336700702,
+    "leftLeanDegrees": 2.5783100780887045,
+    "modelCenterYOffset": -0.195
+  },
+  "method": "Parent transform turns and leans the entire four-armed rig toward the viewer-left cards. No bone offsets or mixer changes. The final center offset restores crown clearance after the scale increase and lean.",
+  "preserved": [
+    "All four arms, original rig and named Idle animation",
+    "Camera, lighting, stage horizontal placement and particle settings",
+    "All four supplied card images; original smaller four-visible dimensions restored by latest request",
+    "Menu, keyboard/controller navigation and persisted settings"
+  ],
+  "comparison": {
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "pose": "Idle at time zero, OS reduced motion enabled for matched captures",
+    "beforeFirst": "before-first.png",
+    "beforeLast": "before-last.png",
+    "afterFirst": "after-first.png",
+    "afterLast": "after-last.png",
+    "layout": "Matched carousel layout isolates creature transform before the latest four-visible-card restoration; current layout is in artifacts/final-*.png.",
+    "currentLayoutEvidence": "../layout-verification.json"
+  },
+  "verification": [
+    "Production TypeScript/Vite build and ESLint",
+    "Actual GLB Idle animation, OS/app reduced motion, quality controls and no model reload",
+    "Menu flow and restored four-visible-card row and no page overflow"
+  ],
+  "limits": [
+    "No independent head/arm bone pose overrides; all four arms follow the parent lean/turn while retaining Idle.",
+    "Prior carousel demo recording predates this small creature transform; current before/after PNGs show the final pose.",
+    "Software WebGL verification does not establish physical-device GPU performance."
+  ]
+}

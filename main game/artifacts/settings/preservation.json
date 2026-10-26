@@ -1,0 +1,25 @@
+{
+  "baseline": "5e4111e5cee621842c0dd4ee94edfe5d45eee7b9",
+  "playPixelComparison": {
+    "viewport": "1280x720",
+    "excludedNavigationBand": [
+      50,
+      135
+    ],
+    "changedPixelsOutsideBand": 0,
+    "maxChannelDifferenceOutsideBand": 0
+  },
+  "preservedSources": [
+    "HomeGrid.tsx",
+    "home-content.ts",
+    "all public Home/Play artwork and actual GLB",
+    "creature transforms, camera, lighting, materials and animation selection"
+  ],
+  "expectedChanges": [
+    "Fixed-width navigation boxes with 24px gaps",
+    "Settings screen and detail pages",
+    "Additional local menu preferences and configurable bindings",
+    "Scene resolution and frame-limit controls; defaults preserve existing output"
+  ],
+  "homeGeometry": "298x434 left; 298x215 right tiles; 4px gaps; 600x434 total at 1280x720"
+}

@@ -1,0 +1,111 @@
+{
+  "baselineCommit": "3b3f59447b16e27234d248cf1d686afb35aaad8d",
+  "change": "Raise only the creature parent anchor to reveal more of the face above the cards.",
+  "parentVerticalAnchorBefore": 0,
+  "parentVerticalAnchorAfter": 0.055,
+  "verticalDeltaWorldUnits": 0.055,
+  "ambientVerticalSway": [
+    -0.012,
+    0.012
+  ],
+  "finalAnimatedParentYRange": [
+    0.043,
+    0.067
+  ],
+  "normalizedModelHeight": 5.6784,
+  "modelCenterYOffset": -0.96,
+  "yawRadians": -0.47,
+  "worldRollRadians": 0.045,
+  "rotationOrder": "ZYX",
+  "preserved": [
+    "Uniform model scale",
+    "Named Idle clip and all four arms",
+    "Card geometry, artwork, typography and wording",
+    "Camera, lighting, particles and navigation"
+  ],
+  "comparison": {
+    "pose": "Idle at time zero with OS reduced motion for matched screenshots",
+    "beforeDesktop": "before-1280x720.png",
+    "beforeLandscape": "before-844x390.png",
+    "afterDesktop": "../final-1280x720.png",
+    "afterLandscape": "../final-landscape-844x390.png"
+  },
+  "verification": [
+    "idle-framing.json",
+    "../layout-verification.json",
+    "../model-verification.json",
+    "../visual-review.json"
+  ],
+  "motionComposition": "Existing ambient y sway adds to the fixed parent anchor rather than overwriting the upward shift.",
+  "cardPixelComparison": {
+    "method": "Matched reduced-motion Idle0 screenshots, card interiors excluding borders and outer shadows.",
+    "results": [
+      {
+        "label": "New Gambit",
+        "interiorCrop": [
+          141,
+          213,
+          334,
+          507
+        ],
+        "pixelsUnchanged": true
+      },
+      {
+        "label": "Resume Gambit",
+        "interiorCrop": [
+          342,
+          213,
+          535,
+          507
+        ],
+        "pixelsUnchanged": true
+      },
+      {
+        "label": "Load Gambit",
+        "interiorCrop": [
+          543,
+          213,
+          736,
+          507
+        ],
+        "pixelsUnchanged": true
+      },
+      {
+        "label": "Browse Gambits",
+        "interiorCrop": [
+          744,
+          213,
+          937,
+          507
+        ],
+        "pixelsUnchanged": true
+      }
+    ]
+  },
+  "sampledIdleEvidence": {
+    "sampledPosesPerAspect": 1323,
+    "timing": "Authored Idle key times and interval midpoints, combined with independent ambient y/yaw extrema.",
+    "minimumClearancePx": {
+      "1280x720": {
+        "crown": 11.284,
+        "faceProxy": 2.425,
+        "eyeProxy": 17.294
+      },
+      "1920x1080": {
+        "crown": 16.926,
+        "faceProxy": 3.638,
+        "eyeProxy": 25.94
+      },
+      "844x390": {
+        "crown": 6.112,
+        "faceProxy": 1.302,
+        "eyeProxy": 9.356
+      }
+    },
+    "limits": "Dense sampled geometric proxy bounds, not a continuous mathematical guarantee or semantic face detector."
+  },
+  "sampledSafeParentAnchorRange": [
+    0.04167955130322312,
+    0.11508320659587308
+  ]
+}

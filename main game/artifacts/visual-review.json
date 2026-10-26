@@ -1,0 +1,1541 @@
+{
+  "revision": "Shared reference-style transparent Confirm/Cancel modals",
+  "latestReviewScope": "Nine-state shared modal presentation",
+  "score": 9.2,
+  "scoreScope": "Shared modal presentation only. Prior screen and interaction scores remain distinct; this is not an aggregate or hardware performance score.",
+  "scoreOutOf": 10,
+  "screenScores": {
+    "Home": 9.2,
+    "Play": 9.3,
+    "Settings": 9.1,
+    "Showcase": 9.2,
+    "Loading": 9.2,
+    "Chapters": 9.2
+  },
+  "reviewer": "independent visual critic agent",
+  "homeReview": {
+    "scope": "Current Home after restoring original right-tile widths and adding the shared Showcase navigation entry.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective comparison of the supplied Home layout reference, actual supplied image subjects, and final actual-GLB browser captures. Not a pixel-match score or a claim that unavailable destination systems are implemented.",
+    "reference": {
+      "fileName": "home-layout-reference.jpg",
+      "width": 960,
+      "height": 540,
+      "privateLocalReferenceOnly": true,
+      "imageIncludedInRepository": false,
+      "notes": "Tall-left/stacked-right reference hierarchy and original equal column widths restored. No reference characters or placeholder copy imported."
+    },
+    "reviewedScreenshots": [
+      "artifacts/home/home-1280x720.png",
+      "artifacts/home/home-1920x1080.png",
+      "artifacts/home/home-844x390.png"
+    ],
+    "layoutAt1280": {
+      "gridX": 105.328125,
+      "gridY": 160,
+      "gridWidth": 600,
+      "gridHeight": 434,
+      "gap": 4,
+      "leftTile": {
+        "title": "My Legacy",
+        "width": 298,
+        "height": 434
+      },
+      "upperRightTile": {
+        "title": "Chronicles",
+        "width": 298,
+        "height": 215
+      },
+      "lowerRightTile": {
+        "title": "Herald Board",
+        "width": 298,
+        "height": 215
+      },
+      "equalOuterHeights": true,
+      "pageOverflow": false
+    },
+    "rubric": [
+      {
+        "category": "Reference layout and visual hierarchy",
+        "maximum": 3.0,
+        "score": 2.95,
+        "notes": "Tall left tile and equal stacked right tiles again use the original equal-width columns: 298px each at 1280, with total 600x434 grid and 4px gaps. Home tab/amber tile selection and the four-entry navigation remain readable at all three viewports."
+      },
+      {
+        "category": "Actual supplied artwork and useful framing",
+        "maximum": 2.0,
+        "score": 1.85,
+        "notes": "Actual king/throne portrait, complete four-region map and sorcerer/portal are distinct and recognizable. Chronicles retains contain framing with narrow sidebars; small baked-in map label overlap remains acceptable. Herald Board returns to its original centered-cover context. No image changes."
+      },
+      {
+        "category": "Titles, readability and honest destination states",
+        "maximum": 2.0,
+        "score": 1.8,
+        "notes": "Only the three supplied titles appear on tiles; no invented stats, lore or news. Activations retain truthful unavailable copy. Latest shared modals use Confirm/Cancel, both dismissing to Home; no unsupported launch action is offered. Compact tile headings continue to fit."
+      },
+      {
+        "category": "Existing creature and atmospheric cohesion",
+        "maximum": 2.0,
+        "score": 1.7,
+        "notes": "The approved actual sorcerer, scale, upward framing, pose and magical atmosphere remain. The new three-tile grid balances the exposed character silhouette; supplied portrait, map and portal art have distinct but compatible fantasy palettes."
+      },
+      {
+        "category": "Desktop and phone-landscape presentation",
+        "maximum": 1.0,
+        "score": 0.9,
+        "notes": "All three actual-GLB captures keep every tile visible, aligned and free of page overflow. Phone-landscape map text is very small, but the map is a menu illustration rather than a readable interactive atlas."
+      }
+    ],
+    "artwork": {
+      "evidence": "artifacts/home-artwork.json",
+      "sourceInspection": "All three original JPEGs independently viewed before reviewing browser composites. Optimized web copies use actual supplied pixels rather than generated replacements.",
+      "images": [
+        {
+          "title": "My Legacy",
+          "sourceFile": "289835.jpg",
+          "sourceSha256": "bec6105924618ada2a49feb0b19d4e52aa6f5600ef30becbdbe0b35320c42b6b",
+          "deliveryPath": "public/assets/home/my-legacy.webp",
+          "deliverySha256": "f1d29a294f03ae983888369df0c180e1960c7f24eeb83252e3250b2f617d05cf",
+          "sourceDimensions": {
+            "width": 1529,
+            "height": 2048
+          }
+        },
+        {
+          "title": "Chronicles",
+          "sourceFile": "289864.jpg",
+          "sourceSha256": "71acb8f3f9b63a8cd8885386a454f96a030a782a424b229f58bd7f5352f8b529",
+          "deliveryPath": "public/assets/home/chronicles.webp",
+          "deliverySha256": "2b9efe0642313b548c87801a404ca8534b1e9aa61244a49ec5dbdf5a3501a735",
+          "sourceDimensions": {
+            "width": 2048,
+            "height": 1529
+          }
+        },
+        {
+          "title": "Herald Board",
+          "sourceFile": "289863.jpg",
+          "sourceSha256": "eafa89409063fcc5a28f4539b367d74603c1dca9887ebc68e99fddc2c31db690",
+          "deliveryPath": "public/assets/home/herald-board.webp",
+          "deliverySha256": "8d8492b3336e5a97cee62fa57e6b99ce7be6a650e774df18394b22ea1b8b6d70",
+          "sourceDimensions": {
+            "width": 2048,
+            "height": 1143
+          }
+        }
+      ],
+      "framing": {
+        "My Legacy": "Centered cover; king and throne retained.",
+        "Chronicles": "Contain; full source map retained with approximately 5px sidebars at the original 298px-wide by 215px-high 1280 design size.",
+        "Herald Board": "Original centered cover; sorcerer, portal and floating rune stones retained."
+      }
+    },
+    "destinationDisclosures": {
+      "My Legacy": "Legacy profiles are unavailable in this build.",
+      "Chronicles": "Chronicles are unavailable in this build.",
+      "Herald Board": "The herald board is unavailable in this build.",
+      "commonActions": [
+        "Confirm",
+        "Cancel"
+      ],
+      "actionEffect": "Both dismiss the unavailable informational modal to the originating Home selection. No destination system launches."
+    },
+    "evidence": {
+      "functional": "artifacts/home/verification.json",
+      "actualGLBRenders": "artifacts/home/render-verification.json",
+      "modalCopyFit": "artifacts/copy-fit-verification.json",
+      "copyInventory": "artifacts/menu-copy.json",
+      "notes": "Critic independently inspected source artwork, all three Home renders and unavailable-state source wording. Keyboard/controller/pointer focus and geometry assertions are supported by the separate passing Home verification artifact.",
+      "restoredGeometry": "artifacts/home/render-verification.json",
+      "sharedNavigationLayout": "artifacts/layout-verification.json",
+      "settingsRevisionPreservation": "artifacts/settings/preservation.json"
+    },
+    "iterationHistory": [
+      {
+        "iteration": "First actual Home composition",
+        "screenshot": "artifacts/home/home-1280x720.png",
+        "score": 9.2,
+        "findings": "Reference geometry and distinct supplied sources read well. Full map context retained; small embedded label overlap judged acceptable. No visual crop or title-position change requested."
+      },
+      {
+        "iteration": "Final three-viewport Home review",
+        "screenshots": [
+          "artifacts/home/home-1280x720.png",
+          "artifacts/home/home-1920x1080.png",
+          "artifacts/home/home-844x390.png"
+        ],
+        "score": 9.2,
+        "findings": "All titles, complete tile grid, actual supplied image subjects and existing creature are clear. Root corrected a focus-restoration ordering issue; Home verification now passes. No blocking visual issue."
+      },
+      {
+        "iteration": "Wider right Home tiles",
+        "screenshots": [
+          "artifacts/home/home-1280x720.png",
+          "artifacts/home/home-1920x1080.png",
+          "artifacts/home/home-844x390.png"
+        ],
+        "score": 9.2,
+        "findings": "Right tiles increased 298→358px, left and stacked heights/gaps unchanged. All titles fit at desktop and landscape sizes; creature face/crown stay clear. Chronicles full-map sidebars widen by design; Herald Board shows more scene context. No further adjustment requested."
+      },
+      {
+        "iteration": "Restore original right widths and add Showcase nav",
+        "screenshots": [
+          "artifacts/home/home-1280x720.png",
+          "artifacts/home/home-1920x1080.png",
+          "artifacts/home/home-844x390.png"
+        ],
+        "score": 9.2,
+        "findings": "All three fresh actual-GLB Home captures restore 600x434 geometry with 298x215 right tiles. Shared Home/Play/Showcase/Settings navigation fits without title collision. Supplied images and creature are unchanged. Showcase is a truthful unconnected informational dialog. No further visual changes requested."
+      }
+    ],
+    "limits": [
+      "The map's baked-in labels are small and one partially shares the Chronicles heading area; the tile preserves full map context rather than serving as a readable atlas.",
+      "Legacy profiles, Chronicles and Herald Board destinations are unavailable in this build and are explicitly disclosed on activation.",
+      "Reference characters and placeholder copy are intentionally excluded; actual user imagery and existing sorcerer are retained.",
+      "The 9.2 score is subjective visual assessment of Home, distinct from Play's retained 9.3 assessment."
+    ],
+    "verdict": "Retains the subjective 9.2/10 Home assessment for restored original widths and readable four-entry shared navigation. No blocking issue.",
+    "widthRestoration": {
+      "currentGridWidth": 600,
+      "currentLeftSize": [
+        298,
+        434
+      ],
+      "currentRightSize": [
+        298,
+        215
+      ],
+      "gap": 4,
+      "restoredCSSBaseline": "fb4738b",
+      "notes": "Latest user reversal removes only the right-tile width enlargement. Original widths are restored; current Play modes, supplied images, text, creature and other changes remain."
+    },
+    "modalPresentationRevision": "Earlier boxed-dialog captures and iteration notes are historical. Current transparent Confirm/Cancel treatment is reviewed in modalReview; Home layout/art score is unchanged."
+  },
+  "playReview": {
+    "revision": "Classic / Local Duel / Chapters / Online Duel with four-entry shared navigation",
+    "scope": "Current four-card Play screen with the new fourteen-slot Chapters selection route. Card geometry, supplied art and approved creature remain; three other modes retain their honest informational previews.",
+    "score": 9.3,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective visual and wording assessment of the new mode labels in actual-GLB desktop and phone-landscape screenshots. Not a claim that gameplay is integrated or that full-frame Play pixels are unchanged.",
+    "reviewedScreenshots": [
+      "artifacts/final-1280x720.png",
+      "artifacts/final-1920x1080.png",
+      "artifacts/final-landscape-844x390.png"
+    ],
+    "cards": [
+      "Classic",
+      "Local Duel",
+      "Chapters",
+      "Online Duel"
+    ],
+    "cardCount": 4,
+    "visibleCardCount": 4,
+    "defaultSelection": "Local Duel, index 1",
+    "cardGeometry": {
+      "viewportWidth": 1280,
+      "viewportHeight": 720,
+      "leftEdges": [
+        139,
+        340,
+        541,
+        742
+      ],
+      "top": 211,
+      "width": 197,
+      "height": 298,
+      "gap": 4,
+      "rowWidth": 800,
+      "rightEdge": 939,
+      "bottomEdge": 509,
+      "allCardsVisible": true,
+      "carousel": false,
+      "scrollControls": false
+    },
+    "navigation": [
+      "Home",
+      "Play",
+      "Showcase",
+      "Settings"
+    ],
+    "headingTypography": {
+      "fontFamily": "Self-hosted Barlow",
+      "fontWeight": 600,
+      "fontSizeCSS": "max(1.458333cqw, 11px)",
+      "fontSizeAt1280": 18.67,
+      "fontSizeAt960": 14,
+      "selectedColor": "#bf791a shared with card accent border",
+      "inactiveColor": "#b5b2ac",
+      "disabledColor": "#817d73",
+      "currentDisabledCards": 0,
+      "notes": "All four cards open actual preview or informational dialogs, so no card was artificially disabled merely to mimic the unavailable Continue example."
+    },
+    "typographyReference": {
+      "fileName": "card-typography-reference.jpg",
+      "sourceWidth": 960,
+      "sourceHeight": 540,
+      "sourceBytes": 79084,
+      "sourceSha256": "a5c9948c26b68679c4c689d2a58de8d62b9617bd210bac22291577279459b519",
+      "privateLocalReferenceOnly": true,
+      "imageIncludedInRepository": false,
+      "observedStyle": "Compact approximately 14px bold uppercase heading at 960px; selected amber, inactive muted gray, availability-disabled Continue dimmer."
+    },
+    "rubric": [
+      {
+        "category": "Fixed four-card composition",
+        "maximum": 2.5,
+        "score": 2.4,
+        "notes": "All four modes retain the fixed 197x298 row with 4px gaps at 1280 and no carousel. Default Local Duel remains selected. Home/Play/Showcase/Settings headings fit at desktop and landscape sizes."
+      },
+      {
+        "category": "Actual supplied artwork and focal crops",
+        "maximum": 2.0,
+        "score": 1.85,
+        "notes": "Existing wheel, blue gateway, timber bridges and crystal cliffs retain their source pixels, focal policies and portrait proportions. Only the mode labels and preview copy change."
+      },
+      {
+        "category": "Compact mode typography and truthful preview copy",
+        "maximum": 1.5,
+        "score": 1.4,
+        "notes": "Classic, Local Duel, Chapters and Online Duel headings fit all three viewports without wrapping or clipping. Amber selection and muted-gray inactive states remain. Descriptions identify intended modes; all activation dialogs explicitly disclose that gameplay is not connected and offer only Back to Play."
+      },
+      {
+        "category": "Approved creature direction and safe framing",
+        "maximum": 2.0,
+        "score": 1.85,
+        "notes": "Actual creature size, upward anchor, leftward yaw/lean and coordinated arms remain unchanged. Face/crown remain clear; prior dense sampled Idle framing evidence remains available."
+      },
+      {
+        "category": "Lighting, particles and atmospheric cohesion",
+        "maximum": 2.0,
+        "score": 1.8,
+        "notes": "Existing warm gold fog, teal model and particles remain coherent with supplied images. Current navigation pixels intentionally change; no full-frame or old non-text-band identity claim is made for this revision."
+      }
+    ],
+    "copyAudit": {
+      "result": "Pass",
+      "currentCardCopy": [
+        {
+          "id": "classic",
+          "artwork": "new",
+          "title": "CLASSIC",
+          "label": "Classic",
+          "subtitle": "Make your opening move.",
+          "description": "Traditional chess against the computer."
+        },
+        {
+          "id": "local-duel",
+          "artwork": "resume",
+          "title": "LOCAL DUEL",
+          "label": "Local Duel",
+          "subtitle": "Share the board.",
+          "description": "Two players. One device."
+        },
+        {
+          "id": "chapters",
+          "artwork": "load",
+          "title": "CHAPTERS",
+          "label": "Chapters",
+          "subtitle": "Choose a chapter.",
+          "description": "Tactical missions and lasting consequences."
+        },
+        {
+          "id": "online-duel",
+          "artwork": "browse",
+          "title": "ONLINE DUEL",
+          "label": "Online Duel",
+          "subtitle": "Unavailable in this build.",
+          "description": ""
+        }
+      ],
+      "modeDialogs": {
+        "classic": {
+          "heading": "Classic",
+          "paragraph": "Classic chess against the computer is not connected to this menu.",
+          "note": "Menu preview only. No gameplay will start here.",
+          "actions": [
+            {
+              "label": "Confirm",
+              "effect": "Dismiss to Play; no gameplay launch."
+            },
+            {
+              "label": "Cancel",
+              "effect": "Dismiss to Play; no gameplay launch."
+            }
+          ]
+        },
+        "local-duel": {
+          "heading": "Local Duel",
+          "paragraph": "Two-player chess on one device is not connected to this menu.",
+          "note": "Menu preview only. No gameplay will start here.",
+          "actions": [
+            {
+              "label": "Confirm",
+              "effect": "Dismiss to Play; no gameplay launch."
+            },
+            {
+              "label": "Cancel",
+              "effect": "Dismiss to Play; no gameplay launch."
+            }
+          ]
+        },
+        "online-duel": {
+          "heading": "Online Duel",
+          "paragraph": "Online play is unavailable in this build. No matchmaking service is connected.",
+          "note": "Menu preview only. No gameplay will start here.",
+          "actions": [
+            {
+              "label": "Confirm",
+              "effect": "Dismiss to Play; no gameplay launch."
+            },
+            {
+              "label": "Cancel",
+              "effect": "Dismiss to Play; no gameplay launch."
+            }
+          ]
+        }
+      },
+      "functionalBoundary": "Classic, Local Duel and Online Duel retain informational mode dialogs. Chapters opens a fourteen-slot selection preview with two previewable and twelve locked slots. No gameplay launch, campaign integration, progress save, unlock or matchmaking service is offered.",
+      "obsoleteFlowRemoved": "Old New/Resume/Load save-preview actions and save metadata UI are removed; only menu preferences persist.",
+      "settings": "Particle quality and motion describe actual effects. Audio is explicitly a saved preference with no connected audio.",
+      "sourceEvidence": "artifacts/menu-copy.json",
+      "modalFitEvidence": "artifacts/copy-fit-verification.json",
+      "showcase": {
+        "screen": "Standalone Showcase overview",
+        "destinations": [
+          "AI Battles",
+          "Arenas",
+          "Match Replays"
+        ],
+        "battleDisclosure": "Cinematic AI battle playback is not connected in this build.",
+        "replayDisclosure": "Match replays are planned for a future update.",
+        "workingDestination": "Arenas is a four-image artwork gallery using the actual supplied environment images.",
+        "notes": "Supersedes the old Showcase informational dialog. No fabricated battle playback, replay library, matchmaking or gameplay launch is offered."
+      },
+      "chaptersDestination": {
+        "screen": "Fourteen-slot chapter-selection preview",
+        "firstTwoSlots": "Chapter 01 and Chapter 02 open informational previews.",
+        "remainingSlots": "Chapter 03 through Chapter 14 remain locked; activation announces that campaign progression is not connected.",
+        "previewParagraph": "Chapter gameplay is not connected in this build.",
+        "previewNote": "This is a chapter-selection preview. Campaign progress and unlocks are not recorded.",
+        "gridBack": "Returns to Play with the Chapters card selected and focused.",
+        "previewActions": [
+          "Confirm",
+          "Cancel"
+        ],
+        "previewActionEffect": "Both dismiss to the selected Chapters slot without starting gameplay or recording progress."
+      }
+    },
+    "suppliedArtwork": {
+      "evidence": "artifacts/card-artwork.json",
+      "mapping": [
+        {
+          "mode": "CLASSIC",
+          "assetKey": "new",
+          "sourceFile": "288933.jpg",
+          "sourceSha256": "716d44458e280d8f7922214f7d60494ce7d3822818af944ae40f7d727ef0d159",
+          "deliveryFile": "public/assets/environments/card-new.webp",
+          "backgroundPosition": "15% 50%"
+        },
+        {
+          "mode": "LOCAL DUEL",
+          "assetKey": "resume",
+          "sourceFile": "288939.jpg",
+          "sourceSha256": "6c1b25c4691fbd62d82334de018190d7507fdd155773ee1b4a8d876f4dcae423",
+          "deliveryFile": "public/assets/environments/card-resume.webp",
+          "backgroundPosition": "82% 50%"
+        },
+        {
+          "mode": "CHAPTERS",
+          "assetKey": "load",
+          "sourceFile": "288943.jpg",
+          "sourceSha256": "40c2c0b0c52b1749ba6ecc45c455e2b250aba321b3232a9623b91976783cc040",
+          "deliveryFile": "public/assets/environments/card-load.webp",
+          "backgroundPosition": "58% 50%"
+        },
+        {
+          "mode": "ONLINE DUEL",
+          "assetKey": "browse",
+          "sourceFile": "289365.jpg",
+          "sourceSha256": "404ff647175ba14d094a7d27dbb8857d9733d39e1778553633cc5d07153b48ba",
+          "deliveryFile": "public/assets/environments/card-browse.webp",
+          "backgroundPosition": "64% 50%"
+        }
+      ]
+    },
+    "model": {
+      "status": "Actual user-supplied GLB integrated",
+      "sourceFile": "Crownfall_Sorcerer_Digits_v3_1(1).glb",
+      "deliveredFile": "public/models/crownfall-sorcerer.glb",
+      "assetEvidence": "artifacts/model-asset.json",
+      "verificationEvidence": "artifacts/model-verification.json",
+      "sourceBytes": 19382272,
+      "deliveredBytes": 4217336,
+      "triangles": 80910,
+      "joints": 142,
+      "retainedClips": [
+        "Attack",
+        "Idle",
+        "Threat_Cast"
+      ],
+      "activeMenuClip": "Idle",
+      "geometrySimplification": false,
+      "textureConversion": "WebP, maximum dimension 2048",
+      "geometryCompression": "Draco with self-hosted decoder",
+      "fallback": "Illustration retained for unavailable or unsupported model rendering",
+      "idlePlayback": {
+        "clip": "Idle",
+        "authoredDurationSeconds": 3.0416667461395264,
+        "effectiveTimeScale": 1,
+        "repetitions": "Infinity",
+        "clock": "Accumulated foreground elapsed time, including skipped render frames; OS/app reduced motion freezes the current pose."
+      }
+    },
+    "creatureTransform": {
+      "baselineCommit": "3b3f594",
+      "normalizedHeightBefore": 5.6784,
+      "normalizedHeightAfter": 5.6784,
+      "scaleIncreasePercentThisRevision": 0,
+      "approvedPriorScaleIncrease": {
+        "before": 5.408,
+        "after": 5.6784,
+        "percent": 5
+      },
+      "yawBeforeRadians": -0.47,
+      "yawAfterRadians": -0.47,
+      "worldRollBeforeRadians": 0.045,
+      "worldRollAfterRadians": 0.045,
+      "rotationOrder": "ZYX",
+      "modelCenterYBefore": -0.96,
+      "modelCenterYAfter": -0.96,
+      "parentVerticalAnchorBefore": 0,
+      "parentVerticalAnchorAfter": 0.055,
+      "parentVerticalAnchorDelta": 0.055,
+      "ambientSwayYAmplitude": 0.012,
+      "method": "Only an additive parent world-Y anchor is raised; existing ambient Y sway remains additive. Scale, model center, approved yaw/lean, rig, all four arm poses, Idle clip, materials, cards and artwork are unchanged."
+    },
+    "creatureIdleFramingEvidence": {
+      "report": "artifacts/creature-height/idle-framing.json",
+      "calibrationOverlay": "artifacts/creature-height/proxy-calibration-1280.png",
+      "reviewedSampledWorstImages": [
+        "artifacts/creature-height/sampled-worst-crown-1280.png",
+        "artifacts/creature-height/sampled-worst-eye-1280.png"
+      ],
+      "authoredTimesCount": 74,
+      "sampledTimesCount": 147,
+      "ambientCombinationsPerTime": 9,
+      "sampledPosesPerAspect": 1323,
+      "method": "Actual decoded/skinned GLB vertex projections from authored Idle key times and midpoints, combined with independent ambient Y/yaw extrema. Geometric rest-space crown/face/eye proxy regions calibrated by screenshot overlay. No product debug edits.",
+      "sampledMinimumClearancesPx": [
+        {
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "crownTopMargin": 11.284,
+          "faceProxyAboveCardTop": 2.425,
+          "eyeProxyAboveCardTop": 17.294
+        },
+        {
+          "viewport": {
+            "width": 1920,
+            "height": 1080
+          },
+          "crownTopMargin": 16.926,
+          "faceProxyAboveCardTop": 3.638,
+          "eyeProxyAboveCardTop": 25.94
+        },
+        {
+          "viewport": {
+            "width": 844,
+            "height": 390
+          },
+          "crownTopMargin": 6.112,
+          "faceProxyAboveCardTop": 1.302,
+          "eyeProxyAboveCardTop": 9.356
+        }
+      ],
+      "interpretation": "All sampled crown, face-proxy and eye-proxy clearances are positive across the reviewed aspects. Sampled worst desktop images also visually retain the crown and visible eye above the cards.",
+      "limits": "Dense sampled geometric evidence, not a continuous mathematical guarantee or semantic face/ring detector. Applies to the menu Idle clip and tested ambient extrema.",
+      "timingRevision": "Playback speed changes to authored 1x; approved rig, transforms and procedural amplitudes remain unchanged. Prior clip-times by independent ambient-extrema samples still concern the same pose range, with their existing dense-sampling—not continuous-guarantee—limits."
+    },
+    "currentEvidence": {
+      "menu": "artifacts/verification.json",
+      "layout": "artifacts/layout-verification.json",
+      "landscape": "artifacts/landscape-verification.json",
+      "copy": "artifacts/copy-fit-verification.json",
+      "modeInventory": "artifacts/menu-copy.json",
+      "artwork": "artifacts/card-artwork.json",
+      "model": "artifacts/model-verification.json",
+      "fourEntryNavigation": "artifacts/layout-verification.json",
+      "settingsRevisionPreservation": "artifacts/settings/preservation.json",
+      "chaptersRoute": "artifacts/chapters/verification.json",
+      "creatureMotion": "artifacts/creature-motion/verification.json"
+    },
+    "iterationHistory": [
+      {
+        "iteration": "New mode labels and honest mode previews",
+        "screenshots": [
+          "artifacts/final-1280x720.png",
+          "artifacts/final-1920x1080.png",
+          "artifacts/final-landscape-844x390.png"
+        ],
+        "score": 9.3,
+        "findings": "All mode titles and concise descriptions fit at desktop and landscape sizes. Default Local Duel amber state is clear. Exact source wording and preview disclosures independently inspected. No further visual or wording adjustment requested."
+      },
+      {
+        "iteration": "Four-entry shared navigation",
+        "screenshots": [
+          "artifacts/final-1280x720.png",
+          "artifacts/final-1920x1080.png",
+          "artifacts/final-landscape-844x390.png"
+        ],
+        "score": 9.3,
+        "findings": "Current Classic/Local Duel/Chapters/Online Duel cards remain clear in fresh 1280/1920/844 captures. Showcase label, relocated Settings and RB fit. Showcase source wording and actual dialog screenshot accurately disclose unconnected matches. No visual change requested."
+      }
+    ],
+    "remainingLimits": [
+      "Modes describe intended destinations; actual gameplay integration is absent and disclosed on activation.",
+      "Supporting text remains small on phone landscape.",
+      "Source image cover crops omit panoramic context.",
+      "The 9.3 score is subjective visual judgment, not a performance benchmark.",
+      "Navigation intentionally gains Showcase and shifts Settings/RB. Historical pixel-preservation reports predating the four-entry nav are not current evidence."
+    ],
+    "verdict": "Retains the subjective 9.3/10 Play composition assessment. Chapters now opens a reference-style selection screen rather than the superseded direct mode dialog. Gameplay integration remains absent and disclosed; no blocking visual issue.",
+    "modalPresentationRevision": "Mode and chapter preview disclosures are unchanged, while the shared presentation and action labels now follow modalReview. Previous boxed-modal images are historical; Play layout/art score is unchanged."
+  },
+  "verdict": "The shared modal treatment meets the subjective 9/10 visual target at 9.2. Seven actual-GLB captures and decoded flow frames retain the reference hierarchy with clear desktop/landscape copy and restrained actions. All nine current states share the same component; informational dialogs remain truthful and Settings still saves immediately. No blocking visual issue or further polish requested. Runtime outcomes belong to the separate verification reports.",
+  "sharedNavigationReview": {
+    "labels": [
+      "Home",
+      "Play",
+      "Showcase",
+      "Settings"
+    ],
+    "reviewedScreenshots": [
+      "artifacts/home/home-1280x720.png",
+      "artifacts/home/home-1920x1080.png",
+      "artifacts/home/home-844x390.png",
+      "artifacts/final-1280x720.png",
+      "artifacts/final-1920x1080.png",
+      "artifacts/final-landscape-844x390.png"
+    ],
+    "sourceInventory": "artifacts/menu-copy.json",
+    "finding": "Four fixed-width shared navigation labels remain clear. Showcase now opens a real menu screen rather than the superseded informational dialog. A moving amber indicator coordinates tab changes without changing settled navigation geometry. Current Home/Play artwork and approved creature framing remain.",
+    "latestSpacing": "Fixed-width navigation boxes with24px gaps at 1280, as requested for the Settings revision. Category/reference labels do not replace approved Home/Play/Showcase/Settings names.",
+    "showcaseFlow": "Standalone Showcase overview with AI Battles, Arenas and Match Replays; see showcaseReview.",
+    "chaptersSubscreen": "Chapters remains in the Play context, hides the top navigation to match the reference, and exposes a Back footer. Back restores the Chapters card and actual focus in Play; ordinary root navigation is retained elsewhere."
+  },
+  "settingsReview": {
+    "scope": "New six-category Settings hub and reference-style detail screens. Home and Play assessments remain separate.",
+    "score": 9.1,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective reference-to-screenshot visual assessment, plus source inspection of browser capability disclosures. Not a pixel-identical reproduction, hardware frame-rate benchmark, or substitute for functional verification.",
+    "references": {
+      "privateLocalAttachmentsOnly": true,
+      "imagesIncludedInRepository": false,
+      "categoryGrid": "279170.jpg",
+      "generalLanguage": "279176.jpg",
+      "videoAndGraphics": [
+        "279171.jpg",
+        "279172.jpg"
+      ],
+      "keybindings": "279173.jpg",
+      "controllerDiagram": "279174.jpg",
+      "audio": "279175.jpg",
+      "credits": "Uses the same detail-page visual language; no invented dedicated reference image."
+    },
+    "reviewedScreenshots": [
+      "artifacts/settings/grid-1280x720.png",
+      "artifacts/settings/grid-1920x1080.png",
+      "artifacts/settings/grid-844x390.png",
+      "artifacts/settings/general-1280x720.png",
+      "artifacts/settings/general-844x390.png",
+      "artifacts/settings/controls-1280x720.png",
+      "artifacts/settings/controls-844x390.png",
+      "artifacts/settings/input-1280x720.png",
+      "artifacts/settings/input-844x390.png",
+      "artifacts/settings/video-1280x720.png",
+      "artifacts/settings/video-844x390.png",
+      "artifacts/settings/audio-1280x720.png",
+      "artifacts/settings/audio-844x390.png",
+      "artifacts/settings/credits-1280x720.png",
+      "artifacts/settings/credits-844x390.png"
+    ],
+    "supplementalNativeScrollbarInspection": {
+      "historicalBaselineImage": "/tmp/settings-scrollbar-native.png",
+      "historicalFinding": "White native-thumb confirmation established that the earlier missing scrollbar came from Playwright --hide-scrollbars, not absent native scrolling. That white style is superseded.",
+      "currentFinding": "Current actual Video desktop/landscape and Controls landscape captures show recessed bronze native rails with rounded amber/gold thumbs. Controls shares the same styling; no custom decorative scrollbar cue is retained.",
+      "currentReview": "scrollbarReview",
+      "latestSourceInspection": "Shared native list/description scrollbar selectors, gradient hover/active thumb states and removal of the Controls white override inspected. Native scrolling remains the underlying control."
+    },
+    "hubGeometryAt1280": {
+      "x": 106,
+      "y": 158,
+      "width": 900,
+      "height": 438,
+      "columns": 3,
+      "rows": 2,
+      "categories": [
+        "General",
+        "Controls",
+        "Input",
+        "Video",
+        "Audio",
+        "Credits"
+      ],
+      "notes": "Contiguous narrow-seam tiles with top-left labels, centered icons, repeated circled-plus texture and amber selection. Approved actual sorcerer retained behind the translucent grid."
+    },
+    "detailLayoutAt1280": {
+      "listX": 106,
+      "listTop": 150,
+      "listWidth": 544,
+      "descriptionX": 787.2,
+      "descriptionTop": 150,
+      "descriptionWidth": 294.4,
+      "fontSize": 16,
+      "notes": "Left aligned setting/value rows with charcoal selected band and amber selected text; right description column; strongly defocused existing scene; footer Back/Reset/adjust prompts. Native scroll exposes longer lists."
+    },
+    "rubric": [
+      {
+        "category": "Six-tile hub hierarchy and reference likeness",
+        "maximum": 2.5,
+        "score": 2.25,
+        "notes": "Three-by-two hierarchy, category order, selected amber state and large General gear align with reference. Pattern density/icon silhouettes remain approximate, but all tiles are clear at desktop and landscape sizes."
+      },
+      {
+        "category": "Detail columns, rows, selection and overflow",
+        "maximum": 2.5,
+        "score": 2.35,
+        "notes": "Left rows/right description, muted bands, amber selection, typography rhythm and defocused background are close. Corrected General and Video initial selections now agree with right descriptions. Native scrollbar exposes overflow in longer Video and Controls lists."
+      },
+      {
+        "category": "Typography and desktop/landscape readability",
+        "maximum": 1.5,
+        "score": 1.38,
+        "notes": "Labels, values, descriptions and footer prompts fit. Larger landscape Input labels resolve their initial tiny rendering. Short landscape lists scroll where necessary rather than causing page overflow. Some supporting text remains small."
+      },
+      {
+        "category": "Controller and keybinding presentation",
+        "maximum": 1.5,
+        "score": 1.32,
+        "notes": "Thin outlined standard controller and restrained leader labels match the reference treatment. Labels describe menu navigation/select/back/reset rather than unsupported gameplay actions. Keybinding rows clearly identify menu actions and capture instructions."
+      },
+      {
+        "category": "Palette, blur and scene cohesion",
+        "maximum": 1.0,
+        "score": 0.88,
+        "notes": "Warm dark surfaces, gray/amber controls and defocused actual sorcerer retain the existing scene identity. Cyan ambient color and some texture/icon differences remain compared with the generic reference."
+      },
+      {
+        "category": "Honest browser controls and attribution copy",
+        "maximum": 1.0,
+        "score": 0.92,
+        "notes": "Language is English-only; device/sync/unsupported effects and disconnected audio are disclosed. Resolution scale/frame-limit/particle controls are scoped to the menu scene. Texture copy now says supplied optimized textures. Credits use actual supplied assets and project technologies rather than invented contributors."
+      }
+    ],
+    "sourceDisclosureAudit": {
+      "result": "Pass for visible wording and source descriptions; runtime operation is verified separately.",
+      "general": "English only; local preferences and OS reduced-motion precedence explicitly described.",
+      "controls": "Bindings apply to Crownfall menu actions. Capture/conflict/reset behavior is handled by separate functional tests.",
+      "input": "Standard controller layout, real connection status and unassigned buttons are disclosed; no fake remapping or gameplay Jump/Run actions.",
+      "video": "Browser resolution/fullscreen limits, automatic resolution not implemented, browser-controlled vertical sync, fixed anti-aliasing and unavailable engine effects are explicit. Supplied optimized textures have no alternate quality tiers.",
+      "audio": "Master Volume stores a preference and explicitly has no audible effect. Device output is browser/OS managed; SFX/music/dialogue are unavailable.",
+      "credits": "Supplied artwork/sorcerer and actual React/TypeScript/Three.js/Barlow/license attribution only."
+    },
+    "iterationHistory": [
+      {
+        "iteration": "Initial actual-GLB screenshot review",
+        "score": 8.8,
+        "findings": "Initial General gear too small, stationary pointer produced selected-row/description mismatch on open, landscape controller labels too small, and capture suppressed the native scrollbar."
+      },
+      {
+        "iteration": "Corrected selection, gear and landscape labels",
+        "score": 9.1,
+        "findings": "Refreshed General and Video first-row selections agree with descriptions, large General gear matches reference presence, controller labels are readable on landscape. No redesign required."
+      },
+      {
+        "iteration": "Final native-overflow and truthful-copy check",
+        "score": 9.1,
+        "findings": "Removed Playwright hide-scrollbars capture flag and inspected native white-thumb confirmation. Source wording corrected to supplied optimized textures. No more visual polish requested. All production captures were refreshed after these narrow fixes, with native scrollbars visible."
+      }
+    ],
+    "evidence": {
+      "actualGLBCaptures": "artifacts/settings/screenshots.json",
+      "functionalBehavior": "artifacts/settings/verification.json",
+      "scenePreservation": "artifacts/settings/preservation.json",
+      "source": [
+        "src/SettingsGrid.tsx",
+        "src/SettingsGrid.css",
+        "src/SettingsDetail.tsx",
+        "src/SettingsDetail.css"
+      ],
+      "notes": "Actual Settings screenshots and disclosure source were independently inspected. The separate Settings verification artifact currently passes nine groups; the visual score remains distinct from runtime and hardware performance."
+    },
+    "approvedDifferences": [
+      "Existing user-supplied sorcerer remains rather than importing the reference mannequin.",
+      "Descriptions reflect browser capabilities and current menu scope, replacing engine-only placeholder controls and unsupported languages/gameplay actions.",
+      "Shared navigation now uses fixed-width boxes and 24px gaps at 1280.",
+      "Credits follow the same detail language with factual project attribution.",
+      "Desktop and phone-landscape layouts remain the supported presentation.",
+      "Latest explicit user request replaces the reference white scrollbar with a themed bronze rail and gold/amber native thumb; see separate scrollbarReview."
+    ],
+    "limits": [
+      "Icon silhouettes and repeating pattern density are approximations rather than exact source artwork.",
+      "Some landscape supporting text is small; long lists use native vertical scrolling.",
+      "Browser/OS capabilities govern fullscreen, devices, synchronization and display output; disconnected audio is disclosed.",
+      "The 9.1 score is subjective visual judgment, not proof of functional correctness or hardware performance."
+    ],
+    "verdict": "Meets the subjective 9/10 visual target for Settings after the focused fixes. No blocking visual issue or further redesign requested."
+  },
+  "interactionScores": {
+    "Native scrollbar theme": 9.3,
+    "Menu motion design": 9.1,
+    "Creature idle motion": 9.2,
+    "Shared modal presentation": 9.2
+  },
+  "showcaseReview": {
+    "scope": "Current standalone Showcase overview, unavailable cinematic battle library, supplied-art arena gallery and future replay archive.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective theme, composition, readability and truthful-flow review of all 15 actual-GLB captures. This is not a claim that battle playback or replay recording exists.",
+    "reviewedScreenshots": [
+      "artifacts/showcase/overview-1280x720.png",
+      "artifacts/showcase/battles-1280x720.png",
+      "artifacts/showcase/arenas-1280x720.png",
+      "artifacts/showcase/arena04-1280x720.png",
+      "artifacts/showcase/replays-1280x720.png",
+      "artifacts/showcase/overview-1920x1080.png",
+      "artifacts/showcase/battles-1920x1080.png",
+      "artifacts/showcase/arenas-1920x1080.png",
+      "artifacts/showcase/arena04-1920x1080.png",
+      "artifacts/showcase/replays-1920x1080.png",
+      "artifacts/showcase/overview-844x390.png",
+      "artifacts/showcase/battles-844x390.png",
+      "artifacts/showcase/arenas-844x390.png",
+      "artifacts/showcase/arena04-844x390.png",
+      "artifacts/showcase/replays-844x390.png"
+    ],
+    "layout": "Overview, library and gallery use the existing 800 by 298 Play envelope at 1280. Creature remains behind the menu, with crown and eye clear. Desktop and phone-landscape only.",
+    "rubric": [
+      {
+        "category": "Overview hierarchy and navigation",
+        "maximum": 2.5,
+        "score": 2.3,
+        "notes": "Three distinct destinations, compact headings, amber selection and reachable Back retain the established menu language."
+      },
+      {
+        "category": "Composition and creature balance",
+        "maximum": 2,
+        "score": 1.85,
+        "notes": "Panels remain subordinate to the exposed face, crown and four-arm silhouette. Bronze borders, dark library surfaces and restrained emblems fit the scene."
+      },
+      {
+        "category": "Actual supplied artwork and gallery framing",
+        "maximum": 2,
+        "score": 1.85,
+        "notes": "All four original environment artworks are available. Large previews contain the full compositions; thumbnails and a counter communicate selection."
+      },
+      {
+        "category": "Typography and landscape readability",
+        "maximum": 1.5,
+        "score": 1.3,
+        "notes": "Headings, status, descriptions and controls fit all three viewports. Thumbnail labels and some supporting text remain small on phone landscape."
+      },
+      {
+        "category": "Truthful flow and status",
+        "maximum": 2,
+        "score": 1.9,
+        "notes": "AI Battles explicitly discloses unconnected playback; Match Replays says future update. Explore Arenas is a genuine gallery shortcut. No fake playing match, saved replay or unsupported launch action appears."
+      }
+    ],
+    "copyAudit": {
+      "AI Battles": "Cinematic AI battle playback is not connected in this build.",
+      "Arenas": "Environment artwork preview; four actual supplied images rather than playable arena scenes.",
+      "Match Replays": "Match replays are planned for a future update.",
+      "sharedWorkingAction": "Explore Arenas",
+      "back": "Returns through the Showcase overview to the originating screen."
+    },
+    "evidence": {
+      "actualGLBCaptures": "artifacts/showcase/screenshots.json",
+      "functional": "artifacts/showcase/verification.json",
+      "artwork": "artifacts/card-artwork.json",
+      "source": [
+        "src/Showcase.tsx",
+        "src/Showcase.css"
+      ],
+      "functionalStatusAtReview": "Separate Showcase verification passes seven groups."
+    },
+    "captureStateNote": "At 1920 and 844, the generic arenas capture retains Arena04 selected from preceding interaction. Those are valid retained-state gallery captures, not fresh Arena01 evidence.",
+    "limits": [
+      "Some phone-landscape supporting and thumbnail text is small.",
+      "Battle playback and replay recording/library functionality remain unavailable and are disclosed.",
+      "Score is subjective visual judgment, not a pixel-match or performance benchmark."
+    ],
+    "verdict": "Meets 9.2/10 for the current theme and flow. No blocking visual issue or further polish requested."
+  },
+  "scrollbarReview": {
+    "scope": "Latest themed native scrollbars in Settings lists, Controls bindings and description panes.",
+    "score": 9.3,
+    "scoreOutOf": 10,
+    "reviewedScreenshots": [
+      "artifacts/settings/video-1280x720.png",
+      "artifacts/settings/video-844x390.png",
+      "artifacts/settings/controls-844x390.png"
+    ],
+    "finding": "Rounded gold/amber thumbs remain clearly visible on inset bronze rails without competing with selected-row text. Consistent width and palette survive phone landscape. The former Controls white override is removed.",
+    "implementationKind": "Browser-native scrollbar styling; no custom decorative scroll cue or replacement scroll logic.",
+    "sourceInspection": [
+      "src/SettingsDetail.css",
+      "src/ControlsPanel.css"
+    ],
+    "states": "Gradient thumb, recessed track and brighter hover/pressed colors inspected in CSS; resting actual browser captures inspected visually.",
+    "functionalEvidence": "artifacts/settings/verification.json",
+    "limit": "Native scrollbar shape/state rendering depends on browser and operating system. The visual score does not independently certify every device scroll gesture.",
+    "verdict": "Meets 9.3/10 for this narrow theme revision. No visual correction requested."
+  },
+  "motionReview": {
+    "scope": "Coordinated screen entrances/exits, option feedback, modal transitions, description changes and Showcase image fades.",
+    "score": 9.1,
+    "scoreOutOf": 10,
+    "assessmentType": "Subjective choreography and scene-cohesion assessment from decoded actual recording frames, source inspection and separate functional evidence. No hardware frame-rate, frame-pacing or AAA certification is implied.",
+    "recording": "artifacts/motion/menu-transitions.webm",
+    "recordingMetadata": "artifacts/motion/recording.json",
+    "finalFrame": "artifacts/motion/recording-final-frame.png",
+    "recordingConditions": {
+      "durationSeconds": 29.96,
+      "viewport": [
+        960,
+        540
+      ],
+      "actualCreature": "Actual supplied GLB and Idle",
+      "particleQuality": "Low",
+      "sceneResolutionPercent": 50,
+      "sceneFrameCap": 30,
+      "uiMotionEnabled": true,
+      "softwareWebGL": true,
+      "trimmed": false
+    },
+    "reviewMethod": "Decoded representative real frames throughout the full recording and denser sequences around screen changes, mode dialog, Video detail and rapid return. Inspection-frame encoded times are distinct from metadata action wall-clock times.",
+    "reviewedEncodedSequencesSeconds": [
+      {
+        "from": 7.25,
+        "to": 7.75,
+        "observation": "Play to Home handoff; short glide/fade preserves the creature and settles to the approved grid."
+      },
+      {
+        "from": 10.5,
+        "to": 11,
+        "observation": "Home to Play settles without changing approved card geometry."
+      },
+      {
+        "from": 11.25,
+        "to": 11.75,
+        "observation": "Complete Chapters mode dialog, readable content and defocused backdrop."
+      },
+      {
+        "from": 13.25,
+        "to": 13.75,
+        "observation": "Showcase overview entrance retains scene continuity and amber hierarchy."
+      },
+      {
+        "from": 17.25,
+        "to": 17.75,
+        "observation": "AI Battles library entrance remains composed and readable."
+      },
+      {
+        "from": 23,
+        "to": 24,
+        "observation": "Video detail and description changes retain clear columns while the existing scene defocuses."
+      },
+      {
+        "from": 24.25,
+        "to": 25.75,
+        "observation": "Rapid requests pass through transitional background samples and recover to stable Play with Chapters selected."
+      },
+      {
+        "from": 26,
+        "to": 28,
+        "observation": "Final Play state remains visible and stable; the recording tail is retained."
+      }
+    ],
+    "choreography": {
+      "screenExitMs": 180,
+      "screenEntryMs": 280,
+      "tileStaggerMs": 16,
+      "maximumStaggeredSettleMs": 300,
+      "optionFeedbackMs": "100–160",
+      "navigationIndicatorMs": 240,
+      "arenaImageFadeMs": 280,
+      "notes": "Low-amplitude easing and restrained press feedback fit the menu. Incoming live controls receive focus immediately; outgoing DOM snapshots are inert and hidden from assistive technology."
+    },
+    "evidence": {
+      "functional": "artifacts/motion/verification.json",
+      "functionalStatusAtReview": "Current separate motion verification passes nine groups, including the new Chapters integration. The retained 9.1 motion-design score and original motion recording remain distinct from the dedicated Chapters flow review.",
+      "source": [
+        "src/MenuTransition.tsx",
+        "src/MenuTransition.css",
+        "src/App.tsx",
+        "src/styles.css",
+        "src/HomeGrid.css",
+        "src/SettingsGrid.css",
+        "src/SettingsDetail.css",
+        "src/ControlsPanel.css",
+        "src/Showcase.css"
+      ]
+    },
+    "reducedMotion": "Source and passing separate tests show OS reduced motion or saved Ambient Motion off bypasses screen choreography and CSS micro-motion immediately. The normal-motion recording is not reduced-motion footage.",
+    "captureCorrection": "Initial 21-second software-rendered capture had a dropped visual tail and unusable action/video timing alignment. It was replaced by the full untrimmed 29.96-second lower-fill capture. Current metadata correctly labels action times as wall clock, not encoded seek positions.",
+    "limits": [
+      "Software capture repeats or skips intermediate visual samples; it does not establish physical-device frame pacing or 60fps performance.",
+      "The recovered recording retains the final state but does not clearly preserve every short gallery image-crossfade step. Gallery settled states were separately inspected at all three viewports; fade behavior is also present in source.",
+      "Rapid interrupted navigation includes short transitional background-only samples before the final requested view. The separate functional report confirms cleanup and final live focus; capture timing is not a latency bound.",
+      "The score assesses motion design and cohesion, not a claim of AAA production quality."
+    ],
+    "verdict": "Meets 9.1/10 for restrained, coordinated menu-motion design. No blocking visual issue or further polish requested; hardware smoothness remains outside this software capture assessment.",
+    "modalPresentationRevision": "Original recording samples of boxed dialogs predate the current shared modal shell. Current modal appearance/flow is recorded separately in modalReview; the prior9.1 menu-motion design score is retained."
+  },
+  "loadingReview": {
+    "scope": "Current Crownfall loading presentation, actual resource-preparation states and release into the existing menu.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective composition, typography, state clarity and handoff-design assessment from actual browser captures, decoded recording frames and source inspection. Not a pixel-match, load-time or physical GPU frame-pacing benchmark.",
+    "reviewedScreenshots": [
+      "artifacts/loading/loading-1280x720.png",
+      "artifacts/loading/loading-1920x1080.png",
+      "artifacts/loading/loading-844x390.png",
+      "artifacts/loading/unknown-length-1280x720.png",
+      "artifacts/loading/recovery-1280x720.png",
+      "artifacts/loading/recovery-844x390.png",
+      "artifacts/loading/menu-ready-1280x720.png"
+    ],
+    "artDirection": {
+      "sourceArtwork": "public/assets/environments/card-resume.webp",
+      "originalUserImage": "288939.jpg",
+      "integrityEvidence": "artifacts/card-artwork.json",
+      "finding": "Actual supplied blue-gateway environment carries the composition. A dark left field supports a large Crownfall wordmark and restrained crown/orbit seal, while cool portal depth remains legible on the right. Bronze progress, sparse teal/gold motes and fine corner details match the approved menu palette.",
+      "inspiration": "https://carleaf.artstation.com/",
+      "inspirationScope": "Composition inspiration only. No external portfolio artwork imported, no supplied image regeneration or retouching."
+    },
+    "rubric": [
+      {
+        "category": "Composition and theme",
+        "maximum": 3,
+        "score": 2.8,
+        "notes": "Strong left-brand/right-portal balance, restrained ornament and coherent dark teal/bronze palette. Supplied scene retains recognizable depth rather than becoming a flat backdrop."
+      },
+      {
+        "category": "Brand hierarchy and typography",
+        "maximum": 2,
+        "score": 1.9,
+        "notes": "Crown/orbit seal and condensed Crownfall wordmark form a clear hierarchy. Intended font settlement now controls the styled wordmark reveal, with reserved layout and no wide-to-condensed swap inside the styled loading view."
+      },
+      {
+        "category": "Progress, status and recovery clarity",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Known transfer shows actual bytes, unknown length uses an indeterminate rail, and degraded readiness explicitly offers Retry or Continue with an illustrated sorcerer. Preparation work is not represented by a fake timer."
+      },
+      {
+        "category": "Motion and ready-menu handoff design",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Slow orbit, subtle landscape drift and sparse motes suit the screen. Ready state releases into the complete existing Play composition; model readiness and under-cover opacity avoid a half-visible final sorcerer. Capture cannot establish physical smoothness."
+      },
+      {
+        "category": "Desktop and phone-landscape presentation",
+        "maximum": 1,
+        "score": 0.9,
+        "notes": "Brand, status, progress and recovery actions fit at 1280,1920 and844 landscape. Phone-landscape supporting copy is compact but readable. No portrait layout introduced."
+      }
+    ],
+    "preparationSemantics": {
+      "knownTransferCapture": "Actual delivered 4,217,336-byte GLB streamed at a real 1MiB boundary before completion. Visible 1.0 / 4.0 MB status refers to that transfer.",
+      "progressMeaning": "The rail represents menu-preparation units: decoded artwork, fonts, model transfer and first render. It is not a combined application-byte percentage. Failed resources settle into an explicitly disclosed degraded state.",
+      "unknownLength": "No fabricated byte total or numeric percentage is presented. Full-width faint indeterminate gradient replaces the earlier scaled stub and avoids implying backwards preparation.",
+      "readyGate": "Actual decoded artwork/font work and model first-render or explained fallback settlement determine readiness. Menu input remains blocked while the loading gate is active.",
+      "minimumWait": "No artificial minimum loading time. The normal exit is a short visual transition; OS or saved reduced motion bypasses its delay.",
+      "slowWork": "A slow-load notice can offer Continue while preparation finishes. The notice does not claim that pending work is complete."
+    },
+    "reviewedVisibleStates": {
+      "normal": "Loading the sorcerer · 1.0 / 4.0 MB",
+      "unknownLength": "Loading the sorcerer, with an indeterminate rail.",
+      "recovery": "The menu is ready with an illustrated sorcerer.",
+      "recoveryActions": [
+        "Retry loading",
+        "Continue to menu"
+      ],
+      "ready": "The board awaits",
+      "menu": "Four approved Classic / Local Duel / Chapters / Online Duel cards and the actual supplied sorcerer are present after handoff."
+    },
+    "recordingReview": {
+      "file": "artifacts/loading/loading-handoff.webm",
+      "metadata": "artifacts/loading/captures.json",
+      "finalFrame": "artifacts/loading/recording-final-frame.png",
+      "durationSeconds": 12.12,
+      "viewport": [
+        960,
+        540
+      ],
+      "conditions": "Actual supplied GLB, Low particles, 50 percent scene resolution and 30fps scene cap for software WebGL capture. Full untrimmed recording.",
+      "method": "Decoded actual frames through the complete recording and a denser encoded 8.00–8.56s handoff sequence; encoded positions are inspection references, not load-time measurements.",
+      "observations": [
+        "Crest and status remain visible while the intended wordmark font is pending. The condensed brand appears after actual type readiness.",
+        "Actual transfer status advances into preparation and ready copy; the final menu contains a fully visible actual GLB rather than a persistent blank or half-opacity final character.",
+        "Stable final Play is visible through the recording tail, preserving the approved card geometry, artwork and creature framing."
+      ],
+      "limit": "Software recording repeats or skips intermediate samples and does not resolve every frame of the 360ms exit. It supports composition, readiness and complete final-state assessment, not physical-device smoothness or a frame-rate guarantee."
+    },
+    "focusedCorrectionsBeforeApproval": [
+      "Unknown-length rail changed from a scaled stub to a faint full-width indeterminate gradient.",
+      "Critical type is preloaded; styled wordmark space is reserved and revealed only after actual intended-font settlement or a real failure fallback.",
+      "Only the illustration-to-model opacity transition under the loading cover is suppressed so the model is fully visible before release. Later menu/fallback recovery motion remains separate."
+    ],
+    "evidence": {
+      "actualSuppliedModelCaptures": "artifacts/loading/captures.json",
+      "loadingFunctional": "artifacts/loading/verification.json",
+      "functionalStatusAtReview": "Separate loading suite passes ten groups using a real HTTP-streamed lightweight valid GLB fixture plus controlled artwork/font failures. Heavy supplied-model captures are separate evidence.",
+      "actualModelRegression": "artifacts/model-verification.json",
+      "source": [
+        "src/LoadingScreen.tsx",
+        "src/LoadingScreen.css",
+        "src/useBootLoading.ts",
+        "src/loading-types.ts",
+        "src/CreatureStage.tsx",
+        "src/App.tsx"
+      ],
+      "notes": "Visual critic independently inspected normal three-viewport captures, unknown-length and desktop/landscape recovery states, source status/progress semantics, and decoded final actual-GLB handoff recording. Runtime assertions remain distinct from the visual score."
+    },
+    "iterationHistory": [
+      {
+        "iteration": "Isolated desktop and landscape composition",
+        "score": 9.2,
+        "provisional": true,
+        "finding": "Theme, brand, artwork balance and status placement clear the visual target; fixture progress was not accepted as real boot evidence."
+      },
+      {
+        "iteration": "Actual boot-state and cold-handoff inspection",
+        "finding": "Real known/unknown transfer and recovery states fit. Cold styled wordmark font swap and under-cover model fade were identified and corrected before final approval."
+      },
+      {
+        "iteration": "Final type-ready and fully visible model handoff",
+        "score": 9.2,
+        "provisional": false,
+        "finding": "Final 12.12s actual-model recording reaches stable complete Play. Source and separate functional evidence cover real readiness, fallback, Retry/Continue and reduced motion. No further polish requested."
+      }
+    ],
+    "limits": [
+      "Score is subjective loading-screen quality and theme cohesion, not exact reproduction of an ArtStation page or any source artwork.",
+      "Status copy is compact on phone landscape, and background cover/drift intentionally omits a small amount of outer image context.",
+      "Preparation rail measures resource-preparation units rather than combined bytes; only the explicit model transfer count is a byte measure.",
+      "Software-rendered capture is not a physical GPU smoothness, frame-pacing or load-speed benchmark."
+    ],
+    "verdict": "Meets 9.2/10 for the actual loading presentation and ready-menu handoff design. No blocking visual issue or additional redesign requested."
+  },
+  "chaptersReview": {
+    "scope": "Reference-style fourteen-slot chapter grid, selected locked state, honest preview dialogs and return to the existing Play screen.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent subjective reference-to-screenshot visual and wording review. Not a pixel-identical character/art reproduction, gameplay integration claim or hardware performance benchmark.",
+    "reference": {
+      "fileName": "279178.jpg",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "privateUserAttachment": true,
+      "bundledInRepository": false,
+      "observedStructure": "Contiguous five/five/four chapter tiles, two brighter early tiles, twelve dim locked tiles, amber selection, blurred warm scene, hidden top navigation and a single Back footer."
+    },
+    "reviewedScreenshots": [
+      "artifacts/chapters/grid-1280x720.png",
+      "artifacts/chapters/locked-selected-1280x720.png",
+      "artifacts/chapters/chapter02-preview-1280x720.png",
+      "artifacts/chapters/grid-1920x1080.png",
+      "artifacts/chapters/locked-selected-1920x1080.png",
+      "artifacts/chapters/chapter02-preview-1920x1080.png",
+      "artifacts/chapters/grid-844x390.png",
+      "artifacts/chapters/locked-selected-844x390.png",
+      "artifacts/chapters/chapter02-preview-844x390.png"
+    ],
+    "reviewedPlayReturnScreenshots": [
+      "artifacts/chapters/play-before-1280x720.png",
+      "artifacts/chapters/play-after-844x390.png"
+    ],
+    "layoutAt1280": {
+      "x": 105,
+      "y": 112,
+      "width": 936,
+      "height": 419.984375,
+      "columns": 5,
+      "rowCounts": [
+        5,
+        5,
+        4
+      ],
+      "tileWidthApproximately": 187.2,
+      "tileHeightApproximately": 140,
+      "gap": 0,
+      "backX": 104.953125,
+      "backY": 612,
+      "backHitHeight": 24,
+      "scrolling": false,
+      "overflow": false
+    },
+    "rubric": [
+      {
+        "category": "Reference geometry and hierarchy",
+        "maximum": 3,
+        "score": 2.85,
+        "notes": "Five/five/four density, equal contiguous tiles, upper-left alignment, hidden navigation and isolated Back footer closely match the supplied reference."
+      },
+      {
+        "category": "Amber selection and locked-state clarity",
+        "maximum": 2,
+        "score": 1.9,
+        "notes": "First selected preview is clear; twelve locked tiles retain dim imagery and centered locks. Selecting a locked tile emphasizes its title and lock without brightening it into an available chapter."
+      },
+      {
+        "category": "Supplied art, palette and scene blur",
+        "maximum": 2,
+        "score": 1.75,
+        "notes": "Actual supplied environment art is reused with deliberate crops; no reference characters are imported. Strongly defocused actual sorcerer and bronze/teal scene preserve menu identity. Different image subjects and clearer locked labels remain intentional approximations."
+      },
+      {
+        "category": "Typography and desktop/landscape readability",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Bold compact numbered headings fit every tile at 1280,1920 and844 landscape. Lock icons and Back remain recognizable. Phone-landscape labels are small but legible; all preview copy and actions fit."
+      },
+      {
+        "category": "Honest preview and return flow",
+        "maximum": 1,
+        "score": 0.9,
+        "notes": "Chapter 01/02 dialogs explicitly disclose unconnected gameplay and unrecorded progress/unlocks. Locked activation does not launch or unlock. Back returns to the existing Play selection."
+      }
+    ],
+    "contentBoundary": {
+      "titles": "Chapter 01 through Chapter 14 are numbered preview-slot placeholders, not asserted final canonical chapter titles.",
+      "artwork": "Four approved user-supplied environment images are repeated with distinct cover crops. Dedicated chapter illustrations are not invented.",
+      "previewableSlots": [
+        1,
+        2
+      ],
+      "lockedSlots": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "previewParagraph": "Chapter gameplay is not connected in this build.",
+      "previewNote": "This is a chapter-selection preview. Campaign progress and unlocks are not recorded.",
+      "lockedAnnouncement": "Chapter 14 is locked in this menu preview. Campaign progression is not connected.",
+      "availableActions": "View an honest early-slot preview, inspect locked selection or return to Play. No gameplay, campaign save or unlock action is offered.",
+      "previewActions": [
+        "Confirm",
+        "Cancel"
+      ],
+      "previewActionEffect": "Both dismiss to the selected chapter slot. Grid Back still returns to Play."
+    },
+    "flowRecordingReview": {
+      "file": "artifacts/chapters/chapters-flow.webm",
+      "finalFrame": "artifacts/chapters/recording-final-frame.png",
+      "durationSeconds": 17.2,
+      "viewport": [
+        960,
+        540
+      ],
+      "conditions": "Actual supplied GLB; Low particles, 50 percent scene resolution and 30fps scene cap for software capture. Full untrimmed recording.",
+      "method": "Inspected real decoded frames at encoded 6,8,10,12,14 and 16 seconds. Encoded positions are inspection references, not latency measurements.",
+      "observations": "Recording includes actual loading completion, Chapters grid/selection, complete Chapter 02 preview dialog, and stable return to Play with Chapters selected. Intermediate samples can show fading prior selection outlines during rapid navigation; settled captures retain one clear selection.",
+      "limit": "Software capture does not establish physical frame pacing or resolve every short transition frame."
+    },
+    "evidence": {
+      "actualGLBCaptures": "artifacts/chapters/captures.json",
+      "functional": "artifacts/chapters/verification.json",
+      "functionalStatusAtReview": "Separate Chapters verification passes eight groups: actual supplied-art hashes, three-viewport layout, spatial keyboard/controller focus, preview versus locks, navigation/back behavior and no campaign/URL side effects.",
+      "copyFit": "artifacts/copy-fit-verification.json",
+      "motionIntegration": "artifacts/motion/verification.json",
+      "source": [
+        "src/Chapters.tsx",
+        "src/Chapters.css",
+        "src/chapters-content.ts",
+        "src/App.tsx"
+      ],
+      "notes": "Reference, all nine actual-GLB grid/locked/preview renders, both Play context images, exact preview source copy and real decoded flow frames were independently inspected. Functional assertions remain separate from the visual score."
+    },
+    "approvedDifferences": [
+      "Numbered placeholders replace generic Chapter Name text; no complete fourteen-chapter canon is asserted.",
+      "Existing actual user environment artwork replaces reference character thumbnails.",
+      "Existing actual sorcerer remains behind the blurred scene.",
+      "Locked title/lock visibility is slightly clearer than the low-contrast reference while preserving its dim hierarchy.",
+      "Desktop and phone-landscape presentation only; no portrait redesign."
+    ],
+    "limits": [
+      "Four supplied images repeat across fourteen slots; dedicated chapter artwork and final chapter titles remain future content.",
+      "Supporting text and lock icons are small on phone landscape.",
+      "Gameplay, saved campaign progression and unlock systems remain unconnected and explicitly disclosed.",
+      "The 9.2 score is subjective reference/theme assessment, not a pixel-match or hardware-performance claim."
+    ],
+    "verdict": "Meets 9.2/10 for the current reference-style Chapters presentation. No blocking visual issue or further polish requested.",
+    "modalPresentationRevision": "Chapter grid and lock review remains current. Earlier chapter02-preview images/flow predate the shared transparent modal shell; see artifacts/modals/chapter02-1280x720.png, artifacts/modals/chapter02-844x390.png and modalReview for current presentation."
+  },
+  "creatureMotionReview": {
+    "scope": "Actual supplied sorcerer Idle at authored speed, persistent across menus, with approved framing and motion preferences retained.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Bounded independent subjective source and actual-render review. Movement is the supplied restrained Idle, not a new gesture animation. Score does not certify physical GPU frame pacing or browser visibility behavior that the headless test cannot exercise.",
+    "reviewedScreenshots": [
+      "artifacts/creature-motion/idle-a-1280x720.png",
+      "artifacts/creature-motion/idle-b-1280x720.png",
+      "artifacts/creature-motion/idle-a-844x390.png",
+      "artifacts/creature-motion/idle-b-844x390.png"
+    ],
+    "visualFindings": [
+      "Distinct actual sampled phases show restrained rig, hand and torso movement that suits the menu; movement does not require larger procedural sways or invented attack gestures.",
+      "Crown and eye remain clear in the reviewed desktop and phone-landscape moving poses. The creature remains behind the same four cards.",
+      "Approved camera, size, yaw, lean, parent anchor, materials, artwork and card geometry are unchanged. The refreshed landscape A capture is settled; the earlier capture caught a resize-related navigation-indicator transition.",
+      "The actual recording and separate timing evidence support a continuing living scene across menu changes rather than restarting a static pose on each destination."
+    ],
+    "rubric": [
+      {
+        "category": "Visible authored Idle and repetition",
+        "maximum": 3,
+        "score": 2.8,
+        "notes": "The actual supplied clip advances and repeats at authored 1x. Motion remains a calm ambient Idle rather than exaggerated menu choreography."
+      },
+      {
+        "category": "Continuity across menus",
+        "maximum": 2,
+        "score": 1.9,
+        "notes": "Persistent stage, model and canvas survive menu/dialog changes; measured mixer time keeps advancing and only one GLB request is made."
+      },
+      {
+        "category": "Moving-pose framing and layout",
+        "maximum": 2,
+        "score": 1.85,
+        "notes": "Reviewed 1280/844 poses retain crown/eye clearance, unchanged card geometry and the approved creature-behind-cards balance."
+      },
+      {
+        "category": "Pause and resume handling",
+        "maximum": 2,
+        "score": 1.75,
+        "notes": "OS/app motion freeze and resume are verified with the actual rig. Foreground clock preservation and visibility handling read correctly in source; hidden-tab runtime behavior remains untested in headless."
+      },
+      {
+        "category": "Theme and restraint",
+        "maximum": 1,
+        "score": 0.9,
+        "notes": "Existing rig movement, small approved sway and magical atmosphere remain coherent without changing the established art direction."
+      }
+    ],
+    "sourceReview": {
+      "file": "src/CreatureStage.tsx",
+      "fix": "Replaces the capped 0.05-second delta multiplied by 0.7 with actual nonnegative foreground elapsed time. Infinite repetition, effective time scale 1 and effective weight 1 are explicit.",
+      "clockContinuity": "Mixer and parent sway use the same accumulated activeSeconds. Pausing resets frame timestamps while retaining animation and sway phase, so hidden or reduced-motion time is not added as a catch-up jump.",
+      "menuPersistence": "CreatureStage remains outside MenuTransition; its loading effect still depends only on model source and explicit load attempt, rather than the current menu.",
+      "framing": "No rig/bone overrides, transform changes, camera changes or amplitude increases. Existing Idle by independent-sway framing samples still address the same pose range; their prior dense-sampling limits remain.",
+      "blockingIssue": "None found in the bounded source review."
+    },
+    "actualTimingEvidence": {
+      "report": "artifacts/creature-motion/verification.json",
+      "passed": true,
+      "groups": 6,
+      "clipDurationSeconds": 3.0416667461395264,
+      "effectiveTimeScale": 1,
+      "repetitions": "Infinity",
+      "slowRenderProbe": {
+        "addedDelayPerDrawMs": 120,
+        "foregroundElapsedSeconds": 6.814400000005961,
+        "mixerElapsedSeconds": 6.799799999999998,
+        "measuredRatio": 0.9978574782804135,
+        "actualLoopWraps": 2,
+        "renderSamples": 36
+      },
+      "interpretation": "Latest shared-modal integration probe tracks approximately authored elapsed speed: observed ratio 0.998x with 2 wraps under an added 120ms per draw. This is not an exact 1.000x assertion or a physical frame-rate measurement.",
+      "continuity": "Home, Play, Showcase, Settings, Chapters and a preview dialog retain the canvas, one model request and an advancing mixer.",
+      "reducedMotion": "Separate actual-rig checks freeze and resume both OS reduced motion and Ambient Motion preference without model reload.",
+      "visibilityRuntimeCheck": "Skipped: this headless browser keeps background tabs visible",
+      "visibilitySourceReview": "The visibility listener cancels scheduling while hidden and resets frame timestamps on visibility change while preserving activeSeconds and mixer state. This is source inspection, not a passed hidden-tab runtime test.",
+      "instrumentation": "Development-module interception in Playwright only; no shipped debug globals or product debug changes.",
+      "currentReportContext": "Fresh actual-GLB run against the shared transparent modal integration. Prior 1.034x cached metrics are superseded by these latest report values."
+    },
+    "recordingReview": {
+      "file": "artifacts/creature-motion/menu-idle.webm",
+      "metadata": "artifacts/creature-motion/captures.json",
+      "durationSeconds": 28.72,
+      "viewport": [
+        960,
+        540
+      ],
+      "conditions": "Full untrimmed actual-GLB recording with Low particles, 50 percent scene resolution and 30fps scene cap for software capture. Motion-enabled static pairs use High particles and 100 percent scene resolution.",
+      "method": "Inspected decoded real frames across the menu sequence and focused rig crops at encoded 7.4, 8.1, 8.8 and 9.5 seconds, avoiding three-second sampling that would alias the approximately 3.04-second loop.",
+      "limit": "Encoded samples and software rendering do not establish physical-device frame rate or frame pacing. Actual-rig timing/loop and continuity assertions come from the separate verification report.",
+      "modalRevisionNote": "The original creature-motion recording predates the transparent modal shell. Current modal style is shown by artifacts/modals/modal-flow.webm; current rig continuity is supported by the refreshed timing report above. Approved moving-pose framing is unchanged."
+    },
+    "preservedFramingEvidence": "artifacts/creature-height/idle-framing.json",
+    "limits": [
+      "The supplied Idle is restrained; this change does not add new large arm gestures or alter the approved pose amplitudes.",
+      "A long foreground rendering stall can skip visible intermediate poses while elapsed animation time remains correct; this fix does not claim to increase hardware rendering performance.",
+      "Hidden-tab pause/resume is source-reviewed only because headless visibility testing was unsupported.",
+      "Reviewed moving poses and earlier dense geometric framing samples are evidence, not a continuous semantic crown/eye-clipping guarantee.",
+      "The 9.2 score is a bounded subjective motion/framing judgment, separate from previous screen and transition scores."
+    ],
+    "verdict": "Meets 9.2/10 for authored-speed creature idle motion and retained menu framing. No blocking visual issue; no further renders, amplitude changes or polish requested."
+  },
+  "modalReview": {
+    "scope": "Shared transparent native-dialog treatment for all nine current informational and confirmation states.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent bounded subjective reference, actual-render and source review. Not a pixel-identical reproduction, implementation of an Apply transaction or hardware performance benchmark.",
+    "reference": {
+      "fileName": "279179.jpg",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "privateUserAttachment": true,
+      "bundledInRepository": false,
+      "observedHierarchy": "Borderless transparent shell; heavily dark/blurred scene; centered compact amber uppercase heading; muted centered body; two small outlined A Confirm/B Cancel actions."
+    },
+    "reviewedScreenshots": [
+      "artifacts/modals/confirmation-1280x720.png",
+      "artifacts/modals/confirmation-1920x1080.png",
+      "artifacts/modals/confirmation-844x390.png",
+      "artifacts/modals/classic-1280x720.png",
+      "artifacts/modals/legacy-1280x720.png",
+      "artifacts/modals/chapter02-1280x720.png",
+      "artifacts/modals/chapter02-844x390.png"
+    ],
+    "stateCoverage": {
+      "sharedSourceStates": [
+        "My Legacy",
+        "Chronicles",
+        "Herald Board",
+        "Classic",
+        "Local Duel",
+        "Online Duel",
+        "Chapter 01",
+        "Chapter 02",
+        "Return to Home?"
+      ],
+      "actualCaptureScope": "Seven representative actual-GLB captures cover mode, Home, chapter and confirmation families; confirmation is captured at 1280/1920/844 and the longest chapter disclosure at 1280/844. Source mapping covers all nine states; per-state runtime checks are separate."
+    },
+    "layoutAt1280": {
+      "headingInkCenterYApproximately": 172,
+      "bodyLineCentersYApproximately": [
+        238,
+        267
+      ],
+      "actionsTop": 348,
+      "actionsBottom": 380,
+      "actionWidth": 128,
+      "actionHeight": 32,
+      "actionLeftEdges": [
+        480,
+        672
+      ],
+      "actionGap": 64,
+      "notes": "Content intentionally sits above vertical center, matching the supplied hierarchy. One-line informational bodies reserve the same action placement; longer landscape disclosures flow safely before the actions."
+    },
+    "paletteAndShell": {
+      "heading": "#d49130",
+      "body": "#aaa79d",
+      "buttonBorder": "#86765038",
+      "backdrop": "rgba(10,8,5,.8), blur 16px, saturation .55 and brightness .7",
+      "finding": "No visible outer panel, eyebrow, X control, footer row or filled primary CTA. Actual scene is slightly darker than the reference, keeping text contrast strong. Keyboard focus adds a clear amber outline around the focused small action."
+    },
+    "rubric": [
+      {
+        "category": "Reference hierarchy and placement",
+        "maximum": 3,
+        "score": 2.85,
+        "notes": "Compact centered amber heading, muted body and isolated action pair closely match the reference spacing at 1280. Outer chrome is removed."
+      },
+      {
+        "category": "Transparent shell and scene treatment",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Darkened, strongly defocused actual creature/scene supports the sparse modal. Background is darker than the source reference but remains coherent with the menu."
+      },
+      {
+        "category": "Typography and landscape readability",
+        "maximum": 2,
+        "score": 1.85,
+        "notes": "All reviewed headings, body paragraphs and action labels fit. Long Chapter 02 disclosure wraps cleanly on 844 landscape without action collision; minimum type/button sizes preserve legibility."
+      },
+      {
+        "category": "Actions, focus and truthful meaning",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Small outlined Confirm/Cancel actions and amber A/B prompts fit the reference. Info actions only dismiss; Return to Home confirmation actually navigates. Focus styling is stronger than the softly blurred reference, appropriately preserving keyboard visibility."
+      },
+      {
+        "category": "Consistency across existing state families",
+        "maximum": 1,
+        "score": 0.9,
+        "notes": "One shared component covers three Home, three mode, two chapter and one return-confirmation state. Existing unavailable/no-gameplay disclosures remain intact."
+      }
+    ],
+    "behaviorBoundary": {
+      "informationalStates": "Confirm and Cancel both dismiss to their originating Home, Play or Chapters selection. Neither launches unavailable gameplay or destination systems.",
+      "returnConfirmation": "Confirm returns to Home; Cancel dismisses without navigation.",
+      "settings": "Preferences continue to persist immediately. The reference Apply Changes wording is not introduced as a fake pending-settings transaction.",
+      "sourceFocus": "Native modality, initial Confirm focus, explicit boundary Tab/Shift+Tab wrapping, named actions, keyboard/controller handling and a pointer-down/outside-click guard are present. The final separate modal suite verifies focus containment and restoration."
+    },
+    "recordingReview": {
+      "file": "artifacts/modals/modal-flow.webm",
+      "metadata": "artifacts/modals/captures.json",
+      "durationSeconds": 14.76,
+      "viewport": [
+        960,
+        540
+      ],
+      "conditions": "Full untrimmed actual animated GLB, Low particles, 50 percent scene resolution and 30fps scene cap for software capture. Static screenshots use High particles, 100 percent scene resolution and OS reduced motion.",
+      "method": "Decoded actual frames at encoded 3, 5, 7, 9, 11 and 13 seconds.",
+      "observations": "Frames show boot into retained Play, the transparent Return to Home confirmation, a complete Home state after dismissal/navigation, and the same transparent treatment for Chronicles. No persistent modal shell or empty final content was observed.",
+      "limit": "Sparse decoded software-capture samples do not establish target-device frame pacing or every short transition frame."
+    },
+    "evidence": {
+      "captures": "artifacts/modals/captures.json",
+      "modalInputAndLayout": "artifacts/modals/verification.json",
+      "modalRuntimeStatusAtReview": "Visual and source review is complete. Per-state keyboard/controller/held-input/layout outcomes are governed by the separate verification report; this score does not assert unobserved runtime-test success.",
+      "copyFit": "artifacts/copy-fit-verification.json",
+      "actualCreatureMotion": "artifacts/creature-motion/verification.json",
+      "actualCreatureStatusAtReview": "Fresh actual-GLB six-group report passes: observed approximately 0.998x elapsed speed, two wraps, one model request, unchanged canvas and advancing mixer through the new modal; OS/app freeze/resume pass. Hidden-tab runtime test remains skipped by headless visibility limitations.",
+      "source": [
+        "src/MenuDialog.tsx",
+        "src/MenuDialog.css",
+        "src/App.tsx"
+      ],
+      "finalVerification": {
+        "report": "artifacts/modals/verification.json",
+        "passed": true,
+        "groups": 8,
+        "layoutSamples": 27,
+        "note": "Final product includes the explicit Tab boundary fix found during testing. Final verification completed after the bounded visual review; the subjective score is separate."
+      }
+    },
+    "approvedDifferences": [
+      "Reference Apply Changes copy is replaced by truthful current-state titles and disclosures. No deferred Apply mechanism is invented.",
+      "Longer existing disclosure copy can wrap on phone landscape while preserving hierarchy and action clearance.",
+      "Keyboard focus outline is clearer than the source reference.",
+      "Existing actual animated sorcerer/artwork remain behind the heavily blurred/dimmed backdrop."
+    ],
+    "limits": [
+      "Backdrop is slightly darker and type is crisper than the soft reference image.",
+      "Seven representative actual-GLB captures and common source cover the style; full nine-state input/layout validation is separate.",
+      "Physical GPU frame pacing and unsupported headless visibility transitions are not certified by this visual review.",
+      "The 9.2 score is subjective modal-reference/theme assessment, not an exact pixel-match claim."
+    ],
+    "verdict": "Meets 9.2/10 for the shared reference-style modal treatment. No blocking visual issue, new render request or further polish requested."
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "file": "artifacts/motion/menu-transitions.webm",
+  "viewport": {
+    "width": 960,
+    "height": 540
+  },
+  "rendering": "Actual supplied GLB and Idle. Software WebGL capture uses Low particle quality, 50% scene resolution, 30fps scene cap; UI motion remains enabled. Device frame performance is not established.",
+  "preparationSecondsTrimmed": 0,
+  "actionTiming": "Action timestamps are wall-clock times after scene warmup, not encoded video seek positions.",
+  "warmupMilliseconds": 6068,
+  "actions": [
+    {
+      "label": "Home screen entrance",
+      "seconds": 0
+    },
+    {
+      "label": "Home spatial selection",
+      "seconds": 1.015
+    },
+    {
+      "label": "Home lower tile selection",
+      "seconds": 1.283
+    },
+    {
+      "label": "Home destination dialog entrance",
+      "seconds": 1.54
+    },
+    {
+      "label": "Dialog exit",
+      "seconds": 2.295
+    },
+    {
+      "label": "Play screen entrance",
+      "seconds": 2.706
+    },
+    {
+      "label": "Play option selection",
+      "seconds": 4.225
+    },
+    {
+      "label": "Mode dialog entrance",
+      "seconds": 4.49
+    },
+    {
+      "label": "Mode dialog exit",
+      "seconds": 5.205
+    },
+    {
+      "label": "Showcase overview entrance",
+      "seconds": 5.612
+    },
+    {
+      "label": "Arena category selection",
+      "seconds": 7.109
+    },
+    {
+      "label": "Arena gallery entrance",
+      "seconds": 7.328
+    },
+    {
+      "label": "Arena 02 crossfade",
+      "seconds": 8.041
+    },
+    {
+      "label": "Arena 03 crossfade",
+      "seconds": 8.449
+    },
+    {
+      "label": "Arena 04 crossfade",
+      "seconds": 8.857
+    },
+    {
+      "label": "Return to Showcase overview",
+      "seconds": 9.29
+    },
+    {
+      "label": "Cinematic library entrance",
+      "seconds": 9.755
+    },
+    {
+      "label": "Real Explore Arenas shortcut",
+      "seconds": 10.466
+    },
+    {
+      "label": "Return to overview",
+      "seconds": 12.255
+    },
+    {
+      "label": "Future replay archive entrance",
+      "seconds": 12.722
+    },
+    {
+      "label": "Replay Back",
+      "seconds": 13.435
+    },
+    {
+      "label": "Settings hub entrance",
+      "seconds": 13.895
+    },
+    {
+      "label": "Video detail entrance and background defocus",
+      "seconds": 14.935
+    },
+    {
+      "label": "Window-mode description transition",
+      "seconds": 16.07
+    },
+    {
+      "label": "Resolution description transition",
+      "seconds": 16.39
+    },
+    {
+      "label": "Settings Back",
+      "seconds": 16.702
+    },
+    {
+      "label": "Rapid interrupted screen requests",
+      "seconds": 17.17
+    }
+  ],
+  "errors": []
+}

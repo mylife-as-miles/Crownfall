@@ -1,0 +1,97 @@
+{
+  "passed": true,
+  "approvedHomeBaseline": "fb4738b875ab12b3e87d2b2f9734255d591ac5a6",
+  "previousRevision": "4dd0e50b91f7bcdf90a469361e666ae248331b22",
+  "restoredHomeDesign": {
+    "grid": [
+      600,
+      434
+    ],
+    "left": [
+      298,
+      434
+    ],
+    "right": [
+      298,
+      215
+    ],
+    "gap": 4
+  },
+  "navigation": [
+    "HOME",
+    "PLAY",
+    "SHOWCASE",
+    "SETTINGS"
+  ],
+  "playModeDefinitionsUnchanged": true,
+  "geometry": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "rightWidthBefore": 358,
+      "rightWidthAfter": 298,
+      "rightHeightAfter": 215,
+      "leftDimensionsAfter": {
+        "width": 298,
+        "height": 434
+      },
+      "matchesApprovedHomeGeometry": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "rightWidthBefore": 537,
+      "rightWidthAfter": 447,
+      "rightHeightAfter": 322.5,
+      "leftDimensionsAfter": {
+        "width": 447,
+        "height": 651
+      },
+      "matchesApprovedHomeGeometry": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "rightWidthBefore": 195.546875,
+      "rightWidthAfter": 162.78125,
+      "rightHeightAfter": 116.453125,
+      "leftDimensionsAfter": {
+        "width": 162.765625,
+        "height": 235.078125
+      },
+      "matchesApprovedHomeGeometry": true
+    }
+  ],
+  "playPixelPreservation": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "unchangedOutsideNavigationBand": true,
+      "excludedBand": "Top navigation and its shadows, 7%\u201318% of viewport height"
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "unchangedOutsideNavigationBand": true,
+      "excludedBand": "Top navigation and its shadows, 7%\u201318% of viewport height"
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "unchangedOutsideNavigationBand": true,
+      "excludedBand": "Top navigation and its shadows, 7%\u201318% of viewport height"
+    }
+  ]
+}

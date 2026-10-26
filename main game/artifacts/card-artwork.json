@@ -1,0 +1,75 @@
+{
+  "source": "Four user-supplied JPEGs; authorized private Page attachment bytes verified before conversion",
+  "cards": [
+    {
+      "card": "new",
+      "sourceFile": "288933.jpg",
+      "sourceBytes": 372657,
+      "sourceSha256": "716d44458e280d8f7922214f7d60494ce7d3822818af944ae40f7d727ef0d159",
+      "sourceWidth": 2048,
+      "sourceHeight": 1143,
+      "deliveryFile": "public/assets/environments/card-new.webp",
+      "deliveryBytes": 230224,
+      "deliverySha256": "6680a64b955edbc989d8a0feabcc620fbdadfd78896767f333f6f572286e2f63",
+      "deliveryWidth": 2048,
+      "deliveryHeight": 1143,
+      "backgroundPosition": "15% 50%",
+      "originalPreserved": true,
+      "modeLabel": "CLASSIC"
+    },
+    {
+      "card": "resume",
+      "sourceFile": "288939.jpg",
+      "sourceBytes": 499468,
+      "sourceSha256": "6c1b25c4691fbd62d82334de018190d7507fdd155773ee1b4a8d876f4dcae423",
+      "sourceWidth": 2048,
+      "sourceHeight": 1143,
+      "deliveryFile": "public/assets/environments/card-resume.webp",
+      "deliveryBytes": 352194,
+      "deliverySha256": "50b356b5e3433c9ca6716a8c369da1276ac0a7e83042caa1235487aca45c9412",
+      "deliveryWidth": 2048,
+      "deliveryHeight": 1143,
+      "backgroundPosition": "82% 50%",
+      "originalPreserved": true,
+      "modeLabel": "LOCAL DUEL"
+    },
+    {
+      "card": "load",
+      "sourceFile": "288943.jpg",
+      "sourceBytes": 556398,
+      "sourceSha256": "40c2c0b0c52b1749ba6ecc45c455e2b250aba321b3232a9623b91976783cc040",
+      "sourceWidth": 2048,
+      "sourceHeight": 1143,
+      "deliveryFile": "public/assets/environments/card-load.webp",
+      "deliveryBytes": 396360,
+      "deliverySha256": "0db6c8c014c8e1754326b4d4148112806ebf1772940bc3e508b6554df433338c",
+      "deliveryWidth": 2048,
+      "deliveryHeight": 1143,
+      "backgroundPosition": "58% 50%",
+      "originalPreserved": true,
+      "modeLabel": "CHAPTERS"
+    },
+    {
+      "card": "browse",
+      "sourceFile": "289365.jpg",
+      "sourceBytes": 640717,
+      "sourceSha256": "404ff647175ba14d094a7d27dbb8857d9733d39e1778553633cc5d07153b48ba",
+      "sourceWidth": 2048,
+      "sourceHeight": 1143,
+      "deliveryFile": "public/assets/environments/card-browse.webp",
+      "deliveryBytes": 484608,
+      "deliverySha256": "5a828742d27f8dc47f53209299e444fd97dc4d4750f97e1e1736d9d325ff8088",
+      "deliveryWidth": 2048,
+      "deliveryHeight": 1143,
+      "backgroundPosition": "64% 50%",
+      "originalPreserved": true,
+      "modeLabel": "ONLINE DUEL"
+    }
+  ],
+  "currentModeOrder": [
+    "CLASSIC",
+    "LOCAL DUEL",
+    "CHAPTERS",
+    "ONLINE DUEL"
+  ]
+}
