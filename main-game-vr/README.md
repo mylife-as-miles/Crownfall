@@ -59,3 +59,11 @@ The emulated input checks used mono rendering. Native fingertip touch is wired, 
 Browser emulation is separate from a physical Quest smoke test. Physical tracking reliability, seated comfort, on-device cold start and the headset's 72–90 Hz rendering budget require on-headset measurement before challenge acceptance is claimed. The project is not merged, deployed or submitted to a challenge by this work.
 
 For software-only headless emulation, an untracked `.env.local` may set `VITE_CROWNFALL_EMULATOR_SCALE=0.25` before starting the managed runtime. It requests a reduced development immersive framebuffer for software testing; actual emulation framebuffer size must be measured separately. Production ignores this flag. Remove it for physical-headset development, and disclose it with emulated evidence.
+
+## Screenshot gallery
+
+The complete menu/state gallery is in [artifacts/screens/README.md](artifacts/screens/README.md), with individual PNGs, a PDF and an offline HTML gallery in the ZIP. These are actual runtime captures with a closer 45-degree emulator field of view for reading, using mono software rendering. The product layout is unchanged.
+
+To refresh it in the managed test browser, enable `--allow-browser-automation` when starting the headless runtime, run `npx @iwsdk/cli browser run scripts/prepare-gallery.mjs`, then `node scripts/capture-all-screens.mjs`. Preparation clears only the test browser's completed-onboarding flag; the real visit completes it again. Capture uses actual hand selections and named state assertions. `python scripts/build-screen-gallery.py` packages the files and requires Pillow. The gallery runner expects a fresh browser preview with no active immersive session.
+
+A stopped capture can continue with `node scripts/capture-all-screens.mjs --resume` in the same session. Completed screenshots are retained, and prior selection errors remain in the manifest.
