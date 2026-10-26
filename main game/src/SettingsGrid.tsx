@@ -1,10 +1,9 @@
 import type { RefObject } from "react";
 import type { SettingsCategory } from "./settings-types";
+import { SETTINGS_CATEGORIES } from "../../shared/menu/content";
 import "./SettingsGrid.css";
-
-// The parent uses the same order for keyboard and controller navigation.
-// eslint-disable-next-line react-refresh/only-export-components
-export const SETTINGS_CATEGORIES: SettingsCategory[] = ["general", "controls", "input", "video", "audio", "credits"];
+// Keep the existing desktop import path available for callers.
+export { SETTINGS_CATEGORIES } from "../../shared/menu/content";
 
 interface SettingsGridProps {
   selected: number;

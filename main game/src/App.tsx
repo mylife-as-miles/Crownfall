@@ -13,66 +13,15 @@ import { SettingsGrid, SETTINGS_CATEGORIES } from "./SettingsGrid";
 import SettingsDetail from "./SettingsDetail";
 import { INITIAL_PREFERENCES, normalizeBindings, type BindingAction, type Direction, type FrameLimit, type Preferences, type Quality, type SettingsCategory, type SettingsPageHandle } from "./settings-types";
 import { HOME_CONTENT, getNextHomeTile, type HomeDirection } from "./home-content";
+import { PLAY_CARDS as cards, NAV_TABS as tabs, getModalContent } from "../../shared/menu/content";
+import type { MenuPanel, MenuScreen } from "../../shared/menu/types";
 import "./styles.css";
 
-type Panel =
-  | "classic"
-  | "local-duel"
-  | "chapter-preview"
-  | "online-duel"
-  | "legacy"
-  | "chronicles"
-  | "herald"
-  | "quit"
-  | null;
-type Screen = "home" | "play" | "showcase" | "settings" | "chapters";
+type Panel = MenuPanel;
+type Screen = MenuScreen;
 
 const preferencesKey = "crownfall.main-game.preferences";
 const initialPreferences = INITIAL_PREFERENCES;
-const cards = [
-  {
-    id: "classic",
-    artwork: "new",
-    title: "CLASSIC",
-    label: "Classic",
-    subtitle: "Make your opening move.",
-    description: "Traditional chess against the computer.",
-    preview: "Classic chess against the computer is not connected to this menu.",
-  },
-  {
-    id: "local-duel",
-    artwork: "resume",
-    title: "LOCAL DUEL",
-    label: "Local Duel",
-    subtitle: "Share the board.",
-    description: "Two players. One device.",
-    preview: "Two-player chess on one device is not connected to this menu.",
-  },
-  {
-    id: "chapters",
-    artwork: "load",
-    title: "CHAPTERS",
-    label: "Chapters",
-    subtitle: "Choose a chapter.",
-    description: "Tactical missions and lasting consequences.",
-    preview: "Crownfall's campaign chapters are not connected to this menu.",
-  },
-  {
-    id: "online-duel",
-    artwork: "browse",
-    title: "ONLINE DUEL",
-    label: "Online Duel",
-    subtitle: "Unavailable in this build.",
-    description: "",
-    preview: "Online play is unavailable in this build. No matchmaking service is connected.",
-  },
-] as const;
-const tabs: { label: string; panel: Panel; aria: string }[] = [
-  { label: "HOME", panel: null, aria: "Home" },
-  { label: "PLAY", panel: null, aria: "Play" },
-  { label: "SHOWCASE", panel: null, aria: "Showcase" },
-  { label: "SETTINGS", panel: null, aria: "Settings" },
-];
 
 function getPreferences(): Preferences {
   try {
@@ -453,15 +402,7 @@ export default function App() {
 
   const detailScreenOpen = screen === "chapters" || screen === "settings" && !!settingsCategory;
   const displayedPanel = panel || lastPanel.current;
-  const activeMode = cards.find((mode) => mode.id === displayedPanel);
-  const homePanel = HOME_CONTENT.find((item) => item.action === displayedPanel);
-  const modalContent = activeMode
-    ? { title: activeMode.label, description: activeMode.preview, note: "Menu preview only. No gameplay will start here." }
-    : displayedPanel === "chapter-preview" && chapterPreview
-      ? { title: chapterPreview.title, description: "Chapter gameplay is not connected in this build.", note: "This is a chapter-selection preview. Campaign progress and unlocks are not recorded." }
-      : displayedPanel === "quit"
-        ? { title: "Return to Home?", description: "Your menu preferences stay on this device." }
-        : { title: homePanel?.title || "Crownfall", description: displayedPanel === "legacy" ? "Legacy profiles are unavailable in this build." : displayedPanel === "chronicles" ? "Chronicles are unavailable in this build." : "The herald board is unavailable in this build." };
+  const modalContent = getModalContent(displayedPanel, chapterPreview);
   const viewKey = screen === "settings" ? `settings:${settingsCategory || "grid"}` : screen === "showcase" ? `showcase:${showcaseView}` : screen;
 
   return (

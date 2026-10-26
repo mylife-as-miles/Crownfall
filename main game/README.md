@@ -11,6 +11,10 @@ Open `http://localhost:5173`. `npm run build` checks TypeScript and produces `di
 
 The layout targets desktop and landscape phones. The creature sits behind the menu as requested. Play offers CLASSIC, LOCAL DUEL, CHAPTERS and ONLINE DUEL in the supplied artwork order. Chapters opens its chapter grid; the other cards open matching mode previews with integration limits stated inside their dialogs. No gameplay or matchmaking launches here, and the former demo-save creation/resume UI is removed; existing browser data is left untouched. Home, Play, Showcase and Settings form the top navigation. Showcase provides cinematic-library, arena-artwork and future replay-archive paths; menu context and selection are preserved. Arrow keys select Play cards and wrap; Home/End chooses the first/last card. Enter activates, Escape goes back, and Q/E switches sections. Settings persist on this browser. Low quality disables shader particles; ambient motion and OS reduced motion stop animation.
 
+## Desktop and Quest updates
+
+This folder is the desktop/landscape adapter. Shared menu data, modal copy, typography/palette and geometry come from `../shared/menu/`. The native hands-first Quest adapter lives in `../main-game-vr/`. Build both through the repository-root `npm run build`; run `npm run check:sync` to catch stale generated UI or asset copies. Desktop settings remain mouse/keyboard/controller based; Quest uses separate hand/comfort preferences and headset-managed frame timing.
+
 ## Loading and readiness
 
 Crownfall opens with the supplied portal environment, an original crown/orbit seal, restrained motes and the King’s Gambit wordmark. The wordmark waits for its real font before appearing, avoiding a fallback-font width jump. A small branded HTML shell covers the interval before the application JavaScript starts.

@@ -1,0 +1,218 @@
+{
+  "version": "iwsdk.scene.v1",
+  "units": "meters",
+  "components": {
+    "com.iwsdk.components.DomeGradient": {
+      "sky": [
+        0.025,
+        0.028,
+        0.023,
+        1
+      ],
+      "equator": [
+        0.16,
+        0.12,
+        0.064,
+        1
+      ],
+      "ground": [
+        0.035,
+        0.027,
+        0.015,
+        1
+      ],
+      "intensity": 1
+    },
+    "com.iwsdk.components.IBLGradient": {
+      "sky": [
+        0.38,
+        0.42,
+        0.35,
+        1
+      ],
+      "equator": [
+        0.28,
+        0.23,
+        0.14,
+        1
+      ],
+      "ground": [
+        0.06,
+        0.045,
+        0.02,
+        1
+      ],
+      "intensity": 0.5
+    }
+  },
+  "environment": {
+    "toneMapping": "aces",
+    "exposure": 0.85,
+    "shadows": false
+  },
+  "resources": {},
+  "authoring": {
+    "views": [
+      {
+        "id": "hero",
+        "role": "hero",
+        "projection": "perspective",
+        "position": [
+          0,
+          1.6,
+          0
+        ],
+        "target": [
+          0,
+          1.48,
+          -1.5
+        ],
+        "fov": 42
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "experience-anchor",
+      "name": "Crownfall Space",
+      "transform": {
+        "position": [
+          0,
+          1.6,
+          0
+        ]
+      },
+      "children": [
+        {
+          "id": "menu-panel",
+          "name": "Crownfall Menu",
+          "content": {
+            "type": "asset",
+            "asset": "crownfall-menu"
+          },
+          "transform": {
+            "position": [
+              0,
+              -0.12,
+              -1.5
+            ],
+            "scale": 0.1
+          },
+          "components": {
+            "RayInteractable": {},
+            "PokeInteractable": {},
+            "CrownfallQuestState": {
+              "screen": "home",
+              "modal": "",
+              "category": "",
+              "entered": false,
+              "paused": false,
+              "pauseReason": "",
+              "visitStep": 0,
+              "visitComplete": false,
+              "handsTracked": false,
+              "leftTracked": false,
+              "rightTracked": false,
+              "modelReady": false,
+              "animationTime": 0,
+              "chapterIndex": 0,
+              "arenaIndex": 0,
+              "quality": "medium",
+              "textScale": 100,
+              "panelDistance": 1.5,
+              "posture": "seated",
+              "motion": true
+            }
+          }
+        },
+        {
+          "id": "sorcerer-anchor",
+          "name": "Sorcerer Anchor",
+          "transform": {
+            "position": [
+              0.85,
+              -2.2,
+              -2.35
+            ],
+            "rotationDeg": [
+              0,
+              -26.928,
+              2.578
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "key-light",
+      "name": "Warm Key",
+      "transform": {
+        "position": [
+          -3,
+          5,
+          2
+        ],
+        "rotationDeg": [
+          -40,
+          -35,
+          0
+        ]
+      },
+      "components": {
+        "DirectionalLight": {
+          "color": [
+            1,
+            0.87,
+            0.63,
+            1
+          ],
+          "intensity": 2,
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "rim-light",
+      "name": "Teal Rim",
+      "transform": {
+        "position": [
+          3,
+          3,
+          -4
+        ],
+        "rotationDeg": [
+          -20,
+          150,
+          0
+        ]
+      },
+      "components": {
+        "DirectionalLight": {
+          "color": [
+            0.38,
+            0.93,
+            0.81,
+            1
+          ],
+          "intensity": 1.6,
+          "castShadow": false
+        }
+      }
+    },
+    {
+      "id": "ambient-light",
+      "name": "Soft Fill",
+      "components": {
+        "AmbientLight": {
+          "color": [
+            0.45,
+            0.55,
+            0.43,
+            1
+          ],
+          "intensity": 0.45
+        }
+      }
+    }
+  ]
+}

@@ -2,7 +2,9 @@ import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import type { SettingsPageHandle } from "./settings-types";
 import "./Showcase.css";
 
-export type ShowcaseView = "overview" | "battles" | "arenas" | "replays";
+export type { ShowcaseView } from "../../shared/menu/types";
+import type { ShowcaseView } from "../../shared/menu/types";
+import { SHOWCASE_CATEGORIES as categories, ARENAS as arenas } from "../../shared/menu/content";
 interface ShowcaseProps {
   view: ShowcaseView;
   onViewChange(view: ShowcaseView): void;
@@ -10,17 +12,6 @@ interface ShowcaseProps {
   reducedMotion: boolean;
 }
 
-const categories = [
-  { id: "battles", title: "AI BATTLES", label: "AI Battles", status: "Cinematic library", description: "A front-row seat to the board.", art: "/assets/environments/card-new.webp" },
-  { id: "arenas", title: "ARENAS", label: "Arenas", status: "Explore the artwork", description: "Discover the world around the board.", art: "/assets/environments/card-browse.webp" },
-  { id: "replays", title: "MATCH REPLAYS", label: "Match Replays", status: "Future", description: "Every move. A story worth revisiting.", art: "" },
-] as const;
-const arenas = [
-  { label: "Arena 01", source: "/assets/environments/card-new.webp", alt: "Luminous ruined landscape with a ferris wheel" },
-  { label: "Arena 02", source: "/assets/environments/card-resume.webp", alt: "Blue gateway and floating architecture" },
-  { label: "Arena 03", source: "/assets/environments/card-load.webp", alt: "Timber bridges and distant arches" },
-  { label: "Arena 04", source: "/assets/environments/card-browse.webp", alt: "Crystal cliffs, dragons and towers" },
-];
 
 function ShowcaseIcon({ kind }: { kind: "battles" | "arenas" | "replays" }) {
   return <svg className={`showcase-icon showcase-icon--${kind}`} viewBox="0 0 64 64" fill="none" aria-hidden="true">

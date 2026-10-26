@@ -1,9 +1,9 @@
 @import "./fonts.css";
 
 :root {
-  font-family: "Barlow", Arial, sans-serif;
-  color: #cdc6b8;
-  background: #100d08;
+  font-family: var(--menu-font-primary, "Barlow"), Arial, sans-serif;
+  color: var(--menu-text, #cdc6b8);
+  background: var(--menu-background, #100d08);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -34,7 +34,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid #df8a26;
+  outline: 2px solid var(--menu-focus, #df8a26);
   outline-offset: 4px;
 }
 button {
@@ -50,7 +50,7 @@ a {
   min-height: 100svh;
   display: grid;
   place-items: center;
-  background: #100d08;
+  background: var(--menu-background, #100d08);
   overflow: hidden;
 }
 .menu-content { display: contents; }
@@ -65,7 +65,7 @@ a {
   overflow: hidden;
   isolation: isolate;
   container-type: size;
-  background: #32291a;
+  background: var(--menu-surface, #32291a);
 }
 .scene-wash {
   position: absolute;
@@ -162,7 +162,7 @@ a {
 .nav-active-indicator {
   position: absolute;
   inset: 0 auto 0 0;
-  background: #f87b00;
+  background: var(--menu-active-tab, #f87b00);
   box-shadow: 0 0 0.5cqw #d269001c;
   pointer-events: none;
   transition: transform .24s cubic-bezier(.22, 1, .36, 1), width .24s cubic-bezier(.22, 1, .36, 1);
@@ -184,18 +184,18 @@ a {
   left: 10.86cqw;
   top: 29.31cqh;
   display: flex;
-  gap: 0.3125cqw;
-  width: 62.5cqw;
-  height: 41.39cqh;
+  gap: var(--menu-play-gap, 0.3125cqw);
+  width: var(--menu-play-width, 62.5cqw);
+  height: var(--menu-play-height, 41.39cqh);
 }
 .game-card {
-  --card-accent: #bf791a;
+  --card-accent: var(--menu-accent, #bf791a);
   position: relative;
   display: block;
   isolation: isolate;
   overflow: hidden;
-  flex: 0 0 15.390625cqw;
-  width: 15.390625cqw;
+  flex: 0 0 var(--menu-play-card-width, 15.390625cqw);
+  width: var(--menu-play-card-width, 15.390625cqw);
   height: 100%;
   padding: 0;
   border: 0;
@@ -280,15 +280,28 @@ a {
   flex-direction: column;
 }
 .card-title {
-  font-family: "Barlow", Arial, sans-serif;
-  font-size: max(1.458333cqw, 11px);
+  font-family: var(--menu-font-primary, "Barlow"), Arial, sans-serif;
+  font-size: max(var(--menu-card-heading-size, 1.458333cqw), 11px);
   line-height: 1.1;
-  font-weight: 600;
+  font-weight: var(--menu-heading-weight, 600);
   letter-spacing: 0;
-  color: #b5b2ac;
+  color: var(--menu-inactive-heading, #b5b2ac);
 }
 .game-card.is-selected .card-title {
   color: var(--card-accent);
+}
+.menu-stage .home-grid {
+  --home-accent: var(--menu-accent, #bf791a);
+  width: var(--menu-home-width, 46.875cqw);
+  height: var(--menu-home-height, 60.277778cqh);
+  gap: var(--menu-home-gap, 0.3125cqw);
+}
+.menu-stage .home-tile,
+.menu-stage .home-tile-title { color: var(--menu-inactive-heading, #b5b2ac); }
+.menu-stage .home-tile-title {
+  font-family: var(--menu-font-primary, "Barlow"), Arial, sans-serif;
+  font-size: max(var(--menu-card-heading-size, 1.458333cqw), 11px);
+  font-weight: var(--menu-heading-weight, 600);
 }
 .game-card:disabled .card-title,
 .game-card[aria-disabled="true"] .card-title {

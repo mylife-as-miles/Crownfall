@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "sessionActive": false,
+  "state": {
+    "screen": "home",
+    "modal": "",
+    "category": "",
+    "entered": false,
+    "paused": false,
+    "pauseReason": "",
+    "visitStep": 2,
+    "chapterIndex": 1,
+    "arenaIndex": 3,
+    "quality": "high",
+    "textScale": 125,
+    "panelDistance": 1.7999999523162842,
+    "posture": "standing",
+    "motion": true,
+    "visitComplete": true,
+    "handsTracked": false,
+    "leftTracked": false,
+    "rightTracked": false,
+    "modelReady": true,
+    "animationTime": 2068.585693359375
+  },
+  "note": "The hand Exit action ended the real session; SDK select acknowledged The XR session ended after the action. This verifies the actual postcondition rather than retrying the mutation."
+}

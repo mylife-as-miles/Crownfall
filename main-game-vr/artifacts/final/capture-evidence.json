@@ -1,0 +1,325 @@
+{
+  "profile": {
+    "runtime": "Active IWER Meta Quest 3, mono emulator rendering",
+    "input": "hand ray/pinch only, both controllers disconnected",
+    "requestedDevelopmentFramebufferScale": 0.25,
+    "actualFramebufferSize": "not measured",
+    "physicalHeadset": false
+  },
+  "captureLimit": "Stereo capture timed out and the managed browser closed on this software host. One managed recovery was used; this capture uses mono emulation and makes no physical performance claim.",
+  "captures": [
+    {
+      "output": "artifacts/final/home-xr.png",
+      "state": {
+        "screen": "home",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 132.59300231933594
+      },
+      "metadata": {
+        "generation": 1,
+        "id": "tab-mvowrrag-hgqi5l",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "id": "Nav_Play",
+      "after": {
+        "screen": "play",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 111.69920349121094
+      }
+    },
+    {
+      "id": "Nav_Home",
+      "after": {
+        "screen": "home",
+        "modal": "",
+        "category": "",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "visitStep": 0,
+        "chapterIndex": 0,
+        "arenaIndex": 0,
+        "quality": "high",
+        "textScale": 125,
+        "panelDistance": 1.7999999523162842,
+        "posture": "standing",
+        "motion": true,
+        "visitComplete": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true,
+        "modelReady": true,
+        "animationTime": 117.27369689941406
+      }
+    }
+  ],
+  "finalState": {
+    "screen": "home",
+    "modal": "",
+    "category": "",
+    "entered": true,
+    "paused": false,
+    "pauseReason": "",
+    "visitStep": 0,
+    "chapterIndex": 0,
+    "arenaIndex": 0,
+    "quality": "high",
+    "textScale": 125,
+    "panelDistance": 1.7999999523162842,
+    "posture": "standing",
+    "motion": true,
+    "visitComplete": false,
+    "handsTracked": true,
+    "leftTracked": true,
+    "rightTracked": true,
+    "modelReady": true,
+    "animationTime": 133.51080322265625
+  },
+  "device": {
+    "headset": {
+      "position": {
+        "x": 0,
+        "y": 1.600000023841858,
+        "z": 0
+      },
+      "orientation": {
+        "x": 0,
+        "y": 0,
+        "z": 0,
+        "w": 1
+      }
+    },
+    "inputMode": "hand",
+    "controllers": {
+      "left": {
+        "connected": false,
+        "position": {
+          "x": -0.25,
+          "y": 1.5,
+          "z": -0.4000000059604645
+        },
+        "orientation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        }
+      },
+      "right": {
+        "connected": false,
+        "position": {
+          "x": 0.25,
+          "y": 1.5,
+          "z": -0.4000000059604645
+        },
+        "orientation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        }
+      }
+    },
+    "hands": {
+      "left": {
+        "connected": true,
+        "position": {
+          "x": -0.25,
+          "y": 1.5,
+          "z": -0.4000000059604645
+        },
+        "orientation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "poseId": "default",
+        "pinchValue": 0
+      },
+      "right": {
+        "connected": true,
+        "position": {
+          "x": 0.25,
+          "y": 1.5,
+          "z": -0.4000000059604645
+        },
+        "orientation": {
+          "x": 0.058989811688661575,
+          "y": 0.27883800864219666,
+          "z": -0.01716308295726776,
+          "w": 0.9583710432052612
+        },
+        "poseId": "default",
+        "pinchValue": 0
+      }
+    },
+    "stereoEnabled": false,
+    "fov": 90
+  },
+  "session": {
+    "deviceName": "Meta Quest 3",
+    "isRuntimeInstalled": true,
+    "sessionActive": true,
+    "sessionOffered": false,
+    "sessionMode": "immersive-vr",
+    "enabledFeatures": [
+      "hand-tracking",
+      "local-floor",
+      "bounded-floor",
+      "viewer",
+      "local"
+    ],
+    "visibilityState": "visible",
+    "runtimeKind": "emulated",
+    "browser": {
+      "lifecycle": {
+        "state": "running",
+        "policy": "eager",
+        "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+        "browserEpoch": 2,
+        "revision": 21,
+        "stateEnteredAt": "2026-10-26T07:01:30.920Z",
+        "lastObservedAt": "2026-10-26T07:02:00.922Z",
+        "failures": 0,
+        "cleanupConfirmed": true,
+        "attemptLimit": 3,
+        "historyTruncated": false,
+        "retryEligible": false,
+        "nextAction": "Use runtime_list_targets to inspect endpoint readiness.",
+        "history": [
+          {
+            "revision": 1,
+            "state": "launching",
+            "at": "2026-10-26T06:48:44.670Z",
+            "reason": "launch"
+          },
+          {
+            "revision": 2,
+            "state": "launching",
+            "at": "2026-10-26T06:48:44.670Z",
+            "reason": "prepared"
+          },
+          {
+            "revision": 3,
+            "state": "running",
+            "at": "2026-10-26T06:48:45.065Z",
+            "reason": "running"
+          },
+          {
+            "revision": 9,
+            "state": "closing",
+            "at": "2026-10-26T07:01:06.543Z",
+            "reason": "Managed browser closed unexpectedly."
+          },
+          {
+            "revision": 12,
+            "state": "failed",
+            "at": "2026-10-26T07:01:06.662Z",
+            "reason": "Managed browser closed unexpectedly."
+          },
+          {
+            "revision": 13,
+            "state": "launching",
+            "at": "2026-10-26T07:01:30.639Z",
+            "reason": "launch"
+          },
+          {
+            "revision": 14,
+            "state": "launching",
+            "at": "2026-10-26T07:01:30.640Z",
+            "reason": "prepared"
+          },
+          {
+            "revision": 15,
+            "state": "running",
+            "at": "2026-10-26T07:01:30.920Z",
+            "reason": "running"
+          },
+          {
+            "revision": 21,
+            "state": "running",
+            "at": "2026-10-26T07:02:00.922Z",
+            "reason": "stable"
+          }
+        ],
+        "attemptId": "73f2d897-0ba6-4c51-9a99-586021ca75cc"
+      },
+      "status": "connected",
+      "clients": [
+        {
+          "commandReady": true,
+          "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+          "browserEpoch": 2,
+          "deviceClass": "managed",
+          "pageId": "tab-mvowrrag-hgqi5l",
+          "role": "app",
+          "tabGeneration": 1
+        },
+        {
+          "commandReady": true,
+          "sessionId": "84931bb9-9fc1-464c-a5c3-f5e427fa9346",
+          "browserEpoch": 2,
+          "deviceClass": "managed",
+          "pageId": "tab-mvowrpxh-q3rn0i",
+          "role": "editor",
+          "sceneSessionId": "scene-8qzmd36781w",
+          "tabGeneration": 1
+        }
+      ],
+      "lastBridgeConnectedAt": "2026-10-26T07:01:33.800Z",
+      "lastCommandReadyAt": "2026-10-26T07:01:37.039Z",
+      "connected": true,
+      "commandReady": true,
+      "connectedClientCount": 2,
+      "lastTransitionAt": "2026-10-26T07:01:30.920Z",
+      "audioMuted": false
+    },
+    "browserConnected": true,
+    "browserCommandReady": true
+  }
+}
