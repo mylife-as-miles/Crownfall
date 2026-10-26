@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "checks": [
+    "The actual uploaded Idle clip runs at 1× with infinite repetition and one model request",
+    "Slow rendering retains 1.034× elapsed animation speed and 2 actual loop wraps",
+    "Home, Play, Showcase, Settings, Chapters and a dialog preserve the canvas, model request count and advancing mixer",
+    "OS reduced motion freezes the actual mixer and resumes without a model reload",
+    "The Ambient Motion preference freezes and resumes the actual rig without replacing its canvas",
+    "Landscape layout has no page overflow; the original canvas and single model request remain intact"
+  ],
+  "clip": {
+    "duration": 3.0416667461395264,
+    "effectiveTimeScale": 1,
+    "repetitions": "Infinity"
+  },
+  "slowRender": {
+    "addedDelayMs": 120,
+    "elapsedSeconds": 6.815200000002981,
+    "mixerSeconds": 7.049699999999999,
+    "ratio": 1.034408381264954,
+    "wraps": 2,
+    "renderSamples": 14
+  },
+  "continuity": [
+    {
+      "label": "Home",
+      "before": 7.255000000002978,
+      "after": 9.921600000002979
+    },
+    {
+      "label": "Play",
+      "before": 9.921600000002979,
+      "after": 12.68810000000298
+    },
+    {
+      "label": "Showcase",
+      "before": 12.68810000000298,
+      "after": 15.48800000000298
+    },
+    {
+      "label": "Settings",
+      "before": 15.48800000000298,
+      "after": 18.25460000000298
+    },
+    {
+      "label": "Play",
+      "before": 18.25460000000298,
+      "after": 21.571100000002982
+    },
+    {
+      "label": "Chapters",
+      "before": 21.571100000002982,
+      "after": 24.621000000002983
+    },
+    {
+      "label": "Classic preview dialog",
+      "before": 26.520900000002975,
+      "after": 27.65410000000298
+    }
+  ],
+  "visibilityCheck": "Skipped: this headless browser keeps background tabs visible",
+  "landscape": {
+    "width": 844,
+    "height": 390,
+    "scrollWidth": 844,
+    "scrollHeight": 390
+  },
+  "modelRequests": 1,
+  "browserErrors": [],
+  "instrumentation": "Playwright interception of the development module only; no shipped debug globals or product edits. Actual uploaded GLB at 50% render scale and 30 FPS limit; software WebGL frame pacing is not benchmarked."
+}

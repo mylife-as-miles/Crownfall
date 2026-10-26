@@ -216,7 +216,7 @@ export default function CreatureStage({
       let frame = 0;
       let previous = performance.now();
       let lastRendered = previous;
-      const start = previous;
+      let activeSeconds = 0;
       const resize = () => {
         if (!active) return;
         const { width, height } = mount.getBoundingClientRect();
@@ -248,7 +248,8 @@ export default function CreatureStage({
       resize();
       const render = (now: number) => {
         frame = 0;
-        if (!active || !model || motionDisabledRef.current) return;
+        if (!active || !model || motionDisabledRef.current || document.hidden)
+          return;
         frame = requestAnimationFrame(render);
         const timestamp = nextRenderTimestamp(
           now,
@@ -257,15 +258,15 @@ export default function CreatureStage({
         );
         if (timestamp === null) return;
         lastRendered = timestamp;
-        const delta = Math.min((now - previous) / 1000, 0.05);
+        // Follow foreground elapsed time, including skipped render frames. A
+        // capped delta made the rig nearly still on slower devices.
+        const delta = Math.max(0, (now - previous) / 1000);
         previous = now;
-        if (document.hidden) return;
-        if (!motionDisabledRef.current) {
-          mixer?.update(delta * 0.7);
-          const time = (now - start) / 1000;
-          pivot.rotation.y = facing + Math.sin(time * 0.22) * 0.018;
-          pivot.position.y = verticalAnchor + Math.sin(time * 0.6) * 0.012;
-        }
+        activeSeconds += delta;
+        mixer?.update(delta);
+        pivot.rotation.y = facing + Math.sin(activeSeconds * 0.22) * 0.018;
+        pivot.position.y =
+          verticalAnchor + Math.sin(activeSeconds * 0.6) * 0.012;
         renderer.render(scene, camera);
       };
       const setMotionPaused = (paused: boolean) => {
@@ -273,8 +274,15 @@ export default function CreatureStage({
         frame = 0;
         previous = performance.now();
         lastRendered = previous;
-        if (!paused && model) frame = requestAnimationFrame(render);
+        if (!paused && model && !document.hidden)
+          frame = requestAnimationFrame(render);
       };
+      const onVisibilityChange = () =>
+        setMotionPaused(motionDisabledRef.current);
+      document.addEventListener("visibilitychange", onVisibilityChange);
+      disposers.push(() =>
+        document.removeEventListener("visibilitychange", onVisibilityChange),
+      );
       motionControlRef.current = setMotionPaused;
       disposers.push(() => {
         if (motionControlRef.current === setMotionPaused)
@@ -325,7 +333,12 @@ export default function CreatureStage({
               const idle =
                 gltf.animations.find((clip) => /idle/i.test(clip.name)) ??
                 gltf.animations[0];
-              mixer.clipAction(idle).play();
+              mixer
+                .clipAction(idle)
+                .setLoop(THREE.LoopRepeat, Infinity)
+                .setEffectiveTimeScale(1)
+                .setEffectiveWeight(1)
+                .play();
               mixer.update(0);
               setActiveAnimation(idle.name);
             }

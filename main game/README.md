@@ -78,7 +78,7 @@ The default creature is the actual user-supplied **`Crownfall_Sorcerer_Digits_v3
 
 The supplied 19,382,272-byte file was optimized to 4,217,336 bytes using 2048px WebP textures and Draco geometry compression. All 80,910 triangles, 142 joints and three clips are preserved; no simplification or animation resampling was applied. The original upload is not overwritten. Required Draco decoders are self hosted in `public/decoders/draco/`, so this model needs no external decoder service.
 
-`src/effects/creature-config.ts` controls the default model URL. `?model=/models/alternate.glb` previews another asset and `?model=none` previews the illustration fallback. Framing and lighting are in `src/CreatureStage.tsx`. Switching motion preferences pauses or resumes the existing renderer without downloading or decoding the model again. OS reduced motion is honored. A temporary reference-derived illustration remains visible while the model loads, or if model loading or WebGL fails.
+`src/effects/creature-config.ts` controls the default model URL. `?model=/models/alternate.glb` previews another asset and `?model=none` previews the illustration fallback. Framing and lighting are in `src/CreatureStage.tsx`. Idle loops continuously at its authored speed (about 3.04 seconds per loop), including across Home, Play, Showcase, Settings and Chapters. Animation follows elapsed foreground time rather than the number of frames rendered, so a lower scene frame rate does not slow the rig. Switching motion preferences pauses or resumes the existing renderer without downloading or decoding the model again. Hidden tabs pause without a pose jump when resumed. Both saved Ambient Motion off and OS reduced motion are honored. `artifacts/creature-motion/` contains the current actual-GLB recording, moving-pose captures and timing/navigation verification. A temporary reference-derived illustration remains visible while the model loads, or if model loading or WebGL fails.
 
 Fonts are self hosted Barlow under the included SIL Open Font License. The bundled Draco distribution includes its Apache license.
 
@@ -94,6 +94,7 @@ node scripts/verify-layout.mjs
 node scripts/verify-home.mjs
 node scripts/verify-copy.mjs
 node scripts/verify-model.mjs
+node scripts/verify-creature-motion.mjs
 node scripts/verify-settings.mjs
 node scripts/verify-loading.mjs
 node scripts/verify-showcase.mjs

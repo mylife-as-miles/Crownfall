@@ -1,8 +1,8 @@
 {
-  "revision": "Reference-style fourteen-slot Chapters selection screen",
-  "latestReviewScope": "Chapters selection, locked states and preview flow",
+  "revision": "Authored-speed continuous creature Idle across the menu",
+  "latestReviewScope": "Creature idle motion, continuity and moving-pose framing",
   "score": 9.2,
-  "scoreScope": "Chapters only. Earlier screen and interaction scores remain separate; no aggregate or hardware performance score is implied.",
+  "scoreScope": "Bounded subjective creature-motion review only. Previous screen, scrollbar and menu-transition scores remain separate; this is not a physical frame-rate benchmark.",
   "scoreOutOf": 10,
   "screenScores": {
     "Home": 9.2,
@@ -455,7 +455,14 @@
       "geometrySimplification": false,
       "textureConversion": "WebP, maximum dimension 2048",
       "geometryCompression": "Draco with self-hosted decoder",
-      "fallback": "Illustration retained for unavailable or unsupported model rendering"
+      "fallback": "Illustration retained for unavailable or unsupported model rendering",
+      "idlePlayback": {
+        "clip": "Idle",
+        "authoredDurationSeconds": 3.0416667461395264,
+        "effectiveTimeScale": 1,
+        "repetitions": "Infinity",
+        "clock": "Accumulated foreground elapsed time, including skipped render frames; OS/app reduced motion freezes the current pose."
+      }
     },
     "creatureTransform": {
       "baselineCommit": "3b3f594",
@@ -522,7 +529,8 @@
         }
       ],
       "interpretation": "All sampled crown, face-proxy and eye-proxy clearances are positive across the reviewed aspects. Sampled worst desktop images also visually retain the crown and visible eye above the cards.",
-      "limits": "Dense sampled geometric evidence, not a continuous mathematical guarantee or semantic face/ring detector. Applies to the menu Idle clip and tested ambient extrema."
+      "limits": "Dense sampled geometric evidence, not a continuous mathematical guarantee or semantic face/ring detector. Applies to the menu Idle clip and tested ambient extrema.",
+      "timingRevision": "Playback speed changes to authored 1x; approved rig, transforms and procedural amplitudes remain unchanged. Prior clip-times by independent ambient-extrema samples still concern the same pose range, with their existing dense-sampling—not continuous-guarantee—limits."
     },
     "currentEvidence": {
       "menu": "artifacts/verification.json",
@@ -534,7 +542,8 @@
       "model": "artifacts/model-verification.json",
       "fourEntryNavigation": "artifacts/layout-verification.json",
       "settingsRevisionPreservation": "artifacts/settings/preservation.json",
-      "chaptersRoute": "artifacts/chapters/verification.json"
+      "chaptersRoute": "artifacts/chapters/verification.json",
+      "creatureMotion": "artifacts/creature-motion/verification.json"
     },
     "iterationHistory": [
       {
@@ -567,7 +576,7 @@
     ],
     "verdict": "Retains the subjective 9.3/10 Play composition assessment. Chapters now opens a reference-style selection screen rather than the superseded direct mode dialog. Gameplay integration remains absent and disclosed; no blocking visual issue."
   },
-  "verdict": "Chapters meets the subjective 9/10 visual target at 9.2 after reference and actual desktop/landscape review. All prior screen and interaction scores remain distinct. Numbered chapter slots and supplied environment art are placeholders; gameplay, campaign progress and unlocks remain unconnected and disclosed. No blocking visual issue or further polish requested.",
+  "verdict": "Creature idle motion meets the subjective 9/10 target at 9.2. Actual moving-pose captures retain clear crown/eye framing and the approved menu layout. Authored-speed repetition and menu continuity are supported by separate actual-GLB timing tests. No blocking visual issue or further polish requested. Physical frame pacing remains unbenchmarked, and hidden-tab behavior is source-reviewed rather than headless-runtime verified.",
   "sharedNavigationReview": {
     "labels": [
       "Home",
@@ -753,7 +762,8 @@
   },
   "interactionScores": {
     "Native scrollbar theme": 9.3,
-    "Menu motion design": 9.1
+    "Menu motion design": 9.1,
+    "Creature idle motion": 9.2
   },
   "showcaseReview": {
     "scope": "Current standalone Showcase overview, unavailable cinematic battle library, supplied-art arena gallery and future replay archive.",
@@ -1241,5 +1251,106 @@
       "The 9.2 score is subjective reference/theme assessment, not a pixel-match or hardware-performance claim."
     ],
     "verdict": "Meets 9.2/10 for the current reference-style Chapters presentation. No blocking visual issue or further polish requested."
+  },
+  "creatureMotionReview": {
+    "scope": "Actual supplied sorcerer Idle at authored speed, persistent across menus, with approved framing and motion preferences retained.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Bounded independent subjective source and actual-render review. Movement is the supplied restrained Idle, not a new gesture animation. Score does not certify physical GPU frame pacing or browser visibility behavior that the headless test cannot exercise.",
+    "reviewedScreenshots": [
+      "artifacts/creature-motion/idle-a-1280x720.png",
+      "artifacts/creature-motion/idle-b-1280x720.png",
+      "artifacts/creature-motion/idle-a-844x390.png",
+      "artifacts/creature-motion/idle-b-844x390.png"
+    ],
+    "visualFindings": [
+      "Distinct actual sampled phases show restrained rig, hand and torso movement that suits the menu; movement does not require larger procedural sways or invented attack gestures.",
+      "Crown and eye remain clear in the reviewed desktop and phone-landscape moving poses. The creature remains behind the same four cards.",
+      "Approved camera, size, yaw, lean, parent anchor, materials, artwork and card geometry are unchanged. The refreshed landscape A capture is settled; the earlier capture caught a resize-related navigation-indicator transition.",
+      "The actual recording and separate timing evidence support a continuing living scene across menu changes rather than restarting a static pose on each destination."
+    ],
+    "rubric": [
+      {
+        "category": "Visible authored Idle and repetition",
+        "maximum": 3,
+        "score": 2.8,
+        "notes": "The actual supplied clip advances and repeats at authored 1x. Motion remains a calm ambient Idle rather than exaggerated menu choreography."
+      },
+      {
+        "category": "Continuity across menus",
+        "maximum": 2,
+        "score": 1.9,
+        "notes": "Persistent stage, model and canvas survive menu/dialog changes; measured mixer time keeps advancing and only one GLB request is made."
+      },
+      {
+        "category": "Moving-pose framing and layout",
+        "maximum": 2,
+        "score": 1.85,
+        "notes": "Reviewed 1280/844 poses retain crown/eye clearance, unchanged card geometry and the approved creature-behind-cards balance."
+      },
+      {
+        "category": "Pause and resume handling",
+        "maximum": 2,
+        "score": 1.75,
+        "notes": "OS/app motion freeze and resume are verified with the actual rig. Foreground clock preservation and visibility handling read correctly in source; hidden-tab runtime behavior remains untested in headless."
+      },
+      {
+        "category": "Theme and restraint",
+        "maximum": 1,
+        "score": 0.9,
+        "notes": "Existing rig movement, small approved sway and magical atmosphere remain coherent without changing the established art direction."
+      }
+    ],
+    "sourceReview": {
+      "file": "src/CreatureStage.tsx",
+      "fix": "Replaces the capped 0.05-second delta multiplied by 0.7 with actual nonnegative foreground elapsed time. Infinite repetition, effective time scale 1 and effective weight 1 are explicit.",
+      "clockContinuity": "Mixer and parent sway use the same accumulated activeSeconds. Pausing resets frame timestamps while retaining animation and sway phase, so hidden or reduced-motion time is not added as a catch-up jump.",
+      "menuPersistence": "CreatureStage remains outside MenuTransition; its loading effect still depends only on model source and explicit load attempt, rather than the current menu.",
+      "framing": "No rig/bone overrides, transform changes, camera changes or amplitude increases. Existing Idle by independent-sway framing samples still address the same pose range; their prior dense-sampling limits remain.",
+      "blockingIssue": "None found in the bounded source review."
+    },
+    "actualTimingEvidence": {
+      "report": "artifacts/creature-motion/verification.json",
+      "passed": true,
+      "groups": 6,
+      "clipDurationSeconds": 3.0416667461395264,
+      "effectiveTimeScale": 1,
+      "repetitions": "Infinity",
+      "slowRenderProbe": {
+        "addedDelayPerDrawMs": 120,
+        "foregroundElapsedSeconds": 6.815200000002981,
+        "mixerElapsedSeconds": 7.049699999999999,
+        "measuredRatio": 1.034408381264954,
+        "actualLoopWraps": 2,
+        "renderSamples": 14
+      },
+      "interpretation": "The bounded slowed-render test tracks approximately authored elapsed speed instead of slowing animation in proportion to sparse rendered frames. The measured 1.034x ratio is reported as observed, not described as exact 1.000x or a frame-rate measurement.",
+      "continuity": "Home, Play, Showcase, Settings, Chapters and a preview dialog retain the canvas, one model request and an advancing mixer.",
+      "reducedMotion": "Separate actual-rig checks freeze and resume both OS reduced motion and Ambient Motion preference without model reload.",
+      "visibilityRuntimeCheck": "Skipped: the headless browser keeps background tabs visible.",
+      "visibilitySourceReview": "The visibility listener cancels scheduling while hidden and resets frame timestamps on visibility change while preserving activeSeconds and mixer state. This is source inspection, not a passed hidden-tab runtime test.",
+      "instrumentation": "Development-module interception in Playwright only; no shipped debug globals or product debug changes."
+    },
+    "recordingReview": {
+      "file": "artifacts/creature-motion/menu-idle.webm",
+      "metadata": "artifacts/creature-motion/captures.json",
+      "durationSeconds": 28.72,
+      "viewport": [
+        960,
+        540
+      ],
+      "conditions": "Full untrimmed actual-GLB recording with Low particles, 50 percent scene resolution and 30fps scene cap for software capture. Motion-enabled static pairs use High particles and 100 percent scene resolution.",
+      "method": "Inspected decoded real frames across the menu sequence and focused rig crops at encoded 7.4, 8.1, 8.8 and 9.5 seconds, avoiding three-second sampling that would alias the approximately 3.04-second loop.",
+      "limit": "Encoded samples and software rendering do not establish physical-device frame rate or frame pacing. Actual-rig timing/loop and continuity assertions come from the separate verification report."
+    },
+    "preservedFramingEvidence": "artifacts/creature-height/idle-framing.json",
+    "limits": [
+      "The supplied Idle is restrained; this change does not add new large arm gestures or alter the approved pose amplitudes.",
+      "A long foreground rendering stall can skip visible intermediate poses while elapsed animation time remains correct; this fix does not claim to increase hardware rendering performance.",
+      "Hidden-tab pause/resume is source-reviewed only because headless visibility testing was unsupported.",
+      "Reviewed moving poses and earlier dense geometric framing samples are evidence, not a continuous semantic crown/eye-clipping guarantee.",
+      "The 9.2 score is a bounded subjective motion/framing judgment, separate from previous screen and transition scores."
+    ],
+    "verdict": "Meets 9.2/10 for authored-speed creature idle motion and retained menu framing. No blocking visual issue; no further renders, amplitude changes or polish requested."
   }
 }

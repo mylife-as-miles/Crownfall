@@ -1,0 +1,35 @@
+{
+  "recording": "artifacts/creature-motion/menu-idle.webm",
+  "captures": [
+    {
+      "path": "artifacts/creature-motion/idle-a-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/creature-motion/idle-b-1280x720.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "path": "artifacts/creature-motion/idle-a-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "path": "artifacts/creature-motion/idle-b-844x390.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    }
+  ],
+  "errors": [],
+  "rendering": "Actual supplied GLB, authored Idle at 1x and approved parent sway. Full untrimmed recording at 960x540 uses Low particles, 50% scene resolution and a 30fps scene cap for software capture. Static pairs use High particles, 100% scene resolution, motion enabled. No target-device frame-rate claim."
+}

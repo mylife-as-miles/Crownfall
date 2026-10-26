@@ -20,7 +20,7 @@
       "label": "delayed Home artwork and fonts",
       "state": "loading",
       "status": "Preparing artwork and type",
-      "value": "36",
+      "value": "73",
       "busy": "true",
       "modelReady": false,
       "selectedTab": "Play",
@@ -66,7 +66,7 @@
       "label": "known-length partial model download",
       "state": "loading",
       "status": "Loading the sorcerer · 0.0 / 0.1 MB",
-      "value": "66",
+      "value": "75",
       "busy": "true",
       "modelReady": false,
       "selectedTab": "Play",
@@ -126,7 +126,7 @@
       "label": "slow transfer with optional Continue",
       "state": "loading",
       "status": "Still preparing the menu. You can continue while it finishes.",
-      "value": "66",
+      "value": "75",
       "busy": "true",
       "modelReady": false,
       "selectedTab": "Play",
@@ -135,11 +135,11 @@
     },
     {
       "label": "cached OS reduced-motion reload",
-      "elapsedMs": 3092
+      "elapsedMs": 1684
     },
     {
       "label": "cached saved preference reduced-motion reload",
-      "elapsedMs": 1472
+      "elapsedMs": 2666
     }
   ],
   "layouts": [
