@@ -66,21 +66,21 @@
     {
       "label": "interrupted Play",
       "key": "play",
-      "state": "running",
+      "state": "idle",
       "focus": "Chapters",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 1,
+      "ghostChildren": 0,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0,
-          "transform": "matrix(1, 0, 0, 1, 10, 0)"
+          "opacity": 1,
+          "transform": "none"
         }
       ],
-      "activeAnimations": 6
+      "activeAnimations": 0
     },
     {
       "label": "interrupted Settings",
@@ -161,21 +161,21 @@
     {
       "label": "interrupted Home",
       "key": "home",
-      "state": "running",
+      "state": "idle",
       "focus": "My Legacy",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 1,
+      "ghostChildren": 0,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0,
-          "transform": "matrix(1, 0, 0, 1, -10, 0)"
+          "opacity": 1,
+          "transform": "none"
         }
       ],
-      "activeAnimations": 5
+      "activeAnimations": 0
     },
     {
       "label": "interrupted Play",
@@ -227,8 +227,27 @@
     {
       "label": "General detail entry",
       "key": "settings:general",
-      "state": "running",
+      "state": "idle",
       "focus": "Language: English, read only",
+      "focusInGhost": false,
+      "focusInLive": true,
+      "ghostChildren": 0,
+      "ghostHidden": true,
+      "duplicateIds": [],
+      "overflow": false,
+      "livePoses": [
+        {
+          "opacity": 1,
+          "transform": "none"
+        }
+      ],
+      "activeAnimations": 1
+    },
+    {
+      "label": "Video detail entry",
+      "key": "settings:video",
+      "state": "running",
+      "focus": "Screen Resolution: 1280 × 720, read only",
       "focusInGhost": false,
       "focusInLive": true,
       "ghostChildren": 1,
@@ -242,25 +261,6 @@
         }
       ],
       "activeAnimations": 3
-    },
-    {
-      "label": "Video detail entry",
-      "key": "settings:video",
-      "state": "idle",
-      "focus": "Screen Resolution: 1280 × 720, read only",
-      "focusInGhost": false,
-      "focusInLive": true,
-      "ghostChildren": 0,
-      "ghostHidden": true,
-      "duplicateIds": [],
-      "overflow": false,
-      "livePoses": [
-        {
-          "opacity": 1,
-          "transform": "none"
-        }
-      ],
-      "activeAnimations": 0
     },
     {
       "label": "Controls detail entry",
@@ -279,7 +279,7 @@
           "transform": "none"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 1
     },
     {
       "label": "Audio detail entry",
@@ -398,21 +398,21 @@
     {
       "label": "1280px Showcase in motion",
       "key": "showcase:overview",
-      "state": "running",
+      "state": "idle",
       "focus": "AI Battles",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 1,
+      "ghostChildren": 0,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.326291,
-          "transform": "matrix(1, 0, 0, 1, 6.73709, 0)"
+          "opacity": 1,
+          "transform": "none"
         }
       ],
-      "activeAnimations": 5
+      "activeAnimations": 0
     },
     {
       "label": "1280px Showcase settled",
@@ -450,7 +450,7 @@
           "transform": "none"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 1
     },
     {
       "label": "1280px Settings settled",
@@ -469,7 +469,7 @@
           "transform": "none"
         }
       ],
-      "activeAnimations": 0
+      "activeAnimations": 1
     },
     {
       "label": "1920px Home in motion",
@@ -588,21 +588,21 @@
     {
       "label": "1920px Settings in motion",
       "key": "settings:grid",
-      "state": "idle",
+      "state": "running",
       "focus": "Audio",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 0,
+      "ghostChildren": 1,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 1,
-          "transform": "none"
+          "opacity": 0,
+          "transform": "matrix(1, 0, 0, 1, 10, 0)"
         }
       ],
-      "activeAnimations": 1
+      "activeAnimations": 9
     },
     {
       "label": "1920px Settings settled",
@@ -621,7 +621,7 @@
           "transform": "none"
         }
       ],
-      "activeAnimations": 1
+      "activeAnimations": 0
     },
     {
       "label": "844px Home in motion",
@@ -702,21 +702,21 @@
     {
       "label": "844px Showcase in motion",
       "key": "showcase:overview",
-      "state": "running",
+      "state": "idle",
       "focus": "AI Battles",
       "focusInGhost": false,
       "focusInLive": true,
-      "ghostChildren": 1,
+      "ghostChildren": 0,
       "ghostHidden": true,
       "duplicateIds": [],
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.326392,
-          "transform": "matrix(1, 0, 0, 1, 6.73608, 0)"
+          "opacity": 1,
+          "transform": "none"
         }
       ],
-      "activeAnimations": 5
+      "activeAnimations": 0
     },
     {
       "label": "844px Showcase settled",
@@ -750,8 +750,8 @@
       "overflow": false,
       "livePoses": [
         {
-          "opacity": 0.326693,
-          "transform": "matrix(1, 0, 0, 1, 6.73307, 0)"
+          "opacity": 0.326877,
+          "transform": "matrix(1, 0, 0, 1, 6.73123, 0)"
         }
       ],
       "activeAnimations": 9

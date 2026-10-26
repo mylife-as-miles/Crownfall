@@ -9,7 +9,7 @@
         "height": 720
       },
       "state": "legacy",
-      "text": "×\nCROWNFALL\nMy Legacy\n\nLegacy profiles are unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -20,7 +20,7 @@
         "height": 720
       },
       "state": "chronicles",
-      "text": "×\nCROWNFALL\nChronicles\n\nChronicles are unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -31,7 +31,7 @@
         "height": 720
       },
       "state": "herald",
-      "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -42,7 +42,7 @@
         "height": 720
       },
       "state": "classic",
-      "text": "×\nCROWNFALL\nClassic\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
+      "text": "CLASSIC\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -53,7 +53,7 @@
         "height": 720
       },
       "state": "local",
-      "text": "×\nCROWNFALL\nLocal Duel\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
+      "text": "LOCAL DUEL\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -64,7 +64,7 @@
         "height": 720
       },
       "state": "online",
-      "text": "×\nCROWNFALL\nOnline Duel\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
+      "text": "ONLINE DUEL\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -75,7 +75,7 @@
         "height": 720
       },
       "state": "back",
-      "text": "×\nCROWNFALL\nReturn to Home?\n\nYour menu preferences stay on this device.\n\nStay in Play\nGo to Home\n>\nB\nBack",
+      "text": "RETURN TO HOME?\n\nYour menu preferences stay on this device.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -86,7 +86,7 @@
         "height": 720
       },
       "state": "chapter-01",
-      "text": "×\nCROWNFALL\nChapter 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack",
+      "text": "CHAPTER 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -97,7 +97,7 @@
         "height": 720
       },
       "state": "chapter-02",
-      "text": "×\nCROWNFALL\nChapter 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack",
+      "text": "CHAPTER 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -108,7 +108,7 @@
         "height": 390
       },
       "state": "legacy",
-      "text": "×\nCROWNFALL\nMy Legacy\n\nLegacy profiles are unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -119,7 +119,7 @@
         "height": 390
       },
       "state": "chronicles",
-      "text": "×\nCROWNFALL\nChronicles\n\nChronicles are unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -130,7 +130,7 @@
         "height": 390
       },
       "state": "herald",
-      "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack",
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -141,7 +141,7 @@
         "height": 390
       },
       "state": "classic",
-      "text": "×\nCROWNFALL\nClassic\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
+      "text": "CLASSIC\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -152,7 +152,7 @@
         "height": 390
       },
       "state": "local",
-      "text": "×\nCROWNFALL\nLocal Duel\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
+      "text": "LOCAL DUEL\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -163,7 +163,7 @@
         "height": 390
       },
       "state": "online",
-      "text": "×\nCROWNFALL\nOnline Duel\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack",
+      "text": "ONLINE DUEL\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -174,7 +174,7 @@
         "height": 390
       },
       "state": "back",
-      "text": "×\nCROWNFALL\nReturn to Home?\n\nYour menu preferences stay on this device.\n\nStay in Play\nGo to Home\n>\nB\nBack",
+      "text": "RETURN TO HOME?\n\nYour menu preferences stay on this device.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -185,7 +185,7 @@
         "height": 390
       },
       "state": "chapter-01",
-      "text": "×\nCROWNFALL\nChapter 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack",
+      "text": "CHAPTER 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []
@@ -196,7 +196,7 @@
         "height": 390
       },
       "state": "chapter-02",
-      "text": "×\nCROWNFALL\nChapter 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack",
+      "text": "CHAPTER 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []

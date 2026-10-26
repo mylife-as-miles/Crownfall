@@ -16,20 +16,20 @@
   "previews": [
     {
       "mode": "Classic",
-      "text": "×\nCROWNFALL\nClassic\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack"
+      "text": "CLASSIC\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel"
     },
     {
       "mode": "Local Duel",
-      "text": "×\nCROWNFALL\nLocal Duel\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack"
+      "text": "LOCAL DUEL\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel"
     },
     {
       "mode": "Chapters",
       "screen": "Fourteen-chapter selection",
-      "preview": "×\nCROWNFALL\nChapter 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nBack to Chapters\n>\nB\nBack"
+      "preview": "CHAPTER 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel"
     },
     {
       "mode": "Online Duel",
-      "text": "×\nCROWNFALL\nOnline Duel\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nBack to Play\n>\nB\nBack"
+      "text": "ONLINE DUEL\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel"
     }
   ],
   "errors": []

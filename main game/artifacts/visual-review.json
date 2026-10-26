@@ -1,8 +1,8 @@
 {
-  "revision": "Authored-speed continuous creature Idle across the menu",
-  "latestReviewScope": "Creature idle motion, continuity and moving-pose framing",
+  "revision": "Shared reference-style transparent Confirm/Cancel modals",
+  "latestReviewScope": "Nine-state shared modal presentation",
   "score": 9.2,
-  "scoreScope": "Bounded subjective creature-motion review only. Previous screen, scrollbar and menu-transition scores remain separate; this is not a physical frame-rate benchmark.",
+  "scoreScope": "Shared modal presentation only. Prior screen and interaction scores remain distinct; this is not an aggregate or hardware performance score.",
   "scoreOutOf": 10,
   "screenScores": {
     "Home": 9.2,
@@ -72,7 +72,7 @@
         "category": "Titles, readability and honest destination states",
         "maximum": 2.0,
         "score": 1.8,
-        "notes": "Only the three supplied titles appear on the tiles. No invented stats, lore or news are added. Each activation opens a clearly unavailable informational dialog with Back to Home; no unsupported launch action is offered. Compact bold gray/amber headings fit all reviewed viewports."
+        "notes": "Only the three supplied titles appear on tiles; no invented stats, lore or news. Activations retain truthful unavailable copy. Latest shared modals use Confirm/Cancel, both dismissing to Home; no unsupported launch action is offered. Compact tile headings continue to fit."
       },
       {
         "category": "Existing creature and atmospheric cohesion",
@@ -135,7 +135,11 @@
       "My Legacy": "Legacy profiles are unavailable in this build.",
       "Chronicles": "Chronicles are unavailable in this build.",
       "Herald Board": "The herald board is unavailable in this build.",
-      "commonAction": "Back to Home"
+      "commonActions": [
+        "Confirm",
+        "Cancel"
+      ],
+      "actionEffect": "Both dismiss the unavailable informational modal to the originating Home selection. No destination system launches."
     },
     "evidence": {
       "functional": "artifacts/home/verification.json",
@@ -205,7 +209,8 @@
       "gap": 4,
       "restoredCSSBaseline": "fb4738b",
       "notes": "Latest user reversal removes only the right-tile width enlargement. Original widths are restored; current Play modes, supplied images, text, creature and other changes remain."
-    }
+    },
+    "modalPresentationRevision": "Earlier boxed-dialog captures and iteration notes are historical. Current transparent Confirm/Cancel treatment is reviewed in modalReview; Home layout/art score is unchanged."
   },
   "playReview": {
     "revision": "Classic / Local Duel / Chapters / Online Duel with four-entry shared navigation",
@@ -348,28 +353,46 @@
           "heading": "Classic",
           "paragraph": "Classic chess against the computer is not connected to this menu.",
           "note": "Menu preview only. No gameplay will start here.",
-          "action": {
-            "label": "Back to Play",
-            "opens": "play"
-          }
+          "actions": [
+            {
+              "label": "Confirm",
+              "effect": "Dismiss to Play; no gameplay launch."
+            },
+            {
+              "label": "Cancel",
+              "effect": "Dismiss to Play; no gameplay launch."
+            }
+          ]
         },
         "local-duel": {
           "heading": "Local Duel",
           "paragraph": "Two-player chess on one device is not connected to this menu.",
           "note": "Menu preview only. No gameplay will start here.",
-          "action": {
-            "label": "Back to Play",
-            "opens": "play"
-          }
+          "actions": [
+            {
+              "label": "Confirm",
+              "effect": "Dismiss to Play; no gameplay launch."
+            },
+            {
+              "label": "Cancel",
+              "effect": "Dismiss to Play; no gameplay launch."
+            }
+          ]
         },
         "online-duel": {
           "heading": "Online Duel",
           "paragraph": "Online play is unavailable in this build. No matchmaking service is connected.",
           "note": "Menu preview only. No gameplay will start here.",
-          "action": {
-            "label": "Back to Play",
-            "opens": "play"
-          }
+          "actions": [
+            {
+              "label": "Confirm",
+              "effect": "Dismiss to Play; no gameplay launch."
+            },
+            {
+              "label": "Cancel",
+              "effect": "Dismiss to Play; no gameplay launch."
+            }
+          ]
         }
       },
       "functionalBoundary": "Classic, Local Duel and Online Duel retain informational mode dialogs. Chapters opens a fourteen-slot selection preview with two previewable and twelve locked slots. No gameplay launch, campaign integration, progress save, unlock or matchmaking service is offered.",
@@ -395,8 +418,12 @@
         "remainingSlots": "Chapter 03 through Chapter 14 remain locked; activation announces that campaign progression is not connected.",
         "previewParagraph": "Chapter gameplay is not connected in this build.",
         "previewNote": "This is a chapter-selection preview. Campaign progress and unlocks are not recorded.",
-        "previewAction": "Back to Chapters",
-        "gridBack": "Returns to Play with the Chapters card selected and focused."
+        "gridBack": "Returns to Play with the Chapters card selected and focused.",
+        "previewActions": [
+          "Confirm",
+          "Cancel"
+        ],
+        "previewActionEffect": "Both dismiss to the selected Chapters slot without starting gameplay or recording progress."
       }
     },
     "suppliedArtwork": {
@@ -574,9 +601,10 @@
       "The 9.3 score is subjective visual judgment, not a performance benchmark.",
       "Navigation intentionally gains Showcase and shifts Settings/RB. Historical pixel-preservation reports predating the four-entry nav are not current evidence."
     ],
-    "verdict": "Retains the subjective 9.3/10 Play composition assessment. Chapters now opens a reference-style selection screen rather than the superseded direct mode dialog. Gameplay integration remains absent and disclosed; no blocking visual issue."
+    "verdict": "Retains the subjective 9.3/10 Play composition assessment. Chapters now opens a reference-style selection screen rather than the superseded direct mode dialog. Gameplay integration remains absent and disclosed; no blocking visual issue.",
+    "modalPresentationRevision": "Mode and chapter preview disclosures are unchanged, while the shared presentation and action labels now follow modalReview. Previous boxed-modal images are historical; Play layout/art score is unchanged."
   },
-  "verdict": "Creature idle motion meets the subjective 9/10 target at 9.2. Actual moving-pose captures retain clear crown/eye framing and the approved menu layout. Authored-speed repetition and menu continuity are supported by separate actual-GLB timing tests. No blocking visual issue or further polish requested. Physical frame pacing remains unbenchmarked, and hidden-tab behavior is source-reviewed rather than headless-runtime verified.",
+  "verdict": "The shared modal treatment meets the subjective 9/10 visual target at 9.2. Seven actual-GLB captures and decoded flow frames retain the reference hierarchy with clear desktop/landscape copy and restrained actions. All nine current states share the same component; informational dialogs remain truthful and Settings still saves immediately. No blocking visual issue or further polish requested. Runtime outcomes belong to the separate verification reports.",
   "sharedNavigationReview": {
     "labels": [
       "Home",
@@ -763,7 +791,8 @@
   "interactionScores": {
     "Native scrollbar theme": 9.3,
     "Menu motion design": 9.1,
-    "Creature idle motion": 9.2
+    "Creature idle motion": 9.2,
+    "Shared modal presentation": 9.2
   },
   "showcaseReview": {
     "scope": "Current standalone Showcase overview, unavailable cinematic battle library, supplied-art arena gallery and future replay archive.",
@@ -963,7 +992,8 @@
       "Rapid interrupted navigation includes short transitional background-only samples before the final requested view. The separate functional report confirms cleanup and final live focus; capture timing is not a latency bound.",
       "The score assesses motion design and cohesion, not a claim of AAA production quality."
     ],
-    "verdict": "Meets 9.1/10 for restrained, coordinated menu-motion design. No blocking visual issue or further polish requested; hardware smoothness remains outside this software capture assessment."
+    "verdict": "Meets 9.1/10 for restrained, coordinated menu-motion design. No blocking visual issue or further polish requested; hardware smoothness remains outside this software capture assessment.",
+    "modalPresentationRevision": "Original recording samples of boxed dialogs predate the current shared modal shell. Current modal appearance/flow is recorded separately in modalReview; the prior9.1 menu-motion design score is retained."
   },
   "loadingReview": {
     "scope": "Current Crownfall loading presentation, actual resource-preparation states and release into the existing menu.",
@@ -1208,7 +1238,12 @@
       "previewParagraph": "Chapter gameplay is not connected in this build.",
       "previewNote": "This is a chapter-selection preview. Campaign progress and unlocks are not recorded.",
       "lockedAnnouncement": "Chapter 14 is locked in this menu preview. Campaign progression is not connected.",
-      "availableActions": "View an honest early-slot preview, inspect locked selection or return to Play. No gameplay, campaign save or unlock action is offered."
+      "availableActions": "View an honest early-slot preview, inspect locked selection or return to Play. No gameplay, campaign save or unlock action is offered.",
+      "previewActions": [
+        "Confirm",
+        "Cancel"
+      ],
+      "previewActionEffect": "Both dismiss to the selected chapter slot. Grid Back still returns to Play."
     },
     "flowRecordingReview": {
       "file": "artifacts/chapters/chapters-flow.webm",
@@ -1250,7 +1285,8 @@
       "Gameplay, saved campaign progression and unlock systems remain unconnected and explicitly disclosed.",
       "The 9.2 score is subjective reference/theme assessment, not a pixel-match or hardware-performance claim."
     ],
-    "verdict": "Meets 9.2/10 for the current reference-style Chapters presentation. No blocking visual issue or further polish requested."
+    "verdict": "Meets 9.2/10 for the current reference-style Chapters presentation. No blocking visual issue or further polish requested.",
+    "modalPresentationRevision": "Chapter grid and lock review remains current. Earlier chapter02-preview images/flow predate the shared transparent modal shell; see artifacts/modals/chapter02-1280x720.png, artifacts/modals/chapter02-844x390.png and modalReview for current presentation."
   },
   "creatureMotionReview": {
     "scope": "Actual supplied sorcerer Idle at authored speed, persistent across menus, with approved framing and motion preferences retained.",
@@ -1318,18 +1354,19 @@
       "repetitions": "Infinity",
       "slowRenderProbe": {
         "addedDelayPerDrawMs": 120,
-        "foregroundElapsedSeconds": 6.815200000002981,
-        "mixerElapsedSeconds": 7.049699999999999,
-        "measuredRatio": 1.034408381264954,
+        "foregroundElapsedSeconds": 6.814400000005961,
+        "mixerElapsedSeconds": 6.799799999999998,
+        "measuredRatio": 0.9978574782804135,
         "actualLoopWraps": 2,
-        "renderSamples": 14
+        "renderSamples": 36
       },
-      "interpretation": "The bounded slowed-render test tracks approximately authored elapsed speed instead of slowing animation in proportion to sparse rendered frames. The measured 1.034x ratio is reported as observed, not described as exact 1.000x or a frame-rate measurement.",
+      "interpretation": "Latest shared-modal integration probe tracks approximately authored elapsed speed: observed ratio 0.998x with 2 wraps under an added 120ms per draw. This is not an exact 1.000x assertion or a physical frame-rate measurement.",
       "continuity": "Home, Play, Showcase, Settings, Chapters and a preview dialog retain the canvas, one model request and an advancing mixer.",
       "reducedMotion": "Separate actual-rig checks freeze and resume both OS reduced motion and Ambient Motion preference without model reload.",
-      "visibilityRuntimeCheck": "Skipped: the headless browser keeps background tabs visible.",
+      "visibilityRuntimeCheck": "Skipped: this headless browser keeps background tabs visible",
       "visibilitySourceReview": "The visibility listener cancels scheduling while hidden and resets frame timestamps on visibility change while preserving activeSeconds and mixer state. This is source inspection, not a passed hidden-tab runtime test.",
-      "instrumentation": "Development-module interception in Playwright only; no shipped debug globals or product debug changes."
+      "instrumentation": "Development-module interception in Playwright only; no shipped debug globals or product debug changes.",
+      "currentReportContext": "Fresh actual-GLB run against the shared transparent modal integration. Prior 1.034x cached metrics are superseded by these latest report values."
     },
     "recordingReview": {
       "file": "artifacts/creature-motion/menu-idle.webm",
@@ -1341,7 +1378,8 @@
       ],
       "conditions": "Full untrimmed actual-GLB recording with Low particles, 50 percent scene resolution and 30fps scene cap for software capture. Motion-enabled static pairs use High particles and 100 percent scene resolution.",
       "method": "Inspected decoded real frames across the menu sequence and focused rig crops at encoded 7.4, 8.1, 8.8 and 9.5 seconds, avoiding three-second sampling that would alias the approximately 3.04-second loop.",
-      "limit": "Encoded samples and software rendering do not establish physical-device frame rate or frame pacing. Actual-rig timing/loop and continuity assertions come from the separate verification report."
+      "limit": "Encoded samples and software rendering do not establish physical-device frame rate or frame pacing. Actual-rig timing/loop and continuity assertions come from the separate verification report.",
+      "modalRevisionNote": "The original creature-motion recording predates the transparent modal shell. Current modal style is shown by artifacts/modals/modal-flow.webm; current rig continuity is supported by the refreshed timing report above. Approved moving-pose framing is unchanged."
     },
     "preservedFramingEvidence": "artifacts/creature-height/idle-framing.json",
     "limits": [
@@ -1352,5 +1390,152 @@
       "The 9.2 score is a bounded subjective motion/framing judgment, separate from previous screen and transition scores."
     ],
     "verdict": "Meets 9.2/10 for authored-speed creature idle motion and retained menu framing. No blocking visual issue; no further renders, amplitude changes or polish requested."
+  },
+  "modalReview": {
+    "scope": "Shared transparent native-dialog treatment for all nine current informational and confirmation states.",
+    "score": 9.2,
+    "scoreOutOf": 10,
+    "assessmentType": "Independent bounded subjective reference, actual-render and source review. Not a pixel-identical reproduction, implementation of an Apply transaction or hardware performance benchmark.",
+    "reference": {
+      "fileName": "279179.jpg",
+      "dimensions": [
+        1280,
+        720
+      ],
+      "privateUserAttachment": true,
+      "bundledInRepository": false,
+      "observedHierarchy": "Borderless transparent shell; heavily dark/blurred scene; centered compact amber uppercase heading; muted centered body; two small outlined A Confirm/B Cancel actions."
+    },
+    "reviewedScreenshots": [
+      "artifacts/modals/confirmation-1280x720.png",
+      "artifacts/modals/confirmation-1920x1080.png",
+      "artifacts/modals/confirmation-844x390.png",
+      "artifacts/modals/classic-1280x720.png",
+      "artifacts/modals/legacy-1280x720.png",
+      "artifacts/modals/chapter02-1280x720.png",
+      "artifacts/modals/chapter02-844x390.png"
+    ],
+    "stateCoverage": {
+      "sharedSourceStates": [
+        "My Legacy",
+        "Chronicles",
+        "Herald Board",
+        "Classic",
+        "Local Duel",
+        "Online Duel",
+        "Chapter 01",
+        "Chapter 02",
+        "Return to Home?"
+      ],
+      "actualCaptureScope": "Seven representative actual-GLB captures cover mode, Home, chapter and confirmation families; confirmation is captured at 1280/1920/844 and the longest chapter disclosure at 1280/844. Source mapping covers all nine states; per-state runtime checks are separate."
+    },
+    "layoutAt1280": {
+      "headingInkCenterYApproximately": 172,
+      "bodyLineCentersYApproximately": [
+        238,
+        267
+      ],
+      "actionsTop": 348,
+      "actionsBottom": 380,
+      "actionWidth": 128,
+      "actionHeight": 32,
+      "actionLeftEdges": [
+        480,
+        672
+      ],
+      "actionGap": 64,
+      "notes": "Content intentionally sits above vertical center, matching the supplied hierarchy. One-line informational bodies reserve the same action placement; longer landscape disclosures flow safely before the actions."
+    },
+    "paletteAndShell": {
+      "heading": "#d49130",
+      "body": "#aaa79d",
+      "buttonBorder": "#86765038",
+      "backdrop": "rgba(10,8,5,.8), blur 16px, saturation .55 and brightness .7",
+      "finding": "No visible outer panel, eyebrow, X control, footer row or filled primary CTA. Actual scene is slightly darker than the reference, keeping text contrast strong. Keyboard focus adds a clear amber outline around the focused small action."
+    },
+    "rubric": [
+      {
+        "category": "Reference hierarchy and placement",
+        "maximum": 3,
+        "score": 2.85,
+        "notes": "Compact centered amber heading, muted body and isolated action pair closely match the reference spacing at 1280. Outer chrome is removed."
+      },
+      {
+        "category": "Transparent shell and scene treatment",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Darkened, strongly defocused actual creature/scene supports the sparse modal. Background is darker than the source reference but remains coherent with the menu."
+      },
+      {
+        "category": "Typography and landscape readability",
+        "maximum": 2,
+        "score": 1.85,
+        "notes": "All reviewed headings, body paragraphs and action labels fit. Long Chapter 02 disclosure wraps cleanly on 844 landscape without action collision; minimum type/button sizes preserve legibility."
+      },
+      {
+        "category": "Actions, focus and truthful meaning",
+        "maximum": 2,
+        "score": 1.8,
+        "notes": "Small outlined Confirm/Cancel actions and amber A/B prompts fit the reference. Info actions only dismiss; Return to Home confirmation actually navigates. Focus styling is stronger than the softly blurred reference, appropriately preserving keyboard visibility."
+      },
+      {
+        "category": "Consistency across existing state families",
+        "maximum": 1,
+        "score": 0.9,
+        "notes": "One shared component covers three Home, three mode, two chapter and one return-confirmation state. Existing unavailable/no-gameplay disclosures remain intact."
+      }
+    ],
+    "behaviorBoundary": {
+      "informationalStates": "Confirm and Cancel both dismiss to their originating Home, Play or Chapters selection. Neither launches unavailable gameplay or destination systems.",
+      "returnConfirmation": "Confirm returns to Home; Cancel dismisses without navigation.",
+      "settings": "Preferences continue to persist immediately. The reference Apply Changes wording is not introduced as a fake pending-settings transaction.",
+      "sourceFocus": "Native modality, initial Confirm focus, explicit boundary Tab/Shift+Tab wrapping, named actions, keyboard/controller handling and a pointer-down/outside-click guard are present. The final separate modal suite verifies focus containment and restoration."
+    },
+    "recordingReview": {
+      "file": "artifacts/modals/modal-flow.webm",
+      "metadata": "artifacts/modals/captures.json",
+      "durationSeconds": 14.76,
+      "viewport": [
+        960,
+        540
+      ],
+      "conditions": "Full untrimmed actual animated GLB, Low particles, 50 percent scene resolution and 30fps scene cap for software capture. Static screenshots use High particles, 100 percent scene resolution and OS reduced motion.",
+      "method": "Decoded actual frames at encoded 3, 5, 7, 9, 11 and 13 seconds.",
+      "observations": "Frames show boot into retained Play, the transparent Return to Home confirmation, a complete Home state after dismissal/navigation, and the same transparent treatment for Chronicles. No persistent modal shell or empty final content was observed.",
+      "limit": "Sparse decoded software-capture samples do not establish target-device frame pacing or every short transition frame."
+    },
+    "evidence": {
+      "captures": "artifacts/modals/captures.json",
+      "modalInputAndLayout": "artifacts/modals/verification.json",
+      "modalRuntimeStatusAtReview": "Visual and source review is complete. Per-state keyboard/controller/held-input/layout outcomes are governed by the separate verification report; this score does not assert unobserved runtime-test success.",
+      "copyFit": "artifacts/copy-fit-verification.json",
+      "actualCreatureMotion": "artifacts/creature-motion/verification.json",
+      "actualCreatureStatusAtReview": "Fresh actual-GLB six-group report passes: observed approximately 0.998x elapsed speed, two wraps, one model request, unchanged canvas and advancing mixer through the new modal; OS/app freeze/resume pass. Hidden-tab runtime test remains skipped by headless visibility limitations.",
+      "source": [
+        "src/MenuDialog.tsx",
+        "src/MenuDialog.css",
+        "src/App.tsx"
+      ],
+      "finalVerification": {
+        "report": "artifacts/modals/verification.json",
+        "passed": true,
+        "groups": 8,
+        "layoutSamples": 27,
+        "note": "Final product includes the explicit Tab boundary fix found during testing. Final verification completed after the bounded visual review; the subjective score is separate."
+      }
+    },
+    "approvedDifferences": [
+      "Reference Apply Changes copy is replaced by truthful current-state titles and disclosures. No deferred Apply mechanism is invented.",
+      "Longer existing disclosure copy can wrap on phone landscape while preserving hierarchy and action clearance.",
+      "Keyboard focus outline is clearer than the source reference.",
+      "Existing actual animated sorcerer/artwork remain behind the heavily blurred/dimmed backdrop."
+    ],
+    "limits": [
+      "Backdrop is slightly darker and type is crisper than the soft reference image.",
+      "Seven representative actual-GLB captures and common source cover the style; full nine-state input/layout validation is separate.",
+      "Physical GPU frame pacing and unsupported headless visibility transitions are not certified by this visual review.",
+      "The 9.2 score is subjective modal-reference/theme assessment, not an exact pixel-match claim."
+    ],
+    "verdict": "Meets 9.2/10 for the shared reference-style modal treatment. No blocking visual issue, new render request or further polish requested."
   }
 }

@@ -345,23 +345,23 @@
   "dialogs": [
     {
       "title": "Chronicles",
-      "text": "×\nCROWNFALL\nChronicles\n\nChronicles are unavailable in this build.\n\nBack to Home\n>\nB\nBack"
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel"
     },
     {
       "title": "Chronicles",
-      "text": "×\nCROWNFALL\nChronicles\n\nChronicles are unavailable in this build.\n\nBack to Home\n>\nB\nBack"
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel"
     },
     {
       "title": "My Legacy",
-      "text": "×\nCROWNFALL\nMy Legacy\n\nLegacy profiles are unavailable in this build.\n\nBack to Home\n>\nB\nBack"
+      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel"
     },
     {
       "title": "Herald Board",
-      "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack"
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel"
     },
     {
       "title": "Herald Board",
-      "text": "×\nCROWNFALL\nHerald Board\n\nThe herald board is unavailable in this build.\n\nBack to Home\n>\nB\nBack"
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel"
     }
   ],
   "errors": []

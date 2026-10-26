@@ -1,0 +1,64 @@
+{
+  "reference": "279179.jpg (user reference, kept outside repository)",
+  "captures": [
+    {
+      "state": "classic",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "path": "artifacts/modals/classic-1280x720.png"
+    },
+    {
+      "state": "legacy",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "path": "artifacts/modals/legacy-1280x720.png"
+    },
+    {
+      "state": "chapter02",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "path": "artifacts/modals/chapter02-1280x720.png"
+    },
+    {
+      "state": "chapter02",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "path": "artifacts/modals/chapter02-844x390.png"
+    },
+    {
+      "state": "confirmation",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "path": "artifacts/modals/confirmation-844x390.png"
+    },
+    {
+      "state": "confirmation",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "path": "artifacts/modals/confirmation-1280x720.png"
+    },
+    {
+      "state": "confirmation",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "path": "artifacts/modals/confirmation-1920x1080.png"
+    }
+  ],
+  "recording": "artifacts/modals/modal-flow.webm",
+  "errors": [],
+  "rendering": "Actual supplied sorcerer GLB. Static captures: High particles, 100% scene resolution, OS reduced motion. Full untrimmed 960x540 flow recording: motion enabled, Low particles, 50% scene resolution and 30fps scene cap for software capture. No target-device frame-pacing claim."
+}

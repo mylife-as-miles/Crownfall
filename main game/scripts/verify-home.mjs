@@ -163,7 +163,7 @@ try {
     await page.getByRole("heading", { name, exact: true }).waitFor();
     const text = await page.locator("dialog").innerText();
     assert.match(text, /unavailable in this build/);
-    assert.equal(await page.locator("dialog button").count(), 2, "Home dialog offers close/back only, with no unsupported launch");
+    assert.equal(await page.locator("dialog button").count(), 2, "Home dialog offers Confirm/Cancel only, with no unsupported launch");
     dialogs.push({ title: name, text });
   };
   const showcaseScreen = async () => {
@@ -183,7 +183,7 @@ try {
   for (const name of ["Chronicles", "My Legacy", "Herald Board"]) {
     await page.getByRole("button", { name, exact: true }).click();
     await limitedDialog(name);
-    await page.getByRole("button", { name: /Back to Home/ }).click();
+    await page.getByRole("button", { name: "Cancel", exact: true }).click();
     await closed();
     await selected(name);
   }
@@ -216,7 +216,7 @@ try {
   assert.deepEqual(returnedPlay, initialPlay);
   await page.getByRole("button", { name: "Back", exact: true }).click();
   await page.getByRole("heading", { name: "Return to Home?", exact: true }).waitFor();
-  await page.getByRole("button", { name: /Go to Home/ }).click();
+  await page.getByRole("button", { name: "Confirm", exact: true }).click();
   await closed();
   await activeTab("Home");
   await selected("Chronicles");

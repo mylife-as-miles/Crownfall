@@ -180,7 +180,7 @@ try {
   // Reopening during an exit may either reopen the same mode or complete the
   // close first; both paths must remain usable and never leave an empty modal.
   if (await page.locator("dialog").evaluate((dialog) => dialog.open)) {
-    assert.match(await page.locator("dialog h1").innerText(), /Classic/);
+    assert.match(await page.locator("dialog h1").innerText(), /Classic/i);
     await page.keyboard.press("Escape");
   }
   await waitForDialogClosed(page);

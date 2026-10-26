@@ -7,6 +7,7 @@ import type { ChapterItem } from "./chapters-content";
 import LoadingScreen from "./LoadingScreen";
 import useBootLoading from "./useBootLoading";
 import MenuTransition from "./MenuTransition";
+import MenuDialog from "./MenuDialog";
 import Showcase, { type ShowcaseView } from "./Showcase";
 import { SettingsGrid, SETTINGS_CATEGORIES } from "./SettingsGrid";
 import SettingsDetail from "./SettingsDetail";
@@ -141,6 +142,8 @@ export default function App() {
   const homeRight = useRef(1);
   const previousScreen = useRef<Screen>(screen);
   const gamepadInputAt = useRef(0);
+  const gamepadConfirmHeld = useRef(false);
+  const gamepadBackHeld = useRef(false);
 
   const closePanel = useCallback(() => {
     restoreFocus.current = true;
@@ -199,6 +202,21 @@ export default function App() {
       setSettingsCategory(null);
     }
   }, [screen, activeTab, boot.blocking]);
+  const confirmPanel = useCallback(() => {
+    if (panel === "quit") openTab(0);
+    else closePanel();
+  }, [panel, openTab, closePanel]);
+  const moveDialogFocus = useCallback((direction: Direction | "first" | "last") => {
+    const buttons = dialog.current?.querySelectorAll<HTMLButtonElement>(".dialog-actions button");
+    if (!buttons?.length) return;
+    const first = direction === "left" || direction === "up" || direction === "first";
+    buttons[first ? 0 : buttons.length - 1]?.focus({ preventScroll: true });
+  }, []);
+  const activateDialogSelection = useCallback(() => {
+    const focused = document.activeElement;
+    if (focused instanceof HTMLButtonElement && dialog.current?.contains(focused)) focused.click();
+    else confirmPanel();
+  }, [confirmPanel]);
   const changeTab = useCallback((direction: number) => {
     openTab((activeTab + direction + tabs.length) % tabs.length, direction);
   }, [activeTab, openTab]);
@@ -302,9 +320,24 @@ export default function App() {
       if (boot.blocking) { bootKeys.current.add(event.code); return; }
       if (bootKeys.current.has(event.code)) return;
       const action = (Object.entries(preferences.bindings) as [BindingAction, string][]).find(([, code]) => code === event.code)?.[0];
+      if (event.repeat && (action === "select" || action === "back" || event.code === "Escape")) {
+        event.preventDefault();
+        return;
+      }
       if (event.code === "Escape" || action === "back") {
         event.preventDefault();
         back();
+        return;
+      }
+      if (panel) {
+        if (action === "previousTab" || action === "nextTab") event.preventDefault();
+        else if (action && ["left", "right", "up", "down", "first", "last"].includes(action)) {
+          event.preventDefault();
+          moveDialogFocus(action as Direction | "first" | "last");
+        } else if (action === "select" && !((event.code === "Enter" || event.code === "Space") && event.target instanceof HTMLButtonElement)) {
+          event.preventDefault();
+          activateDialogSelection();
+        }
         return;
       }
       if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement) return;
@@ -313,7 +346,6 @@ export default function App() {
         changeTab(action === "nextTab" ? 1 : -1);
         return;
       }
-      if (panel) return;
       const direction = action && ["left", "right", "up", "down"].includes(action) ? action as Direction : undefined;
       if (direction) {
         event.preventDefault();
@@ -345,7 +377,7 @@ export default function App() {
     window.addEventListener("keydown", onKey);
     window.addEventListener("keyup", onKeyUp);
     return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("keyup", onKeyUp); };
-  }, [preferences.bindings, panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectHome, selectSettings, selectCard, boot.blocking]);
+  }, [preferences.bindings, panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectHome, selectSettings, selectCard, moveDialogFocus, activateDialogSelection, boot.blocking]);
 
   useEffect(() => {
     let frame: number;
@@ -367,13 +399,28 @@ export default function App() {
         }
         bootPadBlocked.current = false;
       }
+      if (!pad?.buttons[0]?.pressed) gamepadConfirmHeld.current = false;
+      if (!pad?.buttons[1]?.pressed) gamepadBackHeld.current = false;
       if (pad && time > gamepadInputAt.current) {
         const left = pad.buttons[14]?.pressed || pad.axes[0] < -0.55;
         const right = pad.buttons[15]?.pressed || pad.axes[0] > 0.55;
         const up = pad.buttons[12]?.pressed || pad.axes[1] < -0.55;
         const down = pad.buttons[13]?.pressed || pad.axes[1] > 0.55;
         const direction: Direction | undefined = left ? "left" : right ? "right" : up ? "up" : down ? "down" : undefined;
-        if (!panel && direction && (screen !== "play" || left || right)) {
+        if (panel) {
+          if (direction) {
+            moveDialogFocus(direction);
+            gamepadInputAt.current = time + 230;
+          } else if (pad.buttons[0]?.pressed && !gamepadConfirmHeld.current) {
+            gamepadConfirmHeld.current = true;
+            activateDialogSelection();
+            gamepadInputAt.current = time + 350;
+          } else if (pad.buttons[1]?.pressed && !gamepadBackHeld.current) {
+            gamepadBackHeld.current = true;
+            closePanel();
+            gamepadInputAt.current = time + 350;
+          }
+        } else if (direction && (screen !== "play" || left || right)) {
           if (screen === "home") moveHome(direction);
           else if (screen === "showcase") showcaseRef.current?.move(direction);
           else if (screen === "chapters") chaptersRef.current?.move(direction);
@@ -382,10 +429,12 @@ export default function App() {
             else moveSettings(direction);
           } else selectCard(selected + (right ? 1 : -1));
           gamepadInputAt.current = time + 230;
-        } else if (pad.buttons[0]?.pressed) {
-          if (!panel) activateSelected();
+        } else if (pad.buttons[0]?.pressed && !gamepadConfirmHeld.current) {
+          gamepadConfirmHeld.current = true;
+          activateSelected();
           gamepadInputAt.current = time + 350;
-        } else if (pad.buttons[1]?.pressed) {
+        } else if (pad.buttons[1]?.pressed && !gamepadBackHeld.current) {
+          gamepadBackHeld.current = true;
           back();
           gamepadInputAt.current = time + 350;
         } else if (pad.buttons[3]?.pressed && !panel && screen === "settings" && settingsCategory) {
@@ -400,11 +449,19 @@ export default function App() {
     };
     frame = requestAnimationFrame(poll);
     return () => cancelAnimationFrame(frame);
-  }, [panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectCard, boot.blocking, boot.canContinue, boot.degraded, continueBoot, retryBoot]);
+  }, [panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectCard, moveDialogFocus, activateDialogSelection, closePanel, boot.blocking, boot.canContinue, boot.degraded, continueBoot, retryBoot]);
 
   const detailScreenOpen = screen === "chapters" || screen === "settings" && !!settingsCategory;
   const displayedPanel = panel || lastPanel.current;
   const activeMode = cards.find((mode) => mode.id === displayedPanel);
+  const homePanel = HOME_CONTENT.find((item) => item.action === displayedPanel);
+  const modalContent = activeMode
+    ? { title: activeMode.label, description: activeMode.preview, note: "Menu preview only. No gameplay will start here." }
+    : displayedPanel === "chapter-preview" && chapterPreview
+      ? { title: chapterPreview.title, description: "Chapter gameplay is not connected in this build.", note: "This is a chapter-selection preview. Campaign progress and unlocks are not recorded." }
+      : displayedPanel === "quit"
+        ? { title: "Return to Home?", description: "Your menu preferences stay on this device." }
+        : { title: homePanel?.title || "Crownfall", description: displayedPanel === "legacy" ? "Legacy profiles are unavailable in this build." : displayedPanel === "chronicles" ? "Chronicles are unavailable in this build." : "The herald board is unavailable in this build." };
   const viewKey = screen === "settings" ? `settings:${settingsCategory || "grid"}` : screen === "showcase" ? `showcase:${showcaseView}` : screen;
 
   return (
@@ -528,83 +585,16 @@ export default function App() {
         </footer>}
         <div className="film-grain" aria-hidden="true" />
 
-        <dialog
+        <MenuDialog
           ref={dialog}
-          className="menu-dialog"
-          data-panel={panel || "closed"}
-          onCancel={(event) => {
-            event.preventDefault();
-            closePanel();
-          }}
-          onClick={(event) => {
-            if (event.target === event.currentTarget) closePanel();
-          }}
-          aria-labelledby="dialog-heading"
-        >
-          <div className="dialog-inner">
-            <button
-              className="dialog-close"
-              onClick={closePanel}
-              aria-label="Close dialog"
-            >
-              ×
-            </button>
-            <span className="dialog-eyebrow">CROWNFALL</span>
-            {activeMode && (
-              <>
-                <h1 id="dialog-heading">{activeMode.label}</h1>
-                <p>{activeMode.preview}</p>
-                <p className="dialog-note">Menu preview only. No gameplay will start here.</p>
-                <button className="primary-action" onClick={closePanel}>
-                  Back to Play <span aria-hidden="true">&gt;</span>
-                </button>
-              </>
-            )}
-            {displayedPanel === "chapter-preview" && chapterPreview && (
-              <>
-                <h1 id="dialog-heading">{chapterPreview.title}</h1>
-                <p>Chapter gameplay is not connected in this build.</p>
-                <p className="dialog-note">This is a chapter-selection preview. Campaign progress and unlocks are not recorded.</p>
-                <button className="primary-action" onClick={closePanel}>Back to Chapters <span aria-hidden="true">&gt;</span></button>
-              </>
-            )}
-            {(displayedPanel === "legacy" || displayedPanel === "chronicles" || displayedPanel === "herald") && (
-              <>
-                <h1 id="dialog-heading">
-                  {displayedPanel === "legacy" ? "My Legacy" : displayedPanel === "chronicles" ? "Chronicles" : "Herald Board"}
-                </h1>
-                <p>
-                  {displayedPanel === "legacy" ? "Legacy profiles are unavailable in this build." : displayedPanel === "chronicles" ? "Chronicles are unavailable in this build." : "The herald board is unavailable in this build."}
-                </p>
-                <button className="primary-action" onClick={closePanel}>
-                  Back to Home <span aria-hidden="true">&gt;</span>
-                </button>
-              </>
-            )}
-            {displayedPanel === "quit" && (
-              <>
-                <h1 id="dialog-heading">Return to Home?</h1>
-                <p>Your menu preferences stay on this device.</p>
-                <div className="dialog-actions">
-                  <button className="secondary-action" onClick={closePanel}>
-                    Stay in Play
-                  </button>
-                  <button
-                    className="primary-action"
-                    onClick={() => openTab(0)}
-                  >
-                    Go to Home <span aria-hidden="true">&gt;</span>
-                  </button>
-                </div>
-              </>
-            )}
-            <div className="dialog-footer">
-              <span className="controller-key">B</span>
-              <span>Back</span>
-              <span className="dialog-rule" />
-            </div>
-          </div>
-        </dialog>
+          title={modalContent.title}
+          description={modalContent.description}
+          note={modalContent.note}
+          panel={panel || "closed"}
+          onConfirm={confirmPanel}
+          onCancel={closePanel}
+          reducedMotion={reducedMotion}
+        />
         </div>
         {boot.visible && <LoadingScreen
           progress={boot.progress}

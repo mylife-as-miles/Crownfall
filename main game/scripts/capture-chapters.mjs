@@ -20,7 +20,7 @@ try{
   await page.keyboard.press('End');await page.keyboard.press('Enter');await shot('locked-selected',viewport);
   await page.keyboard.press('Home');await page.keyboard.press('ArrowRight');await page.keyboard.press('Enter');
   await page.getByRole('heading',{name:'Chapter 02',exact:true}).waitFor();await shot('chapter02-preview',viewport);
-  await page.getByRole('button',{name:/Back to Chapters/}).click();await waitForDialogClosed(page);
+  await page.getByRole('button',{name:'Cancel',exact:true}).click();await waitForDialogClosed(page);
  }
  await page.getByRole('button',{name:'Back',exact:true}).click();await waitForMenuIdle(page);await shot('play-after',{width:844,height:390});await page.close();
  const context=await browser.newContext({viewport:{width:960,height:540},reducedMotion:'no-preference',recordVideo:{dir:'/tmp/crownfall-chapters-recording',size:{width:960,height:540}}});
@@ -30,7 +30,7 @@ try{
  await motion.getByRole('button',{name:'Chapters',exact:true}).click();await waitForMenuIdle(motion);await motion.waitForTimeout(650);
  for(const key of['ArrowRight','ArrowDown','ArrowDown','ArrowRight','Enter']){await motion.keyboard.press(key);await motion.waitForTimeout(300);}
  await motion.keyboard.press('Home');await motion.keyboard.press('ArrowRight');await motion.keyboard.press('Enter');await motion.waitForTimeout(700);
- await motion.getByRole('button',{name:/Back to Chapters/}).click();await waitForDialogClosed(motion);await motion.waitForTimeout(400);
+ await motion.getByRole('button',{name:'Cancel',exact:true}).click();await waitForDialogClosed(motion);await motion.waitForTimeout(400);
  await motion.keyboard.press('Escape');await waitForMenuIdle(motion);
  await motion.screenshot({path:`${directory}/recording-final-frame.png`});await motion.waitForTimeout(2200);
  const video=motion.video();await context.close();const raw=await video.path();

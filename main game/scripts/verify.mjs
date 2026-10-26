@@ -67,7 +67,7 @@ try {
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Back", exact: true }).click();
   await page.getByRole("heading", { name: "Return to Home?", exact: true }).waitFor();
-  await page.getByRole("button", { name: /Go to Home/ }).click();
+  await page.getByRole("button", { name: "Confirm", exact: true }).click();
   await page.getByRole("region", { name: "Home options", exact: true }).waitFor();
   await page.keyboard.press("Escape");
   await page.getByRole("region", { name: "Play options", exact: true }).waitFor();
@@ -147,7 +147,7 @@ try {
     const text = await page.locator("dialog").innerText();
     assert.match(text, /not(?: yet)? (?:connected|available)|unavailable/i);
     assert.match(text, /no gameplay will start here/i);
-    assert.equal(await page.locator("dialog button").count(), 2, "mode previews offer only close and back");
+    assert.equal(await page.locator("dialog button").count(), 2, "mode previews offer only Confirm and Cancel");
     assert.equal(await page.locator("dialog input, dialog form, dialog .save-slot").count(), 0);
     assert.equal(page.url(), target.href, "a preview does not navigate into a game");
     previews.push({ mode: name, text });

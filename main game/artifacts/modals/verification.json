@@ -1,0 +1,1934 @@
+{
+  "passed": true,
+  "scope": "DOM-only model=none shared Confirm/Cancel modal across9 states and3 viewports; native focus/keyboard, configured bindings, simulated standard controller, backdrop behavior and reduced motion. Actual GLB captures are separate.",
+  "checks": [
+    "All9 content states fit the same transparent borderless centered amber-heading shell across3 viewports; only Confirm/Cancel appear, descriptions resolve and both actions preserve honest destination/focus semantics",
+    "Native modal focus traps Tab/Shift-Tab; arrow/Home/End navigation works, Enter activates the focused action and Q/E/LB/RB do not reach the menu",
+    "Controller D-pad/axes move between actions; B cancels and A activates current focus, including distinct Quit Cancel/Confirm destinations",
+    "Held controller A/B and repeated Select/Back keydowns cannot auto-confirm, double-close or activate the menu behind the modal",
+    "Content clicks/drags stay open while a real backdrop click cancels; Settings still save their immediate preference changes without an invented Apply modal",
+    "Configured direction/Select/Back bindings drive the modal, while native Enter and Space still activate focused buttons",
+    "Rapid close/reopen retains one complete focused modal; OS and saved reduced motion remove its exit delay",
+    "No JavaScript or console errors; no gameplay, save, unlock or URL side effects"
+  ],
+  "layouts": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "Classic",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "heading": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 24,
+        "right": 1110,
+        "bottom": 183.984375
+      },
+      "inner": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 248.78125,
+        "right": 1110,
+        "bottom": 408.765625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CLASSIC\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 480,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 608,
+          "bottom": 379.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 672,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 800,
+          "bottom": 379.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "Local Duel",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "heading": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 24,
+        "right": 1110,
+        "bottom": 183.984375
+      },
+      "inner": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 248.78125,
+        "right": 1110,
+        "bottom": 408.765625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "LOCAL DUEL\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 480,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 608,
+          "bottom": 379.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 672,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 800,
+          "bottom": 379.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "Online Duel",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "heading": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 24,
+        "right": 1110,
+        "bottom": 183.984375
+      },
+      "inner": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 248.78125,
+        "right": 1110,
+        "bottom": 408.765625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "ONLINE DUEL\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 480,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 608,
+          "bottom": 379.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 672,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 800,
+          "bottom": 379.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "My Legacy",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "heading": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 24,
+        "right": 1110,
+        "bottom": 183.984375
+      },
+      "inner": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 248.78125,
+        "right": 1110,
+        "bottom": 408.765625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 480,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 608,
+          "bottom": 379.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 672,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 800,
+          "bottom": 379.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "Chronicles",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "heading": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 24,
+        "right": 1110,
+        "bottom": 183.984375
+      },
+      "inner": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 248.78125,
+        "right": 1110,
+        "bottom": 408.765625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 480,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 608,
+          "bottom": 379.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 672,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 800,
+          "bottom": 379.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "Herald Board",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "heading": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 24,
+        "right": 1110,
+        "bottom": 183.984375
+      },
+      "inner": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 248.78125,
+        "right": 1110,
+        "bottom": 408.765625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 480,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 608,
+          "bottom": 379.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 672,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 800,
+          "bottom": 379.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "Chapter 01",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "heading": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 24,
+        "right": 1110,
+        "bottom": 183.984375
+      },
+      "inner": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 248.78125,
+        "right": 1110,
+        "bottom": 408.765625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CHAPTER 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 480,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 608,
+          "bottom": 379.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 672,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 800,
+          "bottom": 379.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "Chapter 02",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "heading": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 24,
+        "right": 1110,
+        "bottom": 183.984375
+      },
+      "inner": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 248.78125,
+        "right": 1110,
+        "bottom": 408.765625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CHAPTER 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 480,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 608,
+          "bottom": 379.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 672,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 800,
+          "bottom": 379.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "Return to Home?",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "right": 1280,
+        "bottom": 720
+      },
+      "heading": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 24,
+        "right": 1110,
+        "bottom": 183.984375
+      },
+      "inner": {
+        "x": 170,
+        "y": 159.984375,
+        "width": 940,
+        "height": 248.78125,
+        "right": 1110,
+        "bottom": 408.765625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "RETURN TO HOME?\n\nYour menu preferences stay on this device.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 480,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 608,
+          "bottom": 379.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 672,
+          "y": 347.96875,
+          "width": 128,
+          "height": 32,
+          "right": 800,
+          "bottom": 379.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "Classic",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "heading": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 36,
+        "right": 1430,
+        "bottom": 275.984375
+      },
+      "inner": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 373.15625,
+        "right": 1430,
+        "bottom": 613.140625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CLASSIC\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 720,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 912,
+          "bottom": 569.953125
+        },
+        {
+          "name": "Cancel",
+          "x": 1008,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 1200,
+          "bottom": 569.953125
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "Local Duel",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "heading": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 36,
+        "right": 1430,
+        "bottom": 275.984375
+      },
+      "inner": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 373.15625,
+        "right": 1430,
+        "bottom": 613.140625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "LOCAL DUEL\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 720,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 912,
+          "bottom": 569.953125
+        },
+        {
+          "name": "Cancel",
+          "x": 1008,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 1200,
+          "bottom": 569.953125
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "Online Duel",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "heading": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 36,
+        "right": 1430,
+        "bottom": 275.984375
+      },
+      "inner": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 373.15625,
+        "right": 1430,
+        "bottom": 613.140625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "ONLINE DUEL\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 720,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 912,
+          "bottom": 569.953125
+        },
+        {
+          "name": "Cancel",
+          "x": 1008,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 1200,
+          "bottom": 569.953125
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "My Legacy",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "heading": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 36,
+        "right": 1430,
+        "bottom": 275.984375
+      },
+      "inner": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 373.15625,
+        "right": 1430,
+        "bottom": 613.140625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 720,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 912,
+          "bottom": 569.953125
+        },
+        {
+          "name": "Cancel",
+          "x": 1008,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 1200,
+          "bottom": 569.953125
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "Chronicles",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "heading": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 36,
+        "right": 1430,
+        "bottom": 275.984375
+      },
+      "inner": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 373.15625,
+        "right": 1430,
+        "bottom": 613.140625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 720,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 912,
+          "bottom": 569.953125
+        },
+        {
+          "name": "Cancel",
+          "x": 1008,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 1200,
+          "bottom": 569.953125
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "Herald Board",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "heading": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 36,
+        "right": 1430,
+        "bottom": 275.984375
+      },
+      "inner": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 373.15625,
+        "right": 1430,
+        "bottom": 613.140625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 720,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 912,
+          "bottom": 569.953125
+        },
+        {
+          "name": "Cancel",
+          "x": 1008,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 1200,
+          "bottom": 569.953125
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "Chapter 01",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "heading": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 36,
+        "right": 1430,
+        "bottom": 275.984375
+      },
+      "inner": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 373.15625,
+        "right": 1430,
+        "bottom": 613.140625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CHAPTER 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 720,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 912,
+          "bottom": 569.953125
+        },
+        {
+          "name": "Cancel",
+          "x": 1008,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 1200,
+          "bottom": 569.953125
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "Chapter 02",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "heading": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 36,
+        "right": 1430,
+        "bottom": 275.984375
+      },
+      "inner": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 373.15625,
+        "right": 1430,
+        "bottom": 613.140625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CHAPTER 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 720,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 912,
+          "bottom": 569.953125
+        },
+        {
+          "name": "Cancel",
+          "x": 1008,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 1200,
+          "bottom": 569.953125
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "Return to Home?",
+      "dialog": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+        "right": 1920,
+        "bottom": 1080
+      },
+      "heading": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 36,
+        "right": 1430,
+        "bottom": 275.984375
+      },
+      "inner": {
+        "x": 490,
+        "y": 239.984375,
+        "width": 940,
+        "height": 373.15625,
+        "right": 1430,
+        "bottom": 613.140625
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "RETURN TO HOME?\n\nYour menu preferences stay on this device.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 720,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 912,
+          "bottom": 569.953125
+        },
+        {
+          "name": "Cancel",
+          "x": 1008,
+          "y": 521.96875,
+          "width": 192,
+          "height": 47.984375,
+          "right": 1200,
+          "bottom": 569.953125
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "Classic",
+      "dialog": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "heading": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 19.1875,
+        "right": 708.625,
+        "bottom": 105.84375
+      },
+      "inner": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 166.3125,
+        "right": 708.625,
+        "bottom": 252.96875
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CLASSIC\n\nClassic chess against the computer is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 292.5,
+          "y": 196.96875,
+          "width": 112,
+          "height": 32,
+          "right": 404.5,
+          "bottom": 228.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 439.453125,
+          "y": 196.96875,
+          "width": 112,
+          "height": 32,
+          "right": 551.453125,
+          "bottom": 228.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "Local Duel",
+      "dialog": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "heading": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 19.1875,
+        "right": 708.625,
+        "bottom": 105.84375
+      },
+      "inner": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 166.3125,
+        "right": 708.625,
+        "bottom": 252.96875
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "LOCAL DUEL\n\nTwo-player chess on one device is not connected to this menu.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 292.5,
+          "y": 196.96875,
+          "width": 112,
+          "height": 32,
+          "right": 404.5,
+          "bottom": 228.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 439.453125,
+          "y": 196.96875,
+          "width": 112,
+          "height": 32,
+          "right": 551.453125,
+          "bottom": 228.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "Online Duel",
+      "dialog": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "heading": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 19.1875,
+        "right": 708.625,
+        "bottom": 105.84375
+      },
+      "inner": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 166.3125,
+        "right": 708.625,
+        "bottom": 252.96875
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "ONLINE DUEL\n\nOnline play is unavailable in this build. No matchmaking service is connected.\n\nMenu preview only. No gameplay will start here.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 292.5,
+          "y": 196.96875,
+          "width": 112,
+          "height": 32,
+          "right": 404.5,
+          "bottom": 228.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 439.453125,
+          "y": 196.96875,
+          "width": 112,
+          "height": 32,
+          "right": 551.453125,
+          "bottom": 228.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "My Legacy",
+      "dialog": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "heading": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 19.1875,
+        "right": 708.625,
+        "bottom": 105.84375
+      },
+      "inner": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 165.265625,
+        "right": 708.625,
+        "bottom": 251.921875
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 292.5,
+          "y": 195.921875,
+          "width": 112,
+          "height": 32,
+          "right": 404.5,
+          "bottom": 227.921875
+        },
+        {
+          "name": "Cancel",
+          "x": 439.453125,
+          "y": 195.921875,
+          "width": 112,
+          "height": 32,
+          "right": 551.453125,
+          "bottom": 227.921875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "Chronicles",
+      "dialog": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "heading": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 19.1875,
+        "right": 708.625,
+        "bottom": 105.84375
+      },
+      "inner": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 165.265625,
+        "right": 708.625,
+        "bottom": 251.921875
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 292.5,
+          "y": 195.921875,
+          "width": 112,
+          "height": 32,
+          "right": 404.5,
+          "bottom": 227.921875
+        },
+        {
+          "name": "Cancel",
+          "x": 439.453125,
+          "y": 195.921875,
+          "width": 112,
+          "height": 32,
+          "right": 551.453125,
+          "bottom": 227.921875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "Herald Board",
+      "dialog": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "heading": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 19.1875,
+        "right": 708.625,
+        "bottom": 105.84375
+      },
+      "inner": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 165.265625,
+        "right": 708.625,
+        "bottom": 251.921875
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "HERALD BOARD\n\nThe herald board is unavailable in this build.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 292.5,
+          "y": 195.921875,
+          "width": 112,
+          "height": 32,
+          "right": 404.5,
+          "bottom": 227.921875
+        },
+        {
+          "name": "Cancel",
+          "x": 439.453125,
+          "y": 195.921875,
+          "width": 112,
+          "height": 32,
+          "right": 551.453125,
+          "bottom": 227.921875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "Chapter 01",
+      "dialog": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "heading": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 19.1875,
+        "right": 708.625,
+        "bottom": 105.84375
+      },
+      "inner": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 187.3125,
+        "right": 708.625,
+        "bottom": 273.96875
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CHAPTER 01\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 292.5,
+          "y": 217.96875,
+          "width": 112,
+          "height": 32,
+          "right": 404.5,
+          "bottom": 249.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 439.453125,
+          "y": 217.96875,
+          "width": 112,
+          "height": 32,
+          "right": 551.453125,
+          "bottom": 249.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "Chapter 02",
+      "dialog": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "heading": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 19.1875,
+        "right": 708.625,
+        "bottom": 105.84375
+      },
+      "inner": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 187.3125,
+        "right": 708.625,
+        "bottom": 273.96875
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "CHAPTER 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 292.5,
+          "y": 217.96875,
+          "width": 112,
+          "height": 32,
+          "right": 404.5,
+          "bottom": 249.96875
+        },
+        {
+          "name": "Cancel",
+          "x": 439.453125,
+          "y": 217.96875,
+          "width": 112,
+          "height": 32,
+          "right": 551.453125,
+          "bottom": 249.96875
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "Return to Home?",
+      "dialog": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "stage": {
+        "x": 72.421875,
+        "y": 0,
+        "width": 699.140625,
+        "height": 390,
+        "right": 771.5625,
+        "bottom": 390
+      },
+      "heading": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 19.1875,
+        "right": 708.625,
+        "bottom": 105.84375
+      },
+      "inner": {
+        "x": 135.34375,
+        "y": 86.65625,
+        "width": 573.28125,
+        "height": 165.265625,
+        "right": 708.625,
+        "bottom": 251.921875
+      },
+      "color": "rgb(212, 145, 48)",
+      "alignment": "center",
+      "bodyCentered": true,
+      "background": "rgba(0, 0, 0, 0)",
+      "border": "0px",
+      "shadow": "none",
+      "innerBackground": "rgba(0, 0, 0, 0)",
+      "innerBorder": "0px",
+      "overflow": false,
+      "clipped": [],
+      "described": true,
+      "text": "RETURN TO HOME?\n\nYour menu preferences stay on this device.\n\nA\nConfirm\nB\nCancel",
+      "buttons": [
+        {
+          "name": "Confirm",
+          "x": 292.5,
+          "y": 195.921875,
+          "width": 112,
+          "height": 32,
+          "right": 404.5,
+          "bottom": 227.921875
+        },
+        {
+          "name": "Cancel",
+          "x": 439.453125,
+          "y": 195.921875,
+          "width": 112,
+          "height": 32,
+          "right": 551.453125,
+          "bottom": 227.921875
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

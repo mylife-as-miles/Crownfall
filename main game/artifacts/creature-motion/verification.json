@@ -2,7 +2,7 @@
   "passed": true,
   "checks": [
     "The actual uploaded Idle clip runs at 1× with infinite repetition and one model request",
-    "Slow rendering retains 1.034× elapsed animation speed and 2 actual loop wraps",
+    "Slow rendering retains 0.998× elapsed animation speed and 2 actual loop wraps",
     "Home, Play, Showcase, Settings, Chapters and a dialog preserve the canvas, model request count and advancing mixer",
     "OS reduced motion freezes the actual mixer and resumes without a model reload",
     "The Ambient Motion preference freezes and resumes the actual rig without replacing its canvas",
@@ -15,47 +15,47 @@
   },
   "slowRender": {
     "addedDelayMs": 120,
-    "elapsedSeconds": 6.815200000002981,
-    "mixerSeconds": 7.049699999999999,
-    "ratio": 1.034408381264954,
+    "elapsedSeconds": 6.814400000005961,
+    "mixerSeconds": 6.799799999999998,
+    "ratio": 0.9978574782804135,
     "wraps": 2,
-    "renderSamples": 14
+    "renderSamples": 36
   },
   "continuity": [
     {
       "label": "Home",
-      "before": 7.255000000002978,
-      "after": 9.921600000002979
+      "before": 7.199500000008939,
+      "after": 8.149400000008939
     },
     {
       "label": "Play",
-      "before": 9.921600000002979,
-      "after": 12.68810000000298
+      "before": 8.149400000008939,
+      "after": 9.182700000008934
     },
     {
       "label": "Showcase",
-      "before": 12.68810000000298,
-      "after": 15.48800000000298
+      "before": 9.182700000008934,
+      "after": 10.632600000008932
     },
     {
       "label": "Settings",
-      "before": 15.48800000000298,
-      "after": 18.25460000000298
+      "before": 10.632600000008932,
+      "after": 12.09920000000893
     },
     {
       "label": "Play",
-      "before": 18.25460000000298,
-      "after": 21.571100000002982
+      "before": 12.09920000000893,
+      "after": 13.299200000008929
     },
     {
       "label": "Chapters",
-      "before": 21.571100000002982,
-      "after": 24.621000000002983
+      "before": 13.299200000008929,
+      "after": 14.549200000008929
     },
     {
       "label": "Classic preview dialog",
-      "before": 26.520900000002975,
-      "after": 27.65410000000298
+      "before": 15.399200000008928,
+      "after": 16.06580000000893
     }
   ],
   "visibilityCheck": "Skipped: this headless browser keeps background tabs visible",

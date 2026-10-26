@@ -35,7 +35,7 @@ The Chapters card opens a dedicated five-column selector matching the supplied r
 
 The slots are numbered Chapter 01–14 because final campaign titles and dedicated artwork have not been supplied. Existing approved environment artwork fills the thumbnails. Slots 01/02 open honest chapter previews; 03–14 are locked preview slots. This configuration is not player progression: no campaign is launched, no chapters are unlocked, and no save records change. Locked activation only announces its unavailable state. Keyboard/controller navigation can still inspect every slot, clamps edges, and remembers the preferred fifth column across the short last row. Preview Back restores the same tile; Q/E and bumpers keep the selector in Play's navigation context.
 
-`src/chapters-content.ts` configures the slots and spatial navigation. `artifacts/chapters/` contains actual-GLB screenshots at 1280×720, 1920×1080 and 844×390, selected-lock and preview states, the current flow recording and verification. The reference image remains outside the repository. The earlier full-menu recording in `artifacts/motion/` predates this selector; use `artifacts/chapters/chapters-flow.webm` for its current flow. Capture performance settings are disclosed in `captures.json`.
+`src/chapters-content.ts` configures the slots and spatial navigation. `artifacts/chapters/` contains actual-GLB selector screenshots at 1280×720, 1920×1080 and 844×390, selected-lock states and navigation verification. Its earlier preview images and flow recording predate the shared modal treatment; use `artifacts/modals/` for current chapter preview and dialog-flow visuals. The reference image remains outside the repository. The earlier full-menu recording in `artifacts/motion/` predates this selector and the common modal; its selector and dialog steps are historical. The Chapters recording shows selector navigation, while the latest modal recording shows current dialogs. Capture performance settings are disclosed in `captures.json`.
 
 ## Showcase and motion
 
@@ -44,6 +44,14 @@ Showcase has three destinations: AI Battles, Arenas and Match Replays. Arenas is
 Screen changes use a short fade and directional glide, with restrained card staggering. The exit view is a noninteractive DOM snapshot, keeping incoming refs and state live without duplicate React trees. Interrupted changes settle on the latest request, with no queued tour of skipped screens. The nav highlight moves between fixed tab bounds. Selection/press feedback, changing descriptions, arena-image crossfades, background defocus and native dialog enter/exit complete the motion. Both the OS reduced-motion preference and the in-app switch remove this choreography immediately. Scrollbars use recessed bronze rails and amber thumbs while retaining native scrolling.
 
 `artifacts/showcase/` contains actual-GLB captures at desktop and landscape sizes. `artifacts/motion/menu-transitions.webm` records the menu sequence; its renderer settings and preparation trim are disclosed in `recording.json`. Browser motion checks do not establish physical-device GPU performance. Visual review uses the user's subjective 9/10 target.
+
+## Shared modals
+
+Home destinations, mode previews, chapter previews and Return to Home use one native `MenuDialog` matching the supplied modal reference: a transparent borderless surface over the dark defocused scene, a centered compact amber heading, centered muted copy, and small outlined A Confirm / B Cancel actions. The content sits above the vertical midpoint, retaining the reference’s deliberate spacing while longer disclosures wrap and landscape text stays readable. There is no separate boxed panel, eyebrow, corner close icon or repeated footer.
+
+Confirm acknowledges informational previews; Return to Home confirms navigation to Home. Cancel, Escape, the configured Back binding and controller B dismiss without changing the destination. Focus remains trapped in the dialog and returns to the selected originating card. Left/right, custom bindings and controller navigation reach the actions; Q/E and bumpers cannot switch the menu behind an open dialog. Held Select/Back keys and held A/B buttons cannot accidentally repeat confirmations. The animated creature remains mounted behind the blur. Dialog fades honor both saved and OS reduced motion.
+
+The screenshot supplies the common visual treatment; existing settings retain immediate local persistence rather than adding a new Apply Changes transaction. The loading/recovery screen retains its dedicated readiness flow. `artifacts/modals/` contains desktop/landscape captures, the current modal flow recording and common-dialog checks.
 
 ## Settings
 
@@ -100,6 +108,7 @@ node scripts/verify-loading.mjs
 node scripts/verify-showcase.mjs
 node scripts/verify-chapters.mjs
 node scripts/verify-motion.mjs
+node scripts/verify-modals.mjs
 node scripts/verify-render-controls.mjs
 node scripts/verify-framing.mjs
 ```
