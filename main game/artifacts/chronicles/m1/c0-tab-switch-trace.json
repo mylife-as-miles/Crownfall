@@ -1,0 +1,964 @@
+{
+  "task": "C0: attribute the M0 long tasks after interaction (record open, close and exhibit tab switches: 396 ms and 585 ms in the M0 baseline)",
+  "build": "M0 code (checkpoint 32464d0 working tree before C1), production vite build with source maps, served by vite preview on 127.0.0.1:5193 and stopped afterwards",
+  "method": [
+    "Playwright Chromium (/opt/pw-browsers/chromium, --no-sandbox --use-angle=swiftshader --enable-unsafe-swiftshader), 1280x720, quality high, motion on, the real sorcerer model loaded: the M0 baseline's conditions",
+    "A Chrome trace (devtools.timeline, toplevel, user timing, v8 and the V8 CPU sampler, gpu, cc) started after the Atlas was ready and settled; each action is a performance.mark",
+    "Actions: Enter opens the Korvenia record, Escape closes it, then the Interregnum, Laws, Atlas and Interregnum tabs are clicked",
+    "Variants: as shipped ('m0'), the full-stage blur filter removed by injected CSS ('no-filter'), and both again with a page screenshot after each action as the M0 baseline capture took them ('-shots')",
+    "Long tasks: main-thread tasks of 50 ms or more, each split into self time by trace event and by script source file (CPU samples mapped through the build's source maps); per-action windows also report the GPU process main thread",
+    "Analysis code: main game/scripts/chronicles-trace.mjs (committed, reused by verify-chronicles.mjs); the M0 driver was a scratch tool for the M0 DOM"
+  ],
+  "host": "4 CPUs, software rendering (SwiftShader), two other workflows loading the host (load averages per run below). Absolute timings are not GPU or headset evidence.",
+  "attribution": {
+    "M0 396 ms and 585 ms": "Not reproduced in five traced runs without screenshots (largest 52-95 ms). With a screenshot after each action, as the M0 capture took them, tasks of 111, 244 and 437 ms appeared during or right after the captures, while the GPU process main thread ran single tasks of 2.2-5.8 s. Inside them the page thread mostly ran no script (CPU samples '(program)'): BeginMainFrame tasks whose animation-frame callbacks (the menu's navigator.getGamepads poll) were starved or blocked, and one React commit of the Laws tab click. The M0 numbers are therefore best explained by the verification's own screenshot captures on SwiftShader, plus contention on the loaded host.",
+    "fullStageBlurFilter": "No main-thread cost: the filtered and unfiltered variants both produced long tasks of similar kind. Its cost is in the GPU process: in the 2 s after the Laws switch the page received 21 animation frames with the filter and 77 without it. Removed in C1, replaced by a plain gradient scrim whose opacity changes.",
+    "reactRerender": "The tab switch's click task holds the React commit (react-dom 17-31% of samples, Chronicles.tsx 5-14%), hit testing (about 5 ms) and style recalculation (12 ms, and once a 90 ms recalculation forced by a layout read): 52-95 ms on this host, 244 ms once under starvation. C1 keeps React updates to input events only, and the record panel and lists are small.",
+    "firstUseShaderOrTexture": "None observed: no shader compile, link or texture upload events on the page's main thread during any interaction. The relief compiles every program and uploads its texture before reporting ready.",
+    "garbageCollection": "Major GC tasks of 53-74 ms (mark-compact, embedder tracing) around the record open and close: page-wide, not tied to the screen's code."
+  },
+  "forC1": [
+    "Remove the full-stage blur filter (done: no filter anywhere in Chronicles.css).",
+    "Hide the menu's stage layers once the opaque Chronicles layer has finished entering, so they stop compositing (done in Chronicles.css).",
+    "Keep the stage from rendering behind collections it does not draw, and never change React state per frame (done).",
+    "In verification, keep screenshots out of long-task windows and attribute every remaining long task before calling it the screen's (done in verify-chronicles.mjs)."
+  ],
+  "runs": [
+    {
+      "run": "run 1",
+      "variant": "m0",
+      "hostLoadAverage": [
+        21.7,
+        18.3,
+        16.1
+      ],
+      "stageFilterOnInterregnum": "blur(0px) brightness(1) saturate(1)",
+      "actions": [
+        {
+          "name": "open-record",
+          "atMs": 89785,
+          "doneMs": 91828
+        },
+        {
+          "name": "close-record",
+          "atMs": 91832,
+          "doneMs": 93819
+        },
+        {
+          "name": "tab-interregnum",
+          "atMs": 93821,
+          "doneMs": 102910
+        },
+        {
+          "name": "tab-laws",
+          "atMs": 103019,
+          "doneMs": 109186
+        },
+        {
+          "name": "tab-atlas",
+          "atMs": 109189,
+          "doneMs": 110671
+        },
+        {
+          "name": "tab-interregnum-again",
+          "atMs": 110673,
+          "doneMs": 113043
+        }
+      ],
+      "longTasksObservedByPage": [
+        {
+          "start": 100622,
+          "duration": 51
+        }
+      ],
+      "longTasksAttributed": [
+        {
+          "action": "tab-interregnum",
+          "startMs": 100622.4,
+          "durationMs": 52,
+          "afterMark": {
+            "name": "action:tab-interregnum",
+            "msBeforeTaskStart": 6801.1
+          },
+          "groupsMs": {
+            "other": 31.1,
+            "script": 15.7,
+            "style": 3.6,
+            "layout": 1.1,
+            "untraced": 0.5,
+            "paint": 0
+          },
+          "eventsMs": {
+            "FunctionCall": 13.1,
+            "Document::recalcStyle": 11.6,
+            "HitTest": 5.2,
+            "V8.HandleInterrupts": 3,
+            "UpdateLayoutTree": 2.9,
+            "EventHandler::handleMousePressEvent": 2.8,
+            "v8.callFunction": 2.2,
+            "ThreadControllerImpl::RunTask": 2.2,
+            "EventHandler::handleMouseReleaseEvent": 2.1,
+            "LayoutView::HitTest": 1,
+            "LocalFrameView::performLayout": 0.9,
+            "LocalFrameView::RunPrePaintLifecyclePhase": 0.8,
+            "Blink.PrePaint.UpdateTime": 0.6,
+            "Document::updateStyleInvalidationIfNeeded": 0.5
+          },
+          "samples": 79,
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "(native (program))": 73.4,
+            "react-dom": 17.7,
+            "(native listener)": 7.6,
+            "(native expectHitTarget)": 5.1,
+            "src/Chronicles.tsx": 5.1,
+            "(native setAttribute)": 3.8,
+            "(native elementsFromPoint)": 2.5,
+            "(native elementFromPoint)": 1.3,
+            "(native parentElementOrShadowHost)": 1.3,
+            "shared/chronicles/content.ts": 1.3,
+            "(native removeEventListener)": 1.3
+          },
+          "topSelfFunctionsPercent": {
+            "(program) @ (native (program))": 73.4,
+            "setAttribute @ (native setAttribute)": 3.8,
+            "listener @ (native listener)": 2.5,
+            "elementsFromPoint @ (native elementsFromPoint)": 2.5,
+            "(anonymous) @ src/Chronicles.tsx": 2.5,
+            "elementFromPoint @ (native elementFromPoint)": 1.3,
+            "parentElementOrShadowHost @ (native parentElementOrShadowHost)": 1.3,
+            "beginWork @ react-dom": 1.3,
+            "getChronicleShortTitle @ shared/chronicles/content.ts": 1.3,
+            "completeUnitOfWork @ react-dom": 1.3,
+            "commitHostUpdate @ react-dom": 1.3,
+            "commitDeletionEffectsOnFiber @ react-dom": 1.3
+          }
+        }
+      ]
+    },
+    {
+      "run": "run 1",
+      "variant": "no-filter",
+      "hostLoadAverage": [
+        23.6,
+        20.5,
+        17.2
+      ],
+      "stageFilterOnInterregnum": "none",
+      "actions": [
+        {
+          "name": "open-record",
+          "atMs": 68060,
+          "doneMs": 71101
+        },
+        {
+          "name": "close-record",
+          "atMs": 71103,
+          "doneMs": 73105
+        },
+        {
+          "name": "tab-interregnum",
+          "atMs": 73107,
+          "doneMs": 84118
+        },
+        {
+          "name": "tab-laws",
+          "atMs": 84124,
+          "doneMs": 87833
+        },
+        {
+          "name": "tab-atlas",
+          "atMs": 87836,
+          "doneMs": 88531
+        },
+        {
+          "name": "tab-interregnum-again",
+          "atMs": 88535,
+          "doneMs": 94732
+        }
+      ],
+      "longTasksObservedByPage": [
+        {
+          "start": 90465,
+          "duration": 94
+        }
+      ],
+      "longTasksAttributed": [
+        {
+          "action": "tab-interregnum-again",
+          "startMs": 90465.2,
+          "durationMs": 94.7,
+          "afterMark": {
+            "name": "action:tab-interregnum-again",
+            "msBeforeTaskStart": 1930.3
+          },
+          "groupsMs": {
+            "other": 91.5,
+            "script": 1.5,
+            "paint": 0.6,
+            "style": 0.6,
+            "composite": 0.4,
+            "layout": 0.1,
+            "gpu-wait": 0.1,
+            "untraced": 0.1
+          },
+          "eventsMs": {
+            "Document::recalcStyle": 90.2,
+            "FunctionCall": 1.3,
+            "UpdateLayoutTree": 0.5,
+            "LocalFrameView::performLayout": 0.2,
+            "Paint": 0.2,
+            "PaintArtifactCompositor::Update": 0.2,
+            "HitTest": 0.2,
+            "Blink.PrePaint.UpdateTime": 0.1,
+            "Document::updateStyle": 0.1,
+            "Blink.Paint.UpdateTime": 0.1,
+            "PaintController::commitNewDisplayItems": 0.1,
+            "LayerTreeHost::DoUpdateLayers": 0.1,
+            "AnimationTimeline::serviceAnimations": 0.1,
+            "EventDispatch": 0.1
+          },
+          "samples": 26,
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "(native (program))": 69.2,
+            "(native raf)": 26.9,
+            "(native getBoundingClientRect)": 23.1,
+            "(native check)": 23.1,
+            "react-dom": 3.8,
+            "(native requestAnimationFrame)": 3.8
+          },
+          "topSelfFunctionsPercent": {
+            "(program) @ (native (program))": 69.2,
+            "getBoundingClientRect @ (native getBoundingClientRect)": 23.1,
+            "isCustomElement @ react-dom": 3.8,
+            "requestAnimationFrame @ (native requestAnimationFrame)": 3.8
+          }
+        }
+      ]
+    },
+    {
+      "run": "run 2",
+      "variant": "m0-shots",
+      "hostLoadAverage": [
+        17.4,
+        19.6,
+        17.4
+      ],
+      "stageFilterOnInterregnum": "blur(7.68px) brightness(0.62) saturate(0.9)",
+      "actions": [
+        {
+          "name": "open-record",
+          "atMs": 80082,
+          "shotAt": 82714,
+          "doneMs": 97494
+        },
+        {
+          "name": "close-record",
+          "atMs": 97497,
+          "shotAt": null,
+          "doneMs": 98909
+        },
+        {
+          "name": "tab-interregnum",
+          "atMs": 98941,
+          "shotAt": 106871,
+          "doneMs": 118821
+        },
+        {
+          "name": "tab-laws",
+          "atMs": 118906,
+          "shotAt": 121267,
+          "doneMs": 121958
+        },
+        {
+          "name": "tab-atlas",
+          "atMs": 121964,
+          "shotAt": null,
+          "doneMs": 122631
+        },
+        {
+          "name": "tab-interregnum-again",
+          "atMs": 122642,
+          "shotAt": 130399,
+          "doneMs": 135393
+        }
+      ],
+      "longTasksObservedByPage": [
+        {
+          "start": 102700,
+          "duration": 65
+        },
+        {
+          "start": 107599,
+          "duration": 111
+        },
+        {
+          "start": 118966,
+          "duration": 244
+        }
+      ],
+      "longTasksAttributed": [
+        {
+          "action": "open-record",
+          "startMs": 84917.7,
+          "durationMs": 53.6,
+          "afterMark": {
+            "name": "shot:open-record",
+            "msBeforeTaskStart": 2203.3
+          },
+          "groupsMs": {
+            "gc": 53.5,
+            "other": 0.1,
+            "untraced": 0
+          },
+          "eventsMs": {
+            "V8.GC_MC_MARK_FULL_CLOSURE_PARALLEL": 43.6,
+            "V8.GC_HEAP_EMBEDDER_TRACING_EPILOGUE": 3,
+            "V8.GC_MC_CLEAR_JOIN_JOB": 1.2,
+            "V8.GC_MC_EVACUATE_COPY_PARALLEL": 1.2,
+            "V8.GC_MC_EVACUATE_UPDATE_POINTERS_SLOTS_MAIN": 0.7,
+            "V8.GC_MC_SWEEP": 0.7,
+            "V8.GC_MC_EVACUATE_UPDATE_POINTERS_TO_NEW_ROOTS": 0.6,
+            "V8.GC_MC_MARK": 0.3,
+            "V8.GC_MC_MARK_WEAK_CLOSURE_EPHEMERON_MARKING": 0.2,
+            "V8.GC_MARK_COMPACTOR": 0.2,
+            "V8.GC_MC_EVACUATE_UPDATE_POINTERS_POINTER_TABLES": 0.2,
+            "V8.GC_MC_INCREMENTAL": 0.2,
+            "V8.GC_MC_SWEEP_START_JOBS": 0.2,
+            "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.2
+          },
+          "samples": 223,
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "(native (garbage collector))": 99.6,
+            "(native (program))": 0.4
+          },
+          "topSelfFunctionsPercent": {
+            "(garbage collector) @ (native (garbage collector))": 99.6,
+            "(program) @ (native (program))": 0.4
+          }
+        },
+        {
+          "action": "tab-interregnum",
+          "startMs": 102701,
+          "durationMs": 64.2,
+          "afterMark": {
+            "name": "action:tab-interregnum",
+            "msBeforeTaskStart": 3760.2
+          },
+          "groupsMs": {
+            "script": 61.7,
+            "other": 1.8,
+            "composite": 0.4,
+            "untraced": 0.1,
+            "gpu-wait": 0.1,
+            "paint": 0.1,
+            "layout": 0
+          },
+          "eventsMs": {
+            "FunctionCall": 61.6,
+            "HitTest": 0.9,
+            "Blink.Paint.UpdateTime": 0.3,
+            "LayerTreeHost::DoUpdateLayers": 0.1,
+            "Commit": 0.1,
+            "Blink.PrePaint.UpdateTime": 0.1,
+            "AsyncTask Run": 0.1,
+            "ProxyMain::BeginMainFrame::commit": 0.1,
+            "EventHandler::handleMouseMoveEvent": 0.1,
+            "PrePaint": 0.1,
+            "ProxyMain::BeginMainFrame": 0.1,
+            "LocalFrameView::RunPaintLifecyclePhase": 0.1,
+            "CommandBufferProxyImpl::Flush": 0.1,
+            "LocalFrameView::ScheduleAnimation": 0
+          },
+          "samples": 18,
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "(native (program))": 72.2,
+            "three": 22.2,
+            "src/chronicles/scene/AtlasScene.ts": 22.2,
+            "(native check)": 5.6,
+            "(native raf)": 5.6
+          },
+          "topSelfFunctionsPercent": {
+            "(program) @ (native (program))": 72.2,
+            "Yd.renderBufferDirect @ three": 16.7,
+            "setMaterial @ three": 5.6,
+            "check @ (native check)": 5.6
+          }
+        },
+        {
+          "action": "tab-interregnum",
+          "startMs": 107599.2,
+          "durationMs": 111.5,
+          "afterMark": {
+            "name": "shot:tab-interregnum",
+            "msBeforeTaskStart": 728
+          },
+          "groupsMs": {
+            "script": 107.7,
+            "composite": 1.3,
+            "other": 1.3,
+            "paint": 0.8,
+            "style": 0.2,
+            "untraced": 0.1,
+            "layout": 0
+          },
+          "eventsMs": {
+            "FunctionCall": 107.5,
+            "UpdateLayer": 0.8,
+            "Paint": 0.4,
+            "LayerTreeHost::WaitForCommitCompletion": 0.3,
+            "PaintArtifactCompositor::Update": 0.3,
+            "HitTest": 0.2,
+            "UpdateLayoutTree": 0.2,
+            "LocalFrameView::RunPaintLifecyclePhase": 0.2,
+            "v8.callFunction": 0.1,
+            "Blink.Paint.UpdateTime": 0.1,
+            "EventDispatch": 0.1,
+            "Commit": 0.1,
+            "AsyncTask Run": 0.1,
+            "V8.HandleInterrupts": 0.1
+          },
+          "samples": 633,
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "(native getGamepads)": 93,
+            "src/App.tsx": 93,
+            "(native (program))": 7
+          },
+          "topSelfFunctionsPercent": {
+            "getGamepads @ (native getGamepads)": 93,
+            "(program) @ (native (program))": 7
+          }
+        },
+        {
+          "action": "tab-laws",
+          "startMs": 118965.7,
+          "durationMs": 244.3,
+          "afterMark": {
+            "name": "action:tab-laws",
+            "msBeforeTaskStart": 59.7
+          },
+          "groupsMs": {
+            "script": 237.9,
+            "other": 5.9,
+            "style": 0.2,
+            "layout": 0.1,
+            "untraced": 0.1,
+            "paint": 0
+          },
+          "eventsMs": {
+            "FunctionCall": 237.2,
+            "Document::recalcStyle": 2.1,
+            "EventHandler::handleMousePressEvent": 0.7,
+            "v8.callFunction": 0.5,
+            "ThreadControllerImpl::RunTask": 0.5,
+            "LocalFrameView::performLayout": 0.4,
+            "HitTest": 0.3,
+            "InlineNode::ShapeTextIncludingFirstLine": 0.3,
+            "V8.BytecodeBudgetInterrupt": 0.2,
+            "Blink.PrePaint.UpdateTime": 0.2,
+            "Document::rebuildLayoutTree": 0.2,
+            "EventDispatch": 0.2,
+            "ScrollTree::SetScrollOffset": 0.2,
+            "LocalFrameView::ScheduleAnimation": 0.1
+          },
+          "samples": 72,
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "(native (program))": 65.3,
+            "react-dom": 30.6,
+            "src/Chronicles.tsx": 13.9,
+            "(native setAttribute)": 8.3,
+            "(native expectHitTarget)": 4.2,
+            "(native listener)": 4.2,
+            "(native elementsFromPoint)": 2.8,
+            "react": 2.8,
+            "(native removeEventListener)": 2.8,
+            "(native queueMicrotask)": 1.4,
+            "(native postMessage)": 1.4
+          },
+          "topSelfFunctionsPercent": {
+            "(program) @ (native (program))": 65.3,
+            "setAttribute @ (native setAttribute)": 8.3,
+            "(anonymous) @ src/Chronicles.tsx": 5.6,
+            "elementsFromPoint @ (native elementsFromPoint)": 2.8,
+            "e.useRef @ react": 2.8,
+            "renderWithHooks @ react-dom": 2.8,
+            "removeEventListener @ (native removeEventListener)": 2.8,
+            "expectHitTarget @ (native expectHitTarget)": 1.4,
+            "getNearestMountedFiber @ react-dom": 1.4,
+            "queueMicrotask @ (native queueMicrotask)": 1.4,
+            "completeWork @ react-dom": 1.4,
+            "postMessage @ (native postMessage)": 1.4
+          }
+        }
+      ]
+    },
+    {
+      "run": "run 2",
+      "variant": "no-filter-shots",
+      "hostLoadAverage": [
+        21.2,
+        20.4,
+        18.1
+      ],
+      "stageFilterOnInterregnum": "none",
+      "actions": [
+        {
+          "name": "open-record",
+          "atMs": 81344,
+          "shotAt": 83594,
+          "doneMs": 98438
+        },
+        {
+          "name": "close-record",
+          "atMs": 98441,
+          "shotAt": null,
+          "doneMs": 100383
+        },
+        {
+          "name": "tab-interregnum",
+          "atMs": 100385,
+          "shotAt": 106669,
+          "doneMs": 115734
+        },
+        {
+          "name": "tab-laws",
+          "atMs": 115744,
+          "shotAt": 117865,
+          "doneMs": 118467
+        },
+        {
+          "name": "tab-atlas",
+          "atMs": 118473,
+          "shotAt": null,
+          "doneMs": 119460
+        },
+        {
+          "name": "tab-interregnum-again",
+          "atMs": 119463,
+          "shotAt": 126383,
+          "doneMs": 134602
+        }
+      ],
+      "longTasksObservedByPage": [
+        {
+          "start": 109397,
+          "duration": 436
+        }
+      ],
+      "longTasksAttributed": [
+        {
+          "action": "tab-interregnum",
+          "startMs": 109397.2,
+          "durationMs": 436.8,
+          "afterMark": {
+            "name": "shot:tab-interregnum",
+            "msBeforeTaskStart": 2728.2
+          },
+          "groupsMs": {
+            "script": 433.9,
+            "other": 1.1,
+            "paint": 0.8,
+            "composite": 0.7,
+            "style": 0.1,
+            "untraced": 0.1,
+            "layout": 0
+          },
+          "eventsMs": {
+            "FunctionCall": 433.6,
+            "Paint": 0.5,
+            "LayerTreeHost::WaitForCommitCompletion": 0.5,
+            "PaintArtifactCompositor::Update": 0.3,
+            "HitTest": 0.2,
+            "LocalFrameView::RunPaintLifecyclePhase": 0.1,
+            "v8.callFunction": 0.1,
+            "EventDispatch": 0.1,
+            "UpdateLayoutTree": 0.1,
+            "Blink.Paint.UpdateTime": 0.1,
+            "AsyncTask Run": 0.1,
+            "Commit": 0.1,
+            "EventHandler::handleMouseMoveEvent": 0.1,
+            "PageAnimator::serviceScriptedAnimations": 0.1
+          },
+          "samples": 36,
+          "scriptInclusiveByFilePercent": {
+            "(native (program))": 100,
+            "(native (root))": 100
+          },
+          "topSelfFunctionsPercent": {
+            "(program) @ (native (program))": 100
+          }
+        }
+      ]
+    },
+    {
+      "run": "run 2",
+      "variant": "m0",
+      "hostLoadAverage": [
+        24.1,
+        21.8,
+        18.9
+      ],
+      "stageFilterOnInterregnum": "blur(0px) brightness(1) saturate(1)",
+      "actions": [
+        {
+          "name": "open-record",
+          "atMs": 75350,
+          "shotAt": null,
+          "doneMs": 77673
+        },
+        {
+          "name": "close-record",
+          "atMs": 77700,
+          "shotAt": null,
+          "doneMs": 80170
+        },
+        {
+          "name": "tab-interregnum",
+          "atMs": 80347,
+          "shotAt": null,
+          "doneMs": 90632
+        },
+        {
+          "name": "tab-laws",
+          "atMs": 90716,
+          "shotAt": null,
+          "doneMs": 98367
+        },
+        {
+          "name": "tab-atlas",
+          "atMs": 98371,
+          "shotAt": null,
+          "doneMs": 99423
+        },
+        {
+          "name": "tab-interregnum-again",
+          "atMs": 99425,
+          "shotAt": null,
+          "doneMs": 103866
+        }
+      ],
+      "longTasksObservedByPage": [],
+      "longTasksAttributed": [
+        {
+          "action": "close-record",
+          "startMs": 79852.1,
+          "durationMs": 73.8,
+          "afterMark": {
+            "name": "action:close-record",
+            "msBeforeTaskStart": 2152.1
+          },
+          "groupsMs": {
+            "other": 73.5,
+            "gc": 0.3,
+            "untraced": 0
+          },
+          "eventsMs": {
+            "Major concurrent marking rescheduled": 73.4,
+            "V8.GC_MC_INCREMENTAL": 0.2,
+            "V8.GC_MC_INCREMENTAL_EMBEDDER_TRACING": 0.1,
+            "ThreadControllerImpl::RunTask": 0,
+            "BlinkScheduler_PerformMicrotaskCheckpoint": 0,
+            "V8.GCIncrementalMarking": 0
+          },
+          "samples": 0,
+          "scriptInclusiveByFilePercent": {},
+          "topSelfFunctionsPercent": {}
+        },
+        {
+          "action": "tab-interregnum",
+          "startMs": 80561.1,
+          "durationMs": 60.1,
+          "afterMark": {
+            "name": "action:tab-interregnum",
+            "msBeforeTaskStart": 214.4
+          },
+          "groupsMs": {
+            "gc": 60,
+            "other": 0.1,
+            "untraced": 0
+          },
+          "eventsMs": {
+            "V8.GC_HEAP_EMBEDDER_TRACING_EPILOGUE": 51.2,
+            "V8.GC_MC_EVACUATE_COPY": 3.4,
+            "V8.GC_MC_SWEEP_START_JOBS": 1.1,
+            "V8.GC_MC_EVACUATE_UPDATE_POINTERS_SLOTS_MAIN": 0.8,
+            "V8.GC_MARK_COMPACTOR": 0.4,
+            "V8.GC_MC_MARK_FULL_CLOSURE_PARALLEL": 0.4,
+            "V8.GC_MC_EVACUATE_UPDATE_POINTERS_TO_NEW_ROOTS": 0.3,
+            "V8.GC_HEAP_EPILOGUE_SAFEPOINT": 0.2,
+            "V8.GC_MC_CLEAR_STRING_TABLE": 0.2,
+            "V8.GC_MC_CLEAR_SWEEP_EXTERNAL_POINTER_TABLE": 0.2,
+            "V8.GC_MC_MARK_EMBEDDER_TRACING": 0.2,
+            "V8.GC_MC_EVACUATE_EPILOGUE": 0.2,
+            "V8.GC_MC_CLEAR": 0.2,
+            "V8.GC_MC_EVACUATE_UPDATE_POINTERS_POINTER_TABLES": 0.1
+          },
+          "samples": 1,
+          "scriptInclusiveByFilePercent": {
+            "(native (garbage collector))": 100,
+            "(native (root))": 100
+          },
+          "topSelfFunctionsPercent": {
+            "(garbage collector) @ (native (garbage collector))": 100
+          }
+        }
+      ]
+    }
+  ],
+  "perActionWindows": {
+    "m0": {
+      "shaderOrTextureEventsOnRendererMain": [],
+      "windows": [
+        {
+          "window": "action:open-record",
+          "ms": 2350,
+          "rendererMainBusyMs": 33,
+          "rendererLongestTaskMs": 14,
+          "gpuMainBusyMs": 2377,
+          "gpuLongestTaskMs": 2368,
+          "animationFrames": 3
+        },
+        {
+          "window": "action:close-record",
+          "ms": 2647,
+          "rendererMainBusyMs": 128,
+          "rendererLongestTaskMs": 74,
+          "gpuMainBusyMs": 2963,
+          "gpuLongestTaskMs": 2959,
+          "animationFrames": 3
+        },
+        {
+          "window": "action:tab-interregnum",
+          "ms": 10369,
+          "rendererMainBusyMs": 139,
+          "rendererLongestTaskMs": 60,
+          "gpuMainBusyMs": 11277,
+          "gpuLongestTaskMs": 5731,
+          "animationFrames": 6
+        },
+        {
+          "window": "action:tab-laws",
+          "ms": 7655,
+          "rendererMainBusyMs": 63,
+          "rendererLongestTaskMs": 16,
+          "gpuMainBusyMs": 4229,
+          "gpuLongestTaskMs": 2035,
+          "animationFrames": 8
+        },
+        {
+          "window": "action:tab-atlas",
+          "ms": 1054,
+          "rendererMainBusyMs": 62,
+          "rendererLongestTaskMs": 15,
+          "gpuMainBusyMs": 1138,
+          "gpuLongestTaskMs": 566,
+          "animationFrames": 6
+        },
+        {
+          "window": "action:tab-interregnum-again",
+          "ms": 4445,
+          "rendererMainBusyMs": 54,
+          "rendererLongestTaskMs": 11,
+          "gpuMainBusyMs": 4153,
+          "gpuLongestTaskMs": 2175,
+          "animationFrames": 9
+        }
+      ]
+    },
+    "m0-shots": {
+      "shaderOrTextureEventsOnRendererMain": [],
+      "windows": [
+        {
+          "window": "action:open-record",
+          "ms": 2633,
+          "rendererMainBusyMs": 29,
+          "rendererLongestTaskMs": 18,
+          "gpuMainBusyMs": 3171,
+          "gpuLongestTaskMs": 3169,
+          "animationFrames": 3
+        },
+        {
+          "window": "shot:open-record",
+          "ms": 14782,
+          "rendererMainBusyMs": 171,
+          "rendererLongestTaskMs": 54,
+          "gpuMainBusyMs": 13037,
+          "gpuLongestTaskMs": 5794,
+          "animationFrames": 12
+        },
+        {
+          "window": "action:close-record",
+          "ms": 1444,
+          "rendererMainBusyMs": 22,
+          "rendererLongestTaskMs": 11,
+          "gpuMainBusyMs": 54,
+          "gpuLongestTaskMs": 41,
+          "animationFrames": 3
+        },
+        {
+          "window": "action:tab-interregnum",
+          "ms": 7930,
+          "rendererMainBusyMs": 104,
+          "rendererLongestTaskMs": 64,
+          "gpuMainBusyMs": 8641,
+          "gpuLongestTaskMs": 3745,
+          "animationFrames": 6
+        },
+        {
+          "window": "shot:tab-interregnum",
+          "ms": 12035,
+          "rendererMainBusyMs": 127,
+          "rendererLongestTaskMs": 111,
+          "gpuMainBusyMs": 11285,
+          "gpuLongestTaskMs": 4903,
+          "animationFrames": 8
+        },
+        {
+          "window": "action:tab-laws",
+          "ms": 2361,
+          "rendererMainBusyMs": 280,
+          "rendererLongestTaskMs": 244,
+          "gpuMainBusyMs": 1912,
+          "gpuLongestTaskMs": 672,
+          "animationFrames": 21
+        },
+        {
+          "window": "shot:tab-laws",
+          "ms": 696,
+          "rendererMainBusyMs": 21,
+          "rendererLongestTaskMs": 2,
+          "gpuMainBusyMs": 314,
+          "gpuLongestTaskMs": 312,
+          "animationFrames": 26
+        },
+        {
+          "window": "action:tab-atlas",
+          "ms": 678,
+          "rendererMainBusyMs": 37,
+          "rendererLongestTaskMs": 9,
+          "gpuMainBusyMs": 3123,
+          "gpuLongestTaskMs": 3117,
+          "animationFrames": 9
+        },
+        {
+          "window": "action:tab-interregnum-again",
+          "ms": 7758,
+          "rendererMainBusyMs": 48,
+          "rendererLongestTaskMs": 21,
+          "gpuMainBusyMs": 5962,
+          "gpuLongestTaskMs": 3111,
+          "animationFrames": 6
+        },
+        {
+          "window": "shot:tab-interregnum-again",
+          "ms": 5090,
+          "rendererMainBusyMs": 28,
+          "rendererLongestTaskMs": 8,
+          "gpuMainBusyMs": 3724,
+          "gpuLongestTaskMs": 2996,
+          "animationFrames": 8
+        }
+      ]
+    },
+    "no-filter-shots": {
+      "shaderOrTextureEventsOnRendererMain": [],
+      "windows": [
+        {
+          "window": "action:open-record",
+          "ms": 2250,
+          "rendererMainBusyMs": 32,
+          "rendererLongestTaskMs": 9,
+          "gpuMainBusyMs": 2029,
+          "gpuLongestTaskMs": 2014,
+          "animationFrames": 6
+        },
+        {
+          "window": "shot:open-record",
+          "ms": 14846,
+          "rendererMainBusyMs": 70,
+          "rendererLongestTaskMs": 21,
+          "gpuMainBusyMs": 16769,
+          "gpuLongestTaskMs": 6234,
+          "animationFrames": 8
+        },
+        {
+          "window": "action:close-record",
+          "ms": 1945,
+          "rendererMainBusyMs": 24,
+          "rendererLongestTaskMs": 9,
+          "gpuMainBusyMs": 1545,
+          "gpuLongestTaskMs": 1537,
+          "animationFrames": 3
+        },
+        {
+          "window": "action:tab-interregnum",
+          "ms": 6284,
+          "rendererMainBusyMs": 43,
+          "rendererLongestTaskMs": 11,
+          "gpuMainBusyMs": 7487,
+          "gpuLongestTaskMs": 4891,
+          "animationFrames": 6
+        },
+        {
+          "window": "shot:tab-interregnum",
+          "ms": 9075,
+          "rendererMainBusyMs": 461,
+          "rendererLongestTaskMs": 437,
+          "gpuMainBusyMs": 6146,
+          "gpuLongestTaskMs": 2795,
+          "animationFrames": 11
+        },
+        {
+          "window": "action:tab-laws",
+          "ms": 2122,
+          "rendererMainBusyMs": 84,
+          "rendererLongestTaskMs": 15,
+          "gpuMainBusyMs": 680,
+          "gpuLongestTaskMs": 248,
+          "animationFrames": 77
+        },
+        {
+          "window": "shot:tab-laws",
+          "ms": 608,
+          "rendererMainBusyMs": 22,
+          "rendererLongestTaskMs": 7,
+          "gpuMainBusyMs": 75,
+          "gpuLongestTaskMs": 73,
+          "animationFrames": 33
+        },
+        {
+          "window": "action:tab-atlas",
+          "ms": 990,
+          "rendererMainBusyMs": 76,
+          "rendererLongestTaskMs": 22,
+          "gpuMainBusyMs": 4643,
+          "gpuLongestTaskMs": 4634,
+          "animationFrames": 29
+        },
+        {
+          "window": "action:tab-interregnum-again",
+          "ms": 6919,
+          "rendererMainBusyMs": 51,
+          "rendererLongestTaskMs": 10,
+          "gpuMainBusyMs": 3706,
+          "gpuLongestTaskMs": 3002,
+          "animationFrames": 6
+        },
+        {
+          "window": "shot:tab-interregnum-again",
+          "ms": 8224,
+          "rendererMainBusyMs": 50,
+          "rendererLongestTaskMs": 21,
+          "gpuMainBusyMs": 7304,
+          "gpuLongestTaskMs": 3342,
+          "animationFrames": 7
+        }
+      ]
+    }
+  }
+}

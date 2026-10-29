@@ -9,7 +9,7 @@ import useBootLoading from "./useBootLoading";
 import MenuTransition from "./MenuTransition";
 import MenuDialog from "./MenuDialog";
 import Showcase, { type ShowcaseView } from "./Showcase";
-import Chronicles from "./Chronicles";
+import Chronicles, { type ChroniclesHandle } from "./Chronicles";
 import { SettingsGrid, SETTINGS_CATEGORIES } from "./SettingsGrid";
 import SettingsDetail from "./SettingsDetail";
 import { INITIAL_PREFERENCES, normalizeBindings, type BindingAction, type Direction, type FrameLimit, type Preferences, type Quality, type SettingsCategory, type SettingsPageHandle } from "./settings-types";
@@ -80,7 +80,7 @@ export default function App() {
   const lastPanel = useRef<Panel>(null);
   const showcaseRef = useRef<SettingsPageHandle>(null);
   const chaptersRef = useRef<SettingsPageHandle>(null);
-  const chroniclesRef = useRef<SettingsPageHandle>(null);
+  const chroniclesRef = useRef<ChroniclesHandle>(null);
   const showcaseOrigin = useRef<"home" | "play" | "settings" | "chapters">("play");
   const previousShowcaseView = useRef<ShowcaseView>(showcaseView);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -304,7 +304,9 @@ export default function App() {
       if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement) return;
       if (action === "previousTab" || action === "nextTab") {
         event.preventDefault();
-        changeTab(action === "nextTab" ? 1 : -1);
+        // Inside Chronicles, Q/E cycle its collections; Back returns Home.
+        if (screen === "chronicles") chroniclesRef.current?.cycle(action === "nextTab" ? 1 : -1);
+        else changeTab(action === "nextTab" ? 1 : -1);
         return;
       }
       const direction = action && ["left", "right", "up", "down"].includes(action) ? action as Direction : undefined;
@@ -405,7 +407,8 @@ export default function App() {
           detailRef.current?.reset();
           gamepadInputAt.current = time + 350;
         } else if (pad.buttons[4]?.pressed || pad.buttons[5]?.pressed) {
-          changeTab(pad.buttons[5]?.pressed ? 1 : -1);
+          if (screen === "chronicles") chroniclesRef.current?.cycle(pad.buttons[5]?.pressed ? 1 : -1);
+          else changeTab(pad.buttons[5]?.pressed ? 1 : -1);
           gamepadInputAt.current = time + 250;
         }
       }
@@ -435,7 +438,7 @@ export default function App() {
         />
         <CreatureStage reducedMotion={!preferences.motion || stageResting} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} onLoadState={boot.onModelState} loadAttempt={boot.attempt} />
         <div className="menu-content" inert={boot.blocking} aria-hidden={boot.blocking || undefined}>
-        <nav className={`main-nav${screen === "home" ? " main-nav--home" : ""}`} aria-label="Main menu" inert={detailScreenOpen}>
+        <nav className={`main-nav${screen === "home" ? " main-nav--home" : ""}${screen === "chronicles" ? " main-nav--hidden" : ""}`} aria-label="Main menu" inert={detailScreenOpen || screen === "chronicles"}>
           <button
             className="shoulder-button"
             aria-label="Previous menu tab"
@@ -480,7 +483,7 @@ export default function App() {
         ) : screen === "showcase" ? (
           <Showcase ref={showcaseRef} view={showcaseView} onViewChange={changeShowcaseView} onBackRoot={back} reducedMotion={reducedMotion} />
         ) : screen === "chronicles" ? (
-          <Chronicles ref={chroniclesRef} onBack={back} reducedMotion={reducedMotion} quality={preferences.quality} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} />
+          <Chronicles ref={chroniclesRef} onBack={back} reducedMotion={reducedMotion} quality={preferences.quality} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} bindings={preferences.bindings} />
         ) : screen === "settings" ? (
           settingsCategory ? <SettingsDetail
             ref={detailRef}

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="data:," />
+    <title>Archive harness (development only)</title>
+    <style>
+      html, body { margin: 0; background: #141414; overflow: hidden; }
+      #stage { position: fixed; left: 0; top: 0; width: 1920px; height: 1080px; }
+      #stage canvas { display: block; }
+      .harness-label { position: absolute; padding: 2px 6px; font: 12px/1.3 ui-monospace, Menlo, Consolas, monospace; color: #d9d2c4; background: rgba(0, 0, 0, 0.5); pointer-events: none; white-space: nowrap; }
+    </style>
+  </head>
+  <body>
+    <!-- Development-only iteration page for the archive renderer: served by the dev server, never part of the production bundle. -->
+    <div id="stage"></div>
+    <script type="module" src="./harness.ts"></script>
+  </body>
+</html>

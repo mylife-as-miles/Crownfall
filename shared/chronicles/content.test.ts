@@ -9,6 +9,8 @@ import {
   getChronicleRecord, getChronicleRecords, getChronicleShortTitle, getHotspotRecords, getNationAccounts,
   getNextArticle, getNextHotspot, getNextTimelineStop, hotspotAt,
 } from "./content";
+import { CHRONICLE_REGISTRY } from "./registry";
+import { CANON_MARKERS } from "./status";
 import type { ChronicleNationId } from "./types";
 
 const NATIONS: readonly ChronicleNationId[] = ["korvenia", "solforiz", "aethelgard", "kwind-09"];
@@ -181,13 +183,20 @@ test("no string exported by any shared/chronicles module contains a guarded phra
   assert.ok(exportedStrings(content).length > CHRONICLE_RECORDS.length * 2);
   const modules = await chronicleModules();
   const names = modules.map((url) => url.pathname.slice(url.pathname.lastIndexOf("/shared/chronicles/") + "/shared/chronicles/".length));
-  for (const required of ["content.ts", "types.ts", "archive/relief.ts"]) assert.ok(names.includes(required), `the scan reaches ${required}`);
+  for (const required of ["content.ts", "types.ts", "status.ts", "registry.ts", "scene-state.ts", "scene-state.fixture.ts", "archive/relief.ts"]) {
+    assert.ok(names.includes(required), `the scan reaches ${required}`);
+  }
+  const scanned = new Set<string>();
   for (const [index, url] of modules.entries()) {
     for (const text of exportedStrings(await import(url.href))) {
+      scanned.add(text);
       const entry = findGuardedPhrase(text, GUARDED_PHRASES);
       assert.equal(entry, -1, `guarded phrase #${entry} found in ${names[index]}: ${JSON.stringify(text.slice(0, 60))}`);
     }
   }
+  // Both platforms render registry entries and markers, so the scan must reach every one of them.
+  for (const entry of CHRONICLE_REGISTRY.all) assert.ok(scanned.has(entry.title) && scanned.has(entry.body), `the scan reaches entry ${entry.id}`);
+  for (const marker of Object.values(CANON_MARKERS)) assert.ok(scanned.has(marker.text), `the scan reaches the ${marker.text} marker`);
 });
 
 test("the guarded-phrase scanner detects a known phrase however it is written", () => {

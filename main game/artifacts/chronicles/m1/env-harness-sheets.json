@@ -1,0 +1,643 @@
+{
+  "generated": "2026-10-29T19:36:48.123Z",
+  "renderer": "Chromium headless with SwiftShader (software WebGL), 4 CPUs shared with other workflows: images show content and composition, not GPU timing or headset results",
+  "host": {
+    "cpus": 4,
+    "loadAverage": [
+      12.8,
+      13.2,
+      13.5
+    ]
+  },
+  "page": "main game/src/chronicles/scene/harness.html (development only, absent from main game/dist)",
+  "captures": [
+    {
+      "file": "env-materials-sheet-medium.png",
+      "query": "sheet=materials&quality=medium",
+      "sheet": "materials",
+      "quality": "medium",
+      "tessellation": "medium",
+      "seconds": 12,
+      "cells": [
+        {
+          "id": "desktop:limestone",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:limestone-dressed",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:limestone-carved",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:floor-stone",
+          "triangles": 44,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:basalt",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:bronze",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:bronze ring band",
+          "triangles": 6784,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:tracery screen",
+          "triangles": 908,
+          "drawCalls": 2
+        },
+        {
+          "id": "desktop:lamp stand",
+          "triangles": 2064,
+          "drawCalls": 2
+        },
+        {
+          "id": "desktop:plinth",
+          "triangles": 476,
+          "drawCalls": 4
+        },
+        {
+          "id": "quest:limestone",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:limestone-dressed",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:limestone-carved",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:floor-stone",
+          "triangles": 44,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:basalt",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:bronze",
+          "triangles": 584,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:bronze ring band",
+          "triangles": 6784,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:tracery screen",
+          "triangles": 908,
+          "drawCalls": 2
+        },
+        {
+          "id": "quest:lamp stand",
+          "triangles": 2064,
+          "drawCalls": 2
+        },
+        {
+          "id": "quest:plinth",
+          "triangles": 476,
+          "drawCalls": 4
+        }
+      ],
+      "textures": {
+        "count": 19,
+        "bytes": 102061397.3333333,
+        "questCount": 7,
+        "questBytes": 9786709.333333332
+      },
+      "programs": 6,
+      "errors": []
+    },
+    {
+      "file": "env-materials-sheet-low.png",
+      "query": "sheet=materials&quality=low",
+      "sheet": "materials",
+      "quality": "low",
+      "tessellation": "low",
+      "seconds": 12,
+      "cells": [
+        {
+          "id": "desktop:limestone",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:limestone-dressed",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:limestone-carved",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:floor-stone",
+          "triangles": 44,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:basalt",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:bronze",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:bronze ring band",
+          "triangles": 3760,
+          "drawCalls": 1
+        },
+        {
+          "id": "desktop:tracery screen",
+          "triangles": 812,
+          "drawCalls": 2
+        },
+        {
+          "id": "desktop:lamp stand",
+          "triangles": 780,
+          "drawCalls": 2
+        },
+        {
+          "id": "desktop:plinth",
+          "triangles": 428,
+          "drawCalls": 4
+        },
+        {
+          "id": "quest:limestone",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:limestone-dressed",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:limestone-carved",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:floor-stone",
+          "triangles": 44,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:basalt",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:bronze",
+          "triangles": 272,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:bronze ring band",
+          "triangles": 3760,
+          "drawCalls": 1
+        },
+        {
+          "id": "quest:tracery screen",
+          "triangles": 812,
+          "drawCalls": 2
+        },
+        {
+          "id": "quest:lamp stand",
+          "triangles": 780,
+          "drawCalls": 2
+        },
+        {
+          "id": "quest:plinth",
+          "triangles": 428,
+          "drawCalls": 4
+        }
+      ],
+      "textures": {
+        "count": 19,
+        "bytes": 26563925.333333325,
+        "questCount": 7,
+        "questBytes": 3495253.3333333335
+      },
+      "programs": 6,
+      "errors": []
+    },
+    {
+      "file": "env-form-arcade-front-wire.png",
+      "query": "sheet=form&id=arcade&az=180&el=0&wire=1",
+      "sheet": "form",
+      "quality": "medium",
+      "tessellation": "medium",
+      "seconds": 2,
+      "cells": [
+        {
+          "id": "arcade",
+          "triangles": 2604,
+          "drawCalls": 6
+        }
+      ],
+      "textures": null,
+      "programs": 2,
+      "errors": []
+    },
+    {
+      "file": "env-form-arcade-oblique.png",
+      "query": "sheet=form&id=arcade&az=120&el=0",
+      "sheet": "form",
+      "quality": "medium",
+      "tessellation": "medium",
+      "seconds": 2,
+      "cells": [
+        {
+          "id": "arcade",
+          "triangles": 2604,
+          "drawCalls": 3
+        }
+      ],
+      "textures": null,
+      "programs": 1,
+      "errors": []
+    },
+    {
+      "file": "env-form-pier-chamber-face.png",
+      "query": "sheet=form&id=piers&az=180&el=5&ty=3&dist=14",
+      "sheet": "form",
+      "quality": "medium",
+      "tessellation": "medium",
+      "seconds": 1,
+      "cells": [
+        {
+          "id": "piers",
+          "triangles": 1348,
+          "drawCalls": 2
+        }
+      ],
+      "textures": null,
+      "programs": 1,
+      "errors": []
+    },
+    {
+      "file": "env-form-string-course.png",
+      "query": "sheet=form&id=string-course",
+      "sheet": "form",
+      "quality": "medium",
+      "tessellation": "medium",
+      "seconds": 1,
+      "cells": [
+        {
+          "id": "string-course",
+          "triangles": 896,
+          "drawCalls": 1
+        }
+      ],
+      "textures": null,
+      "programs": 1,
+      "errors": []
+    },
+    {
+      "file": "env-form-cornice.png",
+      "query": "sheet=form&id=cornice",
+      "sheet": "form",
+      "quality": "medium",
+      "tessellation": "medium",
+      "seconds": 1,
+      "cells": [
+        {
+          "id": "cornice",
+          "triangles": 1856,
+          "drawCalls": 1
+        }
+      ],
+      "textures": null,
+      "programs": 1,
+      "errors": []
+    },
+    {
+      "file": "env-kernel-sheet-medium.png",
+      "query": "sheet=kernel&quality=medium",
+      "sheet": "kernel",
+      "quality": "medium",
+      "tessellation": "medium",
+      "seconds": 3,
+      "cells": [
+        {
+          "id": "piers",
+          "triangles": 1348,
+          "drawCalls": 2
+        },
+        {
+          "id": "piers-niche",
+          "triangles": 1776,
+          "drawCalls": 3
+        },
+        {
+          "id": "arcade",
+          "triangles": 2604,
+          "drawCalls": 3
+        },
+        {
+          "id": "gallery",
+          "triangles": 526,
+          "drawCalls": 4
+        },
+        {
+          "id": "baluster",
+          "triangles": 444,
+          "drawCalls": 1
+        },
+        {
+          "id": "string-course",
+          "triangles": 896,
+          "drawCalls": 1
+        },
+        {
+          "id": "cornice",
+          "triangles": 1856,
+          "drawCalls": 1
+        },
+        {
+          "id": "vault-shell",
+          "triangles": 15136,
+          "drawCalls": 4
+        },
+        {
+          "id": "vault-ribs",
+          "triangles": 4928,
+          "drawCalls": 1
+        },
+        {
+          "id": "oculus-ring",
+          "triangles": 896,
+          "drawCalls": 2
+        },
+        {
+          "id": "oculus-tracery",
+          "triangles": 908,
+          "drawCalls": 2
+        },
+        {
+          "id": "floor",
+          "triangles": 3922,
+          "drawCalls": 1
+        },
+        {
+          "id": "bay-interregnum",
+          "triangles": 6082,
+          "drawCalls": 3
+        },
+        {
+          "id": "bay-laws",
+          "triangles": 4836,
+          "drawCalls": 4
+        },
+        {
+          "id": "bay-contested",
+          "triangles": 4594,
+          "drawCalls": 3
+        },
+        {
+          "id": "vestibule",
+          "triangles": 5324,
+          "drawCalls": 5
+        },
+        {
+          "id": "recess-2",
+          "triangles": 1992,
+          "drawCalls": 4
+        },
+        {
+          "id": "lamp-stand",
+          "triangles": 2064,
+          "drawCalls": 2
+        },
+        {
+          "id": "sconce",
+          "triangles": 348,
+          "drawCalls": 2
+        },
+        {
+          "id": "annals-dial",
+          "triangles": 5244,
+          "drawCalls": 2
+        },
+        {
+          "id": "ring-band (detail)",
+          "triangles": 6784,
+          "drawCalls": 1
+        },
+        {
+          "id": "laws-dais",
+          "triangles": 926,
+          "drawCalls": 3
+        },
+        {
+          "id": "contested-stele",
+          "triangles": 158,
+          "drawCalls": 2
+        },
+        {
+          "id": "plinth (desktop)",
+          "triangles": 476,
+          "drawCalls": 4
+        }
+      ],
+      "textures": null,
+      "programs": 2,
+      "errors": []
+    },
+    {
+      "file": "env-kernel-sheet-medium-quest-tessellation.png",
+      "query": "sheet=kernel&quality=medium&tess=quest",
+      "sheet": "kernel",
+      "quality": "medium",
+      "tessellation": "quest",
+      "seconds": 3,
+      "cells": [
+        {
+          "id": "piers",
+          "triangles": 618,
+          "drawCalls": 2
+        },
+        {
+          "id": "piers-niche",
+          "triangles": 914,
+          "drawCalls": 3
+        },
+        {
+          "id": "arcade",
+          "triangles": 820,
+          "drawCalls": 3
+        },
+        {
+          "id": "gallery",
+          "triangles": 568,
+          "drawCalls": 4
+        },
+        {
+          "id": "baluster",
+          "triangles": 264,
+          "drawCalls": 1
+        },
+        {
+          "id": "string-course",
+          "triangles": 512,
+          "drawCalls": 1
+        },
+        {
+          "id": "cornice",
+          "triangles": 1216,
+          "drawCalls": 1
+        },
+        {
+          "id": "vault-shell",
+          "triangles": 5728,
+          "drawCalls": 4
+        },
+        {
+          "id": "vault-ribs",
+          "triangles": 1440,
+          "drawCalls": 1
+        },
+        {
+          "id": "oculus-ring",
+          "triangles": 512,
+          "drawCalls": 2
+        },
+        {
+          "id": "oculus-tracery",
+          "triangles": 800,
+          "drawCalls": 2
+        },
+        {
+          "id": "floor",
+          "triangles": 1124,
+          "drawCalls": 1
+        },
+        {
+          "id": "bay-interregnum",
+          "triangles": 1862,
+          "drawCalls": 3
+        },
+        {
+          "id": "bay-laws",
+          "triangles": 1504,
+          "drawCalls": 4
+        },
+        {
+          "id": "bay-contested",
+          "triangles": 1430,
+          "drawCalls": 3
+        },
+        {
+          "id": "vestibule",
+          "triangles": 1996,
+          "drawCalls": 5
+        },
+        {
+          "id": "recess-2",
+          "triangles": 726,
+          "drawCalls": 4
+        },
+        {
+          "id": "lamp-stand",
+          "triangles": 700,
+          "drawCalls": 2
+        },
+        {
+          "id": "sconce",
+          "triangles": 192,
+          "drawCalls": 2
+        },
+        {
+          "id": "annals-dial",
+          "triangles": 4136,
+          "drawCalls": 2
+        },
+        {
+          "id": "ring-band (detail)",
+          "triangles": 2880,
+          "drawCalls": 1
+        },
+        {
+          "id": "laws-dais",
+          "triangles": 926,
+          "drawCalls": 3
+        },
+        {
+          "id": "contested-stele",
+          "triangles": 158,
+          "drawCalls": 2
+        },
+        {
+          "id": "plinth (desktop)",
+          "triangles": 428,
+          "drawCalls": 4
+        }
+      ],
+      "textures": null,
+      "programs": 2,
+      "errors": []
+    },
+    {
+      "file": "env-form-vault-shell-below.png",
+      "query": "sheet=form&id=vault-shell&az=20&el=-70&fit=0.75",
+      "sheet": "form",
+      "quality": "medium",
+      "tessellation": "medium",
+      "seconds": 2,
+      "cells": [
+        {
+          "id": "vault-shell",
+          "triangles": 15136,
+          "drawCalls": 4
+        }
+      ],
+      "textures": null,
+      "programs": 1,
+      "errors": []
+    },
+    {
+      "file": "env-form-vault-shell-oblique.png",
+      "query": "sheet=form&id=vault-shell&az=20&el=-25&fit=0.6",
+      "sheet": "form",
+      "quality": "medium",
+      "tessellation": "medium",
+      "seconds": 2,
+      "cells": [
+        {
+          "id": "vault-shell",
+          "triangles": 15136,
+          "drawCalls": 4
+        }
+      ],
+      "textures": null,
+      "programs": 1,
+      "errors": []
+    }
+  ]
+}

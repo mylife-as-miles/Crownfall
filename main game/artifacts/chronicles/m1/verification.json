@@ -1,0 +1,1281 @@
+{
+  "milestone": "m1",
+  "passed": false,
+  "scope": "Desktop Chronicles on a production build: entry and loading, navigation by mouse, keyboard and a mocked standard controller, Back, the parity fixture replayed through the UI, motion and reduced motion, the flat fallback (WebGL disabled), layouts at 1280×720, 1920×1080 and 844×390, CDP measurements (long tasks with attribution, script time per frame, heap and canvases over round trips, the atmosphere rebuild, stage cost per preset) and one 4× CPU-throttled run.",
+  "emulation": "Headless Chromium with SwiftShader software WebGL; controller input is a mocked standard Gamepad API device. Nothing here is GPU, desktop-hardware or headset evidence.",
+  "checks": [
+    "Home → Chronicles shows the loading state named by the approved title from the click, then the stage (ready in 6796 ms at medium on this host): a full-stage layer with the main navigation hidden and inert, the approved collection tabs only (no Contested Record) and one hidden button per nation",
+    "Mouse: clicking each nation's marker on the stage opens exactly that nation's entry (title, body, label name and meaning) with its focus; Back closes the entry and keeps the nation, and Back again returns to the overview",
+    "Clicks on bare ground, the painted map's centre included, change nothing",
+    "Mouse: a drag orbits the view within its limits and the wheel zooms; neither opens an entry",
+    "Pointer: moving onto a marker highlights and focuses its nation without changing the scene; a resting pointer never takes focus back from the keyboard",
+    "Keyboard on the Atlas: arrows move the highlight spatially over the overview, browse to the neighbour's entry while one is open and carry the focus while a nation is focused; Enter opens, Escape unwinds, Home/End reach the ends, Shift+arrows orbit and plus/minus zoom, with a visible focus caption",
+    "Collections switch by keyboard on the tabs (arrows, Home/End), by Q/E, by mocked LB/RB, by clicking the tabs and by clicking the LB/RB glyphs; Q/E and LB/RB cycle inside Chronicles and never reach the menu tabs",
+    "The Interregnum and the Laws show every approved entry verbatim with its label over their framing; mouse and keyboard open them, arrows browse while one is open, Home/End reach the ends and Back closes the entry",
+    "Behind the Interregnum and the Laws the relief settles, then rests receded on its last frame and issues no draw calls; no filter is applied to the stage",
+    "Mocked standard controller: the D-pad and left stick move between nations and stops, A opens, B unwinds, the right stick orbits and the right trigger zooms the view, LB/RB cycle the collections",
+    "Back (Escape, Backspace, B and the Back button) closes the entry, then the nation focus, then returns Home with the Chronicles tile selected and focused",
+    "The shared parity fixture's 25 steps replay through the screen's own inputs (marker and ground clicks, arrows, Enter, Q/E, LB/RB, tab clicks, Escape, Backspace, B and the Back button) and every resulting state matches; the last Back returns Home",
+    "At 1920×1080, 1280×720 and 844×390 the Atlas, an open record, the Interregnum and the Laws fit without page overflow, clipped text, scrolling or overlapping panels, between the header and the footer, with Back reachable; hero frames at 1920×1080 (PNG)",
+    "One render loop at a time with the real sorcerer: on Home the sorcerer drew 40 and the motes 40 calls in 40 frames; with Chronicles open only the stage drew and the menu's stage layers stopped compositing; on exit both menu loops resumed (first mote frame 6569 ms after Back)",
+    "After interactive at medium: 0 long task(s) over 50 ms in a 15329 ms traced window, none attributable to Chronicles (none); script per frame p50/p95/p99 1.89/3.93/3.93 ms",
+    "Five Home ↔ Chronicles round trips: canvases back to 2 (stage 0); heap after GC 6.43 → 8.46 MB (2.03 MB; 0.68 MB since the first visit)",
+    "Stage cost per preset (renderer.info) within budget at the overview and every nation framing: low overview 15 calls/57812 tris, heaviest overview 15/57812; medium overview 17 calls/226738 tris, heaviest overview 17/226738; high overview 17 calls/306474 tris, heaviest overview 17/306474",
+    "Under 4× CPU throttling the screen appeared 117 ms after the click, the stage was ready after 18814 ms, and the collection switch took 102 ms; long tasks after interactive: []",
+    "No JavaScript or console errors in any phase"
+  ],
+  "failures": [
+    {
+      "phase": "motion: loading animation, entrance settle and flights",
+      "failure": "AssertionError [ERR_ASSERTION]: [\"chronicles-turn\",\"chronicles-turn\"]\n    at file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:753:12\n    at async phase (file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:329:5)\n    at async file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:717:1"
+    },
+    {
+      "phase": "flat fallback (WebGL disabled)",
+      "failure": "locator.click: Timeout 180000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.chronicles-item').first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" tabindex=\"-1\" data-record=\"year-0\" aria-pressed=\"false\" aria-expanded=\"false\" aria-label=\"Year 0 — The Crownfall\" class=\"chronicles-item chronicles-item--interregnum\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    320 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m        - element is not visible\u001b[22m\n\u001b[2m      - retrying click action\u001b[22m\n\u001b[2m        - waiting 500ms\u001b[22m\n\n    at /home/user/crownfall-chronicles/main game/scripts/verify-chronicles.mjs:801:51\n    at async phase (/home/user/crownfall-chronicles/main game/scripts/verify-chronicles.mjs:329:5)\n    at async file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:769:1"
+    }
+  ],
+  "metrics": {
+    "host": {
+      "cpus": 4,
+      "rendering": "SwiftShader (software WebGL) in headless Chromium: absolute timings are not GPU, desktop-hardware or headset evidence",
+      "loadAverageAtStart": [
+        15.5,
+        17.5,
+        18.9
+      ],
+      "note": "Two other workflows share this host. Times are reported for comparison within this run only.",
+      "loadAverageAtEnd": [
+        27.9,
+        25.2,
+        22.9
+      ]
+    },
+    "stage": "The relief renderer (scene/AtlasScene) behind the stage adapter: the archive renderer (scene/ArchiveScene, task B4) has not landed, so archive-specific framings and stats are not measured here.",
+    "entry": {
+      "quality": "medium",
+      "readyMs": 6796
+    },
+    "phases": {
+      "entry, navigation and Back (medium, reduced motion)": {
+        "seconds": 201,
+        "passed": true
+      },
+      "parity fixture replayed through the UI": {
+        "seconds": 57,
+        "passed": true
+      },
+      "motion: loading animation, entrance settle and flights": {
+        "seconds": 121,
+        "passed": false
+      },
+      "flat fallback (WebGL disabled)": {
+        "seconds": 198,
+        "passed": false
+      },
+      "layouts and hero frames": {
+        "seconds": 168,
+        "passed": true
+      },
+      "performance (medium): loops, long tasks, frame script time, round trips, atmosphere rebuild": {
+        "seconds": 1101,
+        "passed": true
+      },
+      "stage cost per preset": {
+        "seconds": 173,
+        "passed": true
+      },
+      "4x CPU throttle: entry and one collection switch": {
+        "seconds": 35,
+        "passed": true
+      },
+      "no page errors": {
+        "seconds": 0,
+        "passed": true
+      }
+    },
+    "entrance": {
+      "quality": "medium",
+      "readyToSettledMs": 259,
+      "note": "The relief renderer's entrance flight is 2.2 s by design; the archive renderer's blueprint settle is at most 1.5 s (task B4)."
+    },
+    "afterInteractive": {
+      "quality": "medium",
+      "windowMs": 15329,
+      "frames": 7,
+      "scriptPerFrameMs": {
+        "p50": 1.89,
+        "p95": 3.93,
+        "p99": 3.93
+      },
+      "longTasksObservedByPage": [],
+      "longTasks": [],
+      "chroniclesAttributableOver50ms": [],
+      "sourceMaps": true
+    },
+    "roundTrips": {
+      "count": 5,
+      "baseline": {
+        "heapMB": 6.43,
+        "canvases": {
+          "total": 2,
+          "stage": 0
+        }
+      },
+      "afterFirstVisit": {
+        "heapMB": 7.78,
+        "canvases": {
+          "total": 2,
+          "stage": 0
+        }
+      },
+      "afterFive": {
+        "heapMB": 8.46,
+        "canvases": {
+          "total": 2,
+          "stage": 0
+        }
+      },
+      "heapGrowthMB": 2.03,
+      "heapGrowthSinceFirstVisitMB": 0.68,
+      "note": "The relief renderer keeps the last built relief mesh (typed arrays) for the session by design; the growth since the first visit isolates leaks."
+    },
+    "atmosphereRebuildOnExit": {
+      "quality": "medium",
+      "exitToFirstMoteDrawMs": 6569,
+      "longTasks": [
+        {
+          "durationMs": 6233.9,
+          "groupsMs": {
+            "gpu-wait": 3916.2,
+            "script": 2308.6,
+            "other": 7.7,
+            "untraced": 0.9,
+            "style": 0.4,
+            "layout": 0.1,
+            "composite": 0.1
+          },
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "react-dom": 100,
+            "three": 99.7,
+            "src/Chronicles.tsx": 99.4,
+            "src/chronicles/stage.ts": 99.4,
+            "src/chronicles/scene/AtlasScene.ts": 99.4,
+            "(native loseContext)": 99.3,
+            "src/Atmosphere.tsx": 0.4,
+            "(native getContext)": 0.2,
+            "src/MenuTransition.tsx": 0.1,
+            "(native removeChild)": 0,
+            "(native getExtension)": 0
+          }
+        },
+        {
+          "durationMs": 65.6,
+          "groupsMs": {
+            "script": 65.5,
+            "other": 0.1,
+            "untraced": 0
+          },
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "(native (program))": 50,
+            "(native cancel)": 50,
+            "src/MenuTransition.tsx": 50
+          }
+        },
+        {
+          "durationMs": 182.3,
+          "groupsMs": {
+            "gc": 182.2,
+            "untraced": 0.1,
+            "other": 0
+          },
+          "scriptInclusiveByFilePercent": {
+            "(native (program))": 100,
+            "(native (root))": 100
+          }
+        }
+      ],
+      "note": "D7 keeps App.tsx's overrides: the atmosphere drops to low while Chronicles is open and is rebuilt on exit; the sorcerer pauses through reduced motion."
+    },
+    "loops": {
+      "home": {
+        "creature": 40,
+        "motes": 40
+      },
+      "chroniclesOpen": {
+        "creature": 0,
+        "motes": 0,
+        "stage": 760
+      },
+      "afterExit": {
+        "creature": 40,
+        "motes": 40
+      },
+      "windowFrames": 40
+    },
+    "presets": {
+      "low": {
+        "budget": {
+          "drawCalls": 120,
+          "triangles": 300000
+        },
+        "overview": {
+          "framing": "overview",
+          "drawCalls": 15,
+          "triangles": 57812,
+          "issuedForTwoRedraws": {
+            "drawCalls": 30,
+            "triangles": 115624
+          }
+        },
+        "heaviest": {
+          "framing": "overview",
+          "drawCalls": 15,
+          "triangles": 57812,
+          "issuedForTwoRedraws": {
+            "drawCalls": 30,
+            "triangles": 115624
+          }
+        },
+        "framings": [
+          {
+            "framing": "overview",
+            "drawCalls": 15,
+            "triangles": 57812,
+            "issuedForTwoRedraws": {
+              "drawCalls": 30,
+              "triangles": 115624
+            }
+          },
+          {
+            "framing": "nation:korvenia with its entry open",
+            "drawCalls": 9,
+            "triangles": 57782
+          },
+          {
+            "framing": "nation:solforiz with its entry open",
+            "drawCalls": 10,
+            "triangles": 57784
+          },
+          {
+            "framing": "nation:aethelgard with its entry open",
+            "drawCalls": 9,
+            "triangles": 57782
+          },
+          {
+            "framing": "nation:kwind-09 with its entry open",
+            "drawCalls": 13,
+            "triangles": 57796
+          }
+        ]
+      },
+      "medium": {
+        "budget": {
+          "drawCalls": 250,
+          "triangles": 1000000
+        },
+        "overview": {
+          "framing": "overview",
+          "drawCalls": 17,
+          "triangles": 226738,
+          "issuedForTwoRedraws": {
+            "drawCalls": 34,
+            "triangles": 453476
+          }
+        },
+        "heaviest": {
+          "framing": "overview",
+          "drawCalls": 17,
+          "triangles": 226738,
+          "issuedForTwoRedraws": {
+            "drawCalls": 34,
+            "triangles": 453476
+          }
+        },
+        "framings": [
+          {
+            "framing": "overview",
+            "drawCalls": 17,
+            "triangles": 226738,
+            "issuedForTwoRedraws": {
+              "drawCalls": 34,
+              "triangles": 453476
+            }
+          },
+          {
+            "framing": "nation:korvenia with its entry open",
+            "drawCalls": 11,
+            "triangles": 226708
+          },
+          {
+            "framing": "nation:solforiz with its entry open",
+            "drawCalls": 12,
+            "triangles": 226710
+          },
+          {
+            "framing": "nation:aethelgard with its entry open",
+            "drawCalls": 11,
+            "triangles": 226708
+          },
+          {
+            "framing": "nation:kwind-09 with its entry open",
+            "drawCalls": 15,
+            "triangles": 226722
+          }
+        ]
+      },
+      "high": {
+        "budget": {
+          "drawCalls": 400,
+          "triangles": 1500000
+        },
+        "overview": {
+          "framing": "overview",
+          "drawCalls": 17,
+          "triangles": 306474,
+          "issuedForTwoRedraws": {
+            "drawCalls": 34,
+            "triangles": 612948
+          }
+        },
+        "heaviest": {
+          "framing": "overview",
+          "drawCalls": 17,
+          "triangles": 306474,
+          "issuedForTwoRedraws": {
+            "drawCalls": 34,
+            "triangles": 612948
+          }
+        },
+        "framings": [
+          {
+            "framing": "overview",
+            "drawCalls": 17,
+            "triangles": 306474,
+            "issuedForTwoRedraws": {
+              "drawCalls": 34,
+              "triangles": 612948
+            }
+          },
+          {
+            "framing": "nation:korvenia with its entry open",
+            "drawCalls": 11,
+            "triangles": 306444
+          },
+          {
+            "framing": "nation:solforiz with its entry open",
+            "drawCalls": 12,
+            "triangles": 306446
+          },
+          {
+            "framing": "nation:aethelgard with its entry open",
+            "drawCalls": 11,
+            "triangles": 306444
+          },
+          {
+            "framing": "nation:kwind-09 with its entry open",
+            "drawCalls": 15,
+            "triangles": 306458
+          }
+        ]
+      }
+    },
+    "throttled": {
+      "rate": 4,
+      "quality": "medium",
+      "clickToScreenMs": 117,
+      "clickToReadyMs": 18814,
+      "readyToSettledMs": 53,
+      "collectionSwitchMs": 102,
+      "longTasksDuringLoadingMs": [
+        75,
+        16205,
+        164,
+        300,
+        63,
+        73,
+        55,
+        184,
+        56
+      ],
+      "longTasksAfterInteractiveMs": [],
+      "note": "Loading-phase tasks are the stage build behind the visible loading state; the 50 ms rule applies once the screen is interactive."
+    }
+  },
+  "layouts": [
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "name": "atlas 1920x1080",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "name": "record 1920x1080",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "name": "interregnum 1920x1080",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "name": "laws 1920x1080",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "name": "atlas 1280x720",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "name": "record 1280x720",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "name": "interregnum 1280x720",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "name": "laws 1280x720",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "name": "atlas 844x390",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "name": "record 844x390",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "name": "interregnum 844x390",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "name": "laws 844x390",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "overlapping": false,
+      "recordFits": true,
+      "backReachable": true,
+      "tabsFit": true
+    }
+  ],
+  "captures": [
+    {
+      "path": "artifacts/chronicles/m1/loading-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/overview-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/record-korvenia-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:korvenia",
+        "entryId": "korvenia",
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/focus-korvenia-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:korvenia",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/hover-aethelgard-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/focus-keyboard-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/interregnum-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/interregnum-year-19-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": "year-19",
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/laws-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "laws",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/laws-entry-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "laws",
+        "focus": "overview",
+        "entryId": "law-of-the-pawn",
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/focus-tabs-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "laws",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/loading-motion-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/flat-record-korvenia-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:korvenia",
+        "entryId": "korvenia",
+        "load": "flat"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/flat-atlas-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "flat"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/flat-interregnum-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": "year-33",
+        "load": "flat"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/hero-first-impression-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/hero-nation-korvenia-1920x1080.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:korvenia",
+        "entryId": "korvenia",
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/overview-844x390.jpg",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/record-korvenia-844x390.jpg",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:korvenia",
+        "entryId": "korvenia",
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/interregnum-year-33-844x390.jpg",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": "year-33",
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/laws-entry-844x390.jpg",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": {
+        "collection": "laws",
+        "focus": "overview",
+        "entryId": "why-representatives",
+        "load": "ready"
+      }
+    }
+  ],
+  "replay": [
+    {
+      "step": 1,
+      "note": "the archive reports ready",
+      "event": {
+        "type": "loaded",
+        "result": "ready"
+      },
+      "how": "the stage reports ready",
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 2,
+      "note": "a repeated ready report changes nothing",
+      "event": {
+        "type": "loaded",
+        "result": "ready"
+      },
+      "how": "no UI path: verified unchanged",
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 3,
+      "note": "the map centre selects nothing",
+      "event": {
+        "type": "map",
+        "x": 0.5,
+        "y": 0.5
+      },
+      "how": "click bare ground at 0.5, 0.5",
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 4,
+      "note": "bare ground selects nothing",
+      "event": {
+        "type": "map",
+        "x": 0.45,
+        "y": 0.4
+      },
+      "how": "click bare ground at 0.45, 0.4",
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 5,
+      "note": "a hotspot opens its nation and the nation's entry",
+      "event": {
+        "type": "map",
+        "x": 0.15,
+        "y": 0.17
+      },
+      "how": "click korvenia's marker",
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:korvenia",
+        "entryId": "korvenia",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 6,
+      "note": "the same hotspot again changes nothing",
+      "event": {
+        "type": "map",
+        "x": 0.15,
+        "y": 0.17
+      },
+      "how": "click korvenia's marker",
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:korvenia",
+        "entryId": "korvenia",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 7,
+      "note": "another collection's entry is refused",
+      "event": {
+        "type": "entry",
+        "id": "year-19"
+      },
+      "how": "no UI path: verified unchanged",
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:korvenia",
+        "entryId": "korvenia",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 8,
+      "note": "Back closes the entry and keeps the nation",
+      "event": {
+        "type": "back"
+      },
+      "how": "Escape",
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:korvenia",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 9,
+      "note": "a nation focus",
+      "event": {
+        "type": "focus",
+        "focus": {
+          "kind": "nation",
+          "nation": "solforiz"
+        }
+      },
+      "how": "arrows down, right while a nation is focused",
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:solforiz",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 10,
+      "note": "then that nation's entry",
+      "event": {
+        "type": "entry",
+        "id": "solforiz"
+      },
+      "how": "Enter on the focused nation",
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:solforiz",
+        "entryId": "solforiz",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 11,
+      "note": "another nation's entry brings its own focus",
+      "event": {
+        "type": "entry",
+        "id": "aethelgard"
+      },
+      "how": "arrows up while an entry is open",
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:aethelgard",
+        "entryId": "aethelgard",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 12,
+      "note": "a collection switch clears the entry and the focus",
+      "event": {
+        "type": "collection",
+        "collection": "interregnum"
+      },
+      "how": "E",
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 13,
+      "note": "the map answers only in the Atlas",
+      "event": {
+        "type": "map",
+        "x": 0.16,
+        "y": 0.62
+      },
+      "how": "click on the stage behind the collection (the stage takes no pointer outside the Atlas)",
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 14,
+      "note": "a nation focus belongs to the Atlas",
+      "event": {
+        "type": "focus",
+        "focus": {
+          "kind": "nation",
+          "nation": "kwind-09"
+        }
+      },
+      "how": "arrows in interregnum move only its highlight",
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 15,
+      "note": "an entry of the shown collection opens",
+      "event": {
+        "type": "entry",
+        "id": "year-19"
+      },
+      "how": "click the year-19 item",
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": "year-19",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 16,
+      "note": "an Atlas entry is refused outside the Atlas",
+      "event": {
+        "type": "entry",
+        "id": "korvenia"
+      },
+      "how": "no UI path: verified unchanged",
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": "year-19",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 17,
+      "note": "the Contested Record is refused while it has no visible entries",
+      "event": {
+        "type": "collection",
+        "collection": "contested"
+      },
+      "how": "no UI path: verified unchanged",
+      "state": {
+        "collection": "interregnum",
+        "focus": "overview",
+        "entryId": "year-19",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 18,
+      "note": "the Laws",
+      "event": {
+        "type": "collection",
+        "collection": "laws"
+      },
+      "how": "RB",
+      "state": {
+        "collection": "laws",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 19,
+      "note": "an article opens",
+      "event": {
+        "type": "entry",
+        "id": "law-of-the-pawn"
+      },
+      "how": "click the law-of-the-pawn item",
+      "state": {
+        "collection": "laws",
+        "focus": "overview",
+        "entryId": "law-of-the-pawn",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 20,
+      "note": "Back closes the article",
+      "event": {
+        "type": "back"
+      },
+      "how": "Backspace",
+      "state": {
+        "collection": "laws",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 21,
+      "note": "back to the Atlas overview",
+      "event": {
+        "type": "collection",
+        "collection": "atlas"
+      },
+      "how": "click the tab",
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 22,
+      "note": "a second hotspot opens its nation",
+      "event": {
+        "type": "map",
+        "x": 0.16,
+        "y": 0.62
+      },
+      "how": "click kwind-09's marker",
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:kwind-09",
+        "entryId": "kwind-09",
+        "load": "ready"
+      }
+    },
+    {
+      "step": 23,
+      "note": "Back closes the entry",
+      "event": {
+        "type": "back"
+      },
+      "how": "B",
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:kwind-09",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 24,
+      "note": "Back returns to the overview",
+      "event": {
+        "type": "back"
+      },
+      "how": "the Back button",
+      "state": {
+        "collection": "atlas",
+        "focus": "overview",
+        "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "step": 25,
+      "note": "Back with nothing to close changes nothing, so the platform returns Home",
+      "event": {
+        "type": "back"
+      },
+      "how": "Escape",
+      "result": "returned Home with the Chronicles tile selected and focused"
+    }
+  ],
+  "visibleText": [
+    "A",
+    "A duchy of masks and bells beneath a violet eclipse. Its ruler is the Veiled Archduke, a title passed by inheritance. True names are guarded; ward-bells ring against what the eclipse lets in. Its court speaks High Korvenic; its streets, Vesper-Cant. Its Gambit is called Le Jeu des Rois Morts, the Game of Dead Kings.",
+    "A nation's sixteen are drawn from its banners. Great houses send their champions; minor houses send their levies, and levies stand in the front rank.",
+    "A pawn may become anything but a king.",
+    "A sulfur desert where an inland sea once boiled. Its Ignition Imams keep the faith and the engines alike. Its navigators see four seconds ahead; anything further is Mirage. Its tongue is Kharzani. Its Gambit is the Qimar al-Malik.",
+    "A vertical city governed by the Board. Wealth lives Cloud-side; labor lives Sump-side, where workers are entries in a ledger. The \"09\" is Foundry Sector 09, now sealed behind Aether fog. Its people speak Kwind-Pidgin. Its Gambit runs as Protocol K-GAMBIT.09.",
+    "Accepted by all four nations",
+    "Aethelgard",
+    "Aethelgard — The Blood-Throne",
+    "An uneasy armistice signed at Vane, a spire on the borders where the four powers meet.",
+    "B",
+    "Back",
+    "Chronicles",
+    "Korvenia",
+    "Korvenia — The Grand Duchy",
+    "Kwind-09",
+    "Kwind-09 — The Kwind Zaibatsu",
+    "LB",
+    "Menu controls",
+    "Now",
+    "Painted map of Korvenia, Aethelgard, Kwind-09 and Solforiz",
+    "RB",
+    "Recorded",
+    "Select",
+    "Seven Great Houses share a Blood-Throne, and their riders are bound to the First-Born, beasts as old as the mountains. Its people speak Old Aethel; its riders command in High Drakonic. Its Gambit is the Cyning-Slieht.",
+    "Solforiz",
+    "Solforiz — The Scorched Caliphate",
+    "The Atlas",
+    "The Concord of Cinders",
+    "The Crownfall",
+    "The High Sovereign's Sovereign Crown, an astral engine, tore itself apart. The calendar begins with the fall.",
+    "The Interregnum",
+    "The Laws of the Gambit",
+    "The Scavenger Wars",
+    "The four powers fought over the Crown-Shards the blast left behind.",
+    "The law of the pawn",
+    "The muster",
+    "The shards grow unstable, the truce is failing, and a generation has grown up with no memory of the old order.",
+    "When a claim cannot be settled, nations do not march armies. Each sends sixteen living representatives to the board, and the outcome decides the claim: land, passage, custody, even sovereignty. What follows the judgment is politics.",
+    "Why representatives",
+    "Year 0",
+    "Year 0 — The Crownfall",
+    "Year 19",
+    "Year 19 — The Concord of Cinders",
+    "Year 33",
+    "Year 33 — Now",
+    "Years 1–12",
+    "Years 1–12 — The Scavenger Wars"
+  ],
+  "errors": []
+}

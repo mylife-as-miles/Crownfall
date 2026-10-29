@@ -48,12 +48,13 @@
         "height": 1529
       },
       "deliveryPath": "public/assets/chronicles/chronicles-map.webp",
-      "deliveryBytes": 615504,
-      "deliverySha256": "2b9efe0642313b548c87801a404ca8534b1e9aa61244a49ec5dbdf5a3501a735",
+      "deliveryBytes": 537628,
+      "deliverySha256": "d9f143adecda885939f753962c9cde92d55677adb20626ee00a8e13dd80c7505",
       "deliveryDimensions": {
         "width": 2048,
         "height": 1529
       },
+      "deliveryDerivation": "The optimized copy of the supplied painting (615504 bytes, sha256 2b9efe0642313b548c87801a404ca8534b1e9aa61244a49ec5dbdf5a3501a735) with its central tower and ring removed by orchestrator inpainting (creator decision, 29 October 2026; working choice), delivered at the same 2048 x 1529 size.",
       "optimization": {
         "format": "WebP",
         "quality": 90,

@@ -1,0 +1,1369 @@
+{
+  "milestone": "m1",
+  "complete": false,
+  "startedAt": "2026-10-29T20:51:26.204Z",
+  "profile": {
+    "runtime": "IWSDK 1.1.0-rc.2 managed browser with IWER Meta Quest 3 emulation",
+    "physicalHeadset": false,
+    "rendering": "SwiftShader software rendering on a shared 4-CPU host without a GPU; frame times are not headset evidence",
+    "browserInputs": "canvas clicks; the page's browser entry card is hidden during browser-preview steps because it overlays the monument, and shown again for XR entry",
+    "xrInputs": "hand ray and pinch, both controllers disconnected",
+    "room": "interim monument room: the Living Atlas diorama alone, behind the ArchiveRoom contract, until main-game-vr/src/chronicles/scene/archive-room.ts lands",
+    "hostLoadAtStart": [
+      23.66,
+      23.63,
+      22.08
+    ],
+    "hostCpus": 4
+  },
+  "captures": [
+    {
+      "filename": "01-home.png",
+      "title": "Home (browser preview)",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "state": {
+        "screen": "home",
+        "selectedControl": "Home_chronicles",
+        "posture": "seated",
+        "quality": "medium",
+        "entered": false,
+        "paused": false
+      },
+      "archiveBefore": {
+        "loadingFrames": 0,
+        "buildSeconds": 0,
+        "open": false,
+        "presented": false,
+        "visible": false,
+        "ready": false,
+        "load": "loading",
+        "collection": "atlas",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "",
+        "selection": "",
+        "panelPose": "menu",
+        "panelScale": 0,
+        "loading": false,
+        "placements": 0,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 0,
+        "textureBytes": 0
+      },
+      "archive": {
+        "loadingFrames": 0,
+        "buildSeconds": 0,
+        "open": false,
+        "presented": false,
+        "visible": false,
+        "ready": false,
+        "load": "loading",
+        "collection": "atlas",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "",
+        "selection": "",
+        "panelPose": "menu",
+        "panelScale": 0,
+        "loading": false,
+        "placements": 0,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 0,
+        "textureBytes": 0
+      },
+      "renderStats": {
+        "calls": 14,
+        "triangles": 81992,
+        "points": 98,
+        "lines": 0,
+        "geometries": 21,
+        "textures": 15,
+        "programs": 11
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "02-loading.png",
+      "title": "Chronicles a moment after the Home tile: the wordless loading bar under the tabs while the room builds",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "capturedAfterClickMs": 7796,
+      "cpuThrottleDuringFrame": 6,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Exhibit_atlas"
+      },
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "atlas",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "renderStats": {
+        "calls": 14,
+        "triangles": 50894,
+        "points": 0,
+        "lines": 0,
+        "geometries": 31,
+        "textures": 16,
+        "programs": 17
+      },
+      "metadata": {
+        "width": 780,
+        "height": 493,
+        "note": "managed window size, with the page CPU held at a 6x CDP throttle for this one frame so it lands while the room still builds; every other measurement is unthrottled"
+      }
+    },
+    {
+      "filename": "03-archive-seated.png",
+      "title": "Archive, seated (browser preview framing)",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Exhibit_atlas",
+        "posture": "seated",
+        "quality": "medium",
+        "entered": false,
+        "paused": false
+      },
+      "archiveBefore": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "atlas",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "atlas",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "renderStats": {
+        "calls": 14,
+        "triangles": 50894,
+        "points": 0,
+        "lines": 0,
+        "geometries": 31,
+        "textures": 16,
+        "programs": 17
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "04-record-korvenia.png",
+      "title": "Atlas record from its marker: korvenia",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_korvenia",
+        "posture": "seated",
+        "quality": "medium",
+        "entered": false,
+        "paused": false
+      },
+      "archiveBefore": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "korvenia",
+        "entry": "korvenia",
+        "emphasis": "atlas",
+        "selection": "korvenia",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "korvenia",
+        "entry": "korvenia",
+        "emphasis": "atlas",
+        "selection": "korvenia",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "renderStats": {
+        "calls": 16,
+        "triangles": 51770,
+        "points": 0,
+        "lines": 0,
+        "geometries": 33,
+        "textures": 17,
+        "programs": 18
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "05-record-solforiz.png",
+      "title": "Atlas record from its marker: solforiz",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_solforiz",
+        "posture": "seated",
+        "quality": "medium",
+        "entered": false,
+        "paused": false
+      },
+      "archiveBefore": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "solforiz",
+        "entry": "solforiz",
+        "emphasis": "atlas",
+        "selection": "solforiz",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "solforiz",
+        "entry": "solforiz",
+        "emphasis": "atlas",
+        "selection": "solforiz",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "renderStats": {
+        "calls": 16,
+        "triangles": 51784,
+        "points": 0,
+        "lines": 0,
+        "geometries": 33,
+        "textures": 17,
+        "programs": 18
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "06-record-aethelgard.png",
+      "title": "Atlas record from its marker: aethelgard",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_aethelgard",
+        "posture": "seated",
+        "quality": "medium",
+        "entered": false,
+        "paused": false
+      },
+      "archiveBefore": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "aethelgard",
+        "entry": "aethelgard",
+        "emphasis": "atlas",
+        "selection": "aethelgard",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "aethelgard",
+        "entry": "aethelgard",
+        "emphasis": "atlas",
+        "selection": "aethelgard",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "renderStats": {
+        "calls": 16,
+        "triangles": 51782,
+        "points": 0,
+        "lines": 0,
+        "geometries": 33,
+        "textures": 17,
+        "programs": 18
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "07-record-kwind-09.png",
+      "title": "Atlas record from its marker: kwind-09",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_kwind-09",
+        "posture": "seated",
+        "quality": "medium",
+        "entered": false,
+        "paused": false
+      },
+      "archiveBefore": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "kwind-09",
+        "entry": "kwind-09",
+        "emphasis": "atlas",
+        "selection": "kwind-09",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "kwind-09",
+        "entry": "kwind-09",
+        "emphasis": "atlas",
+        "selection": "kwind-09",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "renderStats": {
+        "calls": 16,
+        "triangles": 51782,
+        "points": 0,
+        "lines": 0,
+        "geometries": 33,
+        "textures": 17,
+        "programs": 18
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "08-interregnum.png",
+      "title": "Interregnum: Year 19 (browser preview)",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Stop_year-19",
+        "posture": "seated",
+        "quality": "medium",
+        "entered": false,
+        "paused": false
+      },
+      "archiveBefore": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "interregnum",
+        "focus": "overview",
+        "entry": "year-19",
+        "emphasis": "interregnum",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "interregnum",
+        "focus": "overview",
+        "entry": "year-19",
+        "emphasis": "interregnum",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "renderStats": {
+        "calls": 11,
+        "triangles": 50184,
+        "points": 0,
+        "lines": 0,
+        "geometries": 33,
+        "textures": 17,
+        "programs": 18
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "09-laws.png",
+      "title": "Laws of the Gambit: Why representatives (browser preview)",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Article_why-representatives",
+        "posture": "seated",
+        "quality": "medium",
+        "entered": false,
+        "paused": false
+      },
+      "archiveBefore": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "laws",
+        "focus": "overview",
+        "entry": "why-representatives",
+        "emphasis": "laws",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "laws",
+        "focus": "overview",
+        "entry": "why-representatives",
+        "emphasis": "laws",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "renderStats": {
+        "calls": 11,
+        "triangles": 50366,
+        "points": 0,
+        "lines": 0,
+        "geometries": 33,
+        "textures": 17,
+        "programs": 18
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "10-return-home.png",
+      "title": "Return to Home (browser preview)",
+      "group": "Browser preview",
+      "xrSessionActive": false,
+      "state": {
+        "screen": "home",
+        "selectedControl": "Home_chronicles",
+        "posture": "seated",
+        "quality": "medium",
+        "entered": false,
+        "paused": false
+      },
+      "archiveBefore": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": false,
+        "presented": false,
+        "visible": false,
+        "ready": false,
+        "load": "ready",
+        "collection": "laws",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "",
+        "selection": "",
+        "panelPose": "menu",
+        "panelScale": 0,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 0,
+        "textureBytes": 0
+      },
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": false,
+        "presented": false,
+        "visible": false,
+        "ready": false,
+        "load": "ready",
+        "collection": "laws",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "",
+        "selection": "",
+        "panelPose": "menu",
+        "panelScale": 0,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 0,
+        "textureBytes": 0
+      },
+      "renderStats": {
+        "calls": 14,
+        "triangles": 82072,
+        "points": 98,
+        "lines": 0,
+        "geometries": 23,
+        "textures": 16,
+        "programs": 12
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "input": "canvas click (full size, with the frame in the same lease)",
+      "id": "Home_chronicles",
+      "point": {
+        "x": 336,
+        "y": 187
+      },
+      "screen": "chronicles",
+      "selectedControl": "Exhibit_atlas",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "atlas",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Marker_korvenia",
+      "point": {
+        "x": 163,
+        "y": 332
+      },
+      "screen": "chronicles",
+      "selectedControl": "Hotspot_korvenia",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "korvenia",
+        "entry": "korvenia",
+        "emphasis": "atlas",
+        "selection": "korvenia",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Marker_solforiz",
+      "point": {
+        "x": 417,
+        "y": 377
+      },
+      "screen": "chronicles",
+      "selectedControl": "Hotspot_solforiz",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "solforiz",
+        "entry": "solforiz",
+        "emphasis": "atlas",
+        "selection": "solforiz",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Marker_aethelgard",
+      "point": {
+        "x": 389,
+        "y": 305
+      },
+      "screen": "chronicles",
+      "selectedControl": "Hotspot_aethelgard",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "aethelgard",
+        "entry": "aethelgard",
+        "emphasis": "atlas",
+        "selection": "aethelgard",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Marker_kwind-09",
+      "point": {
+        "x": 113,
+        "y": 424
+      },
+      "screen": "chronicles",
+      "selectedControl": "Hotspot_kwind-09",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "kwind-09",
+        "entry": "kwind-09",
+        "emphasis": "atlas",
+        "selection": "kwind-09",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Exhibit_interregnum",
+      "point": {
+        "x": 483,
+        "y": 54
+      },
+      "screen": "chronicles",
+      "selectedControl": "Exhibit_interregnum",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "interregnum",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "interregnum",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Stop_year-19",
+      "point": {
+        "x": 583,
+        "y": 100
+      },
+      "screen": "chronicles",
+      "selectedControl": "Stop_year-19",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "interregnum",
+        "focus": "overview",
+        "entry": "year-19",
+        "emphasis": "interregnum",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Exhibit_laws",
+      "point": {
+        "x": 601,
+        "y": 39
+      },
+      "screen": "chronicles",
+      "selectedControl": "Exhibit_laws",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "laws",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "laws",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Article_why-representatives",
+      "point": {
+        "x": 387,
+        "y": 106
+      },
+      "screen": "chronicles",
+      "selectedControl": "Article_why-representatives",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "laws",
+        "focus": "overview",
+        "entry": "why-representatives",
+        "emphasis": "laws",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Btn_Back",
+      "point": {
+        "x": 352,
+        "y": 248
+      },
+      "screen": "chronicles",
+      "selectedControl": "Exhibit_laws",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "laws",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "laws",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Btn_Back",
+      "point": {
+        "x": 352,
+        "y": 248
+      },
+      "screen": "home",
+      "selectedControl": "Home_chronicles",
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": false,
+        "presented": false,
+        "visible": false,
+        "ready": false,
+        "load": "ready",
+        "collection": "laws",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "",
+        "selection": "",
+        "panelPose": "menu",
+        "panelScale": 0,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 0,
+        "textureBytes": 0
+      },
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Home_chronicles",
+      "point": {
+        "x": 336,
+        "y": 187
+      },
+      "screen": "chronicles",
+      "selectedControl": "Exhibit_atlas",
+      "archive": {
+        "loadingFrames": 1,
+        "buildSeconds": 2.81,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "atlas",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 2,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      },
+      "passed": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "Home opens Chronicles at the Atlas, and the wordless loading bar shows until the room is ready",
+      "passed": true,
+      "loadingFrames": 16,
+      "buildSeconds": 8.85,
+      "capturedAfterClickMs": 7796
+    },
+    {
+      "name": "The room becomes ready and the panel takes the control surface, with the load reported to the shared state",
+      "passed": true,
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": true,
+        "presented": true,
+        "visible": true,
+        "ready": true,
+        "load": "ready",
+        "collection": "atlas",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "atlas",
+        "selection": "",
+        "panelPose": "control-surface",
+        "panelScale": 0.1092,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 49680,
+        "textureBytes": 16700757
+      }
+    },
+    {
+      "name": "Bare ground at the map centre takes the pointer and selects nothing",
+      "passed": true,
+      "point": {
+        "x": 295,
+        "y": 381
+      },
+      "centre": {
+        "x": 0,
+        "y": 1.1049884494590168,
+        "z": -0.7146264910697937
+      },
+      "hoveredOnFirstQuery": true,
+      "hoveredAfterPolling": true,
+      "entryBefore": "kwind-09",
+      "entryAfter": "kwind-09"
+    },
+    {
+      "name": "Back closes the open record first",
+      "passed": true
+    },
+    {
+      "name": "Back returns Home, and the room closes and gives the panel back its menu pose",
+      "passed": true,
+      "archive": {
+        "loadingFrames": 16,
+        "buildSeconds": 8.85,
+        "open": false,
+        "presented": false,
+        "visible": false,
+        "ready": false,
+        "load": "ready",
+        "collection": "laws",
+        "focus": "overview",
+        "entry": "",
+        "emphasis": "",
+        "selection": "",
+        "panelPose": "menu",
+        "panelScale": 0,
+        "loading": false,
+        "placements": 1,
+        "roomYaw": 0,
+        "fade": 0,
+        "triangles": 0,
+        "textureBytes": 0
+      }
+    },
+    {
+      "name": "Leaving Chronicles releases the room: geometry and textures return to the Home baseline",
+      "passed": true,
+      "home": {
+        "calls": 14,
+        "triangles": 81992,
+        "points": 98,
+        "lines": 0,
+        "geometries": 21,
+        "textures": 15,
+        "programs": 11
+      },
+      "archive": {
+        "calls": 14,
+        "triangles": 50894,
+        "points": 0,
+        "lines": 0,
+        "geometries": 31,
+        "textures": 16,
+        "programs": 17
+      },
+      "after": {
+        "calls": 14,
+        "triangles": 82072,
+        "points": 98,
+        "lines": 0,
+        "geometries": 23,
+        "textures": 16,
+        "programs": 12
+      }
+    },
+    {
+      "name": "Over 600 idle frames no allocation is attributed to the room or the controller update",
+      "passed": false,
+      "frames": 600,
+      "windows": 2,
+      "chroniclesSamples": 3,
+      "byOwner": {
+        "iwsdk-uikit": 47890796,
+        "menu-system": 22008,
+        "app": 17304,
+        "chronicles": 227196,
+        "native": 90500
+      }
+    }
+  ],
+  "measurements": {
+    "atlasSeated": {
+      "calls": 14,
+      "triangles": 50894,
+      "points": 0,
+      "lines": 0,
+      "geometries": 31,
+      "textures": 16,
+      "programs": 17
+    },
+    "allocationProbe": {
+      "windows": 2,
+      "frames": 600,
+      "wallMs": 125552,
+      "sampledBytes": 48247804,
+      "byOwner": {
+        "iwsdk-uikit": 47890796,
+        "menu-system": 22008,
+        "app": 17304,
+        "chronicles": 227196,
+        "native": 90500
+      },
+      "chroniclesSamples": 3,
+      "chroniclesBytes": 227196,
+      "roomOrControllerUpdateSamples": 3,
+      "roomOrControllerUpdateBytes": 227196,
+      "longTasks": [],
+      "detail": [
+        {
+          "frames": {
+            "frames": 449,
+            "ms": 90000,
+            "timedOut": true
+          },
+          "wallMs": 92845,
+          "samplingIntervalBytes": 256,
+          "sampledBytes": 36083372,
+          "byOwner": {
+            "iwsdk-uikit": 35771228,
+            "menu-system": 13356,
+            "app": 12060,
+            "chronicles": 224580,
+            "native": 62148
+          },
+          "chroniclesSamples": 2,
+          "chroniclesBytes": 224580,
+          "chroniclesTop": [
+            {
+              "bytes": 222216,
+              "at": "update /src/chronicles/scene/atlas-diorama.ts:396",
+              "top": "update /src/chronicles/scene/atlas-diorama.ts:396"
+            },
+            {
+              "bytes": 2364,
+              "at": "update /src/chronicles/scene/atlas-diorama.ts:396",
+              "top": "exp :0"
+            }
+          ],
+          "roomOrControllerUpdateSamples": 2,
+          "roomOrControllerUpdateBytes": 224580,
+          "roomOrControllerUpdateTop": [
+            {
+              "bytes": 222216,
+              "path": [
+                "update /node_modules/@iwsdk/core/dist/ecs/world.js:463",
+                "update /node_modules/.vite/deps/@iwsdk_core___elics.js:918",
+                "update /src/crownfall-system.ts:637",
+                "update /src/chronicles/archive-controller.ts:172",
+                "update /src/chronicles/monument-room.ts:40",
+                "update /src/chronicles/scene/atlas-diorama.ts:396"
+              ]
+            },
+            {
+              "bytes": 2364,
+              "path": [
+                "update /node_modules/.vite/deps/@iwsdk_core___elics.js:918",
+                "update /src/crownfall-system.ts:637",
+                "update /src/chronicles/archive-controller.ts:172",
+                "update /src/chronicles/monument-room.ts:40",
+                "update /src/chronicles/scene/atlas-diorama.ts:396",
+                "exp :0"
+              ]
+            }
+          ],
+          "heapBefore": 237346686,
+          "heapAfter": 237508234,
+          "longTasks": []
+        },
+        {
+          "frames": {
+            "frames": 151,
+            "ms": 30233
+          },
+          "wallMs": 32707,
+          "samplingIntervalBytes": 256,
+          "sampledBytes": 12164432,
+          "byOwner": {
+            "iwsdk-uikit": 12119568,
+            "menu-system": 8652,
+            "app": 5244,
+            "chronicles": 2616,
+            "native": 28352
+          },
+          "chroniclesSamples": 1,
+          "chroniclesBytes": 2616,
+          "chroniclesTop": [
+            {
+              "bytes": 2616,
+              "at": "update /src/chronicles/scene/atlas-diorama.ts:396",
+              "top": "update /src/chronicles/scene/atlas-diorama.ts:396"
+            }
+          ],
+          "roomOrControllerUpdateSamples": 1,
+          "roomOrControllerUpdateBytes": 2616,
+          "roomOrControllerUpdateTop": [
+            {
+              "bytes": 2616,
+              "path": [
+                "world.update /node_modules/@iwsdk/core/dist/mcp/ecs-debug-tools.js:72",
+                "update /node_modules/@iwsdk/core/dist/ecs/world.js:463",
+                "update /node_modules/.vite/deps/@iwsdk_core___elics.js:918",
+                "update /src/crownfall-system.ts:637",
+                "update /src/chronicles/archive-controller.ts:172",
+                "update /src/chronicles/scene/atlas-diorama.ts:396"
+              ]
+            }
+          ],
+          "heapBefore": 239003006,
+          "heapAfter": 239041334,
+          "longTasks": []
+        }
+      ]
+    }
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Over 600 idle frames no allocation is attributed to the room or the controller update\n    at check (file:///home/user/crownfall-chronicles/main-game-vr/scripts/capture-chronicles.mjs:63:158)\n    at file:///home/user/crownfall-chronicles/main-game-vr/scripts/capture-chronicles.mjs:274:3",
+  "failedAt": "2026-10-29T21:00:50.669Z"
+}

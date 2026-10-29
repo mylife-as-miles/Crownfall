@@ -1,5 +1,6 @@
-import { CHRONICLE_EXHIBITS, getChronicleRecord, hotspotAt } from "../../shared/chronicles/content";
-import type { ChronicleExhibitId } from "../../shared/chronicles/types";
+import { canUnwind, createChroniclesScene, reduceChroniclesScene } from "../../shared/chronicles/scene-state";
+import { CHRONICLES_CONTENT_POLICY } from "../../shared/chronicles/status";
+import type { ChronicleCollectionId, ChroniclesFocus, ChroniclesLoad, ChroniclesSceneEvent, ChroniclesSceneState } from "../../shared/chronicles/types";
 import { ARENAS, CHAPTERS, HOME_CONTENT, PLAY_CARDS, SETTINGS_CATEGORIES } from "../../shared/menu/content";
 import type { HomeTileAction, MenuPanel, PlayCardId, SettingsCategory, ShowcaseView } from "../../shared/menu/types";
 
@@ -67,9 +68,8 @@ export interface QuestState {
   /** Origins survive pause without overloading its previousScreen snapshot. */
   showcaseOrigin: ShowcaseOrigin;
   settingsOrigin: "home" | "play";
-  /** Chronicles keeps its exhibit and open record through pause; the Home tile reopens the Atlas. */
-  exhibit: ChronicleExhibitId;
-  record: string | null;
+  /** The shared Chronicles scene state, kept through pause; the Home tile opens a new one at the Atlas. */
+  chronicles: ChroniclesSceneState;
 }
 
 export type QuestEvent =
@@ -80,9 +80,11 @@ export type QuestEvent =
   | { type: "showcase"; view: ShowcaseView }
   | { type: "arena"; index: number }
   | { type: "category"; category: SettingsCategory }
-  | { type: "exhibit"; exhibit: ChronicleExhibitId }
+  | { type: "exhibit"; exhibit: ChronicleCollectionId }
   | { type: "record"; id: string }
   | { type: "map"; x: number; y: number }
+  | { type: "focus"; focus: ChroniclesFocus }
+  | { type: "loaded"; result: Exclude<ChroniclesLoad, "loading"> }
   | { type: "enter"; firstVisit: boolean }
   | { type: "pause"; reason: string }
   | { type: "back" | "confirm" | "cancel" | "exit" | "start-visit" | "skip-visit" | "visit-next" | "visit-back" | "visit-finish" | "resume" | "pause-home" | "close-record" };
@@ -95,8 +97,14 @@ export function createQuestState(): QuestState {
     screen: "home", previousScreen: "home", modal: null,
     chapterIndex: 0, arenaIndex: 0, library: "battles", settingsCategory: null,
     visitStep: 0, visitComplete: false, paused: false, pauseReason: "", entered: false,
-    showcaseOrigin: "home", settingsOrigin: "home", exhibit: CHRONICLE_EXHIBITS[0].id, record: null,
+    showcaseOrigin: "home", settingsOrigin: "home", chronicles: createChroniclesScene(),
   };
+}
+
+/** Chronicles events go through the shared reducer; a no-op keeps the very same QuestState. */
+function chronicles(state: QuestState, event: ChroniclesSceneEvent): QuestState {
+  const scene = reduceChroniclesScene(state.chronicles, event, CHRONICLES_CONTENT_POLICY);
+  return scene === state.chronicles ? state : { ...state, chronicles: scene };
 }
 
 function content(state: QuestState, screen: ContentScreen): QuestState {
@@ -120,7 +128,8 @@ function nav(state: QuestState, screen: QuestNavigationScreen): QuestState {
 
 /** Pure state only: the runtime owns actual XR entry, tracking and rendering. */
 export function reduceQuestState(state: QuestState, event: QuestEvent): QuestState {
-  if (state.paused && !["pause", "resume", "pause-home", "exit", "enter"].includes(event.type)) return state;
+  // The archive's load report is not navigation: it lands while paused over Chronicles.
+  if (state.paused && !["pause", "resume", "pause-home", "exit", "enter", "loaded"].includes(event.type)) return state;
   if (state.modal && !["confirm", "cancel", "back", "pause", "resume", "pause-home", "exit", "enter"].includes(event.type)) return state;
 
   switch (event.type) {
@@ -151,7 +160,7 @@ export function reduceQuestState(state: QuestState, event: QuestEvent): QuestSta
       const tile = state.screen === "home" ? HOME_CONTENT.find(item => item.action === event.panel) : undefined;
       if (!tile) return state;
       return tile.destination === "chronicles"
-        ? { ...content(state, "chronicles"), exhibit: CHRONICLE_EXHIBITS[0].id, record: null } : { ...state, modal: event.panel };
+        ? { ...content(state, "chronicles"), chronicles: createChroniclesScene() } : { ...state, modal: event.panel };
     }
     case "play":
       if (state.screen !== "play" || !PLAY_CARDS.some(item => item.id === event.id)) return state;
@@ -175,21 +184,18 @@ export function reduceQuestState(state: QuestState, event: QuestEvent): QuestSta
       return state.screen === "settings" && SETTINGS_CATEGORIES.includes(event.category)
         ? { ...state, settingsCategory: event.category } : state;
     case "exhibit":
-      return state.screen === "chronicles" && state.exhibit !== event.exhibit && CHRONICLE_EXHIBITS.some(item => item.id === event.exhibit)
-        ? { ...state, exhibit: event.exhibit, record: null } : state;
-    case "record": {
-      // A record opens from its own exhibit; Atlas records open from their map hotspot.
-      const record = state.screen === "chronicles" ? getChronicleRecord(event.id) : undefined;
-      return record && record.id !== state.record && record.exhibit === state.exhibit && (record.exhibit !== "atlas" || !!record.hotspot)
-        ? { ...state, record: record.id } : state;
-    }
-    case "map": {
-      // Hit-tests the bare map image; empty ground and the centre do nothing.
-      const record = state.screen === "chronicles" && state.exhibit === "atlas" ? hotspotAt(event.x, event.y) : null;
-      return record && record.id !== state.record ? { ...state, record: record.id } : state;
-    }
+      return state.screen === "chronicles" ? chronicles(state, { type: "collection", collection: event.exhibit }) : state;
+    case "record":
+      return state.screen === "chronicles" ? chronicles(state, { type: "entry", id: event.id }) : state;
+    case "map":
+      return state.screen === "chronicles" ? chronicles(state, { type: "map", x: event.x, y: event.y }) : state;
+    case "focus":
+      return state.screen === "chronicles" ? chronicles(state, { type: "focus", focus: event.focus }) : state;
+    case "loaded":
+      return state.screen === "chronicles" || state.paused && state.previousScreen === "chronicles"
+        ? chronicles(state, { type: "loaded", result: event.result }) : state;
     case "close-record":
-      return state.screen === "chronicles" && state.record ? { ...state, record: null } : state;
+      return state.screen === "chronicles" && state.chronicles.entryId !== null ? chronicles(state, { type: "back" }) : state;
     case "start-visit":
       return ["home", "onboarding", "visit"].includes(state.screen)
         ? { ...content(state, "visit"), visitStep: 0, visitComplete: false } : state;
@@ -207,7 +213,7 @@ export function reduceQuestState(state: QuestState, event: QuestEvent): QuestSta
     case "back":
       if (state.modal) return { ...state, modal: null };
       if (state.screen === "chapters") return content(state, "play");
-      if (state.screen === "chronicles") return state.record ? { ...state, record: null } : content(state, "home");
+      if (state.screen === "chronicles") return canUnwind(state.chronicles) ? chronicles(state, { type: "back" }) : content(state, "home");
       if (state.screen === "arenas" || state.screen === "library") return content(state, "showcase");
       if (state.screen === "showcase") return content(state, state.showcaseOrigin);
       if (state.screen === "settings") return state.settingsCategory

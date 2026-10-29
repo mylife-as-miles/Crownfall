@@ -9,7 +9,8 @@ private briefs into this repository.
 
 ## 1. Current implementation status
 
-**Milestone:** M0 (resume and architecture audit) is complete. M1 has not started.
+**Milestone:** M0 (resume and architecture audit) is complete. M1 is planned (§5). Its
+implementation has not started, and gate G1 (blueprint acceptance) is still open.
 
 **What selecting Chronicles does today.** The Home tile no longer opens an unavailable-information
 dialog on either platform.
@@ -105,7 +106,7 @@ tower by inpainting (creator decision, 29 October; working choice) and delivered
 | 7 | Minor | The verification scripts write to `artifacts/chronicles/` instead of milestone folders | C, D | Add a milestone argument |
 | 8 | Minor | Quest shows typographic dashes as hyphens (UIKit's ASCII glyph atlas) | D | A documented platform adaptation; ask the creator to confirm |
 | 9 | Minor | `main game/README.md` still says every Home tile opens an unavailable dialog | C | M6, coordinated with the Legacy README edits |
-| 10 | Process | Orphaned Chronicles processes from earlier sessions are still running: an IWSDK runtime for a scratch workspace symlinked to this checkout (port 8089, its managed Chromium using about one CPU) and a desktop vite on port 5191. M0 could not stop them, because the permission system refuses to stop processes this agent did not start. | Orchestrator | Stop them. Until then, do not start a second IWSDK runtime for this checkout. |
+| 10 | Process | Orphaned Chronicles processes from earlier sessions are still running. Last seen at M1 planning (16:55 UTC): the desktop vite on port 5191 (PID 4697), and the scratch IWSDK runtime (vite PID 3060; its managed Chromium PID 27321 has a GPU process using about one CPU). The scratch runtime serves this checkout's sources through symlinks but keeps its own copy of `assets.ts`, so it goes stale as soon as M1 changes the manifest. M0 could not stop them, because the permission system refuses to stop processes this agent did not start. `npx @iwsdk/cli dev status` for this checkout reports no runtime. | Orchestrator | Stop both before B5, D2 and D3 need a runtime. Until then, start no second IWSDK runtime for this checkout and do not reuse the scratch one. |
 | 11 | Info | The Brief E desktop captures (`main game/artifacts/chronicles/brief-e/`) predate the cleaned map and show the central tower. The Quest Brief E captures show the current map. | — | — |
 | 12 | Info | Bundle sizes: the desktop main chunk is 1.03 MB (the relief is a lazy 48 kB chunk); the Quest main chunk is 2.5 MB | C, D | Keep all archive code in lazy chunks |
 
@@ -114,10 +115,10 @@ tower by inpainting (creator decision, 29 October; working choice) and delivered
 - Checkout: worktree `/home/user/crownfall-chronicles`, branch `feat/chronicles-archive` (renamed
   from `feat/chronicles`).
 - Base: `feat/main-game-menu` at `29343c1`, the head of draft PR #1 (open, into `main`).
-- Checkpoint: "chore(chronicles): resume Chronicles archive workflow with audit and architecture".
-  This is the first commit on the branch, and it contains all earlier Brief E and Atlas work. Its SHA
-  is in the workflow result and goes into this section at the next update. It is pushed to
-  `origin/feat/chronicles-archive`.
+- Checkpoint: "chore(chronicles): resume Chronicles archive workflow with audit and architecture",
+  `32464d0f7dee09c869788bb6fcce0dcb3d61368f`. This is the first commit on the branch, and it contains
+  all earlier Brief E and Atlas work. It is pushed to `origin/feat/chronicles-archive`. The working
+  tree was clean when M1 was planned.
 - Remote branches seen in M0: `main` `6bc3a58`, `feat/main-game-menu` `29343c1`, `feat/my-legacy`
   `84ffcfc`, `feat/legacy-world-environment` `d568976`, and four `codex/*` branches. PR #1 is the
   only pull request.
@@ -127,23 +128,440 @@ tower by inpainting (creator decision, 29 October; working choice) and delivered
 
 ## 5. Proposed next increment — M1, Archive Environment (P0)
 
-Goal: Home → Chronicles enters a real 3D archive on desktop and in the Quest emulator, with a strong
-first impression and the existing relief as the central monument. One full visual-critic round
-follows before M2.
+*Planned by the lead architect on 29 October 2026, about 17:00 UTC, from this file, ARCHITECTURE.md,
+the M0 code and captures and the directive. The contracts it relies on are in ARCHITECTURE §4.5 and
+§5.1.*
 
-| Role | Tasks |
+**Goal.** Home → Chronicles enters a real 3D archive on desktop and on Quest. The first settled frame
+shows the central monument (today's Living Atlas relief on a carved plinth), the suspended mechanism
+above it and the light falling into the chamber. The archive has an original Crownfall identity:
+authored geometry, generated materials and controlled atmosphere, within budget on both platforms.
+Spatial navigation works: authored collection framings on desktop, collection emphasis around a
+stationary viewer on Quest, and Back on both. The environment owner first delivers the annotated
+blueprint as data. The scene is composed from it only after the architect accepts it. A full
+five-critic round must pass before M2 starts. Full Atlas interaction (vignettes, the identity reveal,
+the relief's steep-slope fix) belongs to M2.
+
+### 5.1 Decisions for M1
+
+| # | Decision |
 | --- | --- |
-| B, environment | (1) An annotated spatial blueprint as data in `shared/chronicles/archive/blueprint.ts`, with dimensions, exhibit positions, desktop framings, the Quest station, light sources, interaction zones, navigation paths and expansion points, and a generated plan render. Draft `docs/chronicles/BLUEPRINT.md` for architect acceptance. (2) An archive geometry kernel (profiles, bevels, mouldings, arches, columns, vault ribs) in `shared/chronicles/archive/kernel/`, deterministic and ES2020-pure, with tests and budgets. (3) Material descriptors and texture generators run from committed scripts, plus a provenance manifest. (4) A desktop archive renderer with one `WebGLRenderer` and the relief as monument. (5) A Quest archive room: baked vertex light, instancing, quality presets, monument at the station. (6) Renders for Critic 1. |
-| C, desktop | Mount the archive in `Chronicles.tsx`: entrance transition, visible loading progress, error recovery, authored framings, mouse/keyboard/gamepad. Full-stage layer with the main navigation inert. Pause the menu loops properly (problem 3). Fix problems 2, 4 (desktop half), 6 and 7. M1 captures and measurements. |
-| D, Quest | Enter the archive in the emulator with the menu panel as the control surface. Stationary viewer, recenter and pause. Fix the bare-ground check. XR captures driven by hand ray and pinch. Render stats and a check that `update()` does not allocate. |
-| E, content | `CanonStatus`, the registry entry for approved records, the one visibility switch with its test, and the marker string. No new prose in M1. |
-| A, architect | Review the blueprint before construction, run the critic round and update this file |
+| D1 | **No new words.** M1 adds no on-screen text: no captions, proposals, interface strings or labels. The loading state is visual and is named by the approved title. A failure shows the flat painting with the same records, and re-entering Chronicles retries. |
+| D2 | **Collections in M1.** The Atlas is *interactive*: today's nation selection, now on the monument. The Interregnum and the Laws are *framed*: an authored view of their bay, with today's approved records. The Contested Record bay is built but *dormant*: unlit, not selectable and absent from navigation until M5. |
+| D3 | **Monument scale per platform.** On desktop the relief is about 4.5–5 m wide. Quest presents it at reachable table scale, sized by the blueprint's vantage tests. The plinth is parametric around the relief width, and the rest of the room is shared. |
+| D4 | **Mechanism.** The suspended rings are built in M1 as the future Annals mechanism, one pivot per ring, and stay still until M3. Their future event band must already sit where a seated Quest viewer sees it comfortably. |
+| D5 | **Desktop navigation.** Chronicles becomes a full-stage layer with the main navigation hidden and inert. LB/RB and Q/E cycle the collections inside the archive, as My Legacy cycles its landmarks (this settles ARCHITECTURE §12). Back unwinds through the shared reducer, then returns Home with the tile selected and focused. Chronicles exports its own handle type, so `settings-types.ts` stays unchanged. |
+| D6 | **Quest presentation.** The viewer is never moved. While the archive is open, the menu panel takes the blueprint's control-surface pose beside the monument. Recenter re-places the room and the panel relative to the head, under a fade. |
+| D7 | **Menu loops.** `Atmosphere.tsx` and `CreatureStage.tsx` are not on the shared-file list. M1 keeps the `App.tsx` overrides: the sorcerer pauses through reduced motion and the atmosphere drops to `low`. M1 measures the atmosphere rebuild on exit. The identical port of Legacy's `suspended` props stays with the orchestrator (problem 3). |
+| D8 | **Occlusion reveal** is in M1 scope only if the blueprint's sweep test finds an authored desktop framing, within its orbit and zoom limits, where architecture can hide the focused exhibit. |
+| D9 | **Canon in space.** Nothing marks the map centre: no spire, column, rod, hub, light pin or inlay. The light pool covers the monument broadly. The oculus shows only sky and light, never an exterior that places the archive. Ornament stays abstract and astronomical: no inscriptions, names, emblems, heraldry or narrative scenes. The room is not a library: shelving walls are never the dominant motif. |
+| D10 | **Process.** Chronicles tests run through two Chronicles-owned aggregators, so the shared Quest `test` script changes only once. One IWSDK runtime at a time for this checkout. Desktop iteration renders come from a dev-only harness page that never enters the production bundle. |
 
-M1 exit criteria: both builds, `test:quest`, `check:sync` and the private verifier pass. Home →
-Chronicles renders the archive on both platforms, with captures in the `m1/` folders. Budgets are
-measured: desktop medium ≤ 250 draw calls and ≤ 1.0M triangles; Quest ≤ 120 draw calls, ≤ 250k
-triangles and ≤ 64 MB of textures; no long task over 50 ms once interactive. No unresolved Blocker or
-Major critic finding remains.
+### 5.2 Sequence and gates
+
+1. **Phase 1, in parallel:** B1 blueprint, B2 kernel, B3 materials, E1 status layer and E2 scene state.
+   D1 follows E2. C0 runs at any time.
+2. **Gate G1:** the architect reviews the blueprint (A1). B4 and B5 compose the scene only after G1 is
+   recorded in §1 of this file. Kernel and material work may continue during the review.
+3. **Phase 2:** B4 desktop renderer, B5 Quest room, C1 desktop integration and D2 Quest integration.
+4. **Phase 3:** C2 and D3 evidence. **Gate G2:** the five-critic round (A2), with up to three
+   correction rounds. **G3:** the checkpoint.
+
+**Preconditions.** The orchestrator stops the orphaned processes of problem 10. Until then, no agent
+starts a second IWSDK runtime for this checkout. Nobody reuses the scratch runtime, because it keeps
+its own stale copy of `assets.ts`. B5 and D2/D3 share one runtime: check `npx @iwsdk/cli dev status`
+and the process list before `dev up`, and stop it with `dev down` when done. Desktop servers use ports
+5190–5199. Each agent stops the servers it starts.
+
+**Word rule for every file on a Chronicles path.** The private verifier scans, case-insensitively,
+every tracked or new `.ts`, `.tsx`, `.css`, `.json`, `.md`, `.uikitml`, `.mjs` and `.html` file whose
+path contains "chronicles" (tests excepted). It covers code, comments, scripts, docs and artifact
+manifests. It rejects a short private list of substrings, which includes the word for the person
+holding the controller. Even the IWSDK rig property of that name fails, and so does any compound
+word that contains it. Write "viewer" or "visitor". Keep IWSDK calls that need that property in
+`crownfall-system.ts`, and pass the head pose to the Chronicles modules. Run the verifier before
+reporting any task as done.
+
+### 5.3 Tasks
+
+#### Content (E)
+
+**E1 — Content-status layer, registry and the one switch.** Files: `shared/chronicles/status.ts`,
+`registry.ts`, `types.ts`, `status.test.ts` and the aggregator `chronicles.test.ts` (it imports
+`content.test.ts`, `status.test.ts`, `scene-state.test.ts` and `archive/archive.test.ts`).
+
+- `CanonStatus`, `SourceReliability`, `ContentPolicy`, `CHRONICLES_CONTENT_POLICY`
+  (`showUnapproved: true` in the draft build), `isCreatorApproved` and the marker strings ("Working
+  proposal", "Placeholder"), stored as placeholder data that the switch hides (ARCHITECTURE §3, §7).
+- A pure registry factory, plus `getChronicleEntries(policy)` and `getChronicleEntry(id, policy)`.
+  Approved entries derive from `CHRONICLE_RECORDS` and reuse the same string objects. The proposal
+  list is empty in M1.
+- Acceptance:
+  - With the switch off, the registry returns exactly the 11 approved records, in order, and no marker.
+  - With it on, a fixture proposal defined in the test appears with its marker.
+  - A duplicate or shadowing id throws.
+  - A proposal fixture that carries a creator-approved status fails.
+  - Status and label vary independently.
+  - `content.ts` is unchanged (`git diff --exit-code 32464d0 -- shared/chronicles/content.ts`).
+  - The hashed guard and the private verifier pass.
+
+**E2 — Shared scene-state reducer.** Files: `shared/chronicles/scene-state.ts`,
+`scene-state.fixture.ts`, `scene-state.test.ts` and `types.ts`.
+
+- ARCHITECTURE §4.6, scoped to M1:
+  - collections `atlas`, `interregnum` and `laws`; `contested` is refused while it has no visible
+    entries;
+  - focus `overview` or `nation`;
+  - entries only from the active collection, and Atlas entries only from a nation;
+  - `map` hits through `hotspotAt`, where empty ground and the centre do nothing;
+  - `back` unwinds entry → focus → overview, and `canUnwind` false means the platform goes Home;
+  - `loaded` sets ready, flat or failed.
+- Pure and total: an invalid event returns the same object. The fixture is one event sequence with
+  its expected states, which both platforms replay.
+- Acceptance: the tests cover every rule above and restate the seven Brief E Quest Chronicles
+  behaviours against the reducer.
+
+#### Environment (B)
+
+**B1 — The annotated blueprint as data (gate G1).** Files: `shared/chronicles/archive/types.ts`,
+`blueprint.ts`, `blueprint.test.ts`, the aggregator `archive.test.ts` (it also runs
+`relief.test.ts`), `scripts/chronicles/generate-archive-blueprint.ts`, and the generated
+`docs/chronicles/ARCHIVE_BLUEPRINT.md`, `docs/chronicles/blueprint/archive-plan.svg` and `.png`, plus a
+section drawing.
+
+- Contents (contract in ARCHITECTURE §4.5):
+  - the chamber footprint, levels and heights, and the oculus;
+  - every architectural element: kernel builder or GLB, parameters, transform, instances, materials
+    and occluder;
+  - the monument (D3) and the mechanism (D4);
+  - one exhibit per collection, with its presentation (D2);
+  - desktop viewpoints: entrance, overview, one per collection, the nation framings (`RELIEF_VIEWS` in
+    the monument frame) and a review-only framing of the dormant bay;
+  - the Quest seated and standing vantages, with forward direction, comfort cone and control-surface
+    pose;
+  - lights: one shadow-casting key through the oculus (optionally with a tracery cookie for dappled
+    light), fill, practicals and emissive accents, each dynamic or baked per platform;
+  - haze, shaft and dust volumes;
+  - interaction zones;
+  - desktop camera paths: flights of at most 1.2 s, and an entrance settle of at most 1.5 s;
+  - expansion points, occluders and budgets per quality.
+- Acceptance, tests:
+  - deterministic and pure (a static scan finds no three, React, DOM, `Math.random` or `Date`), and
+    every number finite;
+  - every exhibit and viewpoint inside the chamber, and no desktop eye inside an occluder or within
+    0.3 m of solid geometry;
+  - each framing's orbit and zoom range sampled on at least a 5 × 5 × 3 grid and swept against the
+    occluders: either clear, or the hit occluders are listed on the exhibit (D8);
+  - the overview frustum at 16:9 holds the whole monument, at least 60% of the ring band and the
+    light shaft;
+  - from both Quest vantages:
+    - every exhibit within ±60° of forward;
+    - the relief's far edge at least 22° below the eye when seated and 28° when standing;
+    - its near edge at least 0.3 m ahead, and its top between 0.65 and 0.9 m;
+    - markers at least 4 cm and at least 6% of the relief width;
+    - the mechanism's future event band within ±60° and 10°–45° above the eye line;
+    - the control surface clear of the monument's projected outline at 0° and −20° pitch;
+  - no element within 0.4 m of the vertical line rising from the map centre, between the relief
+    surface and the vault springing (D9);
+  - at least two expansion points, one of them reserved for War Record exhibits.
+- Acceptance, document:
+  - The generator's `--check` exits 0 for the committed files, and non-zero after a deliberate data
+    change (record this negative control).
+  - The document gives real dimensions, the exhibit positions of all four collections, the desktop
+    viewpoints and both Quest vantages, light sources, camera framings, interaction zones, navigation
+    paths, expansion points, the occlusion analysis and the budgets. It embeds the plan PNG.
+  - No on-screen text is added.
+
+**B2 — Archive geometry kernel.** Files: `shared/chronicles/archive/kernel/*.ts` and
+`kernel/kernel.test.ts`.
+
+- Pure ES2020 builders that emit `ReliefMesh`-style typed arrays:
+  - a profile library: fillet, torus, scotia, cavetto, cyma, astragal and bevel;
+  - lathe, and sweep with mitred corners;
+  - bevelled prisms;
+  - arches (pointed, segmental, stilted) with voussoir joints and mouldings;
+  - piers and columns: base, shaft with optional fluting, capital;
+  - vault ribs and the oculus ring;
+  - balustrades and steps;
+  - ring bands with engraved grooves.
+- Per-quality tessellation, sliceable generators like `reliefMeshSlices`, seeded variation and UVs in
+  metres. An optional shared vertex bake serves both platforms: ambient occlusion from the blueprint
+  volumes, oculus and sky visibility, and practical falloff. The Bannerhold kernel is an idea only and
+  is never imported.
+- Acceptance: tests for determinism, finite values, unit normals, indices in range, no degenerate
+  triangles, watertight parts where declared, triangle counts within the declared per-quality budgets,
+  a sliced build equal to the one-shot build, and purity.
+
+**B3 — Materials, generated textures and provenance.** Files:
+`shared/chronicles/archive/materials.ts`, `materials.test.ts`, `scripts/chronicles/textures/*`,
+`main game/public/assets/chronicles/textures/*.webp` and
+`main game/public/assets/chronicles/provenance.json`.
+
+- An original material family: for example, warm limestone ashlar with weathering, a dark polished
+  floor stone with worn paths, patinated bronze with engraving, carved abstract relief panels and
+  small glowing lamp cores.
+- Albedo, normal and ORM maps at 1024 (desktop medium and high) and 512 (desktop low and Quest),
+  generated deterministically by committed scripts (TypeScript or Blender).
+- The map is listed as the creator's painting, with the tower removed by orchestrator inpainting. It
+  is used unmodified.
+- Acceptance:
+  - Every listed texture exists with its manifest hash. Every file under `assets/chronicles` is in
+    `provenance.json`, and nothing listed is missing.
+  - Sizes are powers of two, and a regeneration reproduces the hashes.
+  - The Quest texture estimate per preset stays at or below 64 MB: 4 bytes per texel, mipmaps
+    counted, map included.
+  - The committed texture size is reported (target: at most 8 MB).
+  - `npm run build:quest` mirrors the files, and `check:sync` passes.
+
+**B4 — Desktop archive renderer.** Files: `main game/src/chronicles/scene/ArchiveScene.ts` and its
+modules (architecture, materials, lighting, atmosphere, camera, and the monument refitted from
+`atlas-set`, `atlas-details` and `atlas-markers`; the table retires), the dev-only `scene/harness.html`
+and `harness.ts`, and renders in `main game/artifacts/chronicles/m1/` named `env-*`.
+
+- One `WebGLRenderer` behind the API in ARCHITECTURE §5.1.
+- Build: sliced, in slices of at most 5 ms, with progress. Static geometry is merged per material,
+  and repeats are instanced. B3 materials are used per preset.
+- Lighting and atmosphere:
+  - one shadow-casting key through the oculus, its shadow drawn once;
+  - baked ambient occlusion and indirect light;
+  - at most four dynamic practical lights on medium;
+  - height haze, a light shaft and dust as cheap geometry;
+  - post-processing optional, and off on low.
+- The monument at the blueprint scale, with the bronze frame, the markers and the living details. The
+  rings stay still on their pivots.
+- Camera: the blueprint framings plus the Atlas focus, restrained orbit and zoom within limits, and
+  cuts under reduced motion. Picking for markers and exhibits.
+- Every program is compiled and every texture uploaded before `onReady`. The scene renders only while
+  shown and visible, and it disposes everything, including its context.
+- Acceptance:
+  - The build passes, and the harness is absent from `main game/dist`.
+  - Clay and lit renders of every viewpoint at 1920 × 1080 (medium and high), plus kernel and material
+    contact sheets. Look at each one, and record a short self-assessment against the reference frames.
+  - Measured per preset at the overview and at the heaviest framing: low ≤ 120 draw calls and 300k
+    triangles, medium ≤ 250 and 1.0M, high ≤ 400 and 1.5M. Texture bytes are reported.
+  - Heap growth under 1 MB over 10 s of idle after garbage collection.
+  - Five create–dispose cycles return contexts, canvases and `renderer.info` memory to baseline.
+  - D9 holds.
+
+**B5 — Quest archive room.** Files: `main-game-vr/src/chronicles/scene/archive-room.ts` and its
+helpers, `atlas-diorama.ts` refitted as the monument at the Quest scale (Ray and Poke markers kept),
+and renders in `main-game-vr/artifacts/chronicles/m1/` named `env-*`.
+
+- The same blueprint and kernel at Quest tessellation:
+  - static geometry merged per material, and repeats instanced;
+  - lighting baked into vertex colours, unlit or Lambert materials, and no real-time shadows;
+  - 512 textures (256 on low), with low, medium and high presets;
+  - a small, fill-rate-conscious shaft and haze.
+- Entities are created through `world.createTransformEntity` under an archive root whose floor is XR
+  local-floor y = 0. Three is imported only through `@iwsdk/core`.
+- The build is sliced to a few milliseconds per frame and reports progress. `update()` is
+  allocation-free. `close()` releases every GPU object with `entity.dispose()`. A collection is
+  emphasised by light.
+- Acceptance:
+  - Typecheck and build pass, and no file imports `from 'three'`.
+  - Browser-preview renders from the seated vantage at each preset, looking forward, up and to both
+    sides. Look at each one.
+  - Per preset, with the panel visible: ≤ 120 draw calls, ≤ 250k triangles and a texture estimate
+    ≤ 64 MB.
+  - Five open–close cycles return the geometry and texture counts to baseline.
+  - The runtime is stopped afterwards.
+
+#### Desktop (C)
+
+**C0 — Housekeeping.** Files: `main game/scripts/verify-chronicles.mjs`,
+`main game/artifacts/home-artwork.json` and `visual-review.json`.
+
+- Add a milestone argument for the output folder.
+- Correct the stale delivery hashes to the delivered map (537 628 B, `d9f143ad…`), and prove it with
+  a `verify-home.mjs` run.
+- Take a CDP trace that attributes the M0 tab-switch long tasks. Suspects: the full-stage blur
+  filter, React re-rendering and first-use compilation.
+- Acceptance: verify-home passes, and the attribution is recorded in `m1/`.
+
+**C1 — The archive in the Chronicles screen.** Files: `main game/src/Chronicles.tsx`,
+`Chronicles.css`, `main game/src/chronicles/*.ts` (outside `scene/`) and minimal hunks in
+`main game/src/App.tsx`: navigation hidden and inert, LB/RB and Q/E cycling collections, and the D7
+overrides kept.
+
+- Mount `ArchiveScene`. State goes through the shared reducer under the content policy, plus local
+  focus state.
+- A visual loading state from the click until `onReady`: a compositor-driven animation, progress from
+  `onProgress`, named by the approved title. Then the entrance settle, then interaction.
+- Collections by tab, LB/RB, Q/E, keyboard, gamepad and mouse.
+- On the monument: nation markers, labels and the record panel. The Interregnum and Laws records sit
+  over their bay framings, without the full-stage blur. The dormant bay is absent from navigation.
+- Back follows D5.
+- A WebGL failure or a lost context shows the flat painting with the same records.
+- The 844 × 390 landscape layout works, and no React state changes per frame.
+- Acceptance: the C2 runs pass. Every on-screen string comes from `shared/chronicles` or the existing
+  menu chrome. Changes stay in the listed files and are entered in the register.
+
+**C2 — Desktop evidence.** Files: `main game/scripts/verify-chronicles.mjs` and
+`main game/artifacts/chronicles/m1/`.
+
+- A production build on `vite preview` (a port in 5190–5199, stopped afterwards), driven by
+  Playwright with SwiftShader.
+- Flows:
+  - loading, captured mid-way, then the entrance and the overview;
+  - every collection by each input;
+  - nation records by mouse and keyboard;
+  - Back to Home;
+  - reduced motion, the flat fallback and 844 × 390;
+  - a DOM text inventory checked against the shared strings;
+  - the parity fixture, replayed.
+- CDP measurements:
+  - long tasks after interactive, with attribution;
+  - script time per frame (p50, p95, p99);
+  - heap and canvases before and after five Home ↔ Chronicles round trips;
+  - stats per preset;
+  - the atmosphere rebuild on exit;
+  - one 4× CPU-throttled run: entry and one collection switch.
+- Acceptance:
+  - Captures at 1280 × 720 for every state, 1920 × 1080 hero frames and 844 × 390. Look at all of
+    them. The manifest records the host load and SwiftShader.
+  - No Chronicles long task over 50 ms after interactive at medium.
+  - The budgets are met.
+  - After the round trips, canvases are back at baseline and heap growth is under 5 MB after garbage
+    collection.
+  - The suite passes end to end.
+
+#### Quest (D)
+
+**D1 — Quest state on the shared reducer.** Files: `main-game-vr/src/quest-state.ts`,
+`quest-state.test.ts` and the `test` script in `main-game-vr/package.json`.
+
+- `QuestState` embeds `ChroniclesSceneState` in place of `exhibit` and `record`. The existing events
+  map onto the shared ones, and Back follows `canUnwind`. Pause and resume keep the state, and the
+  Home tile resets it.
+- The `test` script runs `src/quest-state.test.ts` and the aggregator
+  `../shared/chronicles/chronicles.test.ts` instead of the individual Chronicles files.
+- Acceptance: `npm run test:quest` passes. The Brief E Chronicles behaviours hold. The parity fixture
+  replays in `quest-state.test.ts`. The register entries are updated.
+
+**D2 — Archive integration.** Files: the new `main-game-vr/src/chronicles/archive-controller.ts` and
+`archive-assets.ts`; the Chronicles hunks of `crownfall-system.ts`, `ui-contract.ts`, `assets.ts`
+(one spread line) and `scripts/generate-quest-ui.ts`; the regenerated `public/ui/menu.uikitml`; and
+`scripts/check-chronicles-sync.ts`.
+
+- Room lifecycle: it opens on entry, stays through pause, closes on leaving, and is visible only on
+  the Chronicles screen.
+- The menu atmosphere plane and the sorcerer are hidden while the room is open.
+- The panel takes its control-surface pose (D6).
+- Collection tabs drive the emphasis, and markers drive the reducer.
+- A visual loading indicator shows on `View_Chronicles` until the room is ready. The room fades in,
+  instantly under reduced motion.
+- Recenter happens under a fade. Pause, including the automatic pause on visibility blur, holds the
+  room. Exit VR is unchanged.
+- Controls keep working after hand tracking is lost and recovered.
+- The preview-only framing never applies in XR.
+- The sync check covers the new ids and every registered room texture. With the switch off, it
+  confirms that no non-approved string is present.
+- Acceptance:
+  - `npm run generate` (no hand edits; `View_Chronicles` kept), `check:sync`, typecheck and build
+    pass.
+  - Body text at the control surface subtends at least 1.0° from both vantages (computed).
+  - The `crownfall-system.ts` diff stays in Chronicles hunks and is entered in the register.
+
+**D3 — Quest evidence.** Files: `main-game-vr/scripts/capture-chronicles.mjs`,
+`chronicles-runtime-step.mjs` and `main-game-vr/artifacts/chronicles/m1/`.
+
+- One runtime: `npx @iwsdk/cli dev up --headless`, ready on `browserCommandReady`, stopped with
+  `dev down`.
+- Fix the bare-ground check.
+- Browser preview, seated and standing.
+- An IWER XR session in hand mode, with controllers disconnected:
+  - pinch the Home tile;
+  - look-around captures;
+  - pinch a marker, then a collection tab;
+  - Back to Home;
+  - pause on visibility blur, then resume;
+  - recenter after a 40° head turn: the camera's world pose still equals the emulated headset pose,
+    which proves the XR origin was never moved;
+  - lose hand tracking, recover it, then pinch.
+- Render stats for every capture, the texture estimate and the presets.
+- An allocation probe: a profile trace, or heap sampling over 600 idle frames, attributes no
+  allocation to the room or the controller update.
+- Acceptance:
+  - `xr status` reports an active session for every XR capture.
+  - Every interaction is proven by state, not by a screenshot alone.
+  - Every preset stays within 120 draw calls, 250k triangles and 64 MB.
+  - The manifest marks emulation and SwiftShader. Look at every capture.
+  - The runtime is stopped, and nothing claims headset results.
+
+#### Architect (A)
+
+**A1 — Blueprint gate G1.** Review the generated blueprint and the plan renders (read the PNG)
+against B1, the directive's composition requirements and D9. Accept, or return findings by severity.
+Record the decision and its date in §1, and fold any contract refinement into ARCHITECTURE §4.5.
+
+**A2 — Critic round G2 and checkpoint G3.**
+
+- Assemble the review packet: the blueprint; the desktop and Quest `m1/` captures, including the
+  clay and XR captures; the measurements; the text inventory; the diff stat; and the register.
+- Run the five critics independently. Each finding carries a severity, evidence and a corrective
+  action. Findings about collections scheduled for M2–M5 are filed against those milestones, unless
+  M1 regresses them.
+- Allow up to three correction rounds, in this order: lighting and atmosphere, then primary forms,
+  then materials, then detail.
+- Then update this file and ARCHITECTURE.
+
+### 5.4 M1 exit criteria
+
+1. G1 is recorded before any scene composition.
+2. `npm run build` passes (desktop `tsc -b` and vite; Quest typecheck and vite).
+3. `npm run test:quest` passes, including the new status, scene-state, blueprint, kernel and
+   materials tests.
+4. `npm run check:sync` passes with the extended Chronicles line.
+5. The private verifier passes, and `shared/chronicles/content.ts` is unchanged since `32464d0`.
+6. Desktop:
+   - Home → Chronicles shows the loading state, then the archive. The first settled frame shows the
+     monument, the mechanism and the light.
+   - Collections, nation records and Back work by mouse, keyboard and gamepad.
+   - Reduced motion cuts the camera moves. The flat fallback and 844 × 390 work.
+7. Quest:
+   - Home → Chronicles works in the browser preview, and in an IWER XR session driven by hand ray and
+     pinch.
+   - The room surrounds a stationary viewer, who is never moved.
+   - Markers, tabs, Back, Pause/Resume, Recenter and Exit VR work.
+8. Budgets are measured and met:
+   - desktop medium: ≤ 250 draw calls and ≤ 1.0M triangles; low and high within theirs;
+   - Quest, at every preset: ≤ 120 draw calls, ≤ 250k triangles and ≤ 64 MB of textures;
+   - no Chronicles long task over 50 ms once interactive, and no per-frame allocation;
+   - no leak over five round trips;
+   - only one render loop runs while the archive is open, and the menu loops resume on exit.
+9. The evidence is in the two `m1/` folders, and every capture has been looked at. The manifests state
+   emulation and SwiftShader. Nothing claims headset results.
+10. The five critics have reviewed the evidence, and no Blocker or Major finding remains unresolved.
+11. Boundaries hold:
+    - no on-screen words added, and D9 holds;
+    - no edits to `web/`, the chess core, the Play screens, `main-game-vr/src/chess/`, the other
+      worktrees or unlisted shared files;
+    - every shared-file change is in the register.
+12. This file records the completed behaviour, the evidence, the measurements, the open issues and the
+    M2 increment.
+
+### 5.5 Scope cuts
+
+- **Later collections:**
+  - Annals interaction (M3): the rings stay still.
+  - Laws pieces, formation and piece inspection (M4): the dais is architecture only.
+  - Contested Record content, tab and title (M5): its bay stays dormant.
+  - Nation vignettes, landmark miniatures, the identity reveal and the relief's steep-slope fix (M2).
+- **New words:** every new on-screen string, including captions, proposals, interface text and
+  a labelled retry button.
+- **P3:** discovery state, environmental animation beyond today's relief details and subtle dust and
+  light, and elaborate transitions.
+- **The `suspended` port** in `Atmosphere.tsx` and `CreatureStage.tsx`, which is an orchestrator
+  decision (D7).
+- **The occlusion reveal,** unless the sweep test demands it (D8).
+- **Optional:** Blender hero assets and Cycles lightmaps. KTX2 compression only if the Quest texture
+  budget needs it.
+- **Throttled run:** the 4× CPU throttle covers one entry and one collection switch only.
+- **Elsewhere:**
+  - physical headset validation (creator);
+  - README edits (M6);
+  - the War Record interface (M5);
+  - any change to Herald Board or My Legacy.
 
 ## 6. Dependencies on other workflows
 
@@ -168,6 +586,12 @@ Final M0 run on 29 October 2026, 16:43–16:45 UTC, from `/home/user/crownfall-c
 | Private content verifier (`cd main-game-vr && npx tsx <verify-content.ts> /home/user/crownfall-chronicles`) | pass: 315 passed, 0 failed. It scans more files now that the documents exist. Before M0 it was 282 passed, 1 failed, because of one comment in `verify-chronicles.mjs`, fixed in M0. |
 | M0 desktop baseline, 16:23–16:28 UTC (production build on vite preview, port 5192, stopped afterwards; Playwright with SwiftShader; host load about 17–20) | Home → Chronicles works; the record opens; both exhibit tabs switch; Back returns Home with the tile selected; the relief canvas is released on exit; no page errors. Captures and numbers in `main game/artifacts/chronicles/m0/`. |
 
+Baseline re-run at M1 planning, 29 October 2026, about 16:55 UTC, on the unchanged checkpoint
+(`32464d0`, clean tree): `npm run test:quest` passed 40 tests with 0 failures; `npm run check:sync`
+passed (24 Chronicles Quest UI ids, 299 generated elements, 21 byte-identical assets); the private
+content verifier reported 315 passed and 0 failed. The builds were not re-run, because nothing has
+changed since the final M0 run.
+
 Quest evidence is the Brief E browser-preview capture set (`main-game-vr/artifacts/chronicles/brief-e/`,
 16:04–16:07, current map). No Quest runtime was started in M0 because of problem 10. Nothing here is
 physical-headset evidence.
@@ -177,7 +601,7 @@ physical-headset evidence.
 | Milestone | Scope | Status | Evidence |
 | --- | --- | --- | --- |
 | M0 | Resume and architecture audit | complete | This file, `ARCHITECTURE.md`, M0 captures, checkpoint commit |
-| M1 | Archive environment and central monument, rendering on desktop and Quest, visual-critic round | not started | — |
+| M1 | Archive environment and central monument, rendering on desktop and Quest, visual-critic round | planned (§5); G1 open | — |
 | M2 | Living Atlas: four nations, interactive selection, vignettes | partial | Relief, rings, nation framings and records exist on both platforms. Vignettes and the identity reveal are missing. |
 | M3 | Annals: timeline mechanism and the foundational anchors | placeholder | Approved records for Year 0, Years 1–12, Year 19 and Year 33, shown in a 2D timeline |
 | M4 | Laws of the Gambit | placeholder | Three approved articles in 2D. No formation and no piece inspection. |
@@ -196,15 +620,15 @@ files.
 | --- | --- | --- | --- |
 | `shared/menu/types.ts` | `MenuScreen` gains `"chronicles"`; `HomeTileContent.destination?: "chronicles"` | **conflict** (Legacy adds `destination?: "legacy"` on the same line) | `destination?: "legacy" \| "chronicles"` |
 | `shared/menu/content.ts` | Imports `CHRONICLES_MAP`; the Chronicles tile uses the map and `destination: "chronicles"`; `getModalContent` returns no unavailable text for tiles with a destination; comment updated | **conflict** in the comment only | Keep both destinations; merge the comment |
-| `main-game-vr/package.json` (`test` script) | Adds the Chronicles content and relief tests | **conflict** (Legacy adds its tests on the same line) | Union of both test lists |
+| `main-game-vr/package.json` (`test` script) | M1 D1, the one-time change: `tsx --test src/quest-state.test.ts ../shared/chronicles/chronicles.test.ts`. The aggregator replaces the separate content and relief entries and runs the content, status, scene-state, relief, blueprint, kernel and materials suites. | **conflict** (Legacy adds its tests on the same line) | Keep Legacy's entries plus the two Chronicles entries |
 | `main game/src/App.tsx` | `chronicles` screen routing: ref, origins, activate, Back, focus, keyboard and gamepad moves, footer, and the `stageResting` overrides for Atmosphere and the sorcerer | Legacy's uncommitted worktree edits the same hunks | Union. Replace `stageResting` with Legacy's `menuSuspended`, set for `legacy` or `chronicles`. |
-| `main-game-vr/src/quest-state.ts` | `chronicles` screen, `exhibit` and `record`, and the `exhibit`, `record`, `map` and `close-record` events; Home destination routing; Back | Legacy's uncommitted worktree adds a `legacy` route in the same places | Union. In M1 the Chronicles fields move into the shared scene state. |
-| `main-game-vr/src/quest-state.test.ts` | Chronicles tests; the Home test no longer expects a Chronicles dialog | Legacy edits the same Home test | Union |
-| `main-game-vr/src/crownfall-system.ts` | Diorama lifecycle, Chronicles rendering, atmosphere hold, hidden sorcerer, preview framing, `questText` | Legacy's uncommitted worktree changes the same update loop | Union: hold the atmosphere when paused, in Chronicles or in Legacy |
-| `main-game-vr/src/assets.ts` | Map texture entry | Legacy adds entries nearby | Union |
-| `main-game-vr/src/ui-contract.ts` | `View_Chronicles`, record text ids, `questText`, `QUEST_CHRONICLE_*` | none (Legacy uses its own contract file) | — |
-| `main-game-vr/public/ui/menu.uikitml` | Regenerated with `View_Chronicles` | regenerate | Never hand-merge; rerun `npm run generate` after merging |
-| `scripts/generate-quest-ui.ts` | Generates `View_Chronicles`; imports `questText` | none (Legacy has its own generator) | — |
+| `main-game-vr/src/quest-state.ts` | `chronicles` screen. M1 D1: `QuestState.chronicles: ChroniclesSceneState` replaces `exhibit` and `record`, reduced by `reduceChroniclesScene` under `CHRONICLES_CONTENT_POLICY`; the `exhibit`, `record`, `map` and `close-record` events map onto the shared `collection`, `entry`, `map` and `back`, and new `focus` and `loaded` events pass through (`loaded` also lands while paused over Chronicles); a no-op keeps the same `QuestState`; Back follows `canUnwind`, then returns Home; the Home tile opens `createChroniclesScene()`. | Legacy's uncommitted worktree adds a `legacy` route in the same places | Union of the routes and events; keep the `loaded` exception in the pause guard |
+| `main-game-vr/src/quest-state.test.ts` | Chronicles tests, rewritten in M1 against the shared scene state (the Brief E behaviours, Back through the nation focus, close-record, the load report during pause), the replay of `scene-state.fixture.ts` through the Quest events, and the control-surface test computed from the blueprint vantages. The Home test no longer expects a Chronicles dialog. | Legacy edits the same Home test | Union |
+| `main-game-vr/src/crownfall-system.ts` | Chronicles rendering and `questText`. M1 D2: `ArchiveController` replaces the diorama (constructed in `init` with the anchor, panel, state entity and camera; `sync` from `render`; `comfort()` at the end of `applyComfort`; `recenter(now)` defers to the archive's fade; `update` every frame); the atmosphere object and the sorcerer are hidden, and the atmosphere held, while the room is open; the record panel reads `getOpenEntry` and shows the canon marker chip; `selectedControl` reports the open or focused record; the creature retry stays off the Chronicles screen; the preview framing turns toward the control surface. No Chronicles-path file names the XR rig. | Legacy's uncommitted worktree changes the same update loop | Union: hold the atmosphere when paused, in Chronicles or in Legacy; hide it while either room is open |
+| `main-game-vr/src/assets.ts` | Map texture entry; M1 D2 adds one import and one spread line, `...archiveAssets(publicUrl)` (13 lazy archive-room textures from the shared material descriptors) | Legacy adds entries nearby | Union |
+| `main-game-vr/src/ui-contract.ts` | `View_Chronicles`, record text ids, `questText`, `QUEST_CHRONICLE_*`; M1 D2 adds the loading-bar and marker-chip ids, collection ids for tabs and panes, the loading-bar layout and `QUEST_CHRONICLE_EXTENT` (the regions the control surface keeps clear of the monument) | none (Legacy uses its own contract file) | — |
+| `main-game-vr/public/ui/menu.uikitml` | Regenerated with `View_Chronicles` (302 elements after M1: the wordless loading bar and the empty marker chip) | regenerate | Never hand-merge; rerun `npm run generate` after merging |
+| `scripts/generate-quest-ui.ts` | Generates `View_Chronicles`; imports `questText`; M1 D2 adds the wordless loading bar under the tabs, the empty `Record_Marker` chip and its style, and their required ids | none (Legacy has its own generator) | — |
 | `scripts/generate-quest-decoration.mjs` | Shared modules may require one another | none | — |
 | `scripts/check-menu-sync.ts` | M0 reduced it to an import and one call to `checkChroniclesSync` (it was a 120-line restructure) | auto-merges with committed Legacy; Legacy's worktree appends an optional check at the end | Keep both hooks |
 | `scripts/sync-menu-assets.mjs` | Home asset list drops `chronicles`; adds the `assets/chronicles` directory | none | — |

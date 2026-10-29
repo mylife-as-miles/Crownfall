@@ -1,33 +1,35 @@
+/* Chronicles is a full-stage layer: it covers the menu stage, the main
+   navigation is hidden and inert, and its own header takes the navigation's
+   place. Its room background is opaque, so once its entrance has finished the
+   menu's stage layers beneath it stop compositing (see the end of this file). */
 .chronicles-screen {
   --chronicles-accent: var(--menu-accent, #bf791a);
   --chronicles-left: 8.229167cqw;
-  --chronicles-width: 65.130208cqw;
-  --chronicles-top: 26.666667cqh;
-  --chronicles-height: 55.833333cqh;
+  --chronicles-top: 19.5cqh;
+  --chronicles-bottom: 84.5cqh;
+  --chronicles-record-left: 66.40625cqw;
+  --chronicles-record-width: 27.34375cqw;
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 8;
   pointer-events: none;
   color: #b5b2ac;
-  /* The archive room before the relief appears, and behind the flat painting. */
   background: radial-gradient(ellipse 72% 64% at 52% 56%, #2a2116 0%, #16110b 58%, #0b0806 100%);
 }
 
-/* The relief fills the stage and fades in on its first frame. Behind the
-   Interregnum and the Laws its last frame rests as a soft, dim backdrop. */
+/* The stage fills the layer and fades in once its first frame is complete. */
 .chronicles-stage {
   position: absolute;
   inset: 0;
   opacity: 0;
   pointer-events: auto;
-  transition: opacity 900ms cubic-bezier(.2, .65, .35, 1), filter 320ms ease;
+  transition: opacity 600ms cubic-bezier(.2, .65, .35, 1);
 }
-.chronicles-screen[data-atlas="ready"] .chronicles-stage { opacity: 1; }
-.chronicles-screen[data-atlas="flat"] .chronicles-stage { display: none; }
-.chronicles-screen:not([data-chronicles-exhibit="atlas"]) .chronicles-stage {
-  pointer-events: none;
-  filter: blur(max(6px, .6cqw)) brightness(.62) saturate(.9);
-}
+.chronicles-screen[data-load="ready"] .chronicles-stage { opacity: 1; }
+/* A stage that does not draw the shown collection rests behind it, receded. */
+.chronicles-screen[data-load="ready"] .chronicles-stage[data-stage-resting] { opacity: .34; }
+.chronicles-screen:is([data-load="flat"], [data-load="failed"]) .chronicles-stage { display: none; }
+.chronicles-screen:not([data-collection="atlas"]) .chronicles-stage { pointer-events: none; }
 .chronicles-stage-canvas {
   position: absolute;
   inset: 0;
@@ -39,24 +41,105 @@
 }
 .chronicles-stage-canvas[data-over="marker"] { cursor: pointer; }
 .chronicles-stage-canvas[data-dragging] { cursor: grabbing; }
-/* Lamplight falls off toward the room's edges; the top stays dark under the menu. */
+/* Light falls off toward the room's edges and the header. Behind the timeline
+   and the articles a scrim keeps their words legible over the stage; it is a
+   plain gradient whose opacity changes, never a filter on the stage. */
 .chronicles-shade {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(180deg, #0b0806f2 0%, #0b0806e0 20%, #0b0806b3 26%, #0b080600 34%),
+    linear-gradient(180deg, #0b0806e6 0%, #0b0806b3 14%, #0b080600 24%),
     linear-gradient(0deg, #0b0806cc 0%, #0b080600 16%),
     radial-gradient(ellipse 78% 72% at 50% 56%, #07050300 52%, #070503a6 100%);
 }
+.chronicles-shade:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    linear-gradient(90deg, #0b0806e0 0%, #0b0806b8 34%, #0b080600 62%),
+    linear-gradient(0deg, #0b0806d9 0%, #0b080600 42%);
+  transition: opacity 240ms ease;
+}
+.chronicles-screen:not([data-collection="atlas"]) .chronicles-shade:after { opacity: 1; }
 
+/* Loading: an orbit of two rings that turn on the compositor (transform only),
+   so they keep moving while the stage compiles, and a rule that fills with the
+   stage's reported progress. Its only name is the screen's approved title. */
+.chronicles-loading {
+  position: absolute;
+  left: 50%;
+  top: 53%;
+  display: grid;
+  justify-items: center;
+  gap: 3.2cqh;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 320ms ease, visibility 0s linear 320ms;
+}
+.chronicles-screen:not([data-load="loading"]) .chronicles-loading { opacity: 0; visibility: hidden; }
+.chronicles-loading-orbit {
+  position: relative;
+  width: max(8.5cqw, 64px);
+  aspect-ratio: 1;
+}
+.chronicles-loading-ring {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+.chronicles-loading-ring--outer {
+  inset: 0;
+  border: 1px dashed #b98a4a73;
+  box-shadow: inset 0 0 0 .3cqw #0b080699, 0 0 2.4cqw #c27a1f14;
+}
+.chronicles-loading-ring--inner {
+  inset: 17%;
+  border: 1px solid #b98a4a26;
+  border-top-color: #e2a654;
+  border-right-color: #e2a65480;
+  box-shadow: 0 -.2cqw .5cqw -.25cqw #f0a2406b;
+}
+.chronicles-loading-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 9%;
+  aspect-ratio: 1;
+  background: #d49130;
+  box-shadow: 0 0 .9cqw #f39422aa;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.chronicles-screen[data-load="loading"] .chronicles-loading-ring--outer { animation: chronicles-turn 16s linear infinite; }
+.chronicles-screen[data-load="loading"] .chronicles-loading-ring--inner { animation: chronicles-turn 2.6s linear infinite reverse; }
+.chronicles-loading-track {
+  position: relative;
+  width: max(13cqw, 110px);
+  height: 2px;
+  overflow: hidden;
+  background: #9d78332e;
+}
+.chronicles-loading-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #9d6f2b, #e2a654);
+  box-shadow: 0 0 .5cqw #dc8d2066;
+  transform: scaleX(var(--chronicles-progress, 0));
+  transform-origin: left center;
+  transition: transform 260ms cubic-bezier(.2, .65, .35, 1);
+  will-change: transform;
+}
+
+/* The header stands where the main navigation stood. */
 .chronicles-header {
   position: absolute;
   z-index: 2;
   left: var(--chronicles-left);
-  top: 20.555556cqh;
-  width: var(--chronicles-width);
-  height: 4.444444cqh;
+  top: 10.78cqh;
+  width: calc(100cqw - 2 * var(--chronicles-left));
+  height: 4.48cqh;
   display: flex;
   align-items: center;
   gap: 1.25cqw;
@@ -75,6 +158,32 @@
   text-shadow: 0 1px 2px #000, 0 0 6px #0009;
 }
 .chronicles-header-rule { flex: 0 0 1px; height: 44%; background: #9d78336b; }
+.chronicles-shoulder {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: max(1.72cqw, 20px);
+  height: max(2cqh, 12px);
+  cursor: pointer;
+  opacity: .6;
+  transition: opacity 140ms ease;
+}
+.chronicles-shoulder:hover { opacity: .95; }
+.chronicles-shoulder span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  font-size: max(.62cqw, 7px);
+  font-weight: 700;
+  line-height: max(2cqh, 12px);
+  text-align: center;
+  color: #170e06;
+  border-radius: .1cqw;
+  background: #ac5d18;
+  box-shadow: 0 0 .22cqw #92551a;
+}
+.hide-control-hints .chronicles-shoulder { display: none; }
 .chronicles-tabs { display: flex; align-items: stretch; gap: 1.875cqw; height: 100%; min-width: 0; }
 .chronicles-tab {
   position: relative;
@@ -109,24 +218,17 @@
 .chronicles-tab.is-active:after { transform: scaleX(1); }
 .chronicles-tab:focus-visible { outline: 1px solid #ce9849; outline-offset: 3px; }
 
-.chronicles-exhibit {
+.chronicles-collection {
   position: absolute;
+  inset: 0;
   z-index: 1;
-  left: var(--chronicles-left);
-  top: var(--chronicles-top);
-  width: var(--chronicles-width);
-  height: var(--chronicles-height);
-  pointer-events: auto;
-  animation: chronicles-exhibit-enter 240ms cubic-bezier(.16, 1, .3, 1);
+  pointer-events: none;
 }
-.chronicles-exhibit[hidden] { display: none; }
-/* The Atlas exhibit is the whole stage: the relief takes the pointer and
-   only the record and the flat painting sit above it. */
-.chronicles-exhibit--atlas { inset: 0; width: auto; height: auto; pointer-events: none; animation: none; }
+.chronicles-collection[hidden] { display: none; }
 
-/* Each nation's place on the relief. The buttons stay in the focus order for
-   the keyboard and screen readers while the rings are drawn in 3D; the scene
-   moves each marker over its ring and sets the pin height and ring size. */
+/* Atlas: each nation's place on the stage. The buttons stay in the focus order
+   for the keyboard and screen readers while the markers are drawn in 3D; the
+   stage moves each label over its marker and sets the pin height and ring size. */
 .chronicles-hotspots { position: absolute; inset: 0; pointer-events: none; }
 .chronicles-hotspots:not(.chronicles-hotspots--flat) .chronicles-hotspot {
   position: absolute;
@@ -152,6 +254,7 @@
   pointer-events: none;
   will-change: transform;
 }
+.chronicles-screen[data-load="loading"] .chronicles-hotspots:not(.chronicles-hotspots--flat) .chronicles-marker { visibility: hidden; }
 .chronicles-marker-caption {
   position: absolute;
   top: calc(var(--chronicles-pin) * .55);
@@ -186,7 +289,8 @@
   position: absolute;
   left: var(--chronicles-left);
   top: var(--chronicles-top);
-  height: var(--chronicles-height);
+  height: calc(var(--chronicles-bottom) - var(--chronicles-top));
+  max-width: calc(var(--chronicles-record-left) - var(--chronicles-left) - 1.2cqw);
   aspect-ratio: 2048 / 1529;
   background: #10120e;
   box-shadow: 0 0 0 1px #91714366, 0 1.5cqh 4cqh #0004;
@@ -231,15 +335,15 @@
 }
 .chronicles-hotspots--flat .chronicles-hotspot:focus-visible { outline-offset: 3px; }
 .chronicles-hotspots--flat .chronicles-marker { --chronicles-pin: 0px; --chronicles-ring: max(1.4cqw, 12px); }
-.chronicles-screen[data-atlas="flat"] .chronicles-record-slot { left: calc(var(--chronicles-left) + var(--chronicles-height) * 2048 / 1529 + .625cqw); }
 
-/* The record: the Showcase library panel, set beside the focused nation. */
+/* The record: the Showcase library panel, at the right of every collection. */
 .chronicles-record-slot {
   position: absolute;
-  left: 66.40625cqw;
+  z-index: 2;
+  left: var(--chronicles-record-left);
   top: var(--chronicles-top);
-  width: 27.34375cqw;
-  height: var(--chronicles-height);
+  width: var(--chronicles-record-width);
+  height: calc(var(--chronicles-bottom) - var(--chronicles-top));
   pointer-events: none;
 }
 .chronicles-record {
@@ -264,9 +368,9 @@
   background: var(--chronicles-accent);
   box-shadow: 0 0 .6cqw #dc8d2066;
 }
-.chronicles-record h2,
-.chronicles-entry h2 {
+.chronicles-record h2 {
   margin: 1.2cqh 0 1.4cqh;
+  font-size: max(1.5625cqw, 13px);
   font-weight: 500;
   line-height: 1.15;
   letter-spacing: .025cqw;
@@ -274,13 +378,19 @@
   text-wrap: balance;
   color: #dfd2b6;
 }
-.chronicles-record h2 { font-size: max(1.5625cqw, 13px); }
 .chronicles-record-rule { display: block; height: 1px; margin-bottom: 1.7cqh; background: linear-gradient(90deg, #9d824b99, #9d824b00 85%); }
-.chronicles-body { margin: 0; font-size: max(1.05cqw, 10px); line-height: 1.6; color: var(--menu-modal-text, #aaa79d); }
-.chronicles-record .chronicles-body { color: #b7b3a6; }
-.chronicles-accounts { margin-top: 2.4cqh; display: grid; gap: 2cqh; }
-.chronicles-account { padding-top: 2cqh; border-top: 1px solid #9d78333d; }
-.chronicles-account h3 { margin: 1cqh 0; font-size: max(1.17cqw, 11px); font-weight: 600; line-height: 1.2; text-transform: uppercase; color: #ccc9bf; }
+.chronicles-body { margin: 0; font-size: max(1.05cqw, 10px); line-height: 1.6; color: #b7b3a6; }
+.chronicles-canon-marker {
+  display: inline-block;
+  margin: 0 0 1.2cqh;
+  padding: .3cqh .55cqw;
+  border: 1px dashed #c9a05c99;
+  font-size: max(.75cqw, 8px);
+  font-weight: 600;
+  letter-spacing: .07cqw;
+  text-transform: uppercase;
+  color: #e0b56a;
+}
 
 /* Trust labels share the Showcase status idiom; each label keeps its own mark. */
 .chronicles-label {
@@ -302,39 +412,33 @@
 .chronicles-label--rumor .chronicles-label-mark { background: transparent; outline: 1px dashed #98958e; outline-offset: -1px; }
 .chronicles-label--rumor .chronicles-label-name { color: #98958e; }
 
-/* The Interregnum and the Laws use the Showcase library panel, glazed over
-   the resting relief. */
-.chronicles-panel {
-  position: relative;
-  isolation: isolate;
-  height: 100%;
-  overflow: hidden;
-  border: 1px solid #9d783359;
-  background: #151711d9;
-  box-shadow: 0 1.5cqh 4cqh #0006;
-}
-.chronicles-panel:before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #11140df2, #181c12d1 55%, #15190fa6); }
-.chronicles-interregnum { display: flex; flex-direction: column; }
+/* The Interregnum: its four stops on one engraved rail, low across the stage,
+   leaving the mechanism above them clear. */
 .chronicles-timeline {
   --chronicles-node: max(1.015625cqw, 9px);
-  flex: 0 0 auto;
+  position: absolute;
+  left: var(--chronicles-left);
+  top: 70cqh;
+  width: 54cqw;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin: 5cqh 1.6cqw 0;
+  pointer-events: auto;
 }
-.chronicles-stop {
+.chronicles-item {
+  border: 0;
+  background: transparent;
+  color: #a6a18e;
+  transition: color 140ms ease, background-color 140ms ease, border-color 140ms ease;
+}
+.chronicles-item--interregnum {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5cqh;
   min-width: 0;
   padding: 1cqh 0 1.2cqh;
-  border: 0;
-  background: transparent;
-  color: #a6a18e;
-  transition: color 140ms ease;
 }
-.chronicles-stop:focus-visible { outline: none; }
+.chronicles-item:focus-visible { outline: none; }
 .chronicles-stop-label {
   font-size: max(1.015625cqw, 10px);
   font-weight: 600;
@@ -349,8 +453,8 @@
 .chronicles-stop-rail:after { content: ""; position: absolute; top: 50%; height: 1px; background: #b8995a; }
 .chronicles-stop-rail:before { left: 0; right: 50%; }
 .chronicles-stop-rail:after { left: 50%; right: 0; }
-.chronicles-stop:first-child .chronicles-stop-rail:before { background: linear-gradient(90deg, transparent, #9d824b80); }
-.chronicles-stop:last-child .chronicles-stop-rail:after { background: linear-gradient(90deg, #9d824b80, transparent); }
+.chronicles-item--interregnum:first-child .chronicles-stop-rail:before { background: linear-gradient(90deg, transparent, #9d824b80); }
+.chronicles-item--interregnum:last-child .chronicles-stop-rail:after { background: linear-gradient(90deg, #9d824b80, transparent); }
 .chronicles-stop-node {
   position: relative;
   z-index: 1;
@@ -371,90 +475,70 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #8f9380;
+  text-shadow: 0 1px 2px #000b;
   transition: color 140ms ease;
 }
-.chronicles-stop:hover { color: #e6dacc; }
-.chronicles-stop:hover .chronicles-stop-node { border-color: #f39422; }
-.chronicles-stop:hover .chronicles-stop-era { color: #b5b2ac; }
-.chronicles-stop.is-selected { color: #e3b76a; }
-.chronicles-stop.is-selected .chronicles-stop-era { color: #c9b48a; }
-.chronicles-stop.is-selected .chronicles-stop-node {
+.chronicles-item--interregnum:hover { color: #e6dacc; }
+.chronicles-item--interregnum:hover .chronicles-stop-node { border-color: #f39422; }
+.chronicles-item--interregnum.is-selected { color: #e3b76a; }
+.chronicles-item--interregnum.is-selected .chronicles-stop-era { color: #c9b48a; }
+.chronicles-item--interregnum.is-selected .chronicles-stop-node { border-color: #f0b25a; transform: rotate(45deg) scale(1.18); }
+.chronicles-item--interregnum.is-open .chronicles-stop-node {
   border-color: #f0b25a;
   background: var(--menu-modal-heading, #d49130);
   box-shadow: 0 0 .9cqw #f39422aa;
   transform: rotate(45deg) scale(1.3);
 }
-.chronicles-stop:focus-visible .chronicles-stop-node { box-shadow: 0 0 0 max(2px, .16cqw) #12140f, 0 0 0 calc(max(2px, .16cqw) + 2px) var(--menu-focus, #df8a26), 0 0 .9cqw #f39422aa; }
-.chronicles-stop:focus-visible .chronicles-stop-label { text-decoration: underline; text-decoration-color: #df8a2699; text-decoration-thickness: 1px; text-underline-offset: .45cqh; }
-.chronicles-interregnum-body { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: space-between; gap: 3cqw; padding: 0 2.6cqw 3.2cqh 3.1cqw; }
-.chronicles-stop-detail { flex: 0 1 44cqw; min-width: 0; }
-.chronicles-entry { animation: chronicles-entry-enter 180ms cubic-bezier(.2, .65, .35, 1); }
-.chronicles-entry h2 { margin: 1.3cqh 0 1.7cqh; font-size: max(2.34375cqw, 17px); line-height: 1.1; }
-.chronicles-interregnum .chronicles-body { font-size: max(1.40625cqw, 12px); line-height: 1.5; color: #c1bea9; }
+.chronicles-item--interregnum:focus-visible .chronicles-stop-node { box-shadow: 0 0 0 max(2px, .16cqw) #12140f, 0 0 0 calc(max(2px, .16cqw) + 2px) var(--menu-focus, #df8a26), 0 0 .9cqw #f39422aa; }
+.chronicles-item--interregnum:focus-visible .chronicles-stop-label { text-decoration: underline; text-decoration-color: #df8a2699; text-decoration-thickness: 1px; text-underline-offset: .45cqh; }
+
+/* The Laws: the approved articles as a column of titles beside the dais. */
 .chronicles-articles {
   position: absolute;
-  inset: 0 auto 0 0;
-  width: 48cqw;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 1.9cqh 1cqw 1.9cqh 1.25cqw;
+  left: var(--chronicles-left);
+  top: var(--chronicles-top);
+  width: 27cqw;
   display: flex;
   flex-direction: column;
   gap: .55cqh;
+  pointer-events: auto;
 }
-.chronicles-article {
-  position: relative;
-  flex: 0 0 auto;
-  padding: 1.5cqh 1.4cqw 1.7cqh 1.5cqw;
+.chronicles-item--laws {
+  display: flex;
+  align-items: center;
+  gap: .9cqw;
+  padding: 1.6cqh 1.2cqw 1.6cqh 1.3cqw;
   border-left: 2px solid transparent;
-  background: rgba(27, 24, 19, .42);
-  outline-offset: -1px;
-  transition: background-color 140ms cubic-bezier(.2, .65, .35, 1), border-color 140ms cubic-bezier(.2, .65, .35, 1);
+  background: rgba(27, 24, 19, .55);
+  text-align: left;
 }
-.chronicles-article.is-selected { border-left-color: var(--chronicles-accent); background: rgba(144, 133, 110, .17); }
-.chronicles-article:focus-visible { outline: 1px solid #b68230; }
-.chronicles-article h2 {
-  margin: .9cqh 0 .8cqh;
-  font-size: max(1.25cqw, 12px);
+.chronicles-article-mark { flex: 0 0 auto; width: .5cqw; height: .5cqw; min-width: 5px; min-height: 5px; border: 1px solid #b48a3d; transform: rotate(45deg); }
+.chronicles-article-title {
+  font-size: max(1.17cqw, 11px);
   font-weight: 600;
   line-height: 1.2;
   text-transform: uppercase;
   color: #ccc9bf;
   transition: color 140ms ease;
 }
-.chronicles-article.is-selected h2 { color: #d4973e; }
-.chronicles-article .chronicles-body { font-size: max(1cqw, 10px); line-height: 1.55; color: #a19d91; }
-.chronicles-emblem {
-  position: absolute;
-  right: 2.4cqw;
-  bottom: 5cqh;
-  width: 12cqw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2cqh;
-  color: #a58b50;
-  opacity: .5;
-  pointer-events: none;
-}
-.chronicles-emblem-icon { width: 8.5cqw; height: 8.5cqw; stroke: currentColor; stroke-width: .8; stroke-linecap: round; stroke-linejoin: round; }
-.chronicles-emblem-accent { stroke: #b8914f; }
-.chronicles-emblem-rule { height: 1px; width: 6cqw; background: linear-gradient(90deg, transparent, #9d824b, transparent); }
-.chronicles-interregnum .chronicles-emblem { position: static; flex: 0 0 auto; }
-.chronicles-laws .chronicles-emblem { top: 50%; bottom: auto; transform: translateY(-50%); }
+.chronicles-item--laws:hover .chronicles-article-title { color: #e6dacc; }
+.chronicles-item--laws.is-selected { background: rgba(144, 133, 110, .17); }
+.chronicles-item--laws.is-selected .chronicles-article-title { color: #d4973e; }
+.chronicles-item--laws.is-open { border-left-color: var(--chronicles-accent); }
+.chronicles-item--laws.is-open .chronicles-article-mark { background: #d49130; border-color: #f0b25a; box-shadow: 0 0 .5cqw #f3942299; }
+.chronicles-item--laws:focus-visible { outline: 1px solid #b68230; outline-offset: -1px; }
 
 /* Recessed bronze rails and amber thumbs, as in the Settings lists. */
-.chronicles-record,
-.chronicles-articles { scrollbar-width: thin; scrollbar-color: #bb8944 #211a11; }
-:is(.chronicles-record, .chronicles-articles)::-webkit-scrollbar { width: clamp(9px, .78125cqw, 14px); }
-:is(.chronicles-record, .chronicles-articles)::-webkit-scrollbar-track {
+.chronicles-record { scrollbar-width: thin; scrollbar-color: #bb8944 #211a11; }
+.chronicles-record::-webkit-scrollbar { width: clamp(9px, .78125cqw, 14px); }
+.chronicles-record::-webkit-scrollbar-track {
   margin-block: .625cqh;
   border: 1px solid #ad80372e;
   border-radius: 999px;
   background: linear-gradient(90deg, #14110c, #2c2215, #14110c);
   box-shadow: inset 0 0 3px #0009;
 }
-:is(.chronicles-record, .chronicles-articles)::-webkit-scrollbar-thumb {
+.chronicles-record::-webkit-scrollbar-thumb {
   min-height: 36px;
   border: 2px solid transparent;
   border-radius: 999px;
@@ -463,12 +547,11 @@
   box-shadow: inset 0 0 0 1px #e3b86455;
 }
 @supports selector(::-webkit-scrollbar) {
-  .chronicles-record,
-  .chronicles-articles { scrollbar-width: auto; scrollbar-color: auto; }
-  :is(.chronicles-record, .chronicles-articles)::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+  .chronicles-record { scrollbar-width: auto; scrollbar-color: auto; }
+  .chronicles-record::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
 }
 
-.chronicles-footer { position: absolute; z-index: 2; left: 8.2cqw; top: 87.55cqh; display: flex; align-items: center; gap: 1.95cqw; pointer-events: auto; }
+.chronicles-footer { position: absolute; z-index: 2; left: var(--chronicles-left); top: 87.55cqh; display: flex; align-items: center; gap: 1.95cqw; pointer-events: auto; }
 .chronicles-footer-button {
   display: inline-flex;
   align-items: center;
@@ -484,31 +567,24 @@
 }
 .chronicles-footer-button:hover { color: #e5d7bd; }
 .chronicles-footer-button:active { transform: scale(.98); }
-@keyframes chronicles-exhibit-enter {
-  from { opacity: 0; transform: translate3d(0, 6px, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
+@keyframes chronicles-turn {
+  to { transform: rotate(360deg); }
 }
 @keyframes chronicles-record-enter {
   from { opacity: 0; transform: translate3d(1.2cqw, 0, 0); }
   to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
-@keyframes chronicles-entry-enter {
-  from { opacity: .35; transform: translateY(2px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 @media (max-height: 450px) and (orientation: landscape) {
-  .chronicles-screen { --chronicles-width: 75cqw; }
-  .chronicles-record-slot { left: 63.5cqw; width: 32cqw; }
+  .chronicles-screen { --chronicles-top: 20cqh; --chronicles-bottom: 85cqh; --chronicles-record-left: 62.5cqw; --chronicles-record-width: 33cqw; }
+  .chronicles-header { top: 7.5cqh; height: 7cqh; }
   .chronicles-record { padding: 2.2cqh 1.4cqw 2.4cqh; }
   .chronicles-record h2 { margin: .8cqh 0 1cqh; }
   .chronicles-record-rule { margin-bottom: 1cqh; }
   .chronicles-body { line-height: 1.45; }
-  .chronicles-timeline { margin-top: 3cqh; }
-  .chronicles-interregnum-body { padding-bottom: 2cqh; }
-  .chronicles-stop-detail { flex-basis: 54cqw; }
-  .chronicles-articles { width: 60cqw; gap: .3cqh; padding-block: .6cqh; }
-  .chronicles-article { padding-block: .8cqh 1cqh; }
-  .chronicles-article h2 { margin: .5cqh 0 .4cqh; }
+  .chronicles-timeline { top: 66cqh; width: 56cqw; }
+  .chronicles-articles { width: 34cqw; gap: .4cqh; }
+  .chronicles-item--laws { padding-block: 1.2cqh; }
+  .chronicles-footer { top: 88.5cqh; }
 }
 @media (prefers-reduced-motion: reduce) {
   .chronicles-screen *, .chronicles-screen *:before, .chronicles-screen *:after { transition: none !important; animation: none !important; }
@@ -516,3 +592,12 @@
 }
 .chronicles-screen--still *, .chronicles-screen--still *:before, .chronicles-screen--still *:after { transition: none !important; animation: none !important; }
 .chronicles-screen--still .chronicles-footer-button:active { transform: none; }
+
+/* While Chronicles is open the main navigation is hidden (and inert, from the
+   menu). Once Chronicles' entrance has finished, its opaque layer covers the
+   whole stage, so the menu's stage layers beneath it are hidden and stop
+   compositing; they return the moment Chronicles closes. */
+.main-nav.main-nav--hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.menu-shell:has(.menu-transition[data-transition-state="idle"] > .menu-transition-live > .chronicles-screen) :is(.scene-wash, .creature-stage, .atmosphere, .film-grain) {
+  visibility: hidden;
+}

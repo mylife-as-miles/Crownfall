@@ -118,6 +118,7 @@ export async function generateQuestUI(destination?: string): Promise<void> {
     .record-meaning { font-size: 16; font-weight: 400; color: ${c.modalText}; line-height: 1.35; }
     .record-title { font-size: 26; font-weight: 600; color: #dfd2b6; line-height: 1.25; }
     .record-body { font-size: 18; font-weight: 400; color: ${c.text}; line-height: 1.55; }
+    .record-marker { font-size: 16; font-weight: 600; color: ${c.accent}; line-height: 1.2; }
   `;
 
   const home = view('View_Home', HOME_CONTENT.map((tile, index) => {
@@ -281,18 +282,27 @@ export async function generateQuestUI(destination?: string): Promise<void> {
       + text(item.title, 16, article.height / 2 - 15, articleWidth - 32, 30, 'option-title', `${articleId}_Title`, 'text-align: center;')), 'chronicle-option');
   }).join(''), rect(0, 0, 1280, 720));
   // Generated with the first record; the runtime sets the open record's copy.
+  // The marker chip is generated empty: the runtime fills it from the content
+  // policy beside unapproved words, so no marker text is ever baked in here.
   const firstRecord = CHRONICLE_RECORDS[0];
   const recordInner = chronicleLayout.record.width - 56;
   const record = node('div', QUEST_CHRONICLE_IDS.record, 'record-panel',
-    node('div', undefined, 'record-meta', node('div', undefined, 'record-chip', copy(CHRONICLE_LABELS[firstRecord.label].name, 'record-label', 'Record_Label'), 'width: 116;')
+    copy('', 'record-marker', QUEST_CHRONICLE_IDS.recordMarker, `width: ${recordInner}; display: none;`)
+    + node('div', undefined, 'record-meta', node('div', undefined, 'record-chip', copy(CHRONICLE_LABELS[firstRecord.label].name, 'record-label', 'Record_Label'), 'width: 116;')
       + copy(CHRONICLE_LABELS[firstRecord.label].meaning, 'record-meaning', 'Record_Meaning', `width: ${recordInner - 130};`))
     + copy(firstRecord.title, 'record-title', 'Record_Title', `width: ${recordInner};`)
     + node('div', undefined, '', '', `width: ${recordInner}; height: 1; background-color: #39352a;`)
     + copy(firstRecord.body, 'record-body', 'Record_Body', `width: ${recordInner};`),
     `position-type: absolute; position-left: ${chronicleLayout.record.x}; position-top: ${chronicleLayout.recordTop.atlas}; width: ${chronicleLayout.record.width}; display: none;`);
+  // A wordless loading bar under the tabs while the archive builds: the runtime
+  // shows it and drives its fill from the room's progress, or sweeps it.
+  const loading = chronicleLayout.loading;
+  const loadingBar = node('div', QUEST_CHRONICLE_IDS.loading, '',
+    node('div', QUEST_CHRONICLE_IDS.loadingFill, '', '', `position-type: absolute; position-left: 0; position-top: 0; width: ${loading.width / 4}; height: ${loading.height}; border-radius: ${loading.height / 2}; background-color: ${c.accent}; pointer-events: none;`),
+    `${rect(loading.x, loading.y, loading.width, loading.height)} border-radius: ${loading.height / 2}; background-color: #39352a; display: none; pointer-events: none;`);
   const chronicles = view('View_Chronicles', text(CHRONICLES_TITLE, 128, 81.744, chronicleTitleWidth - 24, 24, 'chronicles-title', 'Chronicles_Title')
     + node('div', undefined, '', '', `${rect(128 + chronicleTitleWidth - 13, 82, 1, 24)} background-color: #39352a; pointer-events: none;`)
-    + exhibitTabs + atlas + interregnum + laws + record);
+    + exhibitTabs + loadingBar + atlas + interregnum + laws + record);
 
   let navLeft = 128;
   const nav = NAV_TABS.map((tab, index) => {
@@ -320,7 +330,7 @@ export async function generateQuestUI(destination?: string): Promise<void> {
     ...CHAPTERS.map((item) => `Chapter_${item.id}`), ...SHOWCASE_CATEGORIES.map((item) => `Showcase_${item.id}`),
     ...ARENAS.map((_, index) => `Arena_${index}`), ...SETTINGS_CATEGORIES.map((item) => `Settings_${item}`),
     ...Array.from({ length: QUEST_SETTING_ROWS }, (_, index) => [`Setting_${index}`, `Setting_Label_${index}`, `Setting_Value_${index}`]).flat(),
-    QUEST_CHRONICLE_IDS.record,
+    QUEST_CHRONICLE_IDS.record, QUEST_CHRONICLE_IDS.recordMarker, QUEST_CHRONICLE_IDS.loading, QUEST_CHRONICLE_IDS.loadingFill,
     ...CHRONICLE_EXHIBITS.flatMap((item) => [QUEST_CHRONICLE_IDS.tab(item.id), QUEST_CHRONICLE_IDS.pane(item.id)]),
     ...QUEST_CHRONICLE_CONTROLS.flatMap((item) => [QUEST_CHRONICLE_IDS.control(item), `${QUEST_CHRONICLE_IDS.control(item)}_Mark`]),
   ];

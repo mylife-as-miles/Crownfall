@@ -173,22 +173,34 @@ try {
     assert.equal(await page.locator("dialog").evaluate((dialog) => dialog.open), false);
     assert.equal(await page.getByRole("region", { name: "Showcase", exact: true }).locator("video,audio,iframe,form").count(), 0);
   };
+  // Chronicles opens its own screen (docs/chronicles); Back returns to its tile.
+  const chroniclesScreen = async () => {
+    await page.getByRole("region", { name: "Chronicles", exact: true }).waitFor();
+    assert.equal(await page.locator("dialog").evaluate((dialog) => dialog.open), false, "Chronicles opens its screen, not a dialog");
+    assert.equal(await page.locator(".home-grid").count(), 0);
+  };
   await page.getByRole("button", { name: "Chronicles", exact: true }).hover();
   await selected("Chronicles");
   await page.keyboard.press("Enter");
-  await limitedDialog("Chronicles");
+  await chroniclesScreen();
   await page.keyboard.press("Escape");
-  await closed();
+  await page.locator(".home-grid").waitFor();
   await selected("Chronicles");
   for (const name of ["Chronicles", "My Legacy", "Herald Board"]) {
     await page.getByRole("button", { name, exact: true }).click();
-    await limitedDialog(name);
-    await page.getByRole("button", { name: "Cancel", exact: true }).click();
-    await closed();
+    if (name === "Chronicles") {
+      await chroniclesScreen();
+      await page.keyboard.press("Escape");
+      await page.locator(".home-grid").waitFor();
+    } else {
+      await limitedDialog(name);
+      await page.getByRole("button", { name: "Cancel", exact: true }).click();
+      await closed();
+    }
     await selected(name);
   }
   await page.mouse.move(0, 0);
-  record("Pointer hover→Enter and clicks open each truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news");
+  record("Pointer hover→Enter and clicks open Chronicles' own screen and each other tile's truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news");
 
   await page.getByRole("tab", { name: "Showcase", exact: true }).click();
   await showcaseScreen();

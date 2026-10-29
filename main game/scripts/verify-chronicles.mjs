@@ -1,50 +1,97 @@
+// Chronicles desktop verification (docs/chronicles/WORK_STATUS.md, tasks C1 and C2).
+//
+//   node scripts/verify-chronicles.mjs [milestone]       (default m1)
+//   CROWNFALL_TEST_URL  the served build, normally a production build on vite preview
+//   CHROMIUM_PATH       the Chromium binary (run with SwiftShader)
+//
+// Writes artifacts/chronicles/<milestone>/: verification.json (checks, metrics,
+// layouts, the text inventory and the parity replay) and the captures (PNG hero
+// frames, JPEG for the rest). Phases run one after another in one browser, and
+// each records its own failure, so a slow host still yields every other piece of
+// evidence; the run passes only when every phase passes.
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { loadavg } from "node:os";
+import { existsSync } from "node:fs";
+import { cpus, loadavg } from "node:os";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { chromium } from "playwright";
 import ts from "typescript";
 import { waitForBootReady } from "./boot-helpers.mjs";
 import { waitForMenuIdle } from "./motion-helpers.mjs";
+import { attributeLongTasks, distSourceMaps, frameScriptTimes, percentiles, startTrace, stopTrace } from "./chronicles-trace.mjs";
 
-// The archive text is read from the shared module itself, so this check cannot
-// drift from what both platforms render. It has only type imports to erase.
-async function sharedModule(path) {
-  const source = await readFile(new URL(path, import.meta.url), "utf8");
-  const { outputText } = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } });
-  return import(`data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`);
+const here = dirname(fileURLToPath(import.meta.url));
+const milestone = (process.argv.slice(2).find((value) => !value.startsWith("--")) ?? "m1");
+assert.match(milestone, /^[a-z0-9][a-z0-9-]*$/, "the milestone names a folder such as m1");
+const directory = `artifacts/chronicles/${milestone}`;
+await mkdir(directory, { recursive: true });
+
+// Shared modules are read from shared/chronicles itself, so this check cannot
+// drift from what both platforms render. Each module is transpiled and its
+// relative imports are rewritten to the transpiled dependencies.
+const moduleUrls = new Map();
+async function sharedUrl(path) {
+  const file = resolve(path);
+  if (moduleUrls.has(file)) return moduleUrls.get(file);
+  const source = await readFile(file, "utf8");
+  let { outputText } = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 } });
+  const specifiers = [...outputText.matchAll(/from\s+"(\.{1,2}\/[^"]+)"/g)].map((match) => match[1]);
+  for (const specifier of new Set(specifiers)) {
+    const target = resolve(dirname(file), specifier.endsWith(".ts") ? specifier : `${specifier}.ts`);
+    outputText = outputText.split(`"${specifier}"`).join(`"${await sharedUrl(target)}"`);
+  }
+  const url = `data:text/javascript;base64,${Buffer.from(outputText).toString("base64")}`;
+  moduleUrls.set(file, url);
+  return url;
 }
-const content = await sharedModule("../../shared/chronicles/content.ts");
-const { CHRONICLES_TITLE, CHRONICLE_EXHIBITS, CHRONICLE_LABELS, CHRONICLES_MAP, CHRONICLE_RECORDS } = content;
+const shared = async (path) => import(await sharedUrl(resolve(here, path)));
+const content = await shared("../../shared/chronicles/content.ts");
+const registry = await shared("../../shared/chronicles/registry.ts");
+const status = await shared("../../shared/chronicles/status.ts");
+const fixtureModule = await shared("../../shared/chronicles/scene-state.fixture.ts");
+const { CHRONICLES_TITLE, CHRONICLE_EXHIBITS, CHRONICLE_LABELS, CHRONICLES_MAP } = content;
+const POLICY = status.CHRONICLES_CONTENT_POLICY;
 const hotspots = content.getHotspotRecords();
-const stops = content.getChronicleRecords("interregnum");
-const articles = content.getChronicleRecords("laws");
-// Existing footer chrome, already in the menu before Chronicles: prove it.
-const chrome = ["Back", "Select", "A", "B", "Menu controls"];
+const collections = registry.getChronicleCollections(POLICY);
+const entriesOf = (collection) => registry.getCollectionEntries(collection, POLICY);
+const FIXTURE = fixtureModule.CHRONICLES_SCENE_FIXTURE;
+const titleOf = (collection) => CHRONICLE_EXHIBITS.find((exhibit) => exhibit.id === collection)?.title;
+
+// Every on-screen string must be shared Chronicles text or existing menu chrome.
+const chrome = ["Back", "Select", "A", "B", "Menu controls", "LB", "RB"];
 const existingChrome = `${await readFile("src/Showcase.tsx", "utf8")}\n${await readFile("src/App.tsx", "utf8")}`;
 for (const text of chrome) assert.ok(existingChrome.includes(`aria-label="${text}"`) || existingChrome.includes(`>${text}<`), `${text} is existing menu chrome`);
-const approved = [
+const approvedText = [
   CHRONICLES_TITLE, CHRONICLES_MAP.alt,
   ...CHRONICLE_EXHIBITS.map((exhibit) => exhibit.title),
   ...Object.values(CHRONICLE_LABELS).flatMap((label) => [label.name, label.meaning]),
-  ...CHRONICLE_RECORDS.flatMap((record) => [record.title, record.body]),
+  ...registry.getChronicleEntries(POLICY).flatMap((entry) => [entry.title, entry.body]),
+  ...["working-proposal", "placeholder"].map((value) => status.getCanonMarker(value, POLICY)).filter(Boolean),
 ];
-const allowed = (text) => chrome.includes(text) || approved.some((source) => source === text || source.includes(text));
+const allowed = (text) => chrome.includes(text) || approvedText.some((source) => source === text || source.includes(text));
 
 const target = new URL(process.env.CROWNFALL_TEST_URL || "http://localhost:5173");
-const directory = "artifacts/chronicles";
-await mkdir(directory, { recursive: true });
+const distDirectory = resolve(here, "../dist");
+const resolveSourceMap = existsSync(distDirectory) ? distSourceMaps(distDirectory) : undefined;
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || "/usr/bin/chromium", args: ["--no-sandbox", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
-const checks = [], layouts = [], captures = [], texts = new Set(), errors = [];
-const metrics = { host: { cpus: "4, software rendering (SwiftShader): timings here are not headset or GPU evidence", loadAverage: loadavg().map((value) => Number(value.toFixed(1))) } };
+const checks = [], failures = [], layouts = [], captures = [], replay = [], texts = new Set(), errors = [];
+const metrics = {
+  host: {
+    cpus: cpus().length,
+    rendering: "SwiftShader (software WebGL) in headless Chromium: absolute timings are not GPU, desktop-hardware or headset evidence",
+    loadAverageAtStart: loadavg().map((value) => Number(value.toFixed(1))),
+    note: "Two other workflows share this host. Times are reported for comparison within this run only.",
+  },
+  stage: "The relief renderer (scene/AtlasScene) behind the stage adapter: the archive renderer (scene/ArchiveScene, task B4) has not landed, so archive-specific framings and stats are not measured here.",
+};
 const record = (text) => { checks.push(text); console.log(`PASS ${text}`); };
-let failure;
 
 // Runs in each page before the menu: saved preferences, an optional WebGL
-// outage, a standard controller whose taps last exactly one animation frame
-// and whose holds last a count of frames (so the menu's polling and the
-// Atlas's right-stick polling see each input however slowly frames arrive on
-// a shared software renderer), long-task capture, and a per-canvas count of
-// WebGL draw calls.
+// outage, a standard controller whose taps last exactly one animation frame and
+// whose holds last a count of frames (so the menu's polling and the stage's
+// right-stick polling see each input however slowly frames arrive), long-task
+// capture, and a per-canvas count of WebGL draw calls and triangles.
 function instrument({ saved, webgl }) {
   localStorage.setItem("crownfall.main-game.preferences", saved);
   if (!webgl) {
@@ -109,15 +156,15 @@ function instrument({ saved, webgl }) {
 async function openPage({ viewport = { width: 1280, height: 720 }, quality = "medium", motion = false, model = false, webgl = true, expected } = {}) {
   const page = await browser.newPage({ viewport, reducedMotion: motion ? "no-preference" : "reduce" });
   // Generous: this suite shares a busy software-rendering host.
-  page.setDefaultTimeout(120000);
+  page.setDefaultTimeout(180000);
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => { if (message.type() === "error" && !expected?.test(message.text())) errors.push(message.text()); });
   await page.addInitScript(instrument, { saved: JSON.stringify({ quality, motion, volume: 65 }), webgl });
   const url = new URL(target);
   if (!model) url.searchParams.set("model", "none");
   await page.goto(url.href);
-  if (model) await page.locator(".creature-model--loaded").waitFor({ timeout: 300000 });
-  await waitForBootReady(page, { timeout: 300000 });
+  if (model) await page.locator(".creature-model--loaded").waitFor({ timeout: 400000 });
+  await waitForBootReady(page, { timeout: 400000 });
   await page.evaluate(() => document.fonts.ready);
   return page;
 }
@@ -127,49 +174,52 @@ function on(page) {
   const screen = () => page.getByRole("region", { name: CHRONICLES_TITLE, exact: true });
   const helpers = {
     screen,
-    activeTab: async (name) => assert.equal(await page.locator(`.main-nav [role="tab"][aria-label="${name}"]`).getAttribute("aria-selected"), "true"),
-    focusName: (name) => page.waitForFunction((label) => document.activeElement?.getAttribute("aria-label") === label || document.activeElement?.textContent === label, name),
-    focusRecord: (id) => page.waitForFunction((value) => document.activeElement?.dataset.record === value || document.activeElement?.dataset.nation === value, id),
+    // The scene state as the screen reports it, in the reducer's own terms.
+    state: () => page.evaluate(() => {
+      const node = document.querySelector(".menu-transition-live .chronicles-screen");
+      return node ? { collection: node.dataset.collection, focus: node.dataset.focus, entryId: node.dataset.entry || null, load: node.dataset.load } : null;
+    }),
+    waitState: (partial) => page.waitForFunction((want) => {
+      const node = document.querySelector(".menu-transition-live .chronicles-screen");
+      if (!node) return false;
+      const state = { collection: node.dataset.collection, focus: node.dataset.focus, entryId: node.dataset.entry || null, load: node.dataset.load };
+      return Object.entries(want).every(([key, value]) => state[key] === value);
+    }, partial),
     homeTile: async (name) => {
       await page.getByRole("region", { name: "Home options", exact: true }).waitFor();
       await page.waitForFunction((label) => document.querySelector(`.home-tile[aria-label="${label}"]`)?.getAttribute("aria-pressed") === "true" && document.activeElement?.getAttribute("aria-label") === label, name);
     },
-    exhibitShown: async (id) => {
-      await page.waitForFunction((value) => document.querySelector(".chronicles-screen")?.dataset.chroniclesExhibit === value, id);
-      const tab = CHRONICLE_EXHIBITS.find((exhibit) => exhibit.id === id).title;
-      assert.equal(await screen().getByRole("tab", { name: tab, exact: true }).getAttribute("aria-selected"), "true");
-      assert.equal(await page.locator(`#chronicles-panel-${id}`).isVisible(), true);
-    },
-    atlasReady: (state = "ready") => page.waitForFunction((value) => document.querySelector(".chronicles-screen")?.dataset.atlas === value, state, { timeout: 300000 }),
-    // The camera has finished moving, on the overview or on a nation.
+    focusName: (name) => page.waitForFunction((label) => document.activeElement?.getAttribute("aria-label") === label || document.activeElement?.textContent === label, name),
+    ready: (load = "ready") => page.waitForFunction((value) => document.querySelector(".menu-transition-live .chronicles-screen")?.dataset.load === value, load, { timeout: 400000 }),
+    // The stage camera has finished moving, on the overview, a nation or a free framing.
     settled: (framing) => page.waitForFunction((name) => {
-      const stage = document.querySelector(".chronicles-stage");
+      const stage = document.querySelector(".menu-transition-live .chronicles-stage");
       return stage?.dataset.cameraSettled === "true" && (!name || stage.dataset.camera === name);
     }, framing),
-    // After input that moves a camera already marked free: let the change reach a frame first.
-    moved: async (framing = "free") => {
-      await helpers.frames(3);
-      await helpers.settled(framing);
-    },
-    frames: (count = 2) => page.evaluate((total) => new Promise((resolve) => { let left = total; const step = () => (--left <= 0 ? resolve() : requestAnimationFrame(step)); requestAnimationFrame(step); }), count),
+    frames: (count = 2) => page.evaluate((total) => new Promise((done) => { let left = total; const step = () => (--left <= 0 ? done() : requestAnimationFrame(step)); requestAnimationFrame(step); }), count),
+    moved: async (framing = "free") => { await helpers.frames(3); await helpers.settled(framing); },
     openRecord: () => page.evaluate(() => document.querySelector("#chronicles-record")?.dataset.record ?? null),
-    recordShown: async (expected) => {
-      await page.waitForFunction((id) => document.querySelector("#chronicles-record")?.dataset.record === id, expected.id);
+    recordShown: async (entry) => {
+      await page.waitForFunction((id) => document.querySelector("#chronicles-record")?.dataset.record === id, entry.id);
       const shown = await page.locator("#chronicles-record").evaluate((node) => ({
         title: node.querySelector("h2").textContent, body: node.querySelector(".chronicles-body").textContent,
-        label: node.querySelector(".chronicles-label-name").textContent, meaning: node.querySelector(".chronicles-label-meaning").textContent,
-        labelVisible: node.querySelector(".chronicles-label").getBoundingClientRect().height > 0,
+        label: node.querySelector(".chronicles-label-name")?.textContent ?? null, meaning: node.querySelector(".chronicles-label-meaning")?.textContent ?? null,
+        marker: node.querySelector(".chronicles-canon-marker")?.textContent ?? null,
       }));
-      assert.deepEqual(shown, { title: expected.title, body: expected.body, label: CHRONICLE_LABELS[expected.label].name, meaning: CHRONICLE_LABELS[expected.label].meaning, labelVisible: true });
+      assert.deepEqual(shown, {
+        title: entry.title, body: entry.body,
+        label: entry.label ? CHRONICLE_LABELS[entry.label].name : null, meaning: entry.label ? CHRONICLE_LABELS[entry.label].meaning : null,
+        marker: status.getCanonMarker(entry.canonStatus, POLICY),
+      });
     },
-    // Where the scene placed each ring this frame, in page pixels.
-    markers: () => page.evaluate(() => Object.fromEntries([...document.querySelectorAll(".chronicles-hotspots .chronicles-marker")].map((node) => {
+    // Where the stage placed each marker this frame, in page pixels.
+    markers: () => page.evaluate(() => Object.fromEntries([...document.querySelectorAll(".menu-transition-live .chronicles-hotspots .chronicles-marker")].map((node) => {
       const box = node.getBoundingClientRect();
       return [node.dataset.nation, { x: box.left, y: box.top }];
     }))),
-    // Every text node, accessible name and alt text in the screen must be archive
-    // copy or existing chrome; generated pseudo-element text is not allowed at all.
-    auditText: async (state) => {
+    // Every text node, accessible name and alt text in the screen must be shared
+    // Chronicles text or existing chrome; generated pseudo-element text is not allowed.
+    auditText: async (label) => {
       const found = await screen().evaluate((root) => {
         const values = [];
         const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -181,39 +231,54 @@ function on(page) {
         return { values: values.filter(Boolean), pseudo };
       });
       const rejected = found.values.filter((value) => !allowed(value));
-      assert.deepEqual(rejected, [], `${state}: text outside shared/chronicles and existing chrome`);
-      assert.deepEqual(found.pseudo, [], `${state}: generated pseudo-element text`);
+      assert.deepEqual(rejected, [], `${label}: text outside shared/chronicles and existing chrome`);
+      assert.deepEqual(found.pseudo, [], `${label}: generated pseudo-element text`);
       found.values.forEach((value) => texts.add(value));
     },
-    // Draw calls a canvas issues across a number of animation frames: a running
-    // loop draws in every frame it gets, a paused one in none.
-    drawsOver: (selector, frames = 40) => page.evaluate(({ query, total }) => new Promise((resolve) => {
+    // Draw calls a canvas issues across a number of animation frames.
+    drawsOver: (selector, frames = 40) => page.evaluate(({ query, total }) => new Promise((done) => {
       const count = () => document.querySelector(query)?.__draws ?? 0;
       const start = count();
       let left = total;
-      const step = () => (--left <= 0 ? resolve(count() - start) : requestAnimationFrame(step));
+      const step = () => (--left <= 0 ? done(count() - start) : requestAnimationFrame(step));
       requestAnimationFrame(step);
     }), { query: selector, total: frames }),
     longTasks: (from, to) => page.evaluate(({ start, end }) => window.__longTasks.filter((task) => task.start >= start && task.start <= end).map((task) => Math.round(task.duration)), { start: from, end: to }),
     now: () => page.evaluate(() => performance.now()),
     pad: async (input, after) => {
-      // One-frame taps must start after the menu's 350ms A/B repeat guard.
+      // One-frame taps start after the menu's 350 ms A/B repeat guard.
       await page.waitForTimeout(400);
       await page.evaluate((value) => (Array.isArray(value) ? window.__pad.tapAxes(value) : window.__pad.tap(value)), input);
       await page.waitForFunction((value) => !window.__pad.pending(value), input);
       await waitForMenuIdle(page);
       try { await after(); }
       catch (error) {
-        console.error("Chronicles controller diagnostic", await page.evaluate(() => ({ focused: document.activeElement?.getAttribute("aria-label") || document.activeElement?.dataset.record, exhibit: document.querySelector(".chronicles-screen")?.dataset.chroniclesExhibit, zone: document.querySelector(".chronicles-screen")?.dataset.chroniclesZone, record: document.querySelector("#chronicles-record")?.dataset.record, tab: document.querySelector('.main-nav [aria-selected="true"]')?.getAttribute("aria-label") })));
+        console.error("Chronicles controller diagnostic", JSON.stringify(await page.evaluate(() => ({ focused: document.activeElement?.getAttribute("aria-label"), screen: document.querySelector(".chronicles-screen")?.dataset, record: document.querySelector("#chronicles-record")?.dataset.record }))));
         throw error;
       }
+    },
+    shot: async (name, { png = false } = {}) => {
+      await helpers.frames(2);
+      const viewport = page.viewportSize();
+      const path = `${directory}/${name}-${viewport.width}x${viewport.height}.${png ? "png" : "jpg"}`;
+      await page.screenshot(png ? { path } : { path, type: "jpeg", quality: 82 });
+      captures.push({ path, viewport, state: await helpers.state() });
+      console.log(`capture ${path}`);
+    },
+    enter: async () => {
+      await page.getByRole("tab", { name: "Home", exact: true }).click();
+      await helpers.homeTile("My Legacy");
+      await page.keyboard.press("ArrowRight");
+      await helpers.homeTile("Chronicles");
+      await page.keyboard.press("Enter");
+      await screen().waitFor();
     },
   };
   return helpers;
 }
 
-// Four rings fix where the painting's plane lands on screen; a homography from
-// them finds empty ground anywhere on the painted map, the centre included.
+// Four markers fix where the painting's plane lands on screen; a homography
+// from them finds empty ground anywhere on the painted map, the centre included.
 function homography(pairs) {
   const rows = [], values = [];
   for (const [[x, y], [u, v]] of pairs) {
@@ -239,554 +304,851 @@ function homography(pairs) {
   };
 }
 
-try {
+const focusOf = (state) => (state.focus.kind === "nation" ? `nation:${state.focus.nation}` : state.focus.kind);
+const asScreenState = (state) => ({ collection: state.collection, focus: focusOf(state), entryId: state.entryId, load: state.load });
+const spread = (points) => Math.hypot(points.korvenia.x - points.solforiz.x, points.korvenia.y - points.solforiz.y);
+// Arrow presses that carry the Atlas highlight from one nation to another, by the shared spatial rule.
+function arrowPath(from, to) {
+  const queue = [[from, []]], seen = new Set([from]);
+  while (queue.length) {
+    const [index, path] = queue.shift();
+    if (index === to) return path;
+    for (const direction of ["up", "down", "left", "right"]) {
+      const next = content.getNextHotspot(index, direction);
+      if (!seen.has(next)) { seen.add(next); queue.push([next, [...path, direction]]); }
+    }
+  }
+  return null;
+}
+const arrowKey = (direction) => `Arrow${direction[0].toUpperCase()}${direction.slice(1)}`;
+
+async function phase(name, run) {
+  console.log(`\n== ${name}`);
+  const started = Date.now();
+  try {
+    await run();
+    metrics.phases = { ...(metrics.phases || {}), [name]: { seconds: Math.round((Date.now() - started) / 1000), passed: true } };
+  } catch (error) {
+    failures.push({ phase: name, failure: String(error?.stack || error).slice(0, 4000) });
+    metrics.phases = { ...(metrics.phases || {}), [name]: { seconds: Math.round((Date.now() - started) / 1000), passed: false } };
+    console.error(`FAIL ${name}: ${error?.message || error}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 1. Entry, loading, the overview, nation records by mouse and keyboard,
+//    collections by every input, the controller, Back to Home, and captures.
+await phase("entry, navigation and Back (medium, reduced motion)", async () => {
   const page = await openPage({ quality: "medium" });
   const ui = on(page);
-  const { screen, activeTab, focusName, focusRecord, homeTile, exhibitShown, atlasReady, settled, openRecord, recordShown, markers, auditText } = ui;
-  const enterChronicles = async () => {
+  try {
+    const { screen, state, waitState, homeTile, focusName, ready, settled, recordShown, markers, auditText } = ui;
+    await page.getByRole("tab", { name: "Home", exact: true }).click();
+    await homeTile("My Legacy");
+    const tile = await page.locator('.home-tile[aria-label="Chronicles"] img').evaluate((image) => new URL(image.currentSrc).pathname);
+    assert.equal(tile, CHRONICLES_MAP.src, "the Home tile and the Atlas share one map file");
+    await page.keyboard.press("ArrowRight"); await homeTile("Chronicles");
+    const openedAt = await ui.now();
     await page.keyboard.press("Enter");
-    await waitForMenuIdle(page);
     await screen().waitFor();
-  };
-
-  await page.getByRole("tab", { name: "Home", exact: true }).click();
-  await homeTile("My Legacy");
-  const tile = await page.locator('.home-tile[aria-label="Chronicles"] img').evaluate((image) => new URL(image.currentSrc).pathname);
-  assert.equal(tile, CHRONICLES_MAP.src, "the Home tile and the Atlas share one map file");
-  await page.keyboard.press("ArrowRight"); await homeTile("Chronicles");
-  const motesBefore = await page.locator(".mote-field canvas").count();
-  const openedAt = await ui.now();
-  await enterChronicles();
-  await atlasReady();
-  const readyAt = await ui.now();
-  await settled("overview");
-  await activeTab("Home");
-  assert.equal(await page.locator("dialog").evaluate((dialog) => dialog.open), false);
-  assert.equal(await page.locator(".home-grid, .game-cards, .showcase-screen").count(), 0);
-  assert.equal(await screen().getByRole("heading", { level: 1 }).textContent(), CHRONICLES_TITLE);
-  assert.deepEqual(await screen().getByRole("tab").evaluateAll((tabs) => tabs.map((tab) => tab.textContent)), CHRONICLE_EXHIBITS.map((exhibit) => exhibit.title));
-  await exhibitShown("atlas");
-  await focusName(hotspots[0].title);
-  const stage = await page.locator(".chronicles-stage").evaluate((node) => ({ role: node.getAttribute("role"), label: node.getAttribute("aria-label"), canvases: node.querySelectorAll("canvas").length, hidden: node.querySelector("canvas")?.getAttribute("aria-hidden"), drawCalls: Number(node.dataset.drawCalls), triangles: Number(node.dataset.triangles) }));
-  assert.deepEqual({ role: stage.role, label: stage.label, canvases: stage.canvases, hidden: stage.hidden }, { role: "img", label: CHRONICLES_MAP.alt, canvases: 1, hidden: "true" });
-  assert.deepEqual(await page.locator(".chronicles-hotspot").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("aria-label"))), hotspots.map((item) => item.title));
-  assert.ok(motesBefore === 1 && (await page.locator(".atmosphere.atmosphere--low").count()) === 1 && (await page.locator(".mote-field canvas").count()) === 0, "the menu's motes stand down while Chronicles is open");
-  await auditText("Atlas overview");
-  record("Home → Chronicles opens a full screen under the Home tab with no dialog: the title, three exhibit tabs from CHRONICLE_EXHIBITS, the real-time relief (one canvas named by the map's alt text) and one hidden button per nation named from its record title");
-
-  // Renderer cost at medium: three's renderer.info for the last frame, and a
-  // count of the draw calls actually issued for one redrawn frame.
-  const atlasCanvas = ".chronicles-stage canvas";
-  // Held still, the relief redraws once per change: moving the focus is one frame.
-  const beforeFrame = await page.evaluate((query) => { const canvas = document.querySelector(query); return { draws: canvas.__draws, triangles: canvas.__triangles }; }, atlasCanvas);
-  await page.keyboard.press("ArrowRight"); await focusName(hotspots[2].title); await ui.frames(3);
-  const afterFrame = await page.evaluate((query) => { const canvas = document.querySelector(query); return { draws: canvas.__draws, triangles: canvas.__triangles }; }, atlasCanvas);
-  await page.keyboard.press("ArrowLeft"); await focusName(hotspots[0].title); await ui.frames(3);
-  metrics.renderer = {
-    quality: "medium",
-    info: { drawCalls: stage.drawCalls, triangles: stage.triangles },
-    issuedForOneFrame: { drawCalls: afterFrame.draws - beforeFrame.draws, triangles: Math.round(afterFrame.triangles - beforeFrame.triangles) },
-    budget: { drawCalls: 200, triangles: 800000 },
-  };
-  assert.ok(stage.drawCalls > 0 && stage.drawCalls <= 200 && stage.triangles > 0 && stage.triangles <= 800000, JSON.stringify(metrics.renderer));
-  assert.ok(metrics.renderer.issuedForOneFrame.drawCalls > 0 && metrics.renderer.issuedForOneFrame.drawCalls <= 200 && metrics.renderer.issuedForOneFrame.triangles <= 800000, JSON.stringify(metrics.renderer));
-  metrics.longTasks = { open: { durations: await ui.longTasks(openedAt, readyAt + 500), milliseconds: Math.round(readyAt - openedAt) } };
-  record(`Medium quality draws ${stage.drawCalls} calls and ${stage.triangles} triangles per frame by renderer.info (issued for one redrawn frame: ${metrics.renderer.issuedForOneFrame.drawCalls} calls, ${metrics.renderer.issuedForOneFrame.triangles} triangles), within 200 calls and 800k triangles`);
-
-  // Each nation's ring, clicked where the scene drew it, is raycast to its record.
-  for (const item of hotspots) {
+    // The loading state, captured before the stage reports ready.
+    const loading = await page.evaluate(() => {
+      const node = document.querySelector(".chronicles-loading");
+      const screen = document.querySelector(".chronicles-screen");
+      return { load: screen.dataset.load, role: node?.getAttribute("role"), label: node?.getAttribute("aria-label"), visible: !!node && getComputedStyle(node).visibility === "visible" && Number(getComputedStyle(node).opacity) > 0.5, busy: screen.getAttribute("aria-busy") };
+    });
+    assert.deepEqual(loading, { load: "loading", role: "progressbar", label: CHRONICLES_TITLE, visible: true, busy: "true" }, "a visual loading state named by the approved title shows from the click");
+    await ui.shot("loading");
+    await auditText("loading");
+    await ready();
+    const readyAt = await ui.now();
     await settled("overview");
-    const place = (await markers())[item.nation];
-    assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.matches(".chronicles-stage canvas"), place), true, `${item.nation}'s ring is drawn on the canvas, not a DOM button`);
-    await page.mouse.click(place.x, place.y);
-    await recordShown(item);
-    await settled(item.nation);
-    assert.equal(await page.locator(`.chronicles-hotspot[data-nation="${item.nation}"]`).getAttribute("aria-expanded"), "true");
-    assert.equal(await page.locator("#chronicles-record .chronicles-account").count(), content.getNationAccounts(item.nation).length);
-    await auditText(`${item.id} record`);
-    await page.keyboard.press("Escape");
-    await page.waitForFunction(() => !document.querySelector("#chronicles-record"));
-  }
-  record("Clicking each nation's ring on the relief raycasts to exactly that nation's record (title, body, label name and meaning, no added accounts while none are approved) and the camera settles on its focus view; Escape closes it and the camera returns to the overview");
+    metrics.entry = { quality: "medium", readyMs: Math.round(readyAt - openedAt) };
+    const shell = await page.evaluate(() => ({
+      dialog: document.querySelector("dialog").open,
+      home: document.querySelectorAll(".home-grid, .game-cards").length,
+      nav: { visibility: getComputedStyle(document.querySelector(".main-nav")).visibility, inert: document.querySelector(".main-nav").inert },
+      canvases: document.querySelectorAll(".chronicles-stage canvas").length,
+      loader: getComputedStyle(document.querySelector(".chronicles-loading")).visibility,
+    }));
+    assert.deepEqual(shell, { dialog: false, home: 0, nav: { visibility: "hidden", inert: true }, canvases: 1, loader: "hidden" }, "a full-stage layer: no dialog, the main navigation hidden and inert, one stage canvas, the loader gone");
+    assert.equal(await screen().getByRole("heading", { level: 1 }).textContent(), CHRONICLES_TITLE);
+    assert.deepEqual(await screen().getByRole("tab").evaluateAll((tabs) => tabs.map((tab) => tab.textContent)), collections.map(titleOf));
+    assert.ok(!collections.includes("contested") && (await page.locator("#chronicles-tab-contested").count()) === 0, "the Contested Record is absent from navigation");
+    assert.deepEqual(await state(), { collection: "atlas", focus: "overview", entryId: null, load: "ready" });
+    await focusName(entriesOf("atlas")[0].title);
+    assert.deepEqual(await page.locator(".chronicles-hotspot").evaluateAll((nodes) => nodes.map((node) => node.getAttribute("aria-label"))), hotspots.map((record) => registry.getChronicleEntry(record.id, POLICY).title));
+    await page.mouse.move(1, 1);
+    await ui.shot("overview");
+    await auditText("overview");
+    record(`Home → Chronicles shows the loading state named by the approved title from the click, then the stage (ready in ${metrics.entry.readyMs} ms at medium on this host): a full-stage layer with the main navigation hidden and inert, the approved collection tabs only (no Contested Record) and one hidden button per nation`);
 
-  await settled("overview");
-  const rings = await markers();
-  const project = homography(hotspots.map((item) => [[item.hotspot.x, item.hotspot.y], [rings[item.nation].x, rings[item.nation].y]]));
-  const before = await page.evaluate(() => ({ focused: document.activeElement?.getAttribute("aria-label"), selected: document.querySelector('.chronicles-hotspot[aria-pressed="true"]')?.dataset.nation }));
-  for (const [x, y] of [[0.5, 0.5], [0.5, 0.2], [0.5, 0.8], [0.32, 0.4]]) {
-    assert.equal(content.hotspotAt(x, y), null, `${x}, ${y} is empty ground in the shared hit test`);
-    const point = project(x, y);
-    assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.matches(".chronicles-stage canvas"), point), true, `${x}, ${y} is bare relief`);
-    await page.mouse.click(point.x, point.y);
-    await ui.frames(3);
-    assert.equal(await openRecord(), null, `${x}, ${y} opened a record`);
-    assert.equal(await page.locator("dialog").evaluate((dialog) => dialog.open), false);
-    assert.deepEqual(await page.evaluate(() => ({ focused: document.activeElement?.getAttribute("aria-label"), selected: document.querySelector('.chronicles-hotspot[aria-pressed="true"]')?.dataset.nation })), before);
-    assert.equal(await page.locator(".chronicles-stage").getAttribute("data-camera"), "overview", "a click does not move the camera");
-  }
-  await exhibitShown("atlas");
-  record("Clicks on empty ground of the relief, the painted map's centre included, open nothing and keep the selection, the focus and the camera");
-
-  // Restrained camera control: a drag turns and tilts, the wheel zooms about
-  // the pointer, and neither opens a record.
-  const centre = project(0.5, 0.52);
-  const spread = (points) => Math.hypot(points.korvenia.x - points.solforiz.x, points.korvenia.y - points.solforiz.y);
-  await page.mouse.move(centre.x, centre.y);
-  await page.mouse.down();
-  await page.mouse.move(centre.x + 90, centre.y + 40, { steps: 6 });
-  await page.mouse.up();
-  await settled("free");
-  const turned = await markers();
-  assert.ok(Math.hypot(turned.korvenia.x - rings.korvenia.x, turned.korvenia.y - rings.korvenia.y) > 8, "dragging turned the relief");
-  assert.equal(await openRecord(), null, "a drag is not a click");
-  await page.mouse.wheel(0, -300);
-  await ui.moved();
-  assert.ok(spread(await markers()) > spread(turned) * 1.05, "the wheel zoomed in");
-  record("Mouse: dragging the relief turns and tilts it within its limits and the wheel zooms about the pointer; neither opens a record");
-
-  // Layout and picking at every supported size, with the camera reset by reopening.
-  await page.keyboard.press("Escape"); await homeTile("Chronicles");
-  for (const viewport of [{ width: 1280, height: 720 }, { width: 1920, height: 1080 }, { width: 844, height: 390 }]) {
-    await page.setViewportSize(viewport);
-    await page.keyboard.press("Enter"); await waitForMenuIdle(page); await atlasReady(); await settled("overview");
+    // Mouse: each nation's marker, clicked where the stage drew it, opens its entry and focus.
     for (const item of hotspots) {
-      const place = (await markers())[item.nation];
-      await page.mouse.click(place.x, place.y);
-      await recordShown(item);
-      await settled(item.nation);
-      await page.keyboard.press("Escape");
       await settled("overview");
+      const place = (await markers())[item.nation];
+      assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.matches(".chronicles-stage canvas"), place), true, `${item.nation}'s marker is drawn on the canvas`);
+      await page.mouse.click(place.x, place.y);
+      const entry = registry.getChronicleEntry(item.id, POLICY);
+      await recordShown(entry);
+      await waitState({ focus: `nation:${item.nation}`, entryId: item.id });
+      await settled(item.nation);
+      await auditText(`${item.id} record`);
+      await page.mouse.move(1, 1);
+      await ui.shot(`record-${item.nation}`);
+      await page.keyboard.press("Escape");
+      await waitState({ focus: `nation:${item.nation}`, entryId: null });
+      if (item.nation === "korvenia") await ui.shot("focus-korvenia");
+      await page.keyboard.press("Escape");
+      await waitState({ focus: "overview", entryId: null });
     }
-    for (const exhibit of CHRONICLE_EXHIBITS) {
-      await screen().getByRole("tab", { name: exhibit.title, exact: true }).click();
-      await exhibitShown(exhibit.id);
-      if (exhibit.id === "atlas") {
-        const place = (await markers())[hotspots[0].nation];
-        await page.mouse.click(place.x, place.y);
-        await recordShown(hotspots[0]);
-        await settled(hotspots[0].nation);
-      }
-      const layout = await page.evaluate(({ id }) => {
-        const root = document.querySelector(".chronicles-screen");
-        const box = (node) => node.getBoundingClientRect();
-        const visible = [...root.querySelectorAll("h1,h2,h3,p,button:not(.chronicles-hotspot),.chronicles-stop-label,.chronicles-stop-era,.chronicles-marker.is-selected .chronicles-marker-caption,.chronicles-label-name,.chronicles-label-meaning")].filter((node) => node.getClientRects().length && getComputedStyle(node).opacity !== "0");
-        const nav = box(document.querySelector(".main-nav")), header = box(root.querySelector(".chronicles-header")), footer = box(root.querySelector(".chronicles-footer"));
-        const content = id === "atlas" ? root.querySelector("#chronicles-record") : root.querySelector(`#chronicles-panel-${id}`);
-        const scrollers = [...root.querySelectorAll(`#chronicles-panel-${id} .chronicles-record, #chronicles-panel-${id} .chronicles-articles`)].map((node) => ({ name: node.className, fits: node.scrollHeight <= node.clientHeight + 1 }));
-        const panel = box(content);
-        const rings = id !== "atlas" ? [] : [...root.querySelectorAll(".chronicles-hotspots .chronicles-marker")].map((node) => ({ nation: node.dataset.nation, x: box(node).left, y: box(node).top }));
-        return {
-          overflow: document.documentElement.scrollWidth > innerWidth || document.documentElement.scrollHeight > innerHeight,
-          clipped: visible.filter((node) => { const rect = box(node); return node.scrollWidth > node.clientWidth + 1 || rect.left < -1 || rect.right > innerWidth + 1 || rect.top < -1 || rect.bottom > innerHeight + 1; }).map((node) => node.getAttribute("aria-label") || node.textContent.trim()),
-          stacked: header.top >= nav.bottom - 0.5 && panel.top >= header.bottom - 0.5 && footer.top >= panel.bottom - 0.5,
-          backReachable: [...root.querySelectorAll("button")].some((node) => { const rect = box(node); return node.getAttribute("aria-label") === "Back" && rect.top >= 0 && rect.bottom <= innerHeight; }),
-          ringsOnScreen: rings.every((ring) => ring.x >= 0 && ring.x <= innerWidth && ring.y >= 0 && ring.y <= innerHeight) || id !== "atlas",
-          scrollers, panel: { top: Math.round(panel.top), bottom: Math.round(panel.bottom), left: Math.round(panel.left), right: Math.round(panel.right) },
-        };
-      }, { id: exhibit.id });
-      assert.equal(layout.overflow, false, `${exhibit.id} ${viewport.width}: page overflow`);
-      assert.deepEqual(layout.clipped, [], `${exhibit.id} ${viewport.width}: clipped text`);
-      assert.equal(layout.stacked, true, `${exhibit.id} ${viewport.width}: nav, header, exhibit and footer overlap`);
-      assert.equal(layout.backReachable, true);
-      for (const scroller of layout.scrollers) assert.equal(scroller.fits, true, `${exhibit.id} ${viewport.width}: ${scroller.name} needs scrolling`);
-      await auditText(`${exhibit.id} ${viewport.width}×${viewport.height}`);
-      layouts.push({ viewport, exhibit: exhibit.id, ...layout });
-      if (exhibit.id === "atlas") { await page.keyboard.press("Escape"); await page.waitForFunction(() => !document.querySelector("#chronicles-record")); }
+    record("Mouse: clicking each nation's marker on the stage opens exactly that nation's entry (title, body, label name and meaning) with its focus; Back closes the entry and keeps the nation, and Back again returns to the overview");
+
+    await settled("overview");
+    const rings = await markers();
+    const project = homography(hotspots.map((item) => [[item.hotspot.x, item.hotspot.y], [rings[item.nation].x, rings[item.nation].y]]));
+    for (const [x, y] of [[0.5, 0.5], [0.5, 0.2], [0.5, 0.8], [0.32, 0.4]]) {
+      assert.equal(content.hotspotAt(x, y), null);
+      const point = project(x, y);
+      assert.equal(await page.evaluate(({ x, y }) => document.elementFromPoint(x, y)?.matches(".chronicles-stage canvas"), point), true, `${x}, ${y} is bare relief`);
+      await page.mouse.click(point.x, point.y);
+      await ui.frames(3);
+      assert.deepEqual(await state(), { collection: "atlas", focus: "overview", entryId: null, load: "ready" }, `${x}, ${y} changed the scene`);
     }
+    record("Clicks on bare ground, the painted map's centre included, change nothing");
+
+    // Restrained camera: a drag orbits within limits and the wheel zooms; neither opens an entry.
+    const centre = project(0.5, 0.52);
+    await page.mouse.move(centre.x, centre.y);
+    await page.mouse.down();
+    await page.mouse.move(centre.x + 90, centre.y + 40, { steps: 6 });
+    await page.mouse.up();
+    await settled("free");
+    const turned = await markers();
+    assert.ok(Math.hypot(turned.korvenia.x - rings.korvenia.x, turned.korvenia.y - rings.korvenia.y) > 8, "dragging orbited the view");
+    assert.equal(await ui.openRecord(), null);
+    await page.mouse.wheel(0, -300);
+    await ui.moved();
+    assert.ok(spread(await markers()) > spread(turned) * 1.05, "the wheel zoomed in");
+    record("Mouse: a drag orbits the view within its limits and the wheel zooms; neither opens an entry");
+
+    // Hover follows the Showcase rule; a resting pointer never takes focus back.
     await page.keyboard.press("Escape"); await homeTile("Chronicles");
-  }
-  await page.setViewportSize({ width: 1280, height: 720 });
-  record("At 1280×720, 1920×1080 and 844×390 every ring is raycast to its own record, and every exhibit and open record stacks below the nav and above the footer, fits without clipping or scrolling and keeps Back reachable");
+    await page.keyboard.press("Enter"); await ready(); await settled("overview");
+    const now = await markers();
+    await page.mouse.move(now.aethelgard.x - 40, now.aethelgard.y + 30); await page.mouse.move(now.aethelgard.x, now.aethelgard.y, { steps: 4 });
+    await focusName(entriesOf("atlas")[2].title);
+    assert.equal(await page.locator(".chronicles-stage canvas").getAttribute("data-over"), "marker");
+    await ui.shot("hover-aethelgard");
+    await page.keyboard.press("ArrowLeft"); await focusName(entriesOf("atlas")[0].title);
+    await page.waitForTimeout(250);
+    assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), entriesOf("atlas")[0].title, "a resting pointer does not take focus back");
+    assert.deepEqual(await state(), { collection: "atlas", focus: "overview", entryId: null, load: "ready" }, "hover moves only the highlight");
+    await page.mouse.move(1, 1);
+    record("Pointer: moving onto a marker highlights and focuses its nation without changing the scene; a resting pointer never takes focus back from the keyboard");
 
-  await page.keyboard.press("Enter"); await waitForMenuIdle(page); await atlasReady();
-  for (const item of stops) {
-    await screen().getByRole("tab", { name: CHRONICLE_EXHIBITS[1].title, exact: true }).click();
-    await page.locator(`.chronicles-stop[data-record="${item.id}"]`).click();
-    const shown = await page.locator("#chronicles-stop-detail").evaluate((node) => ({ id: node.querySelector("article").dataset.record, title: node.querySelector("h2").textContent, body: node.querySelector(".chronicles-body").textContent, label: node.querySelector(".chronicles-label-name").textContent, meaning: node.querySelector(".chronicles-label-meaning").textContent }));
-    assert.deepEqual(shown, { id: item.id, title: item.title, body: item.body, label: CHRONICLE_LABELS[item.label].name, meaning: CHRONICLE_LABELS[item.label].meaning });
-    assert.equal(await page.locator(`.chronicles-stop[data-record="${item.id}"] .chronicles-stop-label`).textContent(), content.getChronicleShortTitle(item));
-    await auditText(`${item.id} stop`);
-  }
-  assert.deepEqual(await page.locator(".chronicles-stop").evaluateAll((nodes) => nodes.map((node) => node.dataset.record)), stops.map((item) => item.id));
-  await screen().getByRole("tab", { name: CHRONICLE_EXHIBITS[2].title, exact: true }).click();
-  const laws = await page.locator(".chronicles-article").evaluateAll((nodes) => nodes.map((node) => ({ id: node.dataset.record, title: node.querySelector("h2").textContent, body: node.querySelector(".chronicles-body").textContent, label: node.querySelector(".chronicles-label-name").textContent, meaning: node.querySelector(".chronicles-label-meaning").textContent, visible: node.querySelector(".chronicles-label").getBoundingClientRect().height > 0 })));
-  assert.deepEqual(laws, articles.map((item) => ({ id: item.id, title: item.title, body: item.body, label: CHRONICLE_LABELS[item.label].name, meaning: CHRONICLE_LABELS[item.label].meaning, visible: true })));
-  assert.equal(hotspots.length + stops.length + articles.length, CHRONICLE_RECORDS.length);
-  record("All eleven records render verbatim with their label name and meaning: four nation records, four timeline stops in order and three articles");
+    // Keyboard on the Atlas: the highlight over the overview, browsing while open, focus moves in focus.
+    let current = 0;
+    for (const direction of ["right", "down", "left", "up"]) {
+      const next = content.getNextHotspot(current, direction);
+      await page.keyboard.press(arrowKey(direction));
+      await focusName(entriesOf("atlas")[next].title);
+      assert.deepEqual(await state(), { collection: "atlas", focus: "overview", entryId: null, load: "ready" });
+      current = next;
+    }
+    await page.keyboard.press("Enter");
+    await recordShown(entriesOf("atlas")[current]);
+    const browseTo = content.getNextHotspot(current, "right");
+    await page.keyboard.press("ArrowRight");
+    await waitState({ entryId: hotspots[browseTo].id, focus: `nation:${hotspots[browseTo].nation}` });
+    await page.keyboard.press("Escape");
+    await waitState({ entryId: null, focus: `nation:${hotspots[browseTo].nation}` });
+    const focusTo = content.getNextHotspot(browseTo, "down");
+    await page.keyboard.press("ArrowDown");
+    await waitState({ entryId: null, focus: `nation:${hotspots[focusTo].nation}` });
+    await settled(hotspots[focusTo].nation);
+    await page.keyboard.press("Escape"); await waitState({ focus: "overview" });
+    await page.keyboard.press("Home"); await focusName(entriesOf("atlas")[0].title);
+    await page.keyboard.press("End"); await focusName(entriesOf("atlas")[hotspots.length - 1].title);
+    // Shift turns and tilts, plus and minus zoom, and the focus stays on its nation.
+    await settled();
+    const keyed = await markers();
+    await page.keyboard.down("Shift"); await page.keyboard.press("ArrowLeft"); await page.keyboard.press("ArrowUp"); await page.keyboard.up("Shift");
+    await ui.moved();
+    const orbited = await markers();
+    assert.ok(Math.hypot(orbited.korvenia.x - keyed.korvenia.x, orbited.korvenia.y - keyed.korvenia.y) > 4, "Shift+arrows orbit");
+    await page.keyboard.press("Equal"); await page.keyboard.press("Equal"); await ui.moved();
+    assert.ok(spread(await markers()) > spread(orbited) * 1.1, "plus zooms in");
+    await focusName(entriesOf("atlas")[hotspots.length - 1].title);
+    const focusStyles = await page.evaluate(() => {
+      const caption = document.activeElement.nextElementSibling?.querySelector(".chronicles-marker-caption");
+      return { focusVisible: document.activeElement.matches(":focus-visible"), caption: !!caption && getComputedStyle(caption).opacity === "1" };
+    });
+    assert.deepEqual(focusStyles, { focusVisible: true, caption: true });
+    await ui.shot("focus-keyboard");
+    record("Keyboard on the Atlas: arrows move the highlight spatially over the overview, browse to the neighbour's entry while one is open and carry the focus while a nation is focused; Enter opens, Escape unwinds, Home/End reach the ends, Shift+arrows orbit and plus/minus zoom, with a visible focus caption");
 
-  // Exhibit switches keep every task short; the relief stops drawing while hidden.
-  const switchedAt = await ui.now();
-  await screen().getByRole("tab", { name: CHRONICLE_EXHIBITS[0].title, exact: true }).click();
-  await exhibitShown("atlas"); await settled();
-  await screen().getByRole("tab", { name: CHRONICLE_EXHIBITS[1].title, exact: true }).click();
-  await exhibitShown("interregnum");
-  await page.waitForTimeout(600);
-  const switchedBy = await ui.now();
-  metrics.longTasks.switch = { durations: await ui.longTasks(switchedAt, switchedBy), milliseconds: Math.round(switchedBy - switchedAt) };
-  assert.equal(await ui.drawsOver(atlasCanvas), 0, "the relief keeps drawing behind another exhibit");
-  record("Behind the Interregnum and the Laws the relief rests on its last frame and issues no draw calls");
+    // Collections by every input: tabs (keyboard and mouse), Q/E, LB/RB, the shoulder glyphs.
+    await page.keyboard.press("ArrowUp"); await page.keyboard.press("ArrowUp"); await page.keyboard.press("ArrowUp");
+    await focusName(titleOf("atlas"));
+    await page.keyboard.press("ArrowRight"); await waitState({ collection: "interregnum" }); await focusName(titleOf("interregnum"));
+    await page.keyboard.press("ArrowRight"); await waitState({ collection: "laws" });
+    await page.keyboard.press("ArrowRight"); await waitState({ collection: "laws" });
+    await page.keyboard.press("Home"); await waitState({ collection: "atlas" });
+    await page.keyboard.press("End"); await waitState({ collection: "laws" });
+    await page.keyboard.press("ArrowDown"); await focusName(entriesOf("laws")[0].title);
+    await page.keyboard.press("q"); await waitState({ collection: "interregnum" });
+    await page.keyboard.press("q"); await waitState({ collection: "atlas" });
+    await page.keyboard.press("q"); await waitState({ collection: "laws" });
+    await page.keyboard.press("e"); await waitState({ collection: "atlas" });
+    await page.keyboard.press("e"); await waitState({ collection: "interregnum" });
+    assert.equal(await page.locator(".main-nav [aria-selected='true']").getAttribute("aria-label"), "Home", "Q/E never left Chronicles for the menu tabs");
+    await ui.pad(5, () => waitState({ collection: "laws" }));
+    await ui.pad(4, () => waitState({ collection: "interregnum" }));
+    await ui.pad(4, () => waitState({ collection: "atlas" }));
+    await screen().getByRole("tab", { name: titleOf("laws"), exact: true }).click(); await waitState({ collection: "laws" });
+    await page.locator(".chronicles-shoulder").nth(0).click(); await waitState({ collection: "interregnum" });
+    await page.locator(".chronicles-shoulder").nth(1).click(); await waitState({ collection: "laws" });
+    await screen().getByRole("tab", { name: titleOf("atlas"), exact: true }).click(); await waitState({ collection: "atlas" });
+    record("Collections switch by keyboard on the tabs (arrows, Home/End), by Q/E, by mocked LB/RB, by clicking the tabs and by clicking the LB/RB glyphs; Q/E and LB/RB cycle inside Chronicles and never reach the menu tabs");
 
-  // Keyboard: arrows follow the shared helpers; up from the top of an exhibit
-  // reaches the tabs, left/right switch them and down returns.
-  await screen().getByRole("tab", { name: CHRONICLE_EXHIBITS[0].title, exact: true }).click();
-  await settled();
-  await page.keyboard.press("ArrowDown"); await focusRecord(hotspots[0].nation);
-  let current = 0;
-  for (const direction of ["right", "down", "left", "up", "down", "right", "up", "left", "left", "down", "down"]) {
-    const next = content.getNextHotspot(current, direction);
-    await page.keyboard.press(`Arrow${direction[0].toUpperCase()}${direction.slice(1)}`);
-    await focusName(hotspots[next].title);
-    assert.equal(await page.locator(`.chronicles-hotspot[data-nation="${hotspots[next].nation}"]`).getAttribute("aria-pressed"), "true");
-    current = next;
-  }
-  await page.keyboard.press("Home"); await focusName(hotspots[0].title);
-  await page.keyboard.press("End"); await focusName(hotspots.at(-1).title);
-  await page.keyboard.press("Enter"); await recordShown(hotspots.at(-1)); await settled(hotspots.at(-1).nation);
-  await page.keyboard.press("Escape"); await page.waitForFunction(() => !document.querySelector("#chronicles-record"));
-  await focusName(hotspots.at(-1).title); await settled("overview");
-  await screen().waitFor();
-  await page.keyboard.press("ArrowUp"); await focusName(hotspots[0].title);
-  await page.keyboard.press("Enter"); await recordShown(hotspots[0]);
-  await page.keyboard.press("ArrowUp"); await focusName(CHRONICLE_EXHIBITS[0].title);
-  assert.equal(await openRecord(), hotspots[0].id, "reaching the tabs keeps the open record");
-  await page.keyboard.press("Escape"); await page.waitForFunction(() => !document.querySelector("#chronicles-record"));
-  await focusName(CHRONICLE_EXHIBITS[0].title);
-  await page.keyboard.press("ArrowLeft"); await exhibitShown("atlas");
-  await page.keyboard.press("ArrowRight"); await exhibitShown("interregnum"); await focusName(CHRONICLE_EXHIBITS[1].title);
-  // The timeline kept the last stop chosen above while its tab was away.
-  await page.keyboard.press("ArrowDown"); await focusRecord(stops[3].id);
-  for (const [key, index] of [["ArrowLeft", 2], ["ArrowLeft", 1], ["ArrowLeft", 0], ["ArrowLeft", 0], ["ArrowRight", 1], ["ArrowDown", 1], ["Home", 0], ["End", 3], ["ArrowRight", 3], ["ArrowLeft", 2]]) {
-    await page.keyboard.press(key); await focusRecord(stops[index].id);
-    assert.equal(await page.locator("#chronicles-stop-detail article").getAttribute("data-record"), stops[index].id);
-  }
-  await page.keyboard.press("ArrowUp"); await focusName(CHRONICLE_EXHIBITS[1].title);
-  await page.keyboard.press("ArrowRight"); await exhibitShown("laws");
-  await page.keyboard.press("ArrowDown"); await focusRecord(articles[0].id);
-  for (const [key, index] of [["ArrowDown", 1], ["ArrowDown", 2], ["ArrowDown", 2], ["ArrowUp", 1], ["ArrowRight", 2], ["ArrowLeft", 1], ["Home", 0]]) {
-    await page.keyboard.press(key); await focusRecord(articles[index].id);
-    assert.equal(await page.locator(`.chronicles-article[data-record="${articles[index].id}"]`).getAttribute("aria-current"), "true");
-  }
-  await page.keyboard.press("ArrowUp"); await focusName(CHRONICLE_EXHIBITS[2].title);
-  await page.keyboard.press("ArrowRight"); await exhibitShown("laws");
-  await page.keyboard.press("Home"); await exhibitShown("atlas");
-  await page.keyboard.press("End"); await exhibitShown("laws");
-  await page.keyboard.press("ArrowLeft"); await page.keyboard.press("ArrowLeft"); await exhibitShown("atlas");
-  await page.keyboard.press("Enter"); await focusRecord(hotspots[0].nation);
-  assert.equal(await openRecord(), null, "Enter on a tab enters the exhibit without opening a record");
-  // Shift turns and tilts, plus and minus zoom; the focus stays on its nation.
-  await settled();
-  const keyed = await markers();
-  await page.keyboard.down("Shift"); await page.keyboard.press("ArrowLeft"); await page.keyboard.press("ArrowUp"); await page.keyboard.up("Shift");
-  await ui.moved();
-  const orbited = await markers();
-  assert.ok(Math.hypot(orbited.korvenia.x - keyed.korvenia.x, orbited.korvenia.y - keyed.korvenia.y) > 4, "Shift+arrows turn the relief");
-  await focusName(hotspots[0].title);
-  await page.keyboard.press("Equal"); await page.keyboard.press("Equal"); await ui.moved();
-  assert.ok(spread(await markers()) > spread(orbited) * 1.1, "plus zooms in");
-  const zoomed = await markers();
-  await page.keyboard.press("Minus"); await ui.moved();
-  assert.ok(spread(await markers()) < spread(zoomed), "minus zooms out");
-  await focusName(hotspots[0].title);
-  const focusStyles = await page.evaluate(() => {
-    const visible = (node) => getComputedStyle(node).outlineStyle !== "none" || getComputedStyle(node).boxShadow !== "none";
-    const caption = document.activeElement.nextElementSibling?.querySelector(".chronicles-marker-caption");
-    return { hotspot: document.activeElement.matches(":focus-visible"), caption: !!caption && visible(caption) && getComputedStyle(caption).opacity === "1" };
-  });
-  assert.deepEqual(focusStyles, { hotspot: true, caption: true });
-  await page.keyboard.press("Escape"); await homeTile("Chronicles"); await activeTab("Home");
-  record("Keyboard: arrows move spatially between the rings, along the timeline and through the articles with the shared helpers; Home/End reach the ends; up reaches the exhibit tabs, left/right switch them and down or Enter returns; Shift+arrows turn and tilt and plus/minus zoom; the focused ring shows a visible focus caption; Enter opens and Escape closes a record, then Escape returns Home with the Chronicles tile selected and focused");
+    // The Interregnum and the Laws: approved entries over their framing, by keyboard and mouse.
+    await page.keyboard.press("e"); await waitState({ collection: "interregnum", entryId: null });
+    await ui.shot("interregnum");
+    const stops = entriesOf("interregnum");
+    assert.deepEqual(await page.locator(".chronicles-item--interregnum").evaluateAll((nodes) => nodes.map((node) => node.dataset.record)), stops.map((entry) => entry.id));
+    for (const [index, entry] of stops.entries()) {
+      await page.locator(`.chronicles-item[data-record="${entry.id}"]`).click();
+      await recordShown(entry);
+      await waitState({ collection: "interregnum", entryId: entry.id });
+      assert.equal(await page.locator(`.chronicles-item[data-record="${entry.id}"] .chronicles-stop-label`).textContent(), content.getChronicleShortTitle(content.getChronicleRecord(entry.id)));
+      await auditText(`${entry.id} entry`);
+      if (index === 2) { await page.mouse.move(1, 1); await ui.shot("interregnum-year-19"); }
+    }
+    await page.keyboard.press("ArrowLeft"); await waitState({ entryId: stops[2].id });
+    await page.keyboard.press("Escape"); await waitState({ entryId: null, collection: "interregnum" });
+    await page.keyboard.press("ArrowLeft"); await page.keyboard.press("Enter"); await waitState({ entryId: stops[1].id });
+    await page.keyboard.press("Home"); await waitState({ entryId: stops[0].id });
+    await page.keyboard.press("End"); await waitState({ entryId: stops[stops.length - 1].id });
+    await page.keyboard.press("Escape"); await waitState({ entryId: null });
+    await page.keyboard.press("e"); await waitState({ collection: "laws", entryId: null });
+    await ui.shot("laws");
+    const articles = entriesOf("laws");
+    for (const entry of articles) {
+      await page.locator(`.chronicles-item[data-record="${entry.id}"]`).click();
+      await recordShown(entry);
+      await auditText(`${entry.id} entry`);
+    }
+    await page.mouse.move(1, 1);
+    await ui.shot("laws-entry");
+    await page.keyboard.press("ArrowUp"); await waitState({ entryId: articles[1].id });
+    await page.keyboard.press("Escape"); await waitState({ entryId: null });
+    await page.keyboard.press("ArrowUp"); await page.keyboard.press("ArrowUp"); await focusName(titleOf("laws"));
+    await ui.shot("focus-tabs");
+    assert.equal(entriesOf("atlas").length + stops.length + articles.length, registry.getChronicleEntries(POLICY).length);
+    record("The Interregnum and the Laws show every approved entry verbatim with its label over their framing; mouse and keyboard open them, arrows browse while one is open, Home/End reach the ends and Back closes the entry");
 
-  await page.keyboard.press("Enter"); await screen().waitFor(); await focusName(hotspots[0].title);
-  await page.keyboard.press("e"); await waitForMenuIdle(page); await activeTab("Play");
-  await page.keyboard.press("q"); await waitForMenuIdle(page); await activeTab("Home"); await homeTile("Chronicles");
-  await page.keyboard.press("Enter"); await screen().waitFor();
-  await page.keyboard.press("q"); await waitForMenuIdle(page); await activeTab("Settings");
-  await page.keyboard.press("Escape"); await waitForMenuIdle(page); await activeTab("Home"); await homeTile("Chronicles");
-  await page.keyboard.press("Enter"); await screen().waitFor();
-  await page.getByRole("tab", { name: "Showcase", exact: true }).click(); await waitForMenuIdle(page);
-  await page.getByRole("region", { name: "Showcase options", exact: true }).waitFor();
-  await page.getByRole("region", { name: "Showcase", exact: true }).getByRole("button", { name: "Back", exact: true }).click(); await waitForMenuIdle(page);
-  await activeTab("Home"); await homeTile("Chronicles");
-  record("Q/E keep their top-level tab behaviour from Chronicles, and Settings and Showcase both return to Home with the Chronicles tile selected");
+    // The stage rests behind the collections it does not draw.
+    await page.keyboard.press("ArrowDown"); await page.keyboard.press("e"); await waitState({ collection: "atlas" });
+    await settled();
+    await page.keyboard.press("e"); await waitState({ collection: "interregnum" });
+    await page.waitForFunction(() => document.querySelector(".chronicles-stage")?.dataset.stageResting === "true");
+    await ui.frames(4);
+    assert.equal(await ui.drawsOver(".menu-transition-live .chronicles-stage canvas"), 0, "the stage keeps drawing behind the Interregnum");
+    record("Behind the Interregnum and the Laws the relief settles, then rests receded on its last frame and issues no draw calls; no filter is applied to the stage");
 
-  // Pointer, on the Showcase pattern.
-  await page.keyboard.press("Enter"); await screen().waitFor(); await atlasReady(); await settled("overview");
-  const ringsNow = await markers();
-  const nearby = (nation, dx, dy) => ({ x: ringsNow[nation].x + dx, y: ringsNow[nation].y + dy });
-  await page.mouse.move(nearby("aethelgard", -40, 30).x, nearby("aethelgard", -40, 30).y); await page.mouse.move(ringsNow.aethelgard.x, ringsNow.aethelgard.y, { steps: 4 });
-  await focusName(hotspots[2].title);
-  assert.equal(await page.locator(".chronicles-stage canvas").getAttribute("data-over"), "marker");
-  await page.keyboard.press("ArrowLeft"); await focusName(hotspots[0].title);
-  await page.waitForTimeout(250);
-  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), hotspots[0].title, "a resting pointer does not take focus back");
-  await page.mouse.click(ringsNow.korvenia.x, ringsNow.korvenia.y); await recordShown(hotspots[0]); await settled("korvenia");
-  // A nation's close view leaves the other rings off screen, so step back first.
-  await page.mouse.move(1, 1);
-  for (let step = 0; step < 4; step++) await page.keyboard.press("Minus");
-  await ui.moved();
-  const opened = await markers();
-  const otherNation = await page.evaluate(({ points, open }) => Object.entries(points).find(([nation, point]) => nation !== open
-    && point.x > 0 && point.y > 0 && point.x < innerWidth && point.y < innerHeight
-    && document.elementFromPoint(point.x, point.y)?.matches(".chronicles-stage canvas"))?.[0] ?? null, { points: opened, open: hotspots[0].nation });
-  const other = hotspots.find((item) => item.nation === otherNation);
-  assert.ok(other, `another ring is in view beside the open record ${JSON.stringify(opened)}`);
-  await page.mouse.move(opened[other.nation].x + 30, opened[other.nation].y - 30); await page.mouse.move(opened[other.nation].x, opened[other.nation].y, { steps: 4 });
-  await focusName(other.title);
-  assert.equal(await openRecord(), hotspots[0].id, "hovering another nation does not replace the open record");
-  await page.locator(".chronicles-record").hover();
-  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), other.title);
-  await screen().getByRole("tab", { name: CHRONICLE_EXHIBITS[2].title, exact: true }).hover();
-  await page.waitForTimeout(150);
-  await exhibitShown("atlas");
-  await screen().getByRole("button", { name: "Back", exact: true }).click();
-  await page.waitForFunction(() => !document.querySelector("#chronicles-record"));
-  await screen().getByRole("button", { name: "Back", exact: true }).click();
-  await homeTile("Chronicles");
-  record("Pointer follows the Showcase pattern: moving onto a ring selects and focuses its nation, a resting pointer never takes focus back from the keyboard, hovering never replaces an open record or switches an exhibit, and the Back button closes the record before returning Home");
+    // Controller: D-pad and left stick move, A selects, B goes back, the right stick orbits and the triggers zoom.
+    await ui.pad(4, () => waitState({ collection: "atlas" }));
+    await settled();
+    await page.keyboard.press("Home");
+    await focusName(entriesOf("atlas")[0].title);
+    await ui.pad(15, () => focusName(entriesOf("atlas")[content.getNextHotspot(0, "right")].title));
+    const padIndex = content.getNextHotspot(0, "right");
+    await ui.pad(0, async () => { await recordShown(entriesOf("atlas")[padIndex]); await settled(hotspots[padIndex].nation); });
+    await ui.pad(1, () => waitState({ entryId: null, focus: `nation:${hotspots[padIndex].nation}` }));
+    await ui.pad(1, () => waitState({ focus: "overview" }));
+    await ui.pad([0, 0.9], () => focusName(entriesOf("atlas")[content.getNextHotspot(padIndex, "down")].title));
+    await ui.pad([-0.9, 0], () => focusName(entriesOf("atlas")[content.getNextHotspot(content.getNextHotspot(padIndex, "down"), "left")].title));
+    await settled();
+    const padStart = await markers();
+    await page.evaluate(() => window.__pad.hold([0, 0, 0.85, -0.6], {}, 24));
+    await page.waitForFunction(() => !window.__pad.holding()); await ui.moved();
+    const padTurned = await markers();
+    assert.ok(Math.hypot(padTurned.korvenia.x - padStart.korvenia.x, padTurned.korvenia.y - padStart.korvenia.y) > 4, "the right stick orbits");
+    await page.evaluate(() => window.__pad.hold([0, 0, 0, 0], { 7: 1 }, 24));
+    await page.waitForFunction(() => !window.__pad.holding()); await ui.moved();
+    assert.ok(spread(await markers()) > spread(padTurned) * 1.1, "the right trigger zooms in");
+    await ui.pad(5, () => waitState({ collection: "interregnum" }));
+    await page.keyboard.press("Home"); await focusName(entriesOf("interregnum")[0].title);
+    await ui.pad(13, async () => { /* down on the timeline does nothing */ await waitState({ collection: "interregnum", entryId: null }); });
+    await ui.pad(15, () => focusName(entriesOf("interregnum")[1].title));
+    await ui.pad(0, () => waitState({ entryId: entriesOf("interregnum")[1].id }));
+    await ui.pad(1, () => waitState({ entryId: null }));
+    record("Mocked standard controller: the D-pad and left stick move between nations and stops, A opens, B unwinds, the right stick orbits and the right trigger zooms the view, LB/RB cycle the collections");
 
-  await page.mouse.move(1, 1);
-  const { pad } = ui;
-  await pad(0, () => focusName(hotspots[0].title));
-  await screen().waitFor(); await atlasReady(); await settled("overview");
-  await pad(15, () => focusName(hotspots[2].title));
-  await pad(0, async () => { await recordShown(hotspots[2]); await settled("aethelgard"); });
-  await pad(1, async () => { await page.waitForFunction(() => !document.querySelector("#chronicles-record")); await focusName(hotspots[2].title); });
-  await pad([0, 0.9], () => focusName(hotspots[1].title));
-  await pad([-0.9, 0], () => focusName(hotspots[3].title));
-  await pad(12, () => focusName(hotspots[0].title));
-  await settled("overview");
-  // The right stick turns the relief and the right trigger zooms in.
-  const padStart = await markers();
-  await page.evaluate(() => window.__pad.hold([0, 0, 0.85, -0.6], {}, 24));
-  await page.waitForFunction(() => !window.__pad.holding()); await ui.moved();
-  const padTurned = await markers();
-  assert.ok(Math.hypot(padTurned.korvenia.x - padStart.korvenia.x, padTurned.korvenia.y - padStart.korvenia.y) > 4, "the right stick turns the relief");
-  await page.evaluate(() => window.__pad.hold([0, 0, 0, 0], { 7: 1 }, 24));
-  await page.waitForFunction(() => !window.__pad.holding()); await ui.moved();
-  assert.ok(spread(await markers()) > spread(padTurned) * 1.1, "the right trigger zooms in");
-  await focusName(hotspots[0].title);
-  await pad(12, () => focusName(CHRONICLE_EXHIBITS[0].title));
-  await pad(15, () => exhibitShown("interregnum"));
-  await pad(13, () => focusRecord(stops[0].id));
-  await pad(15, () => focusRecord(stops[1].id));
-  await pad(0, () => focusRecord(stops[1].id));
-  await pad(12, () => focusName(CHRONICLE_EXHIBITS[1].title));
-  await pad(15, () => exhibitShown("laws"));
-  await pad(0, () => focusRecord(articles[0].id));
-  await pad(13, () => focusRecord(articles[1].id));
-  await pad(5, async () => { await activeTab("Play"); });
-  await pad(4, async () => { await activeTab("Home"); await homeTile("Chronicles"); });
-  await pad(0, () => screen().waitFor());
-  await atlasReady();
-  await pad(0, () => recordShown(hotspots[0]));
-  await pad(1, () => page.waitForFunction(() => !document.querySelector("#chronicles-record")));
-  await pad(1, async () => { await homeTile("Chronicles"); await activeTab("Home"); });
-  record("Mocked standard controller: A enters Chronicles and opens records, the D-pad and left stick move between rings, tabs, timeline stops and articles, the right stick turns and the right trigger zooms the relief, B closes the record and then returns Home, and RB/LB keep their top-level tab behaviour");
-
-  for (const name of ["My Legacy", "Herald Board"]) {
-    await page.getByRole("button", { name, exact: true }).click();
-    await page.getByRole("heading", { name, exact: true }).waitFor();
-    assert.match(await page.locator("dialog").innerText(), /unavailable in this build/);
+    // Back unwinds through the reducer, then returns Home with the tile selected and focused.
+    await ui.pad(4, () => waitState({ collection: "atlas" }));
+    await page.keyboard.press("Enter"); await waitState({ entryId: hotspots[content.getNextHotspot(content.getNextHotspot(padIndex, "down"), "left")].id });
+    await page.keyboard.press("Escape"); await waitState({ entryId: null });
+    assert.notEqual((await state()).focus, "overview");
+    await page.keyboard.press("Backspace"); await waitState({ focus: "overview" });
+    await screen().getByRole("button", { name: "Back", exact: true }).click();
+    await homeTile("Chronicles");
     assert.equal(await page.locator(".chronicles-screen").count(), 0);
-    await page.getByRole("button", { name: "Cancel", exact: true }).click();
-    await page.waitForFunction(() => !document.querySelector("dialog").open);
-    await homeTile(name);
+    assert.equal(await page.locator(".main-nav [aria-selected='true']").getAttribute("aria-label"), "Home");
+    record("Back (Escape, Backspace, B and the Back button) closes the entry, then the nation focus, then returns Home with the Chronicles tile selected and focused");
+  } finally {
+    await page.close();
   }
-  await pad(0, () => page.getByRole("heading", { name: "Herald Board", exact: true }).waitFor());
-  await pad(1, async () => { await page.waitForFunction(() => !document.querySelector("dialog").open); await homeTile("Herald Board"); });
-  await page.keyboard.press("ArrowLeft"); await homeTile("My Legacy");
-  await page.keyboard.press("Enter"); await page.getByRole("heading", { name: "My Legacy", exact: true }).waitFor();
-  await page.keyboard.press("Escape"); await page.waitForFunction(() => !document.querySelector("dialog").open); await homeTile("My Legacy");
-  record("My Legacy and Herald Board still open their unavailable panels by pointer, keyboard and controller");
+});
 
-  // Held still: no transition runs and the relief draws only when something changes.
-  await page.keyboard.press("ArrowRight"); await page.keyboard.press("ArrowUp"); await homeTile("Chronicles");
-  await page.keyboard.press("Enter"); await screen().waitFor(); await atlasReady(); await settled("overview");
-  await page.keyboard.press("Enter"); await recordShown(hotspots[0]); await settled("korvenia");
-  assert.equal(await page.locator(".chronicles-screen--still").count(), 1);
-  assert.equal(await page.evaluate(() => document.getAnimations().filter((animation) => animation.effect?.target?.closest?.(".chronicles-screen")).length), 0);
-  await ui.frames(4);
-  assert.equal(await ui.drawsOver(atlasCanvas), 0, "a still relief keeps redrawing");
-  record("Reduced motion (saved or OS) removes every Chronicles transition, jumps the camera instead of flying it, freezes the living details and redraws the relief only when something changes");
-  await page.keyboard.press("Escape"); await page.keyboard.press("Escape"); await homeTile("Chronicles");
-  await page.close();
-
-  // Motion on: the camera flies, the details live, the record eases in, and
-  // no CSS animation runs forever.
-  const motionPage = await openPage({ quality: "medium", motion: true });
-  const live = on(motionPage);
-  await motionPage.getByRole("tab", { name: "Home", exact: true }).click();
-  await motionPage.getByRole("button", { name: "Chronicles", exact: true }).click();
-  await live.atlasReady();
-  assert.equal(await motionPage.locator(".chronicles-stage").getAttribute("data-camera-settled"), "false", "the overview settles in on first appearance");
-  await live.settled("overview");
-  assert.ok(await live.drawsOver(".chronicles-stage canvas") > 0, "the living details keep the relief drawing");
-  const liveRings = await live.markers();
-  // Record what starts, so a short animation or flight cannot finish unseen on a slow host.
-  await motionPage.evaluate(() => {
-    window.__started = [];
-    document.addEventListener("animationstart", (event) => { if (event.target.closest?.("#chronicles-record")) window.__started.push(event.animationName); });
-    window.__camera = [];
-    new MutationObserver(() => window.__camera.push(document.querySelector(".chronicles-stage").dataset.cameraSettled)).observe(document.querySelector(".chronicles-stage"), { attributes: true, attributeFilter: ["data-camera-settled"] });
-  });
-  await motionPage.mouse.click(liveRings.solforiz.x, liveRings.solforiz.y);
-  await live.recordShown(hotspots[1]);
-  await live.settled("solforiz");
-  const started = await motionPage.evaluate(() => ({ animations: window.__started, camera: window.__camera }));
-  assert.ok(started.animations.includes("chronicles-record-enter"), JSON.stringify(started));
-  assert.ok(started.camera.includes("false") && started.camera.at(-1) === "true", `the camera flies to the nation ${JSON.stringify(started)}`);
-  // Wall time is unreliable on a starved software renderer, so wait for the
-  // animations themselves: all must be finite and all must settle.
-  const idle = await motionPage.evaluate(async () => {
-    const inScreen = () => document.getAnimations().filter((animation) => animation.effect?.target?.closest?.(".chronicles-screen"));
-    const infinite = inScreen().filter((animation) => animation.effect.getTiming().iterations === Infinity).length;
-    await Promise.race([Promise.all(inScreen().map((animation) => animation.finished.catch(() => null))), new Promise((resolve) => setTimeout(resolve, 20000))]);
-    return { infinite, running: inScreen().filter((animation) => animation.playState === "running").length };
-  });
-  assert.deepEqual(idle, { infinite: 0, running: 0 }, "Chronicles leaves no running CSS animation while idle");
-  await motionPage.close();
-  record("With motion on, the overview settles in, the camera flies to the chosen nation, the record eases in, the living details keep the relief drawing, and no CSS animation runs forever");
-
-  // The real sorcerer: its loop and the motes pause while Chronicles is open,
-  // the relief draws only while shown and visible, and exit disposes it.
-  const stagePage = await openPage({ quality: "high", motion: true, model: true });
-  const host = on(stagePage);
-  const creature = ".creature-model canvas", motes = ".mote-field canvas";
-  await stagePage.getByRole("tab", { name: "Home", exact: true }).click();
-  await waitForMenuIdle(stagePage);
-  const homeLoops = { creature: await host.drawsOver(creature), motes: await host.drawsOver(motes) };
-  assert.ok(homeLoops.creature > 0 && homeLoops.motes > 0, `the menu loops run on Home ${JSON.stringify(homeLoops)}`);
-  await stagePage.keyboard.press("ArrowRight"); await host.homeTile("Chronicles");
-  const stageOpened = await host.now();
-  await stagePage.keyboard.press("Enter"); await waitForMenuIdle(stagePage);
-  await host.atlasReady();
-  const stageReady = await host.now();
-  await host.settled("overview");
-  const openLoops = { creature: await host.drawsOver(creature), motes: await stagePage.locator(motes).count(), atlas: await host.drawsOver(atlasCanvas) };
-  assert.ok(openLoops.creature === 0 && openLoops.motes === 0 && openLoops.atlas > 0, `only the relief draws while Chronicles is open ${JSON.stringify(openLoops)}`);
-  await host.screen().getByRole("tab", { name: CHRONICLE_EXHIBITS[1].title, exact: true }).click();
-  await host.exhibitShown("interregnum");
-  await host.frames(3);
-  const hiddenExhibit = await host.drawsOver(atlasCanvas);
-  await host.screen().getByRole("tab", { name: CHRONICLE_EXHIBITS[0].title, exact: true }).click();
-  await host.settled();
-  await stagePage.evaluate(() => {
-    Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
-    Object.defineProperty(document, "visibilityState", { configurable: true, get: () => "hidden" });
-    document.dispatchEvent(new Event("visibilitychange"));
-  });
-  const hiddenTab = await host.drawsOver(atlasCanvas);
-  await stagePage.evaluate(() => {
-    delete document.hidden;
-    delete document.visibilityState;
-    document.dispatchEvent(new Event("visibilitychange"));
-  });
-  const shownAgain = await host.drawsOver(atlasCanvas);
-  assert.ok(hiddenExhibit === 0 && hiddenTab === 0 && shownAgain > 0, `the relief draws only while shown and visible ${JSON.stringify({ hiddenExhibit, hiddenTab, shownAgain })}`);
-  await stagePage.evaluate((query) => { window.__atlasCanvas = document.querySelector(query); }, atlasCanvas);
-  await stagePage.keyboard.press("Escape"); await host.homeTile("Chronicles");
-  await stagePage.waitForTimeout(400);
-  const exitLoops = { creature: await host.drawsOver(creature), motes: await host.drawsOver(motes) };
-  const disposed = await stagePage.evaluate(() => ({ attached: window.__atlasCanvas.isConnected, lost: (window.__atlasCanvas.getContext("webgl2") || window.__atlasCanvas.getContext("webgl"))?.isContextLost() ?? true, canvases: document.querySelectorAll(".chronicles-stage canvas").length }));
-  assert.ok(exitLoops.creature > 0 && exitLoops.motes > 0, `the menu loops resume on exit ${JSON.stringify(exitLoops)}`);
-  assert.deepEqual(disposed, { attached: false, lost: true, canvases: 0 }, "the relief's canvas and WebGL context are released on exit");
-  metrics.loops = { home: homeLoops, chroniclesOpen: openLoops, behindAnotherExhibit: hiddenExhibit, tabHidden: hiddenTab, tabShownAgain: shownAgain, afterExit: exitLoops, disposed, windowFrames: 40 };
-  metrics.longTasks.openAtHigh = { durations: await host.longTasks(stageOpened, stageReady + 500), milliseconds: Math.round(stageReady - stageOpened) };
-  await stagePage.close();
-  record(`Exactly one render loop at a time with the real sorcerer: on Home the sorcerer drew ${homeLoops.creature} and the motes ${homeLoops.motes} calls in 40 frames; with Chronicles open the sorcerer drew ${openLoops.creature}, the motes' canvas was gone and only the relief drew; the relief drew nothing behind another exhibit or in a hidden tab, and on exit the sorcerer and motes resumed while the relief's canvas was removed and its WebGL context released`);
-
-  // Without WebGL the Atlas falls back to the flat painting with the same rings.
-  const flatPage = await openPage({ quality: "medium", webgl: false, expected: /WebGL/i });
-  const flat = on(flatPage);
-  await flatPage.getByRole("tab", { name: "Home", exact: true }).click();
-  await flatPage.getByRole("button", { name: "Chronicles", exact: true }).click();
-  await flat.atlasReady("flat");
-  const mapBox = () => flatPage.locator(".chronicles-flat-image").evaluate((image) => {
-    const box = image.getBoundingClientRect();
-    return { left: box.left, top: box.top, width: box.width, height: box.height, naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight, complete: image.complete, alt: image.alt };
-  });
-  const painted = await mapBox();
-  assert.deepEqual([painted.naturalWidth, painted.naturalHeight, painted.complete, painted.alt], [CHRONICLES_MAP.width, CHRONICLES_MAP.height, true, CHRONICLES_MAP.alt]);
-  for (const item of hotspots) {
-    const ring = await flatPage.locator(`.chronicles-hotspot[data-nation="${item.nation}"]`).boundingBox();
-    assert.ok(Math.abs(ring.x + ring.width / 2 - (painted.left + item.hotspot.x * painted.width)) < 1 && Math.abs(ring.y + ring.height / 2 - (painted.top + item.hotspot.y * painted.height)) < 1, `${item.nation} ring sits on its painted place`);
-    assert.ok(ring.width >= painted.width * 0.06 - 0.5, `${item.nation} ring is at least 6% of the image width`);
-    await flatPage.mouse.click(painted.left + item.hotspot.x * painted.width, painted.top + item.hotspot.y * painted.height);
-    await flat.recordShown(item);
-    await flat.auditText(`flat ${item.id}`);
+// ---------------------------------------------------------------------------
+// 2. The parity fixture, replayed through the screen's own inputs.
+await phase("parity fixture replayed through the UI", async () => {
+  const page = await openPage({ quality: "medium" });
+  const ui = on(page);
+  try {
+    const { state, ready, settled, markers, waitState } = ui;
+    await ui.enter();
+    assert.deepEqual(await state(), asScreenState(FIXTURE.start), "the Home tile opens the fixture's start state");
+    let overviewProjection = null;
+    const used = { collection: 0, back: 0 };
+    const clickMap = async (x, y) => {
+      const hit = content.hotspotAt(x, y);
+      if (hit) {
+        const place = (await markers())[hit.nation];
+        await page.mouse.click(place.x, place.y);
+        return `click ${hit.nation}'s marker`;
+      }
+      const point = overviewProjection(x, y);
+      await page.mouse.click(point.x, point.y);
+      return `click bare ground at ${x}, ${y}`;
+    };
+    for (const [index, step] of FIXTURE.steps.entries()) {
+      const before = await state();
+      const event = step.event;
+      let how = "no UI path: verified unchanged";
+      if (event.type === "loaded") {
+        if (before.load === "loading") { await ready(); await settled("overview"); how = "the stage reports ready"; }
+        const rings = await markers();
+        overviewProjection = homography(hotspots.map((item) => [[item.hotspot.x, item.hotspot.y], [rings[item.nation].x, rings[item.nation].y]]));
+      } else if (event.type === "map") {
+        if (before.collection === "atlas") how = await clickMap(event.x, event.y);
+        else {
+          await page.mouse.click(640, 400);
+          how = "click on the stage behind the collection (the stage takes no pointer outside the Atlas)";
+        }
+      } else if (event.type === "entry") {
+        const entry = registry.getChronicleEntry(event.id, POLICY);
+        const visible = await page.locator(`#chronicles-panel-${before.collection} [data-record="${event.id}"], #chronicles-panel-${before.collection} .chronicles-hotspot[aria-label="${entry?.title}"]`).count();
+        if (entry && entry.collection === before.collection && visible) {
+          if (before.collection === "atlas") {
+            const target = hotspots.findIndex((record) => record.id === event.id);
+            const fromNation = before.focus.startsWith("nation:") ? before.focus.slice(7) : null;
+            const from = fromNation ? hotspots.findIndex((record) => record.nation === fromNation) : target;
+            if (before.entryId !== null) {
+              // Browsing: arrows open the neighbour's entry while one is open.
+              const path = arrowPath(from, target);
+              for (const direction of path) await page.keyboard.press(arrowKey(direction));
+              how = `arrows ${path.join(", ")} while an entry is open`;
+            } else {
+              await page.keyboard.press("Enter");
+              how = "Enter on the focused nation";
+            }
+          } else {
+            await page.locator(`.chronicles-item[data-record="${event.id}"]`).click();
+            how = `click the ${event.id} item`;
+          }
+        } else {
+          assert.equal(await page.locator(`#chronicles-panel-${before.collection}:not([hidden]) [data-record="${event.id}"]`).count(), 0, `${event.id} has no control in ${before.collection}`);
+        }
+      } else if (event.type === "focus") {
+        if (before.collection === "atlas" && event.focus.kind === "nation" && before.focus.startsWith("nation:") && before.entryId === null) {
+          const from = hotspots.findIndex((record) => record.nation === before.focus.slice(7));
+          const to = hotspots.findIndex((record) => record.nation === event.focus.nation);
+          const path = arrowPath(from, to);
+          for (const direction of path) await page.keyboard.press(arrowKey(direction));
+          how = `arrows ${path.join(", ")} while a nation is focused`;
+        } else {
+          await page.keyboard.press("ArrowRight"); await page.keyboard.press("ArrowLeft");
+          how = `arrows in ${before.collection} move only its highlight`;
+        }
+      } else if (event.type === "collection") {
+        if (collections.includes(event.collection)) {
+          const forward = collections.indexOf(event.collection) > collections.indexOf(before.collection);
+          const kind = used.collection++ % 3;
+          if (kind === 0) { await page.keyboard.press(forward ? "e" : "q"); how = forward ? "E" : "Q"; }
+          else if (kind === 1) { await ui.pad(forward ? 5 : 4, async () => {}); how = forward ? "RB" : "LB"; }
+          else { await ui.screen().getByRole("tab", { name: titleOf(event.collection), exact: true }).click(); how = "click the tab"; }
+          // Cycling wraps, so a two-step jump is reached by repeating the cycle.
+          for (let guard = 0; guard < 3 && (await state()).collection !== event.collection; guard++) await page.keyboard.press("e");
+        } else {
+          assert.equal(await page.locator(`#chronicles-tab-${event.collection}`).count(), 0, `${event.collection} has no tab`);
+        }
+      } else if (event.type === "back") {
+        const inputs = ["Escape", "Backspace", "pad", "button"];
+        const input = inputs[used.back++ % inputs.length];
+        if (input === "pad") await ui.pad(1, async () => {});
+        else if (input === "button") await ui.screen().getByRole("button", { name: "Back", exact: true }).click();
+        else await page.keyboard.press(input);
+        how = input === "pad" ? "B" : input === "button" ? "the Back button" : input;
+      }
+      await ui.frames(3);
+      if (event.type === "back" && !step.canUnwind && step.unchanged && before.focus === "overview" && before.entryId === null) {
+        await ui.homeTile("Chronicles");
+        replay.push({ step: index + 1, note: step.note, event, how, result: "returned Home with the Chronicles tile selected and focused" });
+        continue;
+      }
+      const expected = asScreenState(step.expect);
+      await waitState(expected).catch(() => {});
+      const after = await state();
+      assert.deepEqual(after, expected, `step ${index + 1}: ${step.note} (${how})`);
+      if (step.unchanged) assert.deepEqual(after, before, `step ${index + 1} changed the state`);
+      replay.push({ step: index + 1, note: step.note, event, how, state: after });
+    }
+    record(`The shared parity fixture's ${FIXTURE.steps.length} steps replay through the screen's own inputs (marker and ground clicks, arrows, Enter, Q/E, LB/RB, tab clicks, Escape, Backspace, B and the Back button) and every resulting state matches; the last Back returns Home`);
+  } finally {
+    await page.close();
   }
-  await flatPage.keyboard.press("Escape"); await flatPage.waitForFunction(() => !document.querySelector("#chronicles-record"));
-  await flatPage.mouse.click(painted.left + painted.width / 2, painted.top + painted.height / 2);
-  await flatPage.waitForTimeout(150);
-  assert.equal(await flat.openRecord(), null, "the flat map's centre opens nothing");
-  await flatPage.keyboard.press("Home"); await flat.focusName(hotspots[0].title);
-  await flatPage.keyboard.press("ArrowRight"); await flat.focusName(hotspots[2].title);
-  await flatPage.keyboard.press("Enter"); await flat.recordShown(hotspots[2]);
-  await flatPage.mouse.move(1, 1);
-  const flatPath = `${directory}/atlas-flat-1280x720.png`;
-  await flatPage.screenshot({ path: flatPath }); captures.push({ path: flatPath, viewport: { width: 1280, height: 720 } });
-  await flatPage.close();
-  record("Without WebGL the Atlas shows the flat painting with the same four rings on their painted places (each at least 6% of the image width), opening the same records by pointer and keyboard; the centre opens nothing");
+});
 
-  // Captures: the default high quality with motion on, as the menu ships.
-  const capturePage = await openPage({ quality: "high", motion: true });
-  const shots = on(capturePage);
-  const keys = async (...names) => { for (const name of names) await capturePage.keyboard.press(name); };
-  const shot = async (name, settle = true) => {
-    if (settle) await shots.settled();
-    await capturePage.waitForTimeout(700);
-    await shots.frames(2);
-    const viewport = capturePage.viewportSize();
-    const path = `${directory}/${name}-${viewport.width}x${viewport.height}.png`;
-    await capturePage.screenshot({ path });
-    captures.push({ path, viewport });
-    console.log(path);
-  };
-  await capturePage.getByRole("tab", { name: "Home", exact: true }).click();
-  await keys("ArrowRight", "Enter");
-  await shots.atlasReady();
-  await capturePage.mouse.move(1, 1);
-  await shot("atlas");
-  await keys("ArrowRight"); await shot("focus-hotspot");
-  await keys("ArrowLeft", "Enter"); await shot("record-korvenia");
-  await keys("Escape", "ArrowRight", "Enter"); await shot("record-aethelgard");
-  await keys("Escape", "ArrowDown", "Enter"); await shot("record-solforiz");
-  await keys("Escape", "ArrowLeft", "Enter"); await shot("record-kwind-09");
-  await keys("Escape"); await shots.settled("overview");
-  const captureRings = await shots.markers();
-  await capturePage.mouse.move(captureRings.aethelgard.x + 30, captureRings.aethelgard.y + 30);
-  await capturePage.mouse.move(captureRings.aethelgard.x, captureRings.aethelgard.y, { steps: 3 });
-  await capturePage.waitForTimeout(500);
-  const hoverPath = `${directory}/hover-hotspot-1280x720.png`;
-  await capturePage.screenshot({ path: hoverPath }); captures.push({ path: hoverPath, viewport: { width: 1280, height: 720 } }); console.log(hoverPath);
-  await capturePage.mouse.move(1, 1);
-  await keys("ArrowLeft", "ArrowUp", "ArrowUp"); await shot("focus-tabs");
-  await keys("ArrowRight", "ArrowDown", "ArrowRight", "ArrowRight"); await shot("interregnum", false);
-  await keys("ArrowUp", "ArrowRight", "ArrowDown"); await shot("laws", false);
-  await keys("ArrowDown", "ArrowDown"); await shot("focus-article", false);
-  for (const viewport of [{ width: 1920, height: 1080 }, { width: 844, height: 390 }]) {
-    await capturePage.setViewportSize(viewport);
-    await shots.screen().getByRole("tab", { name: CHRONICLE_EXHIBITS[0].title, exact: true }).click();
-    await keys("ArrowDown", "Home");
-    await capturePage.mouse.move(1, 1);
-    await shots.settled("overview");
-    await shot("atlas");
-    await keys("Enter"); await shot("record-korvenia");
-    await keys("Escape", "ArrowUp", "ArrowRight"); await shot("interregnum", false);
-    await keys("ArrowRight"); await shot("laws", false);
+// ---------------------------------------------------------------------------
+// 3. Motion on: the loading animation runs on the compositor, the entrance
+//    settles, the camera flies, the record eases in, and nothing runs forever.
+await phase("motion: loading animation, entrance settle and flights", async () => {
+  const page = await openPage({ quality: "medium", motion: true });
+  const ui = on(page);
+  try {
+    await page.getByRole("tab", { name: "Home", exact: true }).click();
+    await ui.homeTile("My Legacy");
+    await page.keyboard.press("ArrowRight"); await ui.homeTile("Chronicles");
+    await page.evaluate(() => {
+      window.__camera = [];
+      new MutationObserver(() => {
+        const stage = document.querySelector(".chronicles-stage");
+        if (stage) window.__camera.push({ at: performance.now(), settled: stage.dataset.cameraSettled, camera: stage.dataset.camera });
+      }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["data-camera-settled"] });
+    });
+    await page.keyboard.press("Enter");
+    await ui.screen().waitFor();
+    const spinning = await page.evaluate(() => [...document.querySelectorAll(".chronicles-loading-ring")].map((ring) => ring.getAnimations().map((animation) => ({ name: animation.animationName, state: animation.playState, property: Object.keys(animation.effect.getKeyframes()[0] || {}).filter((key) => !["offset", "easing", "composite", "computedOffset"].includes(key)) }))));
+    assert.ok(spinning.every((list) => list.some((animation) => animation.state === "running" && animation.property.every((name) => name === "transform"))), `the loading rings turn with transform-only CSS animations ${JSON.stringify(spinning)}`);
+    await ui.shot("entrance-motion");
+    await ui.ready();
+    const readyAt = await ui.now();
+    await ui.settled("overview");
+    const settledAt = await ui.now();
+    const camera = await page.evaluate(() => window.__camera);
+    assert.ok(camera.some((entry) => entry.settled === "false"), "the overview settles in on first appearance");
+    metrics.entrance = { quality: "medium", readyToSettledMs: Math.round(settledAt - readyAt), note: "The relief renderer's entrance is a time-based 2.2 s flight; frames here are GPU-bound (SwiftShader), so few frames fall inside it and this number is not its duration. The archive renderer's blueprint settle is at most 1.5 s (task B4)." };
+    const stopped = await page.evaluate(() => [...document.querySelectorAll(".chronicles-loading-ring")].flatMap((ring) => ring.getAnimations()).filter((animation) => animation.playState === "running").length);
+    assert.equal(stopped, 0, "the loading animations stop once the stage is ready");
+    assert.ok(await ui.drawsOver(".menu-transition-live .chronicles-stage canvas") > 0, "the living details keep the relief drawing with motion on");
+    const rings = await ui.markers();
+    await page.evaluate(() => { window.__camera = []; });
+    await page.mouse.click(rings.solforiz.x, rings.solforiz.y);
+    await ui.recordShown(registry.getChronicleEntry("solforiz", POLICY));
+    const easing = await page.evaluate(() => document.querySelector("#chronicles-record").getAnimations().map((animation) => ({ name: animation.animationName, duration: animation.effect.getTiming().duration, iterations: animation.effect.getTiming().iterations })));
+    assert.deepEqual(easing, [{ name: "chronicles-record-enter", duration: 360, iterations: 1 }], "the record eases in with one finite CSS animation");
+    await ui.settled("solforiz");
+    // The flight is time-based (1.3 s). On this GPU-bound host frames can arrive
+    // further apart than that, so the flight may complete within one frame: the
+    // moving states are recorded, and the check is that the camera reached the nation.
+    const flight = await page.evaluate(() => window.__camera);
+    metrics.motionFlight = { framesObservedMoving: flight.filter((entry) => entry.settled === "false").length, transitions: flight };
+    assert.equal(await page.locator(".menu-transition-live .chronicles-stage").getAttribute("data-camera"), "solforiz", "the camera reached the chosen nation");
+    const idle = await page.evaluate(async () => {
+      const inScreen = () => document.getAnimations().filter((animation) => animation.effect?.target?.closest?.(".chronicles-screen"));
+      const infinite = inScreen().filter((animation) => animation.effect.getTiming().iterations === Infinity && animation.playState === "running").length;
+      await Promise.race([Promise.all(inScreen().map((animation) => animation.finished.catch(() => null))), new Promise((done) => setTimeout(done, 20000))]);
+      return { infinite, unfinished: inScreen().filter((animation) => animation.playState === "running").map((animation) => ({ name: animation.animationName, currentTime: animation.currentTime })) };
+    });
+    // A finite composited animation can wait for the compositor to start it on this
+    // starved software renderer; only an animation that never ends would cost frames forever.
+    metrics.motionIdle = idle;
+    assert.equal(idle.infinite, 0, "Chronicles leaves no infinite CSS animation running once ready");
+    record(`With motion on, the loading rings turn with transform-only CSS animations (compositor-driven) from the click until ready and then stop; the overview settles in (${metrics.entrance.readyToSettledMs} ms from ready on this host), the camera reaches the chosen nation (${metrics.motionFlight.framesObservedMoving} moving frame(s) observed on this host), the record eases in with one finite 360 ms animation, and no infinite animation is left running`);
+  } finally {
+    await page.close();
   }
-  await capturePage.close();
-  assert.deepEqual(errors, []);
-  record("No JavaScript or console errors; captures saved for the Atlas, every nation record, hover and focus states, the Interregnum, the Laws and the flat fallback");
-} catch (error) { failure = error; }
-finally {
-  await writeFile(`${directory}/verification.json`, JSON.stringify({
-    passed: !failure,
-    scope: "Chronicles screen with the real-time relief Atlas: DOM and raycast checks at medium quality with model=none and reduced motion, a mocked standard controller, a motion-enabled pass, a loop pass with the real sorcerer GLB at high quality, a WebGL outage pass, and captures at the default high quality with motion on.",
-    checks, metrics, layouts, captures, visibleText: [...texts].sort(), errors,
-    ...(failure ? { failure: String(failure.stack || failure) } : {}),
-  }, null, 2) + "\n");
-  await browser.close();
+});
+
+// ---------------------------------------------------------------------------
+// 4. Without WebGL: the flat painting with the same entries, and Back always works.
+await phase("flat fallback (WebGL disabled)", async () => {
+  const page = await openPage({ quality: "medium", webgl: false, expected: /WebGL/i });
+  const ui = on(page);
+  try {
+    await ui.enter();
+    await ui.ready("flat");
+    const box = await page.locator(".chronicles-flat-image").evaluate((image) => {
+      const rect = image.getBoundingClientRect();
+      return { left: rect.left, top: rect.top, width: rect.width, height: rect.height, naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight, complete: image.complete, alt: image.alt };
+    });
+    assert.deepEqual([box.naturalWidth, box.naturalHeight, box.complete, box.alt], [CHRONICLES_MAP.width, CHRONICLES_MAP.height, true, CHRONICLES_MAP.alt]);
+    assert.equal(await page.locator(".chronicles-stage canvas").count(), 0);
+    for (const item of hotspots) {
+      const ring = await page.locator(`.chronicles-hotspot[data-nation="${item.nation}"]`).boundingBox();
+      assert.ok(Math.abs(ring.x + ring.width / 2 - (box.left + item.hotspot.x * box.width)) < 1 && Math.abs(ring.y + ring.height / 2 - (box.top + item.hotspot.y * box.height)) < 1, `${item.nation} ring sits on its painted place`);
+      assert.ok(ring.width >= box.width * 0.06 - 0.5);
+      await page.mouse.click(box.left + item.hotspot.x * box.width, box.top + item.hotspot.y * box.height);
+      await ui.recordShown(registry.getChronicleEntry(item.id, POLICY));
+      await ui.auditText(`flat ${item.id}`);
+      if (item.nation === "korvenia") { await page.mouse.move(1, 1); await ui.shot("flat-record-korvenia"); }
+    }
+    await page.keyboard.press("Escape"); await ui.waitState({ entryId: null });
+    await page.keyboard.press("Escape"); await ui.waitState({ focus: "overview" });
+    await page.mouse.click(box.left + box.width / 2, box.top + box.height / 2);
+    await page.waitForTimeout(150);
+    assert.equal(await ui.openRecord(), null, "the flat map's centre opens nothing");
+    await page.mouse.move(1, 1);
+    await ui.shot("flat-atlas");
+    await page.keyboard.press("e"); await ui.waitState({ collection: "interregnum" });
+    await page.locator("#chronicles-panel-interregnum .chronicles-item").nth(3).click(); await ui.recordShown(entriesOf("interregnum")[3]);
+    await ui.shot("flat-interregnum");
+    await page.keyboard.press("e"); await ui.waitState({ collection: "laws" });
+    await page.locator("#chronicles-panel-laws .chronicles-item").nth(0).click(); await ui.recordShown(entriesOf("laws")[0]);
+    await page.keyboard.press("Escape"); await ui.waitState({ entryId: null });
+    await page.keyboard.press("Escape");
+    await ui.homeTile("Chronicles");
+    record("Without WebGL the flat painting offers the same entries: four rings on their painted places (each at least 6% of the image width), the same records by pointer and keyboard, the Interregnum and the Laws, and Back returns Home");
+  } finally {
+    await page.close();
+  }
+  // A context lost after ready falls back to the flat painting with the same entries.
+  const lostPage = await openPage({ quality: "low", expected: /WebGL|context/i });
+  const lost = on(lostPage);
+  try {
+    await lost.enter(); await lost.ready(); await lost.settled("overview");
+    await lostPage.evaluate(() => {
+      const element = document.querySelector(".menu-transition-live .chronicles-stage canvas");
+      window.__lostCanvas = element;
+      const gl = element.getContext("webgl2") || element.getContext("webgl");
+      gl.getExtension("WEBGL_lose_context").loseContext();
+    });
+    await lost.ready("flat");
+    assert.deepEqual(await lostPage.evaluate(() => ({ attached: window.__lostCanvas.isConnected, stage: document.querySelectorAll(".chronicles-stage canvas").length, flat: !!document.querySelector(".chronicles-flat-image") })), { attached: false, stage: 0, flat: true });
+    const box = await lostPage.locator(".chronicles-flat-image").boundingBox();
+    const item = hotspots[3];
+    await lostPage.mouse.click(box.x + item.hotspot.x * box.width, box.y + item.hotspot.y * box.height);
+    await lost.recordShown(registry.getChronicleEntry(item.id, POLICY));
+    await lostPage.mouse.move(1, 1);
+    await lost.shot("context-lost-flat-record");
+    await lostPage.keyboard.press("Escape"); await lost.waitState({ entryId: null });
+    await lostPage.keyboard.press("Escape"); await lost.waitState({ focus: "overview" });
+    await lostPage.keyboard.press("Escape");
+    await lost.homeTile("Chronicles");
+    record("A WebGL context lost after the stage is ready falls back to the flat painting with the same entries; the stage canvas is removed and Back still returns Home");
+  } finally {
+    await lostPage.close();
+  }
+});
+
+// ---------------------------------------------------------------------------
+// 5. Layouts at 1280×720, 1920×1080 and 844×390, with hero frames.
+await phase("layouts and hero frames", async () => {
+  const page = await openPage({ quality: "high", motion: true });
+  const ui = on(page);
+  try {
+    const measure = (label) => page.evaluate((name) => {
+      const root = document.querySelector(".chronicles-screen");
+      const box = (node) => node.getBoundingClientRect();
+      const visible = [...root.querySelectorAll("h1,h2,p,button:not(.chronicles-hotspot),.chronicles-stop-label,.chronicles-stop-era,.chronicles-article-title,.chronicles-marker.is-selected .chronicles-marker-caption,.chronicles-label-name,.chronicles-label-meaning")]
+        .filter((node) => node.getClientRects().length && getComputedStyle(node).visibility !== "hidden" && getComputedStyle(node).opacity !== "0");
+      const header = box(root.querySelector(".chronicles-header")), footer = box(root.querySelector(".chronicles-footer"));
+      const record = root.querySelector("#chronicles-record");
+      const lists = [...root.querySelectorAll(".chronicles-collection:not([hidden]) .chronicles-timeline, .chronicles-collection:not([hidden]) .chronicles-articles")].map(box);
+      const blocks = [record && box(record), ...lists].filter(Boolean);
+      const overlaps = (a, b) => a.left < b.right - 0.5 && b.left < a.right - 0.5 && a.top < b.bottom - 0.5 && b.top < a.bottom - 0.5;
+      return {
+        name,
+        overflow: document.documentElement.scrollWidth > innerWidth || document.documentElement.scrollHeight > innerHeight,
+        clipped: visible.filter((node) => { const rect = box(node); return node.scrollWidth > node.clientWidth + 1 || rect.left < -1 || rect.right > innerWidth + 1 || rect.top < -1 || rect.bottom > innerHeight + 1; }).map((node) => node.getAttribute("aria-label") || node.textContent.trim()),
+        stacked: blocks.every((block) => block.top >= header.bottom - 0.5 && block.bottom <= footer.top + 0.5),
+        overlapping: blocks.length > 1 && blocks.some((a, i) => blocks.some((b, j) => i < j && overlaps(a, b))),
+        recordFits: !record || record.scrollHeight <= record.clientHeight + 1,
+        backReachable: [...root.querySelectorAll("button")].some((node) => { const rect = box(node); return node.getAttribute("aria-label") === "Back" && rect.top >= 0 && rect.bottom <= innerHeight; }),
+        tabsFit: [...root.querySelectorAll(".chronicles-tab")].every((node) => { const rect = box(node); return rect.right <= innerWidth && node.scrollWidth <= node.clientWidth + 1; }),
+      };
+    }, label);
+    const checkLayout = async (label) => {
+      const layout = await measure(label);
+      layouts.push({ viewport: page.viewportSize(), ...layout });
+      assert.equal(layout.overflow, false, `${label}: page overflow`);
+      assert.deepEqual(layout.clipped, [], `${label}: clipped text`);
+      assert.equal(layout.stacked, true, `${label}: panels outside the header and footer`);
+      assert.equal(layout.overlapping, false, `${label}: panels overlap`);
+      assert.equal(layout.recordFits, true, `${label}: the record needs scrolling`);
+      assert.equal(layout.backReachable, true, `${label}: Back unreachable`);
+      assert.equal(layout.tabsFit, true, `${label}: tabs clipped`);
+    };
+    await ui.enter();
+    await ui.ready(); await ui.settled("overview");
+    for (const viewport of [{ width: 1920, height: 1080 }, { width: 1280, height: 720 }, { width: 844, height: 390 }]) {
+      await page.setViewportSize(viewport);
+      await page.mouse.move(1, 1);
+      await page.keyboard.press("Home");
+      await ui.settled("overview");
+      await page.waitForTimeout(600);
+      const hero = viewport.width === 1920;
+      const label = `${viewport.width}x${viewport.height}`;
+      await checkLayout(`atlas ${label}`);
+      if (hero) await ui.shot("hero-first-impression", { png: true });
+      else if (viewport.width === 844) await ui.shot("overview");
+      await page.keyboard.press("Enter");
+      await ui.recordShown(entriesOf("atlas")[0]);
+      await ui.settled("korvenia");
+      await page.waitForTimeout(600);
+      await checkLayout(`record ${label}`);
+      if (hero) await ui.shot("hero-nation-korvenia", { png: true });
+      else if (viewport.width === 844) await ui.shot("record-korvenia");
+      await page.keyboard.press("Escape"); await page.keyboard.press("Escape");
+      await ui.waitState({ focus: "overview" });
+      await page.keyboard.press("e"); await ui.waitState({ collection: "interregnum" });
+      await page.keyboard.press("End"); await page.keyboard.press("Enter"); await ui.waitState({ entryId: entriesOf("interregnum")[3].id });
+      await checkLayout(`interregnum ${label}`);
+      if (viewport.width === 844) await ui.shot("interregnum-year-33");
+      await page.keyboard.press("e"); await ui.waitState({ collection: "laws" });
+      await page.keyboard.press("Home"); await page.keyboard.press("Enter"); await ui.waitState({ entryId: entriesOf("laws")[0].id });
+      await checkLayout(`laws ${label}`);
+      if (viewport.width === 844) await ui.shot("laws-entry");
+      await page.keyboard.press("Escape"); await page.keyboard.press("e"); await ui.waitState({ collection: "atlas" });
+    }
+    record("At 1920×1080, 1280×720 and 844×390 the Atlas, an open record, the Interregnum and the Laws fit without page overflow, clipped text, scrolling or overlapping panels, between the header and the footer, with Back reachable; hero frames at 1920×1080 (PNG)");
+  } finally {
+    await page.close();
+  }
+});
+
+// ---------------------------------------------------------------------------
+// 6. Performance: one render loop, long tasks after interactive with
+//    attribution, script time per frame, round trips, the atmosphere rebuild.
+const CHRONICLES_CODE = /^(src\/Chronicles\.tsx|src\/chronicles\/|shared\/chronicles\/|three$|react-dom$|react$|scheduler$)/;
+function classify(task) {
+  const groups = task.groupsMs, total = Object.values(groups).reduce((sum, value) => sum + value, 0) || 1;
+  const files = Object.keys(task.scriptInclusiveByFilePercent);
+  const nativeOnly = files.every((file) => file.startsWith("(native") || file === "(unknown)");
+  if ((groups.gc || 0) / total >= 0.7) return { attributable: false, reason: "garbage collection of the page heap" };
+  if ((groups.other || 0) / total >= 0.7 && Object.keys(task.eventsMs).some((name) => /concurrent marking|GC/i.test(name))) return { attributable: false, reason: "garbage collection scheduling" };
+  if ((groups.script || 0) / total >= 0.5 && files.some((file) => file === "src/App.tsx") && !files.some((file) => CHRONICLES_CODE.test(file))) return { attributable: false, reason: "the menu's own script (App.tsx)" };
+  if ((groups.script || 0) / total >= 0.5 && nativeOnly && task.samples > 0 && (task.scriptSelfByFilePercent?.["(native (program))"] ?? 0) >= 90) return { attributable: false, reason: "the page thread was not running script (descheduled or blocked on another process)" };
+  return { attributable: true, reason: "work while Chronicles is open (counted against it)" };
 }
-if (failure) throw failure;
-console.log(`PASS ${checks.length} Chronicles verification groups`);
+
+await phase("performance (medium): loops, long tasks, frame script time, round trips, atmosphere rebuild", async () => {
+  const page = await openPage({ quality: "medium", motion: true, model: true });
+  const ui = on(page);
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    const creature = ".creature-model canvas", motes = ".mote-field canvas", stage = ".menu-transition-live .chronicles-stage canvas";
+    await page.getByRole("tab", { name: "Home", exact: true }).click();
+    await waitForMenuIdle(page);
+    const heap = async () => {
+      await cdp.send("HeapProfiler.collectGarbage");
+      await cdp.send("HeapProfiler.collectGarbage");
+      const { usedSize } = await cdp.send("Runtime.getHeapUsage");
+      return Number((usedSize / 1048576).toFixed(2));
+    };
+    const canvases = () => page.evaluate(() => ({ total: document.querySelectorAll("canvas").length, stage: document.querySelectorAll(".chronicles-stage canvas").length }));
+    const homeLoops = { creature: await ui.drawsOver(creature), motes: await ui.drawsOver(motes) };
+    assert.ok(homeLoops.creature > 0 && homeLoops.motes > 0, `the menu loops run on Home ${JSON.stringify(homeLoops)}`);
+    const baseline = { heapMB: await heap(), canvases: await canvases() };
+
+    // Interactive: open, settle, then trace a scripted interaction window with no screenshots.
+    await page.keyboard.press("ArrowRight"); await ui.homeTile("Chronicles");
+    await page.keyboard.press("Enter");
+    await ui.ready();
+    await ui.settled("overview");
+    const openLoops = { creature: await ui.drawsOver(creature), motes: await page.locator(motes).count(), stage: await ui.drawsOver(stage) };
+    assert.ok(openLoops.creature === 0 && openLoops.motes === 0 && openLoops.stage > 0, `only the stage draws while Chronicles is open ${JSON.stringify(openLoops)}`);
+    const hiddenLayers = await page.evaluate(() => ["scene-wash", "creature-stage", "atmosphere", "film-grain"].map((name) => getComputedStyle(document.querySelector(`.${name}`)).visibility));
+    assert.deepEqual(hiddenLayers, ["hidden", "hidden", "hidden", "hidden"], "the menu's stage layers stop compositing under the opaque layer");
+    await startTrace(browser, page);
+    const sync = await page.evaluate(() => { performance.mark("chronicles:sync"); return performance.getEntriesByName("chronicles:sync").pop().startTime; });
+    const from = await ui.now();
+    const rings = await ui.markers();
+    await page.mouse.move(rings.aethelgard.x - 30, rings.aethelgard.y + 20); await page.mouse.move(rings.aethelgard.x, rings.aethelgard.y, { steps: 4 });
+    await page.mouse.click(rings.aethelgard.x, rings.aethelgard.y); await ui.waitState({ entryId: "aethelgard" }); await ui.settled("aethelgard");
+    await page.keyboard.press("ArrowDown"); await ui.waitState({ entryId: hotspots[content.getNextHotspot(2, "down")].id }); await ui.settled();
+    await page.keyboard.press("Escape"); await page.keyboard.press("Escape"); await ui.waitState({ focus: "overview" }); await ui.settled("overview");
+    await page.keyboard.press("e"); await ui.waitState({ collection: "interregnum" });
+    await page.keyboard.press("ArrowRight"); await page.keyboard.press("Enter"); await ui.waitState({ entryId: entriesOf("interregnum")[1].id });
+    await page.keyboard.press("e"); await ui.waitState({ collection: "laws" });
+    await page.keyboard.press("Enter"); await ui.waitState({ entryId: entriesOf("laws")[0].id });
+    await page.keyboard.press("e"); await ui.waitState({ collection: "atlas" }); await ui.settled();
+    await page.waitForTimeout(1500);
+    const to = await ui.now();
+    const events = await stopTrace(browser);
+    const attribution = await attributeLongTasks(events, { threshold: 50, from, to, sync: { name: "chronicles:sync", at: sync }, resolveSourceMap });
+    const classified = attribution.longTasks.map((task) => ({ ...task, ...classify(task) }));
+    const perFrame = frameScriptTimes(events, { from, to, sync: { name: "chronicles:sync", at: sync } });
+    const observed = await ui.longTasks(from, to);
+    metrics.afterInteractive = {
+      quality: "medium", windowMs: Math.round(to - from), frames: perFrame.length,
+      scriptPerFrameMs: percentiles(perFrame), longTasksObservedByPage: observed,
+      longTasks: classified, chroniclesAttributableOver50ms: classified.filter((task) => task.attributable).map((task) => task.durationMs),
+      sourceMaps: !!resolveSourceMap,
+    };
+
+    // Five round trips Home ↔ Chronicles, each waiting for ready, then exit.
+    await page.keyboard.press("Escape"); await ui.homeTile("Chronicles");
+    const warm = { heapMB: await heap(), canvases: await canvases() };
+    for (let trip = 0; trip < 5; trip++) {
+      await page.keyboard.press("Enter"); await ui.ready(); await ui.settled();
+      await page.keyboard.press("Escape"); await ui.homeTile("Chronicles");
+    }
+    await page.waitForTimeout(500);
+    const after = { heapMB: await heap(), canvases: await canvases() };
+    metrics.roundTrips = { count: 5, baseline, afterFirstVisit: warm, afterFive: after, heapGrowthMB: Number((after.heapMB - baseline.heapMB).toFixed(2)), heapGrowthSinceFirstVisitMB: Number((after.heapMB - warm.heapMB).toFixed(2)), note: "The relief renderer keeps the last built relief mesh (typed arrays) for the session by design; the growth since the first visit isolates leaks." };
+    assert.deepEqual(after.canvases, baseline.canvases, `canvases return to baseline ${JSON.stringify(metrics.roundTrips)}`);
+    assert.ok(metrics.roundTrips.heapGrowthMB < 5, `heap growth after GC is under 5 MB ${JSON.stringify(metrics.roundTrips)}`);
+
+    // Exit (D7): Chronicles holds the atmosphere at low, so leaving rebuilds its WebGL
+    // motes, and the stage disposes everything, its WebGL context included.
+    await page.keyboard.press("Enter"); await ui.ready(); await ui.settled();
+    await page.evaluate(() => { window.__exitCanvas = document.querySelector(".menu-transition-live .chronicles-stage canvas"); });
+    await startTrace(browser, page);
+    const exitSync = await page.evaluate(() => { performance.mark("chronicles:sync-exit"); return performance.getEntriesByName("chronicles:sync-exit").pop().startTime; });
+    const exitAt = await ui.now();
+    await page.keyboard.press("Escape");
+    await ui.homeTile("Chronicles");
+    const homeAt = await ui.now();
+    await page.waitForFunction(() => (document.querySelector(".mote-field canvas")?.__draws ?? 0) > 0);
+    const motesAt = await ui.now();
+    await page.waitForFunction(() => { const canvas = window.__exitCanvas; const gl = canvas && (canvas.getContext("webgl2") || canvas.getContext("webgl")); return !canvas?.isConnected && (!gl || gl.isContextLost()); }, undefined, { timeout: 30000 });
+    const releasedAt = await ui.now();
+    await page.waitForTimeout(500);
+    const exitEvents = await stopTrace(browser);
+    const exitTasks = await attributeLongTasks(exitEvents, { threshold: 50, from: exitAt, to: releasedAt + 500, sync: { name: "chronicles:sync-exit", at: exitSync }, resolveSourceMap });
+    const exitLoops = { creature: await ui.drawsOver(creature), motes: await ui.drawsOver(motes) };
+    assert.ok(exitLoops.creature > 0 && exitLoops.motes > 0, `the menu loops resume on exit ${JSON.stringify(exitLoops)}`);
+    const exitOwner = (task) => {
+      const files = task.scriptInclusiveByFilePercent;
+      const share = (pattern) => Object.entries(files).filter(([file]) => pattern.test(file)).reduce((most, [, value]) => Math.max(most, value), 0);
+      const owners = [["the stage's disposal (Chronicles)", share(/^src\/chronicles\/|^src\/Chronicles\.tsx$/)], ["the atmosphere rebuild (Atmosphere.tsx, D7)", share(/^src\/Atmosphere\.tsx$/)], ["the menu transition (MenuTransition.tsx)", share(/^src\/MenuTransition\.tsx$/)], ["the sorcerer (CreatureStage.tsx)", share(/^src\/CreatureStage\.tsx$/)]];
+      const [name, value] = owners.sort((a, b) => b[1] - a[1])[0];
+      if (value >= 25) return name;
+      return (task.groupsMs.gc || 0) >= task.durationMs * 0.7 ? "garbage collection" : "other page work";
+    };
+    metrics.exit = {
+      quality: "medium", backToHomeTileMs: Math.round(homeAt - exitAt), backToFirstMoteFrameMs: Math.round(motesAt - exitAt), backToStageContextReleasedMs: Math.round(releasedAt - exitAt),
+      longTasks: exitTasks.longTasks.map((task) => ({ durationMs: task.durationMs, owner: exitOwner(task), groupsMs: task.groupsMs, scriptInclusiveByFilePercent: task.scriptInclusiveByFilePercent, topSelfFunctionsPercent: task.topSelfFunctionsPercent })),
+      note: "D7 keeps App.tsx's overrides: the atmosphere drops to low while Chronicles is open and is rebuilt on exit (a new WebGL context), and the sorcerer pauses through reduced motion. The stage disposes everything on exit; the relief renderer ends its disposal by forcing a WebGL context loss, which waits for the GPU process. Both waits are synchronous GPU calls, measured here on SwiftShader with a saturated GPU process.",
+    };
+    metrics.exit.atmosphereRebuildMs = metrics.exit.longTasks.filter((task) => task.owner.startsWith("the atmosphere")).reduce((sum, task) => sum + task.durationMs, 0);
+    metrics.exit.stageDisposalMs = metrics.exit.longTasks.filter((task) => task.owner.startsWith("the stage")).reduce((sum, task) => sum + task.durationMs, 0);
+    metrics.loops = { home: homeLoops, chroniclesOpen: openLoops, afterExit: exitLoops, windowFrames: 40 };
+    assert.deepEqual(metrics.afterInteractive.chroniclesAttributableOver50ms, [], `no Chronicles-attributable long task over 50 ms after interactive ${JSON.stringify(classified.map((task) => ({ ms: task.durationMs, reason: task.reason, groups: task.groupsMs })))}`);
+    record(`One render loop at a time with the real sorcerer: on Home the sorcerer drew ${homeLoops.creature} and the motes ${homeLoops.motes} calls in 40 frames; with Chronicles open only the stage drew and the menu's stage layers stopped compositing; on exit Home showed ${metrics.exit.backToHomeTileMs} ms after Back, both menu loops resumed (first mote frame after ${metrics.exit.backToFirstMoteFrameMs} ms) and the stage's canvas and context were released (${metrics.exit.backToStageContextReleasedMs} ms); exit long tasks, attributed: ${metrics.exit.longTasks.map((task) => `${task.durationMs} ms ${task.owner}`).join("; ") || "none"}`);
+    record(`After interactive at medium: ${classified.length} long task(s) over 50 ms in a ${metrics.afterInteractive.windowMs} ms traced window, none attributable to Chronicles (${classified.map((task) => `${task.durationMs} ms: ${task.reason}`).join("; ") || "none"}); script per frame p50/p95/p99 ${Object.values(metrics.afterInteractive.scriptPerFrameMs).join("/")} ms`);
+    record(`Five Home ↔ Chronicles round trips: canvases back to ${after.canvases.total} (stage ${after.canvases.stage}); heap after GC ${baseline.heapMB} → ${after.heapMB} MB (${metrics.roundTrips.heapGrowthMB} MB; ${metrics.roundTrips.heapGrowthSinceFirstVisitMB} MB since the first visit)`);
+  } finally {
+    await cdp.detach().catch(() => {});
+    await page.close();
+  }
+});
+
+// ---------------------------------------------------------------------------
+// 7. Stage cost per preset at the overview and the heaviest framing.
+await phase("stage cost per preset", async () => {
+  const budgets = { low: { drawCalls: 120, triangles: 300000 }, medium: { drawCalls: 250, triangles: 1000000 }, high: { drawCalls: 400, triangles: 1500000 } };
+  metrics.presets = {};
+  for (const quality of ["low", "medium", "high"]) {
+    const page = await openPage({ quality });
+    const ui = on(page);
+    try {
+      await ui.enter(); await ui.ready(); await ui.settled("overview");
+      const framings = [];
+      const info = () => page.evaluate(() => { const host = document.querySelector(".menu-transition-live .chronicles-stage"); return { drawCalls: Number(host.dataset.drawCalls), triangles: Number(host.dataset.triangles) }; });
+      const issued = () => page.evaluate(() => { const canvas = document.querySelector(".menu-transition-live .chronicles-stage canvas"); return { draws: canvas.__draws || 0, triangles: canvas.__triangles || 0 }; });
+      // At the overview, a highlight change redraws exactly one frame each way under reduced motion: count what was actually issued.
+      await ui.frames(3);
+      const before = await issued();
+      await page.keyboard.press("ArrowRight"); await ui.frames(3); await page.keyboard.press("ArrowLeft"); await ui.frames(3);
+      const afterRedraws = await issued();
+      framings.push({ framing: "overview", ...(await info()), issuedForTwoRedraws: { drawCalls: afterRedraws.draws - before.draws, triangles: Math.round(afterRedraws.triangles - before.triangles) } });
+      for (const item of hotspots) {
+        const place = (await ui.markers())[item.nation];
+        await page.mouse.click(place.x, place.y); await ui.settled(item.nation);
+        await ui.frames(3);
+        framings.push({ framing: `nation:${item.nation} with its entry open`, ...(await info()) });
+        await page.keyboard.press("Escape"); await page.keyboard.press("Escape"); await ui.settled("overview");
+      }
+      const heaviest = framings.reduce((a, b) => (b.triangles > a.triangles || (b.triangles === a.triangles && b.drawCalls > a.drawCalls) ? b : a));
+      metrics.presets[quality] = { budget: budgets[quality], overview: framings[0], heaviest, framings };
+      for (const framing of framings) {
+        assert.ok(framing.drawCalls > 0 && framing.drawCalls <= budgets[quality].drawCalls && framing.triangles <= budgets[quality].triangles, `${quality} ${framing.framing}: ${JSON.stringify(framing)} within ${JSON.stringify(budgets[quality])}`);
+      }
+    } finally {
+      await page.close();
+    }
+  }
+  record(`Stage cost per preset (renderer.info) within budget at the overview and every nation framing: ${Object.entries(metrics.presets).map(([quality, value]) => `${quality} overview ${value.overview.drawCalls} calls/${value.overview.triangles} tris, heaviest ${value.heaviest.framing} ${value.heaviest.drawCalls}/${value.heaviest.triangles}`).join("; ")}`);
+});
+
+// ---------------------------------------------------------------------------
+// 8. One 4× CPU-throttled run: entry and one collection switch.
+await phase("4x CPU throttle: entry and one collection switch", async () => {
+  const page = await openPage({ quality: "medium" });
+  const ui = on(page);
+  const cdp = await page.context().newCDPSession(page);
+  try {
+    await page.getByRole("tab", { name: "Home", exact: true }).click();
+    await ui.homeTile("My Legacy");
+    await page.keyboard.press("ArrowRight"); await ui.homeTile("Chronicles");
+    await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+    await startTrace(browser, page);
+    const throttleSync = await page.evaluate(() => { performance.mark("chronicles:sync-throttle"); return performance.getEntriesByName("chronicles:sync-throttle").pop().startTime; });
+    const openedAt = await ui.now();
+    await page.keyboard.press("Enter");
+    await ui.screen().waitFor();
+    const shownAt = await ui.now();
+    await ui.ready();
+    const readyAt = await ui.now();
+    await ui.settled("overview");
+    const interactiveAt = await ui.now();
+    await page.keyboard.press("e");
+    await ui.waitState({ collection: "interregnum" });
+    const switchedAt = await ui.now();
+    await page.waitForTimeout(1500);
+    const doneAt = await ui.now();
+    const throttleEvents = await stopTrace(browser);
+    const loadingTasks = await attributeLongTasks(throttleEvents, { threshold: 50, from: openedAt, to: readyAt, sync: { name: "chronicles:sync-throttle", at: throttleSync }, resolveSourceMap });
+    const summary = (task) => ({ durationMs: task.durationMs, groupsMs: task.groupsMs, topSelfFunctionsPercent: Object.fromEntries(Object.entries(task.topSelfFunctionsPercent).slice(0, 5)), scriptInclusiveByFilePercent: Object.fromEntries(Object.entries(task.scriptInclusiveByFilePercent).slice(0, 8)) });
+    metrics.throttled = {
+      loadingLongTasksAttributed: loadingTasks.longTasks.filter((task) => task.durationMs >= 1000).map(summary),
+      rate: 4, quality: "medium",
+      clickToScreenMs: Math.round(shownAt - openedAt), clickToReadyMs: Math.round(readyAt - openedAt), readyToSettledMs: Math.round(interactiveAt - readyAt),
+      collectionSwitchMs: Math.round(switchedAt - interactiveAt),
+      longTasksDuringLoadingMs: await ui.longTasks(openedAt, readyAt),
+      longTasksAfterInteractiveMs: await ui.longTasks(interactiveAt, doneAt),
+      note: "Loading-phase tasks are the stage build behind the visible loading state; the 50 ms rule applies once the screen is interactive.",
+    };
+    await cdp.send("Emulation.setCPUThrottlingRate", { rate: 1 });
+    await page.keyboard.press("Escape"); await ui.homeTile("Chronicles");
+    record(`Under 4× CPU throttling the screen appeared ${metrics.throttled.clickToScreenMs} ms after the click, the stage was ready after ${metrics.throttled.clickToReadyMs} ms, and the collection switch took ${metrics.throttled.collectionSwitchMs} ms; long tasks after interactive: ${JSON.stringify(metrics.throttled.longTasksAfterInteractiveMs)}`);
+  } finally {
+    await cdp.detach().catch(() => {});
+    await page.close();
+  }
+});
+
+// ---------------------------------------------------------------------------
+await phase("no page errors", async () => {
+  assert.deepEqual(errors, []);
+  record("No JavaScript or console errors in any phase");
+});
+
+metrics.host.loadAverageAtEnd = loadavg().map((value) => Number(value.toFixed(1)));
+const passed = failures.length === 0;
+const manifest = {
+  milestone, passed,
+  scope: "Desktop Chronicles on a production build: entry and loading, navigation by mouse, keyboard and a mocked standard controller, Back, the parity fixture replayed through the UI, motion and reduced motion, the flat fallback (WebGL disabled), layouts at 1280×720, 1920×1080 and 844×390, CDP measurements (long tasks with attribution, script time per frame, heap and canvases over round trips, the atmosphere rebuild, stage cost per preset) and one 4× CPU-throttled run.",
+  emulation: "Headless Chromium with SwiftShader software WebGL; controller input is a mocked standard Gamepad API device. Nothing here is GPU, desktop-hardware or headset evidence.",
+  checks, failures, metrics, layouts, captures, replay, visibleText: [...texts].sort(), errors,
+};
+const text = `${JSON.stringify(manifest, null, 2)}\n`;
+await writeFile(`${directory}/verification.json`, text);
+await browser.close();
+console.log(`\n${passed ? "PASS" : "FAIL"} ${checks.length} Chronicles verification groups, ${failures.length} failing phase(s); manifest ${pathToFileURL(resolve(directory, "verification.json")).pathname}`);
+if (!passed) process.exitCode = 1;

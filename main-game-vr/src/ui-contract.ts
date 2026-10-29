@@ -1,5 +1,5 @@
 import { getChronicleRecords, getHotspotRecords } from '../../shared/chronicles/content';
-import type { ChronicleExhibitId, ChronicleRecord } from '../../shared/chronicles/types';
+import type { ChronicleCollectionId, ChronicleRecord } from '../../shared/chronicles/types';
 import { MENU_LAYOUT } from '../../shared/menu/theme';
 
 // Stable native UIKitML IDs. Runtime wiring lives in the menu system.
@@ -44,7 +44,8 @@ export const questText = (value: string): string => value.replace(/[‘’]/gu, 
 // and one button per Atlas hotspot, Interregnum stop and Laws article. The
 // Atlas map itself is a world-space diorama whose objects carry the diorama,
 // marker and ground names. Back closes an open record, so the record panel
-// needs no close control.
+// needs no close control. A wordless bar shows while the archive builds, and
+// the record panel carries a chip for the canon marker of unapproved words.
 const CHRONICLE_CONTROL_PREFIX = { atlas: 'Hotspot', interregnum: 'Stop', laws: 'Article' } as const;
 export const QUEST_CHRONICLE_IDS = {
   record: 'Record_Panel',
@@ -52,8 +53,11 @@ export const QUEST_CHRONICLE_IDS = {
   ground: 'Atlas_Ground',
   /** The manifest asset the diorama drapes with the painting. */
   mapAsset: 'chronicles-map',
-  tab: (exhibit: ChronicleExhibitId): string => `Exhibit_${exhibit}`,
-  pane: (exhibit: ChronicleExhibitId): string => `Chronicles_${exhibit}`,
+  loading: 'Chronicles_Loading',
+  loadingFill: 'Chronicles_Loading_Fill',
+  recordMarker: 'Record_Marker',
+  tab: (exhibit: ChronicleCollectionId): string => `Exhibit_${exhibit}`,
+  pane: (exhibit: ChronicleCollectionId): string => `Chronicles_${exhibit}`,
   control: (record: Pick<ChronicleRecord, 'id' | 'exhibit'>): string => `${CHRONICLE_CONTROL_PREFIX[record.exhibit]}_${record.id}`,
   marker: (record: Pick<ChronicleRecord, 'id'>): string => `Marker_${record.id}`,
 } as const;
@@ -69,7 +73,22 @@ export const QUEST_CHRONICLE_LAYOUT = {
   record: { x: 361, width: 558 },
   recordTop: { atlas: 150, interregnum: 316, laws: 272 },
   footer: 660,
+  /** The loading bar's track, between the tabs and the exhibit controls. */
+  loading: { x: 128, y: 127, width: 1024, height: 8 },
 } as const;
+/**
+ * Every region the Chronicles view draws in while the archive is open, in panel
+ * units: the tab and control band, the record column at its tallest, and the
+ * footer actions shown in XR (Back; Pause, Recenter and Exit VR). The control
+ * surface keeps these clear of the monument, and check:sync keeps the
+ * generated view inside them.
+ */
+export const QUEST_CHRONICLE_EXTENT: readonly { id: string; x: number; y: number; width: number; height: number }[] = [
+  { id: 'band', x: 105, y: 68, width: 1070, height: 232 },
+  { id: 'record', x: 361, y: 150, width: 558, height: 440 },
+  { id: 'back', x: 105, y: 610, width: 90, height: 50 },
+  { id: 'actions', x: 580, y: 610, width: 266, height: 50 },
+];
 
 export const QUEST_UI_LAYOUT = {
   width: MENU_LAYOUT.reference.width,

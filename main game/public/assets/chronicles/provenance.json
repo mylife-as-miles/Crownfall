@@ -1,0 +1,516 @@
+{
+  "schema": 1,
+  "note": "Every file under main game/public/assets/chronicles. Textures are regenerated deterministically by the command shown; the Quest copies are mirrored by syncMenuAssets during the Quest build and are not committed.",
+  "files": [
+    {
+      "path": "chronicles-map.webp",
+      "bytes": 537628,
+      "sha256": "d9f143adecda885939f753962c9cde92d55677adb20626ee00a8e13dd80c7505",
+      "kind": "painting",
+      "source": "The creator's painted map of the four nations (2048 x 1529), supplied for Brief E and first delivered as assets/home/chronicles.webp. The central tower was removed by orchestrator inpainting (creator decision, 29 October 2026; working choice). Used unmodified as the relief's albedo; never redrawn.",
+      "generator": null,
+      "command": null,
+      "licence": "Creator-owned artwork for Crownfall"
+    },
+    {
+      "path": "textures/basalt-albedo-1024.webp",
+      "bytes": 29096,
+      "sha256": "130a359061070799b20261edc137bd9fcec1ce8e394ad03aaa5de7b00819bb83",
+      "kind": "texture",
+      "source": "albedo (sRGB) for basalt: Dark basalt with a fine grain and chisel marks, for the plinth, steps, voussoir bands and the dais.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/basalt-albedo-512.webp",
+      "bytes": 7872,
+      "sha256": "40cdf3f63f4ecd248720558bae51d2a48cf19baa2856e154e267a3cbf158ef12",
+      "kind": "texture",
+      "source": "albedo (sRGB) for basalt: Dark basalt with a fine grain and chisel marks, for the plinth, steps, voussoir bands and the dais.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/basalt-normal-1024.webp",
+      "bytes": 174218,
+      "sha256": "b20b7d72f61ba7f123bc131835f1be372adfcb88040f86ba08257c9d0702af0d",
+      "kind": "texture",
+      "source": "tangent-space normal map for basalt: Dark basalt with a fine grain and chisel marks, for the plinth, steps, voussoir bands and the dais.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/basalt-normal-512.webp",
+      "bytes": 48094,
+      "sha256": "3234e778eff017dfcbeddca4ad9b898b4e9d3ba4ad10f20cb67d06da814678b0",
+      "kind": "texture",
+      "source": "tangent-space normal map for basalt: Dark basalt with a fine grain and chisel marks, for the plinth, steps, voussoir bands and the dais.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/basalt-orm-1024.webp",
+      "bytes": 38932,
+      "sha256": "9749baebfdeaa0b7956b0e82bcc75954a84c4f230712177141ce2eb2e404daf1",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for basalt: Dark basalt with a fine grain and chisel marks, for the plinth, steps, voussoir bands and the dais.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/basalt-orm-512.webp",
+      "bytes": 10878,
+      "sha256": "18f709aa129c6c9493e2bdb5efc1e9af68194f346bd8810ad9d83392319c2920",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for basalt: Dark basalt with a fine grain and chisel marks, for the plinth, steps, voussoir bands and the dais.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/basalt-quest-256.webp",
+      "bytes": 1290,
+      "sha256": "214c782c8fd7295b7954330f78564b6db0de065fd726e6179c28debc251dcaed",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for basalt: Dark basalt with a fine grain and chisel marks, for the plinth, steps, voussoir bands and the dais.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/basalt-quest-512.webp",
+      "bytes": 7898,
+      "sha256": "9e5a51569a86ac26eff6a6063ac5196b2c5d9aa18e08ac9dd029432ab1d96bf3",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for basalt: Dark basalt with a fine grain and chisel marks, for the plinth, steps, voussoir bands and the dais.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/bronze-albedo-1024.webp",
+      "bytes": 11170,
+      "sha256": "4acd0385ca36e5c907dc1cadcc3a8770527de1f4e2da3242ef2655b43f860d3f",
+      "kind": "texture",
+      "source": "albedo (sRGB) for bronze: Cast bronze with a fine skin and faint hammer dimples, worn bright by handling, with verdigris crusted in a few spots; engraving is modelled in the geometry.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/bronze-albedo-512.webp",
+      "bytes": 4592,
+      "sha256": "ec10ae0e3f4fecaafdb2598d83c01fab33e4a34b8bded6739bdcc5fa35e66c38",
+      "kind": "texture",
+      "source": "albedo (sRGB) for bronze: Cast bronze with a fine skin and faint hammer dimples, worn bright by handling, with verdigris crusted in a few spots; engraving is modelled in the geometry.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/bronze-normal-1024.webp",
+      "bytes": 14610,
+      "sha256": "0b6e6b48ccffb8feabf0a05f3371026f0c76a856856cdfa782e7ae7c2a4800a1",
+      "kind": "texture",
+      "source": "tangent-space normal map for bronze: Cast bronze with a fine skin and faint hammer dimples, worn bright by handling, with verdigris crusted in a few spots; engraving is modelled in the geometry.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/bronze-normal-512.webp",
+      "bytes": 2708,
+      "sha256": "3811de44ad1196e6d586894b118d58fdbfa0bfd491d036460ee1ae547f0780ea",
+      "kind": "texture",
+      "source": "tangent-space normal map for bronze: Cast bronze with a fine skin and faint hammer dimples, worn bright by handling, with verdigris crusted in a few spots; engraving is modelled in the geometry.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/bronze-orm-1024.webp",
+      "bytes": 17790,
+      "sha256": "6aa93176a6ebddb7e580dda8e0bb131ea7b9ffecc766ad016cc00ed49c34c293",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for bronze: Cast bronze with a fine skin and faint hammer dimples, worn bright by handling, with verdigris crusted in a few spots; engraving is modelled in the geometry.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/bronze-orm-512.webp",
+      "bytes": 6568,
+      "sha256": "890764eaa36410f2905f491ca687c90f3010a8de9434a7b84a016a14f1df57e2",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for bronze: Cast bronze with a fine skin and faint hammer dimples, worn bright by handling, with verdigris crusted in a few spots; engraving is modelled in the geometry.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/bronze-quest-256.webp",
+      "bytes": 2562,
+      "sha256": "39edb3f1c6de043a07f6195cd5f29f5a04f2a9e3652e8043310cd24f606c1a4d",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for bronze: Cast bronze with a fine skin and faint hammer dimples, worn bright by handling, with verdigris crusted in a few spots; engraving is modelled in the geometry.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/bronze-quest-512.webp",
+      "bytes": 6026,
+      "sha256": "cb501bd9ae6cb383316c18926cd80f3404eb087ab4c6bb6fbb7f4ccfe7197e2d",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for bronze: Cast bronze with a fine skin and faint hammer dimples, worn bright by handling, with verdigris crusted in a few spots; engraving is modelled in the geometry.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/floor-stone-albedo-1024.webp",
+      "bytes": 24154,
+      "sha256": "f3872d55260c0b482b208935efd2e342e190f55cd0071659b5ee9525eec7b6c0",
+      "kind": "texture",
+      "source": "albedo (sRGB) for floor-stone: Dark polished floor stone in large slabs with faint veining, its polish worn along the walking paths.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/floor-stone-albedo-512.webp",
+      "bytes": 10736,
+      "sha256": "4a719103461f8ace10022db6cd0434b6d09ba0ab6fe28fa08375a709f53d513a",
+      "kind": "texture",
+      "source": "albedo (sRGB) for floor-stone: Dark polished floor stone in large slabs with faint veining, its polish worn along the walking paths.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/floor-stone-normal-1024.webp",
+      "bytes": 7414,
+      "sha256": "9e9f08da21170a2abe618f5780e136f0fa4b1f78046eb8ec571f6e671dd91564",
+      "kind": "texture",
+      "source": "tangent-space normal map for floor-stone: Dark polished floor stone in large slabs with faint veining, its polish worn along the walking paths.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/floor-stone-normal-512.webp",
+      "bytes": 2020,
+      "sha256": "70c8a885c097280e51b7ec919f28a7cb225377877f76c3f59ff6acbab2dad8a8",
+      "kind": "texture",
+      "source": "tangent-space normal map for floor-stone: Dark polished floor stone in large slabs with faint veining, its polish worn along the walking paths.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/floor-stone-orm-1024.webp",
+      "bytes": 29072,
+      "sha256": "e563a46ca1d324cbb25ae423dcd4827d23f6284c614846cef78e89e0c7bd2ea9",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for floor-stone: Dark polished floor stone in large slabs with faint veining, its polish worn along the walking paths.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/floor-stone-orm-512.webp",
+      "bytes": 13374,
+      "sha256": "701eea24f9d3298d1393ad00f9b6c1858236be0234ddf4eb12ed3600066958a7",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for floor-stone: Dark polished floor stone in large slabs with faint veining, its polish worn along the walking paths.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/floor-stone-quest-256.webp",
+      "bytes": 4294,
+      "sha256": "be12d95efb5aaf84068acdcb9e8f73c44236a4417c8007d7b63345c0f55ec330",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for floor-stone: Dark polished floor stone in large slabs with faint veining, its polish worn along the walking paths.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/floor-stone-quest-512.webp",
+      "bytes": 10688,
+      "sha256": "9a475b776451c073c0fefa3a083a8022a78394be21bd5cf5328680d87be06bea",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for floor-stone: Dark polished floor stone in large slabs with faint veining, its polish worn along the walking paths.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-albedo-1024.webp",
+      "bytes": 30200,
+      "sha256": "b14934956195149c8c603c47d2214eee3e168590be6ccc5196af234f500fa5b3",
+      "kind": "texture",
+      "source": "albedo (sRGB) for limestone: Warm limestone ashlar in coursed blocks, with tooling, chipped arrises and soot-dark weathering.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-albedo-512.webp",
+      "bytes": 5960,
+      "sha256": "0733bb612be428ca85f68f17b036cb220f5fcbb99577bd7405d25f58550f2d1a",
+      "kind": "texture",
+      "source": "albedo (sRGB) for limestone: Warm limestone ashlar in coursed blocks, with tooling, chipped arrises and soot-dark weathering.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-carved-albedo-1024.webp",
+      "bytes": 10058,
+      "sha256": "d9653a140d35b6c076fd22f7fcb475b5b1a3126e12a32a6d2df21fa5950751f6",
+      "kind": "texture",
+      "source": "albedo (sRGB) for limestone-carved: Pale limestone carved in low relief with abstract astronomical rosettes, concentric bands and graduations.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-carved-albedo-512.webp",
+      "bytes": 3532,
+      "sha256": "45c97489adbede4e48c8dadbba72bde7d985698689da9a9077bedccc12a666fa",
+      "kind": "texture",
+      "source": "albedo (sRGB) for limestone-carved: Pale limestone carved in low relief with abstract astronomical rosettes, concentric bands and graduations.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-carved-normal-1024.webp",
+      "bytes": 75252,
+      "sha256": "3dea540544942236b2aa8f59eb94bbb8204839fdee9f02f1d7bc02f51f237253",
+      "kind": "texture",
+      "source": "tangent-space normal map for limestone-carved: Pale limestone carved in low relief with abstract astronomical rosettes, concentric bands and graduations.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-carved-normal-512.webp",
+      "bytes": 28538,
+      "sha256": "c6ae1548f461a2bfb6ec232f88bd134e30f4edaca04439e75c1d9b337d421ccc",
+      "kind": "texture",
+      "source": "tangent-space normal map for limestone-carved: Pale limestone carved in low relief with abstract astronomical rosettes, concentric bands and graduations.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-carved-orm-1024.webp",
+      "bytes": 21336,
+      "sha256": "a5065c535353d0c76ee4b9487c039dfba00e7daaab6315a348f31553021dc84d",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for limestone-carved: Pale limestone carved in low relief with abstract astronomical rosettes, concentric bands and graduations.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-carved-orm-512.webp",
+      "bytes": 8646,
+      "sha256": "a995b3e217a381746b29174f542278106389569ac210d4c31e3185a496bd57bf",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for limestone-carved: Pale limestone carved in low relief with abstract astronomical rosettes, concentric bands and graduations.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-carved-quest-256.webp",
+      "bytes": 2854,
+      "sha256": "c8dcf1fd003a656498b8cba206be80906402e55340503f1d022deb37a19f4234",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for limestone-carved: Pale limestone carved in low relief with abstract astronomical rosettes, concentric bands and graduations.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-carved-quest-512.webp",
+      "bytes": 7546,
+      "sha256": "8d490de08e312e8b4f3dee1160f33fca2872fb04c561f7f4bc1a6f1808a12168",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for limestone-carved: Pale limestone carved in low relief with abstract astronomical rosettes, concentric bands and graduations.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-dressed-albedo-1024.webp",
+      "bytes": 13750,
+      "sha256": "295c11e3658482bd737a5b61e2580ce641b678800e9f88fb0216051d93065bec",
+      "kind": "texture",
+      "source": "albedo (sRGB) for limestone-dressed: Finely dressed limestone without coursing, for mouldings, ribs, capitals and the oculus screen.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-dressed-albedo-512.webp",
+      "bytes": 3456,
+      "sha256": "92fe65c406cda697ec85c6902a59d0bbcee09d8b64aa08d5e9e1716a7b0a57dd",
+      "kind": "texture",
+      "source": "albedo (sRGB) for limestone-dressed: Finely dressed limestone without coursing, for mouldings, ribs, capitals and the oculus screen.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-dressed-normal-1024.webp",
+      "bytes": 122810,
+      "sha256": "bee3c6f2478192f4c75b897e4463f8235a999cf103abf3409d87f174022804bc",
+      "kind": "texture",
+      "source": "tangent-space normal map for limestone-dressed: Finely dressed limestone without coursing, for mouldings, ribs, capitals and the oculus screen.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-dressed-normal-512.webp",
+      "bytes": 23986,
+      "sha256": "cabc8ae8f860e0e7ba65a6c0e597c2eb0a5ed1f8e9df4c373893f77e1ab96566",
+      "kind": "texture",
+      "source": "tangent-space normal map for limestone-dressed: Finely dressed limestone without coursing, for mouldings, ribs, capitals and the oculus screen.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-dressed-orm-1024.webp",
+      "bytes": 48906,
+      "sha256": "fe7ae091547207d05f1d816c689027c411d533ed2c5d0d70b0077a0562d27e3b",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for limestone-dressed: Finely dressed limestone without coursing, for mouldings, ribs, capitals and the oculus screen.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-dressed-orm-512.webp",
+      "bytes": 16192,
+      "sha256": "765d90cf5647ecc42c2394d4ab861ebddb9f81e826a392a4c668a122883b096d",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for limestone-dressed: Finely dressed limestone without coursing, for mouldings, ribs, capitals and the oculus screen.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-dressed-quest-256.webp",
+      "bytes": 2122,
+      "sha256": "43b98f0778150ff6188c4b62036ae45683f92b4aca0df128ab7c81eebc3d8f2c",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for limestone-dressed: Finely dressed limestone without coursing, for mouldings, ribs, capitals and the oculus screen.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-dressed-quest-512.webp",
+      "bytes": 8586,
+      "sha256": "39c7c8a6b6922227dce3a9b7845311b1366af24ab01fe6b59a8ef4f18ce2e7b8",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for limestone-dressed: Finely dressed limestone without coursing, for mouldings, ribs, capitals and the oculus screen.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-normal-1024.webp",
+      "bytes": 289644,
+      "sha256": "e13f076675039ee8d36f843663e953f06248194bf81aece89e79c3a3c4e94175",
+      "kind": "texture",
+      "source": "tangent-space normal map for limestone: Warm limestone ashlar in coursed blocks, with tooling, chipped arrises and soot-dark weathering.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-normal-512.webp",
+      "bytes": 15030,
+      "sha256": "70b3dd8768919ca2159b2b5c7e9840435f7c605be67ed803d6f66921eeb1f150",
+      "kind": "texture",
+      "source": "tangent-space normal map for limestone: Warm limestone ashlar in coursed blocks, with tooling, chipped arrises and soot-dark weathering.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-orm-1024.webp",
+      "bytes": 43752,
+      "sha256": "35d69973c9b72b313cc04ab79576c704d9a95e5120db4923d6672d4347073506",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for limestone: Warm limestone ashlar in coursed blocks, with tooling, chipped arrises and soot-dark weathering.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-orm-512.webp",
+      "bytes": 11030,
+      "sha256": "01d90d36a6bab1646eb5dbf02307a6791d39e3940c08e9ae552f1273805a30ee",
+      "kind": "texture",
+      "source": "occlusion, roughness and metalness (R, G, B) for limestone: Warm limestone ashlar in coursed blocks, with tooling, chipped arrises and soot-dark weathering.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-quest-256.webp",
+      "bytes": 2134,
+      "sha256": "c70f3448b1dddd7c79cbaaed883379c6b80b7427ad1af6a4a8fb53b23d64d577",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for limestone: Warm limestone ashlar in coursed blocks, with tooling, chipped arrises and soot-dark weathering.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/limestone-quest-512.webp",
+      "bytes": 11986,
+      "sha256": "295c5aeb066c3d60a4a75e8507f4f48481dc9bc7f336b75083e5aa4e817d1b02",
+      "kind": "texture",
+      "source": "Quest baked lit albedo (sRGB) for limestone: Warm limestone ashlar in coursed blocks, with tooling, chipped arrises and soot-dark weathering.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/oculus-cookie-512.webp",
+      "bytes": 27176,
+      "sha256": "c01eb54ef30d7fc31e37a52888895a5389f4152ef5a40ae386fb9ec07a6ab33f",
+      "kind": "texture",
+      "source": "light mask: what the oculus screen passes from the key light",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    },
+    {
+      "path": "textures/tracery-mask-1024x256.webp",
+      "bytes": 17832,
+      "sha256": "4905268b400e2b1708b2ea90c0c630a76e2aaff6f29dc53f4dfe2f2bc8bb36f7",
+      "kind": "texture",
+      "source": "light mask for tracery: The oculus screen: limestone pierced with star-shaped holes, drawn with an alpha mask.",
+      "generator": "scripts/chronicles/textures/generate-archive-textures.ts",
+      "command": "cd main-game-vr && npx tsx ../scripts/chronicles/textures/generate-archive-textures.ts",
+      "licence": "Original work generated for Crownfall from seeded noise and the archive blueprint; no third-party sources"
+    }
+  ]
+}

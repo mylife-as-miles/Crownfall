@@ -1,0 +1,75 @@
+{
+  "milestone": "m1",
+  "stage": "Gate G1 is open (docs/chronicles/WORK_STATUS.md §5.2): these are kernel and material captures only, which the plan allows during the review. No scene is composed and no blueprint viewpoint is rendered yet; B4 and B5 composition starts once G1 is recorded.",
+  "renderer": "Development harness main game/src/chronicles/scene/harness.html on Chromium headless with SwiftShader (software WebGL), 1920 x 1080. The clay sheets use a camera-relative key light. The Quest rows are an unlit preview with a stand-in vertex light, not the IWSDK runtime and not a headset.",
+  "captureScript": "node scripts/chronicles/capture-archive-harness.mjs (it starts and stops its own dev server on port 5193)",
+  "reviews": [
+    {
+      "file": "env-kernel-sheet-medium.png",
+      "looked": true,
+      "assessment": "All 24 kernel forms build alone and read as authored architecture: kite piers with an engaged shaft, base and impost mouldings and a capital; a stilted pointed arcade arch with voussoir joints, a basalt keystone, an arris roll and a hood; a gallery with balusters; mitred string course and cornice; the coffered octagon-to-round vault; eight ribs; the oculus ring with its bronze band; the star-pierced screen; bays, vestibule, recesses, lamps, dial, ring band, dais, stele and the parametric plinth. The pier body and the bay back walls are still fairly plain, and the ring band has a rectangular section.",
+      "fixedDuringReview": [
+        "Arcade arch: voussoirs beyond the jambs had no extrados face, so joint faces showed as fins; the extrados is now closed where no spandrel covers it.",
+        "Vault shell: it was a plain dome. It now carries a stepped coffer grid, three coffers across each web, diminishing over four rows (three on Quest), each with a small bronze star boss.",
+        "Oculus screen: its bars now use dressed stone in their own slot, so the screen's alpha mask can no longer punch holes in them."
+      ]
+    },
+    {
+      "file": "env-kernel-sheet-medium-quest-tessellation.png",
+      "looked": true,
+      "assessment": "The same forms at Quest tessellation keep their silhouettes. Joints are not cut, the balustrade is a solid panel and the vault has three coffer rows. The kernel build totals 59,442 triangles against a 150,000 kernel budget."
+    },
+    {
+      "file": "env-materials-sheet-medium.png",
+      "looked": true,
+      "assessment": "Desktop PBR at 1024: coursed limestone ashlar with per-block tone, bedding and tooling; dressed limestone; carved rosette panels; dark veined floor stone; basalt with chisel strokes and pale crystals; bronze reading as metal with worn bright edges and a few verdigris spots; the star-pierced screen against the light; lamp, ring band and plinth combinations. The Quest rows show the baked-lit albedo at 512 under a stand-in vertex light.",
+      "fixedDuringReview": [
+        "Bronze: dense engraved lines in the texture read as wooden planks. Engraving is left to the geometry, and the texture is now a cast skin with wear and patina spots.",
+        "Floor veins: the contrast was too strong at 3.2 m slabs and has been reduced by about 30%.",
+        "Reflections: the procedural environment's stone level was raised, so the metals reflect warm stone instead of black.",
+        "Periodic noise: anisotropic fields scaled coordinates and broke tiling at the texture seams. Every field now uses integer cell counts per axis."
+      ]
+    },
+    {
+      "file": "env-materials-sheet-low.png",
+      "looked": true,
+      "assessment": "Desktop at 512 and Quest at 256, with low tessellation. The materials hold their character at the smaller sizes, and the carved panels and the ashlar coursing stay legible."
+    },
+    {
+      "file": "env-form-arcade-front-wire.png",
+      "looked": true,
+      "assessment": "Front view with edges: the arch tessellation is even, and the hood, roll and voussoirs are clean after the fix."
+    },
+    {
+      "file": "env-form-arcade-oblique.png",
+      "looked": true,
+      "assessment": "The closed extrados shows below the springing. Above it, the spandrel's open side at the jamb exposes the voussoir joints, but in the room that side sits inside the pier."
+    },
+    {
+      "file": "env-form-pier-chamber-face.png",
+      "looked": true,
+      "assessment": "The pier's chamber face: kite plan, stepped base mouldings, an engaged shaft with its own base, and the impost band at the arch springing."
+    },
+    {
+      "file": "env-form-vault-shell-below.png",
+      "looked": true,
+      "assessment": "From below, the coffers diminish toward the oculus, and the bosses read as points of bronze. The carved frieze runs around the springing."
+    },
+    {
+      "file": "env-form-vault-shell-oblique.png",
+      "looked": true,
+      "assessment": "The coffer bands step twice, so each coffer reads as recessed. Bosses sit on the shell with no gap."
+    },
+    {
+      "file": "env-form-string-course.png",
+      "looked": true,
+      "assessment": "The string course wraps the first pier with mitred corners, and its cavetto and ovolo profile is visible."
+    },
+    {
+      "file": "env-form-cornice.png",
+      "looked": true,
+      "assessment": "The cornice wraps the pier: bed mouldings, a corona with a drip and a cyma crown, with clean mitres."
+    }
+  ],
+  "againstReferenceFrames": "The reference frames set the bar for sunlit dappled light, warm saturated colour and rich material breakup. The materials now carry that breakup: ashlar coursing, veining, chisel work and patina. The dappled light depends on the key light's oculus cookie, which is generated (oculus-cookie-512.webp), and on the baked bounce. Neither can be judged until the scene is composed after G1, so lighting and atmosphere are not yet evidenced here."
+}
