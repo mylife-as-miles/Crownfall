@@ -17,7 +17,10 @@ Blood-Throne) and Kwind-09 (industrial/cyberpunk Kwind Zaibatsu) — plus plain 
 Every name, rule or lore element an agent invents is a working placeholder pending creator approval:
 keep it in replaceable content files and never present it as canon. Legacy prototype names from
 `web/` are not nation canon. Player-facing copy says "the capital" rather than inventing capital
-names, and adds no lore about the player. Critics treat invented canon presented as established,
+names, and adds no lore about the player. The creator has approved using the Ash & Aether Linguistic
+Atlas in game content — its writing systems as captioned inscriptions, each nation's evidence and
+certainty categories, mottos, sound direction and naming. Agents receive the atlas and its usage rules
+privately; never commit the atlas itself or bulk word lists. Critics treat invented canon presented as established,
 lore leaks and contradictions of the canon brief as blockers.
 
 ## Vision
@@ -155,6 +158,14 @@ A handful of meaningful behaviours on believable schedules or deterministic patt
 patrol, a smith at the forge, a messenger at the gate, soldiers drilling, residents crossing, chimney
 smoke, banners in the wind, distant activity, atmospheric change. Distance-based update rates,
 cheap rigs and distant representations per platform. Never an empty architectural visualisation.
+
+### Inscriptions, mottos and sound
+
+Signage, carved inscriptions, banners and documents in the Bannerhold may use the nation's atlas
+writing system (Bellhand, Ashstroke, Marrowstaves, Skyscript or Ledgerline), always with a readable
+caption, plus the nation's motto. Later ambient sound follows the atlas's acoustic direction:
+Korvenia's three-pulse hourly ward bells, the Solforizi four-pulse engine and clapper signals, and
+the others. All of it is a working proposal kept in replaceable data.
 
 ## Gameplay-driven changes
 

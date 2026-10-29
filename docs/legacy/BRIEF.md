@@ -18,7 +18,10 @@ Blood-Throne) and Kwind-09 (industrial/cyberpunk Kwind Zaibatsu) — plus plain 
 Every name, rule or lore element an agent invents is a working placeholder pending creator approval:
 keep it in replaceable content files and never present it as canon. Legacy prototype names from
 `web/` are not nation canon. Player-facing copy says "the capital" rather than inventing capital
-names, and adds no lore about the player. Critics treat invented canon presented as established,
+names, and adds no lore about the player. The creator has approved using the Ash & Aether Linguistic
+Atlas in game content — its writing systems as captioned inscriptions, each nation's evidence and
+certainty categories, mottos, sound direction and naming. Agents receive the atlas and its usage rules
+privately; never commit the atlas itself or bulk word lists. Critics treat invented canon presented as established,
 lore leaks and contradictions of the canon brief as blockers.
 
 ## Vision
