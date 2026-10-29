@@ -116,6 +116,39 @@ locomotion or sudden artificial camera motion; depth, spatial audio, layered ter
 the territory feel expansive; the same geography and landmarks as desktop at a comfortable scale.
 Document display scale, viewer distance, rotation limits, interaction reach and recentring.
 
+### Character occlusion reveal
+
+The camera never loses the character it is framing — the named representative, the herald, any
+inspected figure — behind geometry. Implement this pipeline, the Three.js equivalent of a spherecast
+and sphere-mask dissolve:
+
+1. **Spherecast, character → camera.** Each frame the active framing needs it, sweep a sphere
+   (about 0.5–0.8 m at Bannerhold scale; tune by eye) from the character's chest to the camera.
+   Test it analytically against the occluder volumes derived from the blueprint (oriented boxes or
+   prisms from footprints, heights and roofs) in a pure shared module. No per-triangle raycasts in
+   the hot path; a `Raycaster` refinement against merged occluder meshes is allowed on High only.
+   The result is "occluded or not" and the nearest hit point along the segment.
+2. **Lerp the hit point.** Frame-rate-independent damping (`1 − exp(−k·dt)`) of the reveal centre and
+   of a 0–1 reveal strength, with hysteresis. The hole eases in and out and never pops or flickers
+   when the camera or character moves.
+3. **Sphere mask in the material.** Occluding materials (buildings, walls, roofs, trees and props —
+   never the character, the ground it stands on, landmark labels or UI) get one shared shader patch
+   (`onBeforeCompile`, in the existing shader-patch module). It computes a world-space sphere mask
+   (or a camera-aligned capsule) around the smoothed centre, scaled by strength.
+4. **Add noise.** Break the edge with cheap world-space 3D noise that stays stable and does not
+   swim in screen space. Add an optional slow drift and an optional thin, warm rim at the edge.
+5. **Material function as alpha.** One shared GLSL chunk outputs the opacity mask. Materials stay
+   opaque and use dithered alpha-test discard (Bayer or blue noise), so depth, sorting and shadows
+   stay correct. Shadow and depth materials do not apply the mask. A uniform skips the branch
+   entirely when strength is 0.
+
+Performance: one sweep per active character per frame, zero per-frame allocation, no new
+dependencies, and one shared uniform object across all patched materials. Report the measured cost.
+On Quest, apply the same mask with the viewer's head as the camera for the inspected representative
+in the miniature (cheaper noise, off on Low) and never move the viewer. Ownership: the shared sweep
+module and the desktop patch belong to the camera/lighting stage (env-light-camera), the Quest patch
+to the Quest renderer stage. Earlier stages keep their materials patchable.
+
 ## Life
 
 A handful of meaningful behaviours on believable schedules or deterministic patterns: a sentry
@@ -146,7 +179,8 @@ fragile external dependencies.
 A concrete spatial blueprint; a believable settlement with roads, housing, a central Manor, Muster
 Grounds, War Record, Herald's Station and infrastructure; a larger nation implied by landscape,
 roads and distant architecture; real interactive 3D on desktop and Quest showing the same settlement
-and landmarks with platform-appropriate camera and interaction; interactive major landmarks; fixtures
+and landmarks with platform-appropriate camera and interaction; interactive major landmarks; a character occlusion reveal that keeps the framed representative
+visible through any building, with a smooth, noisy dissolve and no popping; fixtures
 that demonstrate change without fabricated progress; an original coherent identity; existing
 functionality intact; builds and sync checks passing; smooth, lag-free browser performance meeting every budget and the measurement protocol in `docs/legacy/PERFORMANCE.md`; real screenshots and performance evidence; a
 record of what was verified on hardware versus emulation.
