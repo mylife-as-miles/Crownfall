@@ -33,6 +33,13 @@ the full ownership table.
 
 ## Legacy rules v1
 
+Provisional gameplay design for the My Legacy prototype, pending creator approval. The creator's
+explicit direction is that ordinary Classic matches never cause permanent capture or death and that
+only designated high-stakes Muster conflicts may produce persistent captivity, with the wager stated
+before the match. The detailed rules below (injury on victory or draw, returns, disposition numbers,
+hall tiers) are working design, not King's Gambit canon: player-facing copy presents them as the
+stated terms of a specific Muster or challenge, never as ancient law.
+
 **Founding.** Allowed only when no banner exists (or after `reset`). Name is trimmed, 2–28
 characters of letters, spaces, apostrophes or hyphens. The nation must be `available` or `preview`
 in the availability config. Founding generates three house members deterministically from the

@@ -6,6 +6,21 @@ This is the working brief for the My Legacy feature in both the desktop (`main g
 Meta Quest (`main-game-vr/`) experiences. It condenses the product owner's direction. Both
 platforms are mandatory deliverables; neither is a preview of the other.
 
+## World canon and confidentiality
+
+Crownfall's world canon is maintained privately by the creator. Before writing any name, nation or
+house copy, architecture style, figure equipment or lore, read the private canon brief at
+`/tmp/claude-0/-home-user-Three-Bedroom-/9b9949da-9afa-531c-ba01-6f0866c747db/scratchpad/private-canon/CANON_BRIEF.md` (outside version control; it may be absent in later sessions). Never copy its text, named
+institutions, languages or history into this repository. Committed work uses only public-safe setting
+detail — Crownfall as the world and the King's Gambit as its chess-derived conflict institution, Year
+33 of the Ash & Aether Interregnum, and the four nations Korvenia (occult Grand Duchy), Solforiz
+(sulfur-industrial Scorched Caliphate), Aethelgard (primordial Blood-Throne) and Kwind-09
+(industrial/cyberpunk Kwind Zaibatsu) — plus plain descriptive language. Every name, rule or lore
+element an agent invents is a working placeholder pending creator approval: keep it in replaceable
+content files and never present it as canon. Legacy prototype names from `web/` are not nation canon.
+Never explain or hint at what the unseen player ultimately is. Critics treat invented canon presented
+as established, lore leaks and contradictions of the canon brief as blockers.
+
 ## Vision
 
 - The player is an unseen, godlike **patron**, never an embodied Mortal. They patronise a Mortal
