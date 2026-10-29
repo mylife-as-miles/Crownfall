@@ -1,5 +1,8 @@
 # Crownfall desktop and Quest
 
+> **Handover (29 Oct 2026):** Claude's work on the feature branches moved to Codex. Read
+> `docs/CODEX_HANDOFF.md` first: branch map, finished and unfinished work, open decisions, ground rules.
+
 Maintain both menu versions for every UI, content, artwork, settings or behavior update:
 
 - `main game/` is the approved React desktop and landscape-phone menu.
