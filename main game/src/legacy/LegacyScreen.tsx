@@ -24,6 +24,9 @@ import type { LandmarkLabelsHandle, LandmarkSummary } from "./LandmarkLabels";
 import { LegacyDialog } from "./LegacyDialog";
 import type { LegacyDialogContent, LegacyDialogHandle } from "./LegacyDialog";
 import type { LegacyScreenHandle } from "./legacy-handle";
+import { NextStepAction, wagerTermsFor } from "./LegacyTerms";
+import { nextStepFor } from "./next-step";
+import type { NextStep } from "./next-step";
 import { BannerHallPanel } from "./panels/BannerHallPanel";
 import { HeraldsStationPanel } from "./panels/HeraldsStationPanel";
 import { InspectionPanel } from "./panels/InspectionPanel";
@@ -41,10 +44,12 @@ export interface LegacyScreenProps {
   quality: DesktopEnvironmentQuality;
   /** App's unwinding Back (Escape, B, the footer control): it asks this screen first, then returns Home. */
   onBack(): void;
+  /** Leaves My Legacy for the menu's Play tab, from any Legacy screen. */
+  onPlay(): void;
 }
 
 type Mode = "recovery" | "preview-missing" | "founding" | "bannerhold";
-type FocusRequest = { kind: "default" } | { kind: "landmark"; id: LandmarkId };
+type FocusRequest = { kind: "default" } | { kind: "landmark"; id: LandmarkId } | { kind: "selector"; selector: string };
 interface DialogState { content: LegacyDialogContent; confirm(): void }
 interface Beat { name: string; heraldry: Heraldry }
 
@@ -57,7 +62,7 @@ function cycleLandmark(id: LandmarkId, delta: 1 | -1): LandmarkId {
   return LEGACY_LANDMARKS[(index + delta + LEGACY_LANDMARKS.length) % LEGACY_LANDMARKS.length];
 }
 
-export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(function LegacyScreen({ active, reducedMotion, quality, onBack }, ref) {
+export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(function LegacyScreen({ active, reducedMotion, quality, onBack, onPlay }, ref) {
   const session = useLegacySession();
   const { state, dispatch } = session;
   const [draft, setDraft] = useState<FoundingDraft>(() => createFoundingDraft());
@@ -97,6 +102,7 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
     ? presentFoundingDraft({ nationId: draft.nationId, name: draft.name, heraldry: draft.heraldry, seed: draft.seed, mode: state.mode, previewId: state.previewId })
     : presentBannerhold(state), [mode, draft.nationId, draft.name, draft.heraldry, draft.seed, state]);
   const aftermath = useMemo(() => prominentAftermath(state), [state]);
+  const nextStep = useMemo(() => nextStepFor(state), [state]);
   const cameraKey: LandmarkId | "overview" | "representative" = beat ? "banner-hall"
     : mode === "founding" ? "banner-hall"
       : mode === "bannerhold" ? (closeUp ? "representative" : inspected ?? "overview") : "overview";
@@ -170,16 +176,8 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
     beatTimer.current = setTimeout(finishBeat, reducedMotion ? BEAT_STILL_MS : BEAT_MS);
   }, [draft, run, announce, finishBeat, reducedMotion]);
 
-  const confirmRaise = useCallback(() => {
-    const copy = LEGACY_COPY.founding;
-    setDialog({
-      content: { title: copy.confirmTitle, body: session.persistent ? copy.confirmBody : copy.guestConfirmBody, confirmLabel: copy.confirmAction, cancelLabel: copy.back },
-      confirm: raiseBanner,
-    });
-  }, [session.persistent, raiseBanner]);
-
-  const confirmAbandon = useCallback(() => {
-    const copy = LEGACY_COPY.newBanner;
+  const confirmDissolve = useCallback(() => {
+    const copy = LEGACY_COPY.reset;
     setDialog({
       content: { title: copy.title, body: copy.body, confirmLabel: copy.confirm, cancelLabel: copy.cancel, destructive: true },
       confirm: () => {
@@ -195,15 +193,32 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
     });
   }, [session, state.banner, announce, requestFocus]);
 
+  const goToStep = useCallback((step: NextStep) => {
+    if (mode !== "bannerhold" || beat) return;
+    setDialog(null);
+    setSelected(step.landmark);
+    setHovered(null);
+    setCloseUp(false);
+    setInspected(step.landmark);
+    // Land on the control that takes the step: the challenge's Accept, or the panel's default (Nominate).
+    requestFocus(step.kind === "answer" && step.noticeId ? { kind: "selector", selector: `[data-accept="${step.noticeId}"]` } : { kind: "default" });
+  }, [mode, beat, requestFocus]);
+
   const confirmAccept = useCallback((notice: HeraldNotice) => {
     const copy = LEGACY_COPY.notices;
+    // Accepting is allowed before a Pawn is named, but the wager speaks of "your representative", so say so and offer the way there.
+    const step = nextStepFor(state);
+    const unnamed = step !== null && step.kind === "nominate" ? step : null;
+    const terms = wagerTermsFor(state, notice);
     setDialog({
       content: {
         title: copy.acceptTitle,
         body: copy.acceptBody,
-        terms: notice.wager ? { heading: copy.wagerHeading, text: notice.wager } : undefined,
+        warning: unnamed?.detail,
+        terms: terms ? { heading: copy.wagerHeading, terms } : undefined,
         confirmLabel: copy.accept,
         cancelLabel: LEGACY_COPY.founding.back,
+        alternate: unnamed ? { label: unnamed.title, onSelect: () => goToStep(unnamed) } : undefined,
       },
       confirm: () => {
         setDialog(null);
@@ -211,7 +226,7 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
         requestFocus({ kind: "default" });
       },
     });
-  }, [run, announce, requestFocus]);
+  }, [state, run, announce, requestFocus, goToStep]);
 
   const confirmReplacement = useCallback(() => {
     const future = session.session.kind === "recovery" && session.session.reason === "future-version";
@@ -299,18 +314,17 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
   useEffect(() => { environment?.setQuality(effectiveQuality); }, [environment, effectiveQuality]);
   // Adaptive quality: sampled every two seconds (never per frame) while the screen is shown; one step down per page, told once.
   useEffect(() => {
-    const preset = effectiveQuality.preset;
-    if (!environment || !environmentReady || !active || qualityCap !== null || preset === "low") return;
+    if (!environment || !environmentReady || !active || qualityCap !== null || effectiveQuality.preset === "low") return;
     const since = performance.now();
     const timer = window.setInterval(() => {
       if (document.hidden || performance.now() - since < ADAPTIVE_QUALITY.graceMs) return;
-      const next = adaptivePresetFor(preset, environment.getStats().frameTimesMs);
+      const next = adaptivePresetFor(effectiveQuality, environment.getStats().frameTimesMs);
       if (!next) return;
       setQualityCap(next);
       announce(UI.qualityStepped(UI.presetName[next]));
     }, ADAPTIVE_QUALITY.checkMs);
     return () => window.clearInterval(timer);
-  }, [environment, environmentReady, active, qualityCap, effectiveQuality.preset, announce]);
+  }, [environment, environmentReady, active, qualityCap, effectiveQuality, announce]);
   useEffect(() => { environment?.setReducedMotion(reducedMotion); }, [environment, reducedMotion]);
   useEffect(() => { environment?.highlightLandmark(emphasis); }, [environment, emphasis]);
   // A layout effect, so the camera framing changes before the labels' first projection in the same commit.
@@ -363,15 +377,23 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
     if (!request || !active || dialog || beat) return;
     let done = false;
     if (request.kind === "landmark" && overview) done = focusLandmarkLabel(request.id);
-    else if (request.kind === "default") {
+    else if (request.kind === "selector") {
+      const scope = activeScope();
+      const target = scope?.querySelector<HTMLElement>(request.selector) ?? null;
+      if (target) {
+        target.focus({ preventScroll: true });
+        target.scrollIntoView({ block: "nearest", behavior: "instant" });
+        done = document.activeElement === target;
+      } else if (scope) done = focusDefault(scope);
+    } else if (request.kind === "default") {
       if (overview) done = focusLandmarkLabel(selected);
       else {
         const scope = activeScope();
-        done = scope ? focusDefault(scope) : false;
+        done = scope ? focusDefault(scope, inputMode === "keys") : false;
       }
     }
     if (done) focusRequest.current = null;
-  }, [active, dialog, beat, overview, selected, activeScope, focusLandmarkLabel]);
+  }, [active, dialog, beat, overview, selected, inputMode, activeScope, focusLandmarkLabel]);
 
   // Declared after every effect that requests focus, so a request made during this commit is applied in it.
   useEffect(() => { applyFocusRequest(); });
@@ -480,10 +502,10 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
     : null;
 
   let panel = null;
-  if (mode === "bannerhold" && inspected === "banner-hall") panel = <BannerHallPanel state={state} scene={scene} persistent={session.persistent} onAbandon={confirmAbandon} />;
-  else if (mode === "bannerhold" && inspected === "muster-grounds") panel = <MusterGroundsPanel state={state} scene={scene} closeUp={closeUp} dispatch={dispatch} onInspect={toggleCloseUp} onFeedback={announce} />;
-  else if (mode === "bannerhold" && inspected === "war-record") panel = <WarRecordPanel state={state} />;
-  else if (mode === "bannerhold" && inspected === "heralds-station") panel = <HeraldsStationPanel state={state} scene={scene} dispatch={run} onAccept={confirmAccept} />;
+  if (mode === "bannerhold" && inspected === "banner-hall") panel = <BannerHallPanel state={state} scene={scene} persistent={session.persistent} nextStep={nextStep} onNextStep={goToStep} onDissolve={confirmDissolve} />;
+  else if (mode === "bannerhold" && inspected === "muster-grounds") panel = <MusterGroundsPanel state={state} scene={scene} closeUp={closeUp} nextStep={nextStep} dispatch={dispatch} onInspect={toggleCloseUp} onFeedback={announce} onNextStep={goToStep} />;
+  else if (mode === "bannerhold" && inspected === "war-record") panel = <WarRecordPanel state={state} nextStep={nextStep} onNextStep={goToStep} />;
+  else if (mode === "bannerhold" && inspected === "heralds-station") panel = <HeraldsStationPanel state={state} scene={scene} nextStep={nextStep} dispatch={run} onAccept={confirmAccept} onNextStep={goToStep} />;
 
   return <section
     ref={rootRef}
@@ -545,12 +567,13 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
         onHover={setHovered}
         onOpen={(id) => { openLandmark(id); }}
       />
+      {overview && nextStep && <div className={`legacy-next-strip${environmentReady ? "" : " is-waiting"}`}><NextStepAction step={nextStep} onGo={goToStep} variant="overview" /></div>}
     </div>}
     {showAftermath && <AftermathCard ref={aftermathRef} entries={aftermath} onDismiss={() => { run({ type: "dismiss-aftermath" }); requestFocus({ kind: "default" }); }} />}
 
     {panel && inspected && <InspectionPanel ref={panelRef} landmark={inspected} onClose={closeInspection} onCycle={cycleInspection}>{panel}</InspectionPanel>}
 
-    {mode === "founding" && <FoundingCeremony ref={foundingRef} draft={draft} onChange={setDraft} onRaise={confirmRaise} onCancel={onBack} guest={!session.persistent} />}
+    {mode === "founding" && <FoundingCeremony ref={foundingRef} draft={draft} onChange={setDraft} onRaise={raiseBanner} onCancel={onBack} guest={!session.persistent} />}
     {mode === "recovery" && session.session.kind === "recovery" && <RecoveryPanel ref={recoveryRef} reason={session.session.reason} error={session.session.error} onReplace={confirmReplacement} onGuest={continueAsGuest} />}
     {mode === "preview-missing" && session.session.kind === "preview-missing" && <PreviewMissingPanel ref={recoveryRef} error={session.session.error} onGuest={continueAsGuest} />}
 
@@ -563,6 +586,8 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
 
     <footer className="legacy-footer" aria-label={UI.controls}>
       <button type="button" className="legacy-footer-button" data-legacy-back aria-label={backLabel} onClick={onBack}><span className="controller-key" aria-hidden="true">B</span>{backLabel}</button>
+      {/* Chess comes first: every Legacy screen is one action from the Play tab. */}
+      {!beat && <button type="button" className="legacy-footer-button legacy-footer-play" data-legacy-play aria-label={UI.playLabel} onClick={onPlay}>{UI.play}<span className="legacy-footer-chevron" aria-hidden="true">›</span></button>}
       {overview && <button type="button" className="legacy-footer-button" aria-label={UI.select} onClick={() => openLandmark(selected)}><span className="controller-key" aria-hidden="true">A</span>{UI.select}</button>}
       {mode === "bannerhold" && !beat && <span className="legacy-footer-hint"><span className="controller-key legacy-key-wide" aria-hidden="true">LB</span><span className="controller-key legacy-key-wide" aria-hidden="true">RB</span>{UI.landmarks}</span>}
       {(mode === "bannerhold" || mode === "founding") && !beat && <span className="legacy-footer-hint"><span className="controller-key legacy-key-wide" aria-hidden="true">RS</span>{UI.lookAround}</span>}

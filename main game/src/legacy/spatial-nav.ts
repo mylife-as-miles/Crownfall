@@ -20,9 +20,9 @@ export function navigableElements(scope: ParentNode): HTMLElement[] {
   return out;
 }
 
-function focusElement(element: HTMLElement): void {
+function focusElement(element: HTMLElement, reveal = true): void {
   element.focus({ preventScroll: true });
-  element.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
+  if (reveal) element.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
 }
 
 /** The focused navigable element inside `scope`, if any. */
@@ -86,11 +86,16 @@ export function focusEdge(scope: HTMLElement, last: boolean): boolean {
   return true;
 }
 
-/** Focuses the first navigable element, preferring one marked data-nav-default. */
-export function focusDefault(scope: HTMLElement): boolean {
+/**
+ * Focuses the first navigable element, preferring one marked data-nav-default.
+ * With `reveal` false the scroll position is left alone, so a pointer user
+ * sees a panel from its top while keys and the controller still start on its
+ * primary action.
+ */
+export function focusDefault(scope: HTMLElement, reveal = true): boolean {
   const candidates = navigableElements(scope);
   const preferred = candidates.find((element) => element.hasAttribute("data-nav-default")) ?? candidates[0];
   if (!preferred) return false;
-  focusElement(preferred);
+  focusElement(preferred, reveal);
   return true;
 }

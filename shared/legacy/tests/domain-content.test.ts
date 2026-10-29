@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { LEGACY_COPY, LEGACY_TEXT, sentenceCase } from "../content/copy";
+import { END_REASON_PHRASES, LEGACY_COPY, LEGACY_TEXT, PIECE_NAMES, closeAppositive, sentenceCase } from "../content/copy";
+import type { LegacyText } from "../content/copy";
 import {
   CHARGES, DIVISIONS, HERALDRY_PRESETS, ORDINARIES, TINCTURES, defaultHeraldry, describeHeraldry, tinctureAdvisory,
   tinctureInfo, validateHeraldry,
@@ -10,10 +11,13 @@ import { MUSTER_FILE_CLAIMS, eligibleMusterFiles } from "../content/muster";
 import { BANNER_NAME_SUGGESTIONS, MEMBER_NAME_POOLS, suggestBannerNames } from "../content/names";
 import { LEGACY_NATION_AVAILABILITY, NATIONS, NATION_ORDER, UNNAMED_CAPITAL, listFoundableNations } from "../content/nations";
 import { TINCTURE_SRGB } from "../environment-contract";
+import { AFTERMATH_BODY_BUDGET, AFTERMATH_TITLE_BUDGET, prominentAftermath } from "../domain/aftermath";
 import { buildLegacyPreview, listLegacyPreviews } from "../domain/fixtures";
 import { validateBannerName } from "../domain/founding";
-import { standardPieceAt } from "../domain/formation";
-import type { LegacyState } from "../types";
+import { createMusterFormation, standardPieceAt } from "../domain/formation";
+import { reduceLegacy } from "../domain/reducer";
+import { createLegacyState } from "../domain/state";
+import type { LegacyState, MatchEndReason, NationId } from "../types";
 
 test("four nations with distinct identities, all available in this build", () => {
   assert.deepEqual([...NATION_ORDER], ["korvenia", "solforiz", "aethelgard", "kwind-09"]);
@@ -148,6 +152,12 @@ function collectStrings(value: unknown, out: string[], depth = 0): void {
   else if (typeof value === "object" && value !== null) for (const item of Object.values(value)) collectStrings(item, out, depth + 1);
 }
 
+/** Every string the LEGACY_TEXT builders produce, calling each with sample text for every argument. */
+function collectBuilt(value: unknown, out: string[]): void {
+  if (typeof value === "function") collectStrings((value as (...args: unknown[]) => unknown)("Sample", "Sample", "Sample", "Sample", "Sample", "Sample"), out);
+  else if (typeof value === "object" && value !== null) for (const item of Object.values(value)) collectBuilt(item, out);
+}
+
 function stateStrings(state: LegacyState, out: string[]): void {
   for (const entry of state.chronicle) out.push(entry.title, entry.body);
   for (const notice of state.notices) out.push(notice.title, notice.body, notice.wager ?? "");
@@ -155,9 +165,23 @@ function stateStrings(state: LegacyState, out: string[]): void {
   for (const member of state.members) out.push(member.name, member.epithet, member.origin);
 }
 
-test("copy hygiene: no reactions to who commands, no death, no numbered districts, capitals unnamed", () => {
+/**
+ * Words player-facing copy never uses, with the reason. "Chronicle" is the
+ * domain's internal term only: the house's record is the War Record, and
+ * Chronicles is the separate world archive on Home.
+ */
+const FORBIDDEN_TERMS: readonly (readonly [RegExp, string])[] = [
+  [/\bchronicles?\b/i, "the house's record is the War Record; Chronicles is the Home archive"],
+  [/hearthstone/i, "echoes another game franchise"],
+  [/weirwall/i, "echoes another franchise"],
+  [/charter district/i, "no invented district names"],
+  [/winterfell|rivendell|gondor|mordor|skyrim|whiterun|ironforge|stormwind|azeroth|westeros|hogwarts|hyrule/i, "echoes another franchise"],
+];
+
+test("copy hygiene: no reactions to who commands, no death, no numbered districts, capitals unnamed, no forbidden or borrowed names", () => {
   const texts: string[] = [];
   collectStrings(LEGACY_COPY, texts);
+  collectBuilt(LEGACY_TEXT, texts);
   collectStrings(NATIONS, texts);
   collectStrings(EXTERNAL_HOUSES, texts);
   collectStrings(CROWN_TITLES, texts);
@@ -187,7 +211,11 @@ test("copy hygiene: no reactions to who commands, no death, no numbered district
     assert.doesNotMatch(text, /\bplayers?\b/i, `copy addresses your banner or your house: ${text}`);
     const capitals = text.match(/\b\w*\s?capital\b/gi) ?? [];
     for (const mention of capitals) assert.match(mention, /^the capital$/i, `capitals stay unnamed: ${text}`);
+    for (const [term, reason] of FORBIDDEN_TERMS) assert.doesNotMatch(text, term, `${reason}: ${text}`);
   }
+  assert.equal(LEGACY_COPY.landmarks["war-record"].title, "War Record");
+  assert.match(LEGACY_COPY.empty.chronicle, /^The War Record /);
+  assert.match(LEGACY_COPY.reset.body, /its War Record/);
 });
 
 test("names are original-looking, font-safe and readable", () => {
@@ -206,7 +234,7 @@ test("names are original-looking, font-safe and readable", () => {
 test("names that open a sentence are capitalised; formal titles read mid-sentence", () => {
   assert.equal(sentenceCase(CROWN_TITLES["kwind-09"]), "The Kwind Zaibatsu");
   assert.equal(LEGACY_TEXT.captivityNotice("Remy", CROWN_TITLES.solforiz, "Solforiz").title, "The Scorched Caliphate of Solforiz holds Remy");
-  assert.match(LEGACY_TEXT.captivity("Remy", CROWN_TITLES.solforiz, "Solforiz").body, /is held by the Scorched Caliphate of Solforiz\./);
+  assert.match(LEGACY_TEXT.captivity("Remy", CROWN_TITLES.solforiz, "Solforiz").body, /^Held by the Scorched Caliphate of Solforiz\./);
   assert.equal(LEGACY_TEXT.returnNotice("Remy", CROWN_TITLES.aethelgard).body, "The Blood-Throne of Aethelgard releases Remy under the terms of the Muster.");
   assert.equal(
     LEGACY_TEXT.founding("House Ashgrove", NATIONS.korvenia.polity).body,
@@ -216,4 +244,117 @@ test("names that open a sentence are capitalised; formal titles read mid-sentenc
   assert.match(wager, /^These are the terms of this Muster conflict against Solforiz\./);
   assert.match(wager, /The rules of chess do not change\.$/);
   assert.match(LEGACY_TEXT.classicCapture("Remy", "b4", "a Pawn of the Solforiz levy").body, /left the board unharmed/);
+});
+
+/** External representatives' names carry a title after a comma ("Idrasa Azhemar, Warden of the Wells"). */
+const TITLED_NAMES = EXTERNAL_HOUSES.map((house) => house.representative.name);
+
+/** Every titled name in `text` closes its title with a comma or ends its sentence: never "…, Warden of the Wells of House …". */
+function assertTitlesClosed(text: string): void {
+  for (const name of TITLED_NAMES) {
+    for (let index = text.indexOf(name); index !== -1; index = text.indexOf(name, index + name.length)) {
+      const next = text.charAt(index + name.length);
+      assert.ok(next === "," || next === ".", `"${name}" leaves its title open in: ${text}`);
+    }
+  }
+}
+
+/** A founded banner of each nation, for formations and labels exactly as the domain builds them. */
+function foundedIn(nationId: NationId): LegacyState {
+  const transition = reduceLegacy(createLegacyState({ at: "2026-04-01T09:00:00.000Z" }), {
+    type: "found-banner", name: "House Ashgrove", nationId, heraldry: defaultHeraldry(nationId), at: "2026-04-01T09:00:00.000Z", seed: 3,
+  });
+  assert.equal(transition.error, null);
+  return transition.state;
+}
+
+test("consequence sentences close every representative's title and never read \"of … of\"", () => {
+  assert.equal(closeAppositive("Remy"), "Remy");
+  assert.equal(closeAppositive("Idrasa Azhemar, Warden of the Wells"), "Idrasa Azhemar, Warden of the Wells,");
+  assert.equal(
+    LEGACY_TEXT.alliedReaction("House Ombreval", "Gervais Ombreval, the Veiled Lance").body,
+    "Gervais Ombreval, the Veiled Lance, was taken in the Muster. House Ombreval holds your banner to account.",
+  );
+  assert.equal(
+    LEGACY_TEXT.grievance("House Azhemar", "Idrasa Azhemar, Warden of the Wells").body,
+    "Idrasa Azhemar, Warden of the Wells, was taken by your side in the Muster. House Azhemar will remember it.",
+  );
+  assert.equal(
+    LEGACY_TEXT.rivalVow("House Azhemar", "Idrasa Azhemar, Warden of the Wells").body,
+    "House Azhemar vows that a future field will answer for the taking of Idrasa Azhemar, Warden of the Wells.",
+  );
+  assert.equal(
+    LEGACY_TEXT.classicCapture("Ambroise", "c4", "Idrasa Azhemar, Warden of the Wells").body,
+    "Taken in a Classic match by Idrasa Azhemar, Warden of the Wells. Ambroise laid down arms and left the board unharmed.",
+  );
+
+  const texts: LegacyText[] = [];
+  for (const nationId of NATION_ORDER) {
+    const ally = getAlliedHouse(nationId);
+    const rival = getRivalHouse(nationId);
+    texts.push(
+      LEGACY_TEXT.alliedReaction(ally.name, ally.representative.name),
+      LEGACY_TEXT.alliedDemand(ally.name, ally.representative.name),
+      LEGACY_TEXT.grievance(rival.name, rival.representative.name),
+      LEGACY_TEXT.rivalVow(rival.name, rival.representative.name),
+      LEGACY_TEXT.classicCapture("Ambroise", "c4", rival.representative.name),
+    );
+  }
+  for (const listing of listLegacyPreviews()) {
+    const state = buildLegacyPreview(listing.id);
+    assert.ok(state);
+    texts.push(...state.chronicle, ...state.notices, ...state.unresolved);
+  }
+  for (const text of texts) {
+    assertTitlesClosed(text.title);
+    assertTitlesClosed(text.body);
+    assert.doesNotMatch(text.body, /\bof House \w+ of\b|\bof [A-Z][\w-]+ of House\b/, `no "of … of": ${text.body}`);
+  }
+  const allied = buildLegacyPreview("allied-loss")?.chronicle.find((entry) => entry.kind === "allied-reaction");
+  assert.equal(allied?.body, `${getAlliedHouse("korvenia").representative.name}, was taken in the Muster. House Ombreval holds your banner to account.`);
+});
+
+test("prominent aftermath copy fits its budget for every house, member, nation and captor", () => {
+  const members = NATION_ORDER.flatMap((id) => MEMBER_NAME_POOLS[id].given);
+  const member = members.reduce((longest, name) => (name.length > longest.length ? name : longest), "");
+  const reasons = Object.keys(END_REASON_PHRASES) as MatchEndReason[];
+  const checked: string[] = [];
+  const fits = (label: string, text: LegacyText): void => {
+    assert.ok(text.title.length <= AFTERMATH_TITLE_BUDGET, `${label} title is ${text.title.length} characters: ${text.title}`);
+    assert.ok(text.body.length <= AFTERMATH_BODY_BUDGET, `${label} body is ${text.body.length} characters: ${text.body}`);
+    checked.push(label);
+  };
+  for (const nationId of NATION_ORDER) {
+    const ally = getAlliedHouse(nationId);
+    const rival = getRivalHouse(nationId);
+    const state = foundedIn(nationId);
+    fits(`${nationId} allied reaction`, LEGACY_TEXT.alliedReaction(ally.name, ally.representative.name));
+    fits(`${nationId} grievance`, LEGACY_TEXT.grievance(rival.name, rival.representative.name));
+    for (const opponentId of NATION_ORDER) {
+      const opponent = NATIONS[opponentId].name;
+      // A thousand moves is far beyond any real game; every outcome, reason and stake is measured.
+      for (const stakes of ["classic", "muster"] as const) {
+        for (const outcome of ["victory", "defeat", "draw"] as const) {
+          for (const reason of reasons) fits(`match ${stakes} ${outcome} ${reason}`, LEGACY_TEXT.match(stakes, outcome, reason, 1999, opponent, member));
+        }
+      }
+      for (const captor of [rival.name, CROWN_TITLES[opponentId]]) fits(`captivity by ${captor}`, LEGACY_TEXT.captivity(member, captor, opponent));
+      fits(`return from ${opponent}`, LEGACY_TEXT.returned(member, opponent));
+      // Every label a capturing piece of this opponent can carry, exactly as the formation writes it.
+      const { allegiance } = createMusterFormation(state, { playerSide: "w", opponentNationId: opponentId });
+      for (const owed of Object.values(allegiance)) {
+        if (owed.side === "b") fits(`classic yield to ${owed.label}`, LEGACY_TEXT.classicCapture(member, "b4", owed.label));
+      }
+    }
+  }
+  for (const outcome of ["victory", "draw"] as const) fits(`injury ${outcome}`, LEGACY_TEXT.injury(member, outcome));
+  for (const piece of ["n", "b", "r", "q"] as const) {
+    for (const laterCaptured of [false, true]) fits(`promotion ${piece}`, LEGACY_TEXT.promotion(member, PIECE_NAMES[piece], laterCaptured));
+  }
+  assert.ok(checked.length > 500, `measured ${checked.length} texts`);
+  for (const listing of listLegacyPreviews()) {
+    const state = buildLegacyPreview(listing.id);
+    assert.ok(state);
+    for (const entry of prominentAftermath(state)) fits(`${listing.id} ${entry.kind}`, entry);
+  }
 });

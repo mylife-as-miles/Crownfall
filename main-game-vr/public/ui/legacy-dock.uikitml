@@ -2,29 +2,38 @@
 <style>
     @font-face { font-family: 'Barlow'; src: url('../fonts/7cHpv4kjgoGqM7EPCw.ttf'); font-weight: 400; }
     @font-face { font-family: 'Barlow'; src: url('../fonts/7cHqv4kjgoGqM7E30-8c4A.ttf'); font-weight: 600; }
-    .lg-root { width: 720; height: 490; position-type: relative; overflow: hidden; font-family: 'Barlow'; color: #ece4d0; background-color: #120f0a; border-color: #6b5230; border-width: 1.5; border-radius: 8; }
-    .lg-dock { width: 720; height: 98; position-type: relative; overflow: hidden; font-family: 'Barlow'; color: #ece4d0; background-color: #120f0a; border-color: #6b5230; border-width: 1.5; border-radius: 8; }
-    .lg-view { position-type: absolute; position-left: 0; position-top: 0; width: 720; height: 490; }
+    .lg-root { width: 720; height: 520; position-type: relative; overflow: hidden; font-family: 'Barlow'; color: #ece4d0; background-color: #120f0a; border-color: #6b5230; border-width: 1.5; border-radius: 8; }
+    .lg-dock { width: 560; height: 172; position-type: relative; overflow: hidden; font-family: 'Barlow'; color: #ece4d0; background-color: #120f0a; border-color: #6b5230; border-width: 2; border-radius: 10; }
+    .lg-view { position-type: absolute; position-left: 0; position-top: 0; width: 720; height: 520; }
     .lg-title { font-size: 26; font-weight: 600; color: #d49130; line-height: 1.2; }
-    .lg-subtitle { font-size: 14; color: #c2baa8; line-height: 1.3; }
-    .lg-band { font-size: 14; font-weight: 600; color: #f2c672; line-height: 1.3; }
-    .lg-message { font-size: 14; color: #f0b860; line-height: 1.3; }
-    .lg-heading { font-size: 15; font-weight: 600; color: #e0a03c; line-height: 1.3; }
-    .lg-label { font-size: 14; color: #e0a03c; line-height: 1.3; }
-    .lg-body { font-size: 15; color: #ece4d0; line-height: 1.35; }
-    .lg-body-large { font-size: 17; color: #ece4d0; line-height: 1.4; }
-    .lg-small { font-size: 14; color: #c2baa8; line-height: 1.3; }
+    .lg-subtitle { font-size: 15; color: #c9c1ae; line-height: 1.3; }
+    .lg-band { font-size: 15; font-weight: 600; color: #f2c672; line-height: 1.3; }
+    .lg-message { font-size: 15; color: #f0b860; line-height: 1.3; }
+    .lg-heading { font-size: 16; font-weight: 600; color: #e0a03c; line-height: 1.3; }
+    .lg-label { font-size: 15; color: #e0a03c; line-height: 1.3; }
+    .lg-body { font-size: 16; color: #ece4d0; line-height: 1.3; }
+    .lg-body-large { font-size: 18; color: #ece4d0; line-height: 1.35; }
+    .lg-small { font-size: 15; color: #c9c1ae; line-height: 1.3; }
     .lg-name { font-size: 28; font-weight: 600; color: #ece4d0; line-height: 1.2; }
-    .lg-strong { font-size: 16; font-weight: 600; color: #ece4d0; line-height: 1.3; }
+    .lg-strong { font-size: 17; font-weight: 600; color: #ece4d0; line-height: 1.3; }
     .lg-card-title { font-size: 20; font-weight: 600; color: #ece4d0; line-height: 1.2; }
+    .lg-term-when { font-size: 16; font-weight: 600; color: #e0a03c; line-height: 1.3; }
+    .lg-term-then { font-size: 16; color: #ece4d0; line-height: 1.3; }
+    .lg-aftermath-title { font-size: 18; font-weight: 600; color: #ece4d0; line-height: 1.25; }
+    .lg-aftermath-body { font-size: 17; color: #ece4d0; line-height: 1.35; }
+    .lg-ledger-label { font-size: 15; color: #c9c1ae; line-height: 1.25; }
+    .lg-ledger-value { font-size: 15; font-weight: 600; color: #ece4d0; line-height: 1.25; }
+    .lg-principle { font-size: 16; color: #f2c672; line-height: 1.3; }
+    .lg-cell-letter { font-size: 16; font-weight: 600; color: #ece4d0; text-align: center; line-height: 1.2; }
     .lg-btn { padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-radius: 5; border-color: #7a5a2a; border-width: 1.5; background-color: #2a2216; color: #ece4d0; cursor: pointer; }
     .lg-btn-primary { padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-radius: 5; border-color: #d49130; border-width: 2; background-color: #6b4a14; color: #ece4d0; cursor: pointer; }
     .lg-btn-danger { padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-radius: 5; border-color: #b0503c; border-width: 1.5; background-color: #4a1d16; color: #ece4d0; cursor: pointer; }
     .lg-btn-label { font-size: 17; font-weight: 600; color: #ece4d0; text-align: center; line-height: 1.2; }
+    .lg-nav-label { font-size: 16; font-weight: 600; color: #ece4d0; text-align: center; line-height: 1.2; }
     .lg-key-label { font-size: 22; font-weight: 600; color: #ece4d0; text-align: center; line-height: 1.1; }
-    .lg-cell-label { font-size: 14; color: #c2baa8; line-height: 1.2; }
+    .lg-cell-label { font-size: 15; color: #c9c1ae; line-height: 1.2; }
     .lg-cell-value { font-size: 16; font-weight: 600; color: #ece4d0; line-height: 1.2; }
     .lg-center { text-align: center; }
     .lg-live { pointer-events: none; }
   </style>
-<div id="LegacyDock_Root" class="lg-dock"><div id="Legacy_DockHome" class="lg-btn" style="position-type: absolute; position-left: 12; position-top: 8; width: 165; height: 56; "><span id="Legacy_DockHome_Label" class="lg-btn-label" style="position-type: absolute; position-left: 0; position-top: 16; width: 165; height: 24; pointer-events: none; z-index-offset: 3; ">Return to Home</span></div><div id="Legacy_DockRecenter" class="lg-btn" style="position-type: absolute; position-left: 189; position-top: 8; width: 165; height: 56; "><span id="Legacy_DockRecenter_Label" class="lg-btn-label" style="position-type: absolute; position-left: 0; position-top: 16; width: 165; height: 24; pointer-events: none; z-index-offset: 3; ">Recenter</span></div><div id="Legacy_DockPause" class="lg-btn" style="position-type: absolute; position-left: 366; position-top: 8; width: 165; height: 56; "><span id="Legacy_DockPause_Label" class="lg-btn-label" style="position-type: absolute; position-left: 0; position-top: 16; width: 165; height: 24; pointer-events: none; z-index-offset: 3; ">Pause</span></div><div id="Legacy_DockExit" class="lg-btn" style="position-type: absolute; position-left: 543; position-top: 8; width: 165; height: 56; "><span id="Legacy_DockExit_Label" class="lg-btn-label" style="position-type: absolute; position-left: 0; position-top: 16; width: 165; height: 24; pointer-events: none; z-index-offset: 3; ">Exit VR</span></div><span id="Legacy_DockLabel" class="lg-band lg-live" style="position-type: absolute; position-left: 14; position-top: 70; width: 400; height: 22; pointer-events: none; z-index-offset: 3; ">-</span><span id="Legacy_DockStatus" class="lg-small lg-live" style="position-type: absolute; position-left: 420; position-top: 70; width: 286; height: 22; pointer-events: none; z-index-offset: 3; text-align: right;">-</span></div>
+<div id="LegacyDock_Root" class="lg-dock"><div id="Legacy_DockBack" class="lg-btn" style="position-type: absolute; position-left: 8; position-top: 8; width: 268; height: 60; "><span id="Legacy_DockBack_Label" class="lg-btn-label lg-live" style="position-type: absolute; position-left: 0; position-top: 18; width: 268; height: 24; pointer-events: none; z-index-offset: 3; ">-</span></div><div id="Legacy_DockPrimary" class="lg-btn-primary" style="position-type: absolute; position-left: 284; position-top: 8; width: 268; height: 60; "><span id="Legacy_DockPrimary_Label" class="lg-btn-label lg-live" style="position-type: absolute; position-left: 0; position-top: 18; width: 268; height: 24; pointer-events: none; z-index-offset: 3; ">-</span></div><div id="Legacy_DockHome" class="lg-btn" style="position-type: absolute; position-left: 8; position-top: 76; width: 132; height: 56; "><span id="Legacy_DockHome_Label" class="lg-nav-label" style="position-type: absolute; position-left: 0; position-top: 16; width: 132; height: 24; pointer-events: none; z-index-offset: 3; ">Return to Home</span></div><div id="Legacy_DockRecenter" class="lg-btn" style="position-type: absolute; position-left: 145; position-top: 76; width: 132; height: 56; "><span id="Legacy_DockRecenter_Label" class="lg-nav-label" style="position-type: absolute; position-left: 0; position-top: 16; width: 132; height: 24; pointer-events: none; z-index-offset: 3; ">Recenter</span></div><div id="Legacy_DockPause" class="lg-btn" style="position-type: absolute; position-left: 282; position-top: 76; width: 132; height: 56; "><span id="Legacy_DockPause_Label" class="lg-nav-label" style="position-type: absolute; position-left: 0; position-top: 16; width: 132; height: 24; pointer-events: none; z-index-offset: 3; ">Pause</span></div><div id="Legacy_DockExit" class="lg-btn" style="position-type: absolute; position-left: 419; position-top: 76; width: 132; height: 56; "><span id="Legacy_DockExit_Label" class="lg-nav-label" style="position-type: absolute; position-left: 0; position-top: 16; width: 132; height: 24; pointer-events: none; z-index-offset: 3; ">Exit VR</span></div><span id="Legacy_DockLabel" class="lg-band lg-live" style="position-type: absolute; position-left: 12; position-top: 140; width: 300; height: 24; pointer-events: none; z-index-offset: 3; ">-</span><span id="Legacy_DockStatus" class="lg-small lg-live" style="position-type: absolute; position-left: 316; position-top: 140; width: 232; height: 24; pointer-events: none; z-index-offset: 3; text-align: right;">-</span></div>

@@ -30,6 +30,31 @@ const LEGACY_COVER_MS = 340;
 const preferencesKey = "crownfall.main-game.preferences";
 const initialPreferences = INITIAL_PREFERENCES;
 
+/** The first connected standard-mapping pad, found without allocating per frame. */
+function standardGamepad(): Gamepad | null {
+  const pads = navigator.getGamepads?.();
+  if (!pads) return null;
+  for (let index = 0; index < pads.length; index++) {
+    const pad = pads[index];
+    if (pad && pad.connected && pad.mapping === "standard") return pad;
+  }
+  return null;
+}
+
+function anyGamepadConnected(): boolean {
+  const pads = navigator.getGamepads?.();
+  if (!pads) return false;
+  for (let index = 0; index < pads.length; index++) if (pads[index]?.connected) return true;
+  return false;
+}
+
+/** Any button pressed or stick deflected past the menu threshold. */
+function gamepadEngaged(pad: Gamepad): boolean {
+  for (let index = 0; index < pad.buttons.length; index++) if (pad.buttons[index].pressed) return true;
+  for (let index = 0; index < pad.axes.length; index++) if (Math.abs(pad.axes[index]) > .55) return true;
+  return false;
+}
+
 function getPreferences(): Preferences {
   try {
     const value: unknown = JSON.parse(
@@ -103,6 +128,8 @@ export default function App() {
   const gamepadPolledAt = useRef(0);
   const legacyRef = useRef<LegacyScreenHandle>(null);
   const [legacyMounted, setLegacyMounted] = useState(false);
+  // The Gamepad API is polled only while a pad is connected; browsers announce pads with gamepadconnected.
+  const [gamepadConnected, setGamepadConnected] = useState(anyGamepadConnected);
   const [menuSuspended, setMenuSuspended] = useState(false);
   const legacyQuality = useMemo((): DesktopEnvironmentQuality => ({
     preset: preferences.quality,
@@ -213,6 +240,12 @@ export default function App() {
     setScreen("legacy");
     setActiveTab(0);
   }, [boot.blocking]);
+  // Every Legacy screen offers Play: it leaves My Legacy for the Play tab with the Classic card selected.
+  const playFromLegacy = useCallback(() => {
+    if (boot.blocking) return;
+    setSelected(0);
+    openTab(1, -1);
+  }, [boot.blocking, openTab]);
   const activateHome = useCallback((index: number) => {
     if (boot.blocking) return;
     const item = HOME_CONTENT[index];
@@ -382,11 +415,24 @@ export default function App() {
   }, [preferences.bindings, panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectHome, selectSettings, selectCard, moveDialogFocus, activateDialogSelection, boot.blocking]);
 
   useEffect(() => {
+    const refresh = () => setGamepadConnected(anyGamepadConnected());
+    refresh();
+    window.addEventListener("gamepadconnected", refresh);
+    window.addEventListener("gamepaddisconnected", refresh);
+    return () => {
+      window.removeEventListener("gamepadconnected", refresh);
+      window.removeEventListener("gamepaddisconnected", refresh);
+    };
+  }, []);
+
+  useEffect(() => {
+    // No pad, no per-frame polling: the loop starts on gamepadconnected and stops on gamepaddisconnected.
+    if (!gamepadConnected) return;
     let frame: number;
     const poll = (time: number) => {
-      const pad = Array.from(navigator.getGamepads?.() || []).find((item) => item?.connected && item.mapping === "standard");
+      const pad = standardGamepad();
       if (boot.blocking) {
-        bootPadBlocked.current = !!pad && (pad.buttons.some(button => button.pressed) || pad.axes.some(axis => Math.abs(axis) > .55));
+        bootPadBlocked.current = !!pad && gamepadEngaged(pad);
         if (pad && time > gamepadInputAt.current) {
           if (boot.canContinue && pad.buttons[0]?.pressed) { continueBoot(); gamepadInputAt.current = time + 500; }
           else if (boot.degraded && pad.buttons[3]?.pressed) { retryBoot(); gamepadInputAt.current = time + 500; }
@@ -395,7 +441,7 @@ export default function App() {
         return;
       }
       if (bootPadBlocked.current && pad) {
-        if (pad.buttons.some(button => button.pressed) || pad.axes.some(axis => Math.abs(axis) > .55)) {
+        if (gamepadEngaged(pad)) {
           frame = requestAnimationFrame(poll);
           return;
         }
@@ -464,7 +510,7 @@ export default function App() {
     };
     frame = requestAnimationFrame(poll);
     return () => cancelAnimationFrame(frame);
-  }, [panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectCard, moveDialogFocus, activateDialogSelection, closePanel, boot.blocking, boot.canContinue, boot.degraded, continueBoot, retryBoot]);
+  }, [gamepadConnected, panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectCard, moveDialogFocus, activateDialogSelection, closePanel, boot.blocking, boot.canContinue, boot.degraded, continueBoot, retryBoot]);
 
   const detailScreenOpen = screen === "chapters" || screen === "settings" && !!settingsCategory;
   const legacyOpen = screen === "legacy";
@@ -578,7 +624,7 @@ export default function App() {
 
         </MenuTransition>
 
-        {legacyMounted && <LegacyLayer ref={legacyRef} active={legacyOpen} reducedMotion={reducedMotion} quality={legacyQuality} onBack={back} />}
+        {legacyMounted && <LegacyLayer ref={legacyRef} active={legacyOpen} reducedMotion={reducedMotion} quality={legacyQuality} onBack={back} onPlay={playFromLegacy} />}
 
         {screen !== "showcase" && screen !== "chapters" && !legacyOpen && !(screen === "settings" && settingsCategory) && <footer className="controller-hints" aria-label="Menu controls">
           <button aria-label="Select" onClick={activateSelected}>

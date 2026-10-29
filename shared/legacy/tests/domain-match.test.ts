@@ -96,7 +96,9 @@ test("a Classic match records the capture without lasting harm or politics", () 
   assert.equal(member.timesCaptured, 1);
   assert.equal(member.musters, 0);
   assert.deepEqual(kinds(after.chronicle.slice(before.chronicle.length)), ["match", "capture"]);
-  assert.equal(after.chronicle[after.chronicle.length - 1].prominence, "minor");
+  // The yield is prominent, so the aftermath itself shows that nobody was harmed.
+  assert.equal(after.chronicle[after.chronicle.length - 1].prominence, "major");
+  assert.deepEqual(prominentAftermath(after).map((e) => e.kind), ["capture", "match"]);
   assert.deepEqual(after.relations, before.relations);
   assert.equal(after.standing.recognition, 0);
   assert.equal(after.notices.length, before.notices.length, "no new notices");
@@ -105,7 +107,13 @@ test("a Classic match records the capture without lasting harm or politics", () 
   assert.equal(after.matches[0].outcome, "defeat");
   const capture = after.chronicle[after.chronicle.length - 1];
   assert.equal(capture.title, `${member.name} yielded on b4`);
-  assert.match(capture.body, /laid down arms and left the board unharmed/);
+  // Black's c-pawn is the rival house's representative.
+  assert.equal(capture.body, `Taken in a Classic match by ${rival.representative.name}. ${member.name} laid down arms and left the board unharmed.`);
+  // Captures the representative makes stay a minor tally, in Classic matches and Musters alike.
+  const scored = play(founded(), { matchId: "c2", stakes: "classic", tape: RIVAL_TAKEN, winner: "w", reason: "checkmate" });
+  const tally = scored.chronicle[scored.chronicle.length - 1];
+  assert.deepEqual([tally.kind, tally.prominence], ["capture", "minor"]);
+  assert.deepEqual(prominentAftermath(scored).map((e) => e.kind), ["match"]);
 });
 
 test("Muster defeat with the representative taken: captive of the capturing house, notice and unresolved matter", () => {
@@ -181,7 +189,9 @@ test("promotion then capture keeps both facts and applies the Muster fate", () =
   const lost = play(founded("c"), { matchId: "m1", tape, winner: "b", reason: "resignation" });
   assert.equal(lost.members[0].status, "captive");
   assert.equal(lost.members[0].captiveOf, `crown:${rival.nationId}`, "taken by a royal piece: held by the opponent crown");
-  assert.match(lost.chronicle.find((e) => e.kind === "captivity")?.title ?? "", /is held by the Scorched Caliphate of Solforiz$/);
+  const captivity = lost.chronicle.find((e) => e.kind === "captivity");
+  assert.equal(captivity?.title, `${lost.members[0].name} is taken captive`);
+  assert.equal(captivity?.body, "Held by the Scorched Caliphate of Solforiz. Their place stands empty until your house wins a Muster against Solforiz.");
   assert.match(lost.notices.find((n) => n.kind === "captivity-notice")?.title ?? "", /^The Scorched Caliphate of Solforiz holds /);
   assert.deepEqual(prominentAftermath(lost).map((e) => e.kind), ["captivity", "promotion"]);
 });
@@ -199,7 +209,7 @@ test("the allied representative lost in a victory opens an accounting thread", (
   assert.equal(after.members[0].status, "available", "the house's own representative is unharmed");
   const reaction = after.chronicle.find((e) => e.kind === "allied-reaction");
   assert.equal(reaction?.title, `${ally.name} counts its loss`);
-  assert.match(reaction?.body ?? "", new RegExp(`${ally.representative.name} of ${ally.name} was taken in the Muster against Solforiz`));
+  assert.equal(reaction?.body, `${ally.representative.name}, was taken in the Muster. ${ally.name} holds your banner to account.`);
   assert.deepEqual(prominentAftermath(after).map((e) => e.kind), ["allied-reaction", "match"]);
 });
 

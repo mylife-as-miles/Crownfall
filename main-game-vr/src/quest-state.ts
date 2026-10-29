@@ -7,6 +7,8 @@ export interface QuestPreferences {
   showHints: boolean;
   textScale: 100 | 125 | 150;
   panelDistance: 1.2 | 1.5 | 1.8;
+  /** Raises or lowers the menu and the My Legacy reading panel relative to the eye. */
+  panelHeight: "lower" | "middle" | "higher";
   posture: "seated" | "standing";
   contrast: "standard" | "high";
   volume: number;
@@ -15,12 +17,15 @@ export interface QuestPreferences {
 export const QUEST_PREFERENCES_KEY = "crownfall.quest.preferences";
 export const DEFAULT_QUEST_PREFERENCES: Readonly<QuestPreferences> = Object.freeze({
   motion: true, quality: "medium", showHints: true, textScale: 100,
-  panelDistance: 1.5, posture: "seated", contrast: "standard", volume: 65,
+  panelDistance: 1.5, panelHeight: "middle", posture: "seated", contrast: "standard", volume: 65,
 });
 
 const QUALITY = ["low", "medium", "high"] as const;
 const TEXT_SCALE = [100, 125, 150] as const;
 const PANEL_DISTANCE = [1.2, 1.5, 1.8] as const;
+const PANEL_HEIGHT = ["lower", "middle", "higher"] as const;
+/** Vertical offset, in metres, that each Menu Height applies to the menu and the My Legacy reading panel. */
+export const QUEST_PANEL_HEIGHT_OFFSETS: Readonly<Record<QuestPreferences["panelHeight"], number>> = { lower: -0.08, middle: 0, higher: 0.08 };
 const POSTURE = ["seated", "standing"] as const;
 const CONTRAST = ["standard", "high"] as const;
 
@@ -37,6 +42,7 @@ export function normalizeQuestPreferences(value: unknown): QuestPreferences {
     showHints: typeof p.showHints === "boolean" ? p.showHints : DEFAULT_QUEST_PREFERENCES.showHints,
     textScale: member(TEXT_SCALE, p.textScale, DEFAULT_QUEST_PREFERENCES.textScale),
     panelDistance: member(PANEL_DISTANCE, p.panelDistance, DEFAULT_QUEST_PREFERENCES.panelDistance),
+    panelHeight: member(PANEL_HEIGHT, p.panelHeight, DEFAULT_QUEST_PREFERENCES.panelHeight),
     posture: member(POSTURE, p.posture, DEFAULT_QUEST_PREFERENCES.posture),
     contrast: member(CONTRAST, p.contrast, DEFAULT_QUEST_PREFERENCES.contrast),
     volume: typeof p.volume === "number" && Number.isFinite(p.volume)
@@ -238,7 +244,8 @@ export function getQuestSettingsRows(
     case "video": return [
       { id: "quality", label: "Render Quality", value: prefs.quality[0].toUpperCase() + prefs.quality.slice(1), action: "quality", description: "Adjust preview resolution and headset peripheral shading. Head tracking keeps the headset's native frame timing." },
       { id: "text-scale", label: "Text Size", value: `${prefs.textScale}%`, action: "text-scale", description: "Enlarge the menu and its text to 100%, 125% or 150%." },
-      { id: "panel-distance", label: "Menu Distance", value: `${prefs.panelDistance.toFixed(1)} m`, action: "panel-distance", description: "Place the menu 1.2, 1.5 or 1.8 metres away. Recenter keeps it in front of your current view." },
+      { id: "panel-distance", label: "Menu Distance", value: `${prefs.panelDistance.toFixed(1)} m`, action: "panel-distance", description: "Place the menu and My Legacy's panel 1.2, 1.5 or 1.8 metres away. Recenter keeps them in front of your current view." },
+      { id: "panel-height", label: "Menu Height", value: prefs.panelHeight[0].toUpperCase() + prefs.panelHeight.slice(1), action: "panel-height", description: "Set the menu and My Legacy's panel lower, at the middle or higher in your view. Your viewpoint never moves." },
       { id: "posture", label: "Posture", value: prefs.posture === "seated" ? "Seated" : "Standing", action: "posture", description: "Adjust the menu for seated or standing use without artificial movement of your viewpoint." },
       { id: "headset-resolution", label: "Display Resolution", value: "Headset managed", description: "The immersive session controls the headset display. Desktop window resolution settings do not apply here." },
       { id: "headset-frame-rate", label: "Frame Timing", value: "Headset managed", description: "Head tracking uses the headset's immersive frame timing. This menu does not apply a desktop frame-rate cap." },
@@ -273,6 +280,7 @@ export function adjustQuestPreference(prefs: QuestPreferences, id: string): Ques
     case "quality": return { ...prefs, quality: cycle(QUALITY, prefs.quality) };
     case "text-scale": return { ...prefs, textScale: cycle(TEXT_SCALE, prefs.textScale) };
     case "panel-distance": return { ...prefs, panelDistance: cycle(PANEL_DISTANCE, prefs.panelDistance) };
+    case "panel-height": return { ...prefs, panelHeight: cycle(PANEL_HEIGHT, prefs.panelHeight) };
     case "posture": return { ...prefs, posture: cycle(POSTURE, prefs.posture) };
     case "master-volume": return { ...prefs, volume: prefs.volume >= 100 ? 0 : Math.min(100, prefs.volume + 5) };
     default: return prefs;

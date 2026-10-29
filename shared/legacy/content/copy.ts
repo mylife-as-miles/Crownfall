@@ -1,13 +1,14 @@
 // Every piece of shared My Legacy copy. Desktop and Quest render these strings
-// verbatim, and the domain builds chronicle entries and notices from the
+// verbatim, and the domain builds War Record entries and notices from the
 // builders below, so wording never forks between platforms. Concise,
 // ceremonial and truthful: nothing here may claim a match, sync or result
 // that did not happen. Muster consequences are always phrased as the stated
-// terms of a specific Muster or challenge.
+// terms of a specific Muster or challenge. Player-facing copy calls the
+// house's record the War Record ("chronicle" is only the domain's term).
 
 import type {
   ChronicleKind, FileLetter, HouseRank, HouseStance, LandmarkId, MatchEndReason, MatchOutcome,
-  MatchStakes, MemberStatus, NationAvailability, NoticeKind, PieceKind, UnresolvedKind,
+  MatchStakes, MemberStatus, NationAvailability, NoticeKind, PieceKind, RepresentativeFate, UnresolvedKind,
 } from "../types";
 
 /** Presentation condition of a representative: the stored status plus the derived returned/promoted states. */
@@ -39,10 +40,21 @@ export function inSentence(text: string): string {
   return text.indexOf("The ") === 0 ? `the ${text.slice(4)}` : text;
 }
 
+/**
+ * Closes the title of a name such as "Idrasa Azhemar, Warden of the Wells"
+ * with a comma, for a name that continues mid-sentence ("…, Warden of the
+ * Wells, was taken"). Names without a title are returned unchanged.
+ */
+export function closeAppositive(name: string): string {
+  return name.indexOf(", ") === -1 ? name : `${name},`;
+}
+
 export const LEGACY_COPY = {
   title: "My Legacy",
   tagline: "Your Banner. Your People. Your Place in Crownfall.",
   backToHome: "Return to Home",
+  /** The Muster's principle, shown where the house's side of the formation is framed. */
+  principle: "You move the entire formation, but not everyone on the board belongs to your house.",
   founding: {
     title: "Found a Minor Banner",
     intro: "Raise a small house within one of Crownfall's four nations. Choose its nation, its name and its arms.",
@@ -94,7 +106,7 @@ export const LEGACY_COPY = {
     "war-record": {
       title: "War Record",
       description: "The record of every completed conflict, capture, promotion and grievance.",
-      action: "Open the chronicle",
+      action: "Review the record",
     },
     "heralds-station": {
       title: "Herald's Station",
@@ -127,12 +139,15 @@ export const LEGACY_COPY = {
     pawnAppointment: "Pawn of the National Muster",
     futureAppointments: "Knight, Bishop, Rook and Queen appointments are not part of this release.",
     formationNote: "The national formation follows standard chess. Your file decides who stands there, not how many pieces you move.",
+    formationHeading: "Your side of the formation",
+    yourBanner: "Your banner",
+    openFile: "Open to your banner",
   },
   status: {
     available: { label: "Available", description: "Stands among the house levy, ready for the Muster." },
     injured: { label: "Injured", description: "Wounded in a recorded Muster conflict and recovering in the holding." },
     captive: { label: "Captive", description: "Held by a rival after a recorded Muster defeat. Their place stands empty." },
-    returned: { label: "Returned", description: "Home again after a Muster victory. The Chronicle keeps the captivity on record." },
+    returned: { label: "Returned", description: "Home again after a Muster victory. The captivity stays in the War Record." },
     promoted: { label: "Promoted", description: "Promoted on the battlefield. The house's political standing is unchanged." },
   } satisfies Record<RepresentativeCondition, { label: string; description: string }>,
   stance: {
@@ -143,9 +158,27 @@ export const LEGACY_COPY = {
     loyal: "Loyal",
   } satisfies Record<HouseStance, string>,
   outcome: { victory: "Victory", defeat: "Defeat", draw: "Draw" } satisfies Record<MatchOutcome, string>,
+  /** How the house's representative came through a recorded match, for match ledgers. */
+  fate: {
+    survived: "Came through unharmed",
+    captured: "Taken on the board",
+    promoted: "Promoted on the board",
+    "captured-after-promotion": "Promoted, then taken",
+    absent: "Did not take the field",
+  } satisfies Record<RepresentativeFate, string>,
+  /** Heading for the two stake descriptions wherever a match is framed. */
+  stakesHeading: "What a match puts at stake",
   stakes: {
-    classic: { label: "Classic match", description: "Captures are recorded. Taken pieces leave the board unharmed; no one is wounded or held." },
-    muster: { label: "Muster conflict", description: "High stakes, with the wager stated before the match. A representative taken in defeat is held captive." },
+    classic: {
+      label: "Classic match",
+      description: "Captures are recorded, but anyone taken lays down arms and leaves the board unharmed. No one is wounded or held.",
+    },
+    muster: {
+      label: "Muster conflict",
+      description:
+        "High stakes, with the wager stated before the match. A representative taken in defeat is held captive; " +
+        "one taken in a victory or a draw comes home wounded.",
+    },
   } satisfies Record<MatchStakes, { label: string; description: string }>,
   rank: {
     "minor-banner": "Minor Banner",
@@ -156,6 +189,8 @@ export const LEGACY_COPY = {
   hallTiers: ["Founding hall", "Recognised hall", "Honoured hall", "Renowned hall"] as const,
   recognitionLabel: (recognition: number) => `Recognition ${recognition}`,
   readiness: {
+    heading: "Muster readiness",
+    ready: "Your house is ready for the Muster.",
     noBanner: "Found a banner first.",
     noNominee: "Nominate a member and an open file for the Muster.",
     nomineeUnfit: (memberName: string, status: MemberStatus) =>
@@ -164,7 +199,7 @@ export const LEGACY_COPY = {
     notAccepted: "Accept the challenge and its wager first.",
   },
   empty: {
-    chronicle: "The Chronicle is unwritten. Only real, recorded matches will fill it.",
+    chronicle: "The War Record is unwritten. Only real, recorded matches will fill it.",
     matches: "No conflicts recorded yet.",
     notices: "No notices await the herald.",
     unresolved: "No unresolved matters.",
@@ -172,6 +207,34 @@ export const LEGACY_COPY = {
     levy: "No other members stand in the levy.",
     representative: "No representative nominated. Choose a member and an open file.",
     unfounded: "No banner has been raised on this device.",
+  },
+  houses: {
+    heading: "Houses",
+    allied: "Allied Great House",
+    rival: "Rival house",
+    holdsCaptive: "Holds a member of your house",
+  },
+  /** Section headings of the landmark inspectors, the same on every platform. */
+  sections: {
+    standing: "Standing",
+    honours: "Honours",
+    sworn: "Sworn members",
+    conflicts: "Conflicts",
+    unresolved: "Unresolved matters",
+    ledger: "Ledger",
+    notices: "Notices",
+  },
+  counts: {
+    entries: (count: number) => `${count} ${count === 1 ? "entry" : "entries"}`,
+    conflicts: (count: number) => `${count} ${count === 1 ? "conflict" : "conflicts"} recorded`,
+    unresolved: (count: number) => `${count} unresolved`,
+    unread: (count: number) => `${count} unread`,
+    notices: (count: number) => `${count} ${count === 1 ? "notice" : "notices"}`,
+    moves: (count: number) => `${count} ${count === 1 ? "move" : "moves"}`,
+  },
+  environment: {
+    preparing: "Preparing the Bannerhold",
+    fallback: "The Bannerhold environment could not start, so the stand-in is shown.",
   },
   notices: {
     kinds: {
@@ -234,10 +297,14 @@ export const LEGACY_COPY = {
     description: "Scripted fixture matches run through the real Legacy rules. Not a production record.",
     listTitle: "Development previews",
     missing: (previewId: string) => `There is no development preview named "${previewId}".`,
+    unavailable: "The development previews could not be loaded.",
+    locked: "Development previews are fixture data and cannot be dissolved or saved.",
   },
   reset: {
+    /** The one control that opens this confirmation, on every platform. */
+    action: "Dissolve banner",
     title: "Dissolve this banner?",
-    body: "Your banner, its members, its chronicle and any captives will be erased from this device. This cannot be undone.",
+    body: "Your banner, its members, its War Record and any captives will be erased from this device. This cannot be undone.",
     confirm: "Dissolve the banner",
     cancel: "Keep the banner",
   },
@@ -274,6 +341,33 @@ export interface LegacyText {
 }
 
 export type ChallengeContext = "first" | "renewed" | "captive" | "vow";
+
+/** One stated term of a Muster wager: when it applies, and what follows. */
+export interface LegacyWagerTerm {
+  when: string;
+  /** One sentence. It never opens with a name, so it can continue the prose after a comma. */
+  then: string;
+}
+
+/** A Muster wager as short terms that read separately; the stored prose wager is built from the same parts. */
+export interface LegacyWagerTerms {
+  intro: string;
+  terms: readonly LegacyWagerTerm[];
+  closing: string;
+}
+
+function wagerTerms(opponentNationName: string, alliedName: string): LegacyWagerTerms {
+  return {
+    intro: `These are the terms of this Muster conflict against ${opponentNationName}.`,
+    terms: [
+      { when: "If your representative is taken in defeat", then: `They are held captive until your house wins a later Muster against ${opponentNationName}.` },
+      { when: "If they are taken in a victory or a draw", then: "They come home wounded and recover after one further recorded match." },
+      { when: "Whatever the result", then: `Victory earns recognition and ${alliedName}'s favour; defeat costs that favour.` },
+      { when: `If ${alliedName}'s representative is taken`, then: "They will demand an accounting from your house." },
+    ],
+    closing: "The rules of chess do not change.",
+  };
+}
 
 const ORDINALS = ["first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth"];
 
@@ -325,13 +419,14 @@ export const LEGACY_TEXT = {
         };
     }
   },
-  /** The plain-language wager stated on every Muster challenge, before any match. */
-  wager: (opponentNationName: string, alliedName: string): string =>
-    `These are the terms of this Muster conflict against ${opponentNationName}. If your representative is taken and ` +
-    `${opponentNationName} wins, they are held captive until your house wins a later Muster against ${opponentNationName}. ` +
-    `If your representative is taken but your side wins or draws, they come home wounded and recover after one further ` +
-    `recorded match. Victory earns your house recognition and the favour of ${alliedName}; defeat costs that favour, and ` +
-    `${alliedName} will demand an accounting if its own representative is taken. The rules of chess do not change.`,
+  /** The wager as separate terms, for panels that set each term apart before the match. */
+  wagerTerms,
+  /** The plain-language wager stated on every Muster challenge, before any match: the same terms as running prose. */
+  wager: (opponentNationName: string, alliedName: string): string => {
+    const wager = wagerTerms(opponentNationName, alliedName);
+    const terms = wager.terms.map((term) => `${term.when}, ${term.then.charAt(0).toLowerCase()}${term.then.slice(1)}`);
+    return [wager.intro, ...terms, wager.closing].join(" ");
+  },
   nomination: (memberName: string, file: FileLetter): LegacyText => ({
     title: `${memberName} is named to the Muster`,
     body: `${memberName} will stand on the ${file}-file of the national formation.`,
@@ -350,17 +445,18 @@ export const LEGACY_TEXT = {
       body: `The ${kind} was ${result} ${END_REASON_PHRASES[reason]} after ${moves} ${moves === 1 ? "move" : "moves"}.${rep}`,
     };
   },
+  /** A Classic match never costs a person: the representative yields and walks off the board. */
   classicCapture: (memberName: string, square: string, captorLabel: string): LegacyText => ({
     title: `${memberName} yielded on ${square}`,
-    body: `Taken by ${captorLabel} in a Classic match. ${memberName} laid down arms and left the board unharmed.`,
+    body: `Taken in a Classic match by ${captorLabel}. ${memberName} laid down arms and left the board unharmed.`,
   }),
   representativeCaptures: (memberName: string, count: number): LegacyText => ({
     title: `${memberName} made ${count === 1 ? "a capture" : `${count} captures`}`,
     body: `The board records ${count === 1 ? "one capture" : `${count} captures`} by ${memberName}.`,
   }),
   captivity: (memberName: string, captorName: string, opponentNationName: string): LegacyText => ({
-    title: `${memberName} is held by ${captorName}`,
-    body: `${memberName} was taken in a lost Muster conflict and is held by ${captorName}. Their place at the Muster Grounds stands empty until your house wins a Muster against ${opponentNationName}.`,
+    title: `${memberName} is taken captive`,
+    body: `Held by ${captorName}. Their place stands empty until your house wins a Muster against ${opponentNationName}.`,
   }),
   captivityNotice: (memberName: string, captorName: string, opponentNationName: string): LegacyText => ({
     title: `${sentenceCase(captorName)} holds ${memberName}`,
@@ -369,8 +465,8 @@ export const LEGACY_TEXT = {
   injury: (memberName: string, outcome: MatchOutcome): LegacyText => ({
     title: `${memberName} is wounded`,
     body: outcome === "victory"
-      ? `${memberName} was taken on the board and carried from the field after the victory. They recover after one further recorded match.`
-      : `${memberName} was taken on the board and exchanged under truce after the draw. They recover after one further recorded match.`,
+      ? `${memberName} was taken on the board and carried from the field after the victory. They recover after the next recorded match.`
+      : `${memberName} was taken on the board and exchanged under truce after the draw. They recover after the next recorded match.`,
   }),
   recovery: (memberName: string): LegacyText => ({
     title: `${memberName} has recovered`,
@@ -378,7 +474,7 @@ export const LEGACY_TEXT = {
   }),
   returned: (memberName: string, opponentNationName: string): LegacyText => ({
     title: `${memberName} returns home`,
-    body: `The Muster victory over ${opponentNationName} brings ${memberName} home. Their place is restored, and the Chronicle keeps the captivity.`,
+    body: `The Muster victory over ${opponentNationName} brings ${memberName} home, and their place at the Muster Grounds is restored.`,
   }),
   returnNotice: (memberName: string, captorName: string): LegacyText => ({
     title: `${memberName} is released`,
@@ -390,9 +486,11 @@ export const LEGACY_TEXT = {
       ? `${memberName} reached the last rank and rose to ${pieceName}, before being taken later in the match. Political standing is unchanged.`
       : `${memberName} reached the last rank and rose to ${pieceName}. Political standing is unchanged.`,
   }),
-  alliedReaction: (alliedName: string, representativeName: string, opponentNationName: string): LegacyText => ({
+  // External representatives carry a title ("Gervais Ombreval, the Veiled Lance"): mid-sentence it is
+  // closed with closeAppositive, and the house is named in its own sentence rather than as "… of House X".
+  alliedReaction: (alliedName: string, representativeName: string): LegacyText => ({
     title: `${alliedName} counts its loss`,
-    body: `${representativeName} of ${alliedName} was taken in the Muster against ${opponentNationName}. The Great House holds your banner to account for the loss.`,
+    body: `${closeAppositive(representativeName)} was taken in the Muster. ${alliedName} holds your banner to account.`,
   }),
   alliedDemand: (alliedName: string, representativeName: string): LegacyText => ({
     title: `${alliedName} demands an accounting`,
@@ -400,11 +498,11 @@ export const LEGACY_TEXT = {
   }),
   grievance: (rivalName: string, representativeName: string): LegacyText => ({
     title: `${rivalName} nurses a grievance`,
-    body: `${representativeName} of ${rivalName} was taken by your side in the Muster. The house will remember it.`,
+    body: `${closeAppositive(representativeName)} was taken by your side in the Muster. ${rivalName} will remember it.`,
   }),
   rivalVow: (rivalName: string, representativeName: string): LegacyText => ({
     title: `${rivalName} swears a vow`,
-    body: `${rivalName} vows that the taking of ${representativeName} will be answered on a future field.`,
+    body: `${rivalName} vows that a future field will answer for the taking of ${representativeName}.`,
   }),
   matters: {
     captive: (memberName: string, captorName: string): LegacyText => ({

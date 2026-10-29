@@ -1,27 +1,29 @@
-// Hand-only verification of the Quest My Legacy destination in an active,
-// emulated immersive session (IWER, browser emulation; not a physical headset).
-// Drives Home -> My Legacy, founding with a suggested name, nomination, every
-// landmark through the world and through the landmark list, notice acceptance,
-// hand-tracking loss -> pause -> Resume, Recenter, Back to Home, Exit VR ->
-// re-entry and a reload that must restore the saved banner. Every step is a real
-// hand ray + pinch (both controllers disconnected); state is asserted through the
-// Legacy fields of CrownfallQuestState. Writes evidence JSON to --out.
-//   node scripts/verify-legacy.mjs [--out artifacts/legacy/latest]
+// Hand-only verification of the Quest My Legacy destination in an active, emulated immersive
+// session (IWER, browser emulation; not a physical headset). Drives Home -> My Legacy (loaded
+// lazily on that first entry), founding with a suggested name and a typed motto, the raising beat,
+// every landmark through the world (right hand) and the landmark list (left hand), the War Record's
+// three sections, a nomination, the challenge with its stated terms, Accept -> Awaiting the board,
+// fingertip presses on the touch tray, hand-tracking loss -> pause -> Resume, the tray's Pause and
+// the pause view's Return to Home, Recenter, Exit VR -> re-entry and a reload that must restore the
+// saved banner. With --session guest or --session preview:<id> it proves those sessions never write
+// storage. Writes evidence JSON to --out.
+//   node scripts/verify-legacy.mjs [--out artifacts/legacy/latest] [--session production|guest|preview:<id>]
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
-import { enterQuestXR } from './enter-quest.mjs';
+import { HOME_HEAD_PITCH_DEGREES, browserLost, createLegacyDriver, sleep } from './legacy-driver.mjs';
+
+const SAVE_KEY = 'crownfall.legacy.save';
 
 /**
- * Browser-runner entry (runtime started with --allow-browser-automation): drives only the
- * Legacy per-frame update path, through the development diagnostics hook, under the V8
- * sampling heap profiler, and reports the bytes allocated by Legacy and environment code.
+ * Browser-runner entry (runtime started with --allow-browser-automation): emulation setup, storage
+ * reads and writes, frame and main-thread timing, and the per-frame allocation probe of the Legacy path.
  */
 export default async ({ frame, page, cdp }) => {
   const app = frame ?? page.mainFrame();
-  if (process.env.CROWNFALL_LEGACY_PROBE === 'prepare') {
+  const probe = process.env.CROWNFALL_LEGACY_PROBE;
+  if (probe === 'prepare') {
     // Software-emulation setup only: a smaller managed viewport and the given Quest comfort preferences
     // (applied on the next reload). Never used on a headset.
     const viewport = /^(\d+)x(\d+)$/.exec(process.env.CROWNFALL_VIEWPORT ?? '');
@@ -32,28 +34,23 @@ export default async ({ frame, page, cdp }) => {
     if (process.env.CROWNFALL_QUEST_VISITED === '1') await app.evaluate(() => localStorage.setItem('crownfall.quest.visit-complete', 'true'));
     return { viewport: page.viewportSize(), preferences: preferences ? JSON.parse(preferences) : null, visitCompleted: process.env.CROWNFALL_QUEST_VISITED === '1' };
   }
-  if (process.env.CROWNFALL_LEGACY_PROBE === 'pages') {
-    // Which managed pages and frames are rendering: each is sampled for two seconds of animation frames.
-    const out = [];
-    for (const candidate of page.context().pages()) {
-      for (const child of candidate.frames()) {
-        try {
-          out.push({ url: child.url().slice(0, 120), frames: await child.evaluate(() => new Promise((resolve) => {
-            let count = 0; const start = performance.now();
-            const step = (now) => { count += 1; if (now - start < 2000) requestAnimationFrame(step); else resolve({ count, visibility: document.visibilityState }); };
-            requestAnimationFrame(step);
-            setTimeout(() => resolve({ count, visibility: document.visibilityState, timedOut: true }), 6000);
-          })) });
-        } catch (error) { out.push({ url: child.url().slice(0, 120), error: String(error).slice(0, 120) }); }
-      }
-    }
-    return out;
-  }
-  if (process.env.CROWNFALL_LEGACY_PROBE === 'storage') {
+  if (probe === 'storage') {
     // The raw save this browser holds for My Legacy (shared persistence key), read without changing it.
-    return app.evaluate(() => { try { return localStorage.getItem('crownfall.legacy.save'); } catch { return null; } });
+    return app.evaluate((key) => { try { return localStorage.getItem(key); } catch { return null; } }, SAVE_KEY);
   }
-  if (process.env.CROWNFALL_LEGACY_PROBE === 'frames') {
+  if (probe === 'set-save') {
+    // Test setup: replaces (or, with an empty value, removes) the stored save before a reload.
+    const value = process.env.CROWNFALL_LEGACY_SAVE ?? '';
+    return app.evaluate(([key, raw]) => { if (raw) localStorage.setItem(key, raw); else localStorage.removeItem(key); return localStorage.getItem(key); }, [SAVE_KEY, value]);
+  }
+  if (probe === 'marks') {
+    // Launch marks and every resource this page has requested so far, to show what loaded before My Legacy was opened.
+    return app.evaluate(() => ({
+      marks: performance.getEntriesByType('mark').map((mark) => ({ name: mark.name, at: Math.round(mark.startTime) })),
+      resources: performance.getEntriesByType('resource').map((entry) => entry.name.replace(location.origin, '')),
+    }));
+  }
+  if (probe === 'frames') {
     // Animation-frame intervals of the app page: in emulated XR these pace the session's frames.
     return app.evaluate(() => new Promise((resolve) => {
       const intervals = [];
@@ -66,11 +63,33 @@ export default async ({ frame, page, cdp }) => {
         else {
           const sorted = intervals.slice().sort((a, b) => a - b);
           const at = (q) => sorted[Math.min(sorted.length - 1, Math.floor(q * sorted.length))];
-          resolve({ frames: intervals.length, p50: at(0.5), p95: at(0.95), max: sorted[sorted.length - 1], visibility: document.visibilityState, framed: window.top !== window });
+          resolve({ frames: intervals.length, p50: at(0.5), p95: at(0.95), max: sorted[sorted.length - 1], visibility: document.visibilityState });
         }
       };
       requestAnimationFrame(step);
     }));
+  }
+  if (probe === 'script-time') {
+    // Main-thread script and task time per animation frame over a five-second window (CDP Performance metrics,
+    // which include the IWER emulator's own work), and the Legacy update path timed in isolation.
+    await cdp.send('Performance.enable');
+    const metric = (metrics, name) => metrics.find((item) => item.name === name)?.value ?? 0;
+    const before = (await cdp.send('Performance.getMetrics')).metrics;
+    const frames = await app.evaluate(() => new Promise((resolve) => {
+      let count = 0; const start = performance.now();
+      const step = (now) => { count += 1; if (now - start < 5000) requestAnimationFrame(step); else resolve(count); };
+      requestAnimationFrame(step);
+    }));
+    const after = (await cdp.send('Performance.getMetrics')).metrics;
+    const per = (name) => (metric(after, name) - metric(before, name)) * 1000 / Math.max(1, frames);
+    const isolated = await app.evaluate(() => {
+      const diagnostics = window.__crownfallLegacyDiagnostics;
+      if (!diagnostics) return null;
+      diagnostics.runUpdates(300);
+      const total = diagnostics.timeUpdates(5000);
+      return { updates: 5000, totalMs: total, msPerUpdate: total / 5000 };
+    });
+    return { windowSeconds: 5, frames, scriptMsPerFrame: per('ScriptDuration'), taskMsPerFrame: per('TaskDuration'), layoutMsPerFrame: per('LayoutDuration'), legacyUpdate: isolated };
   }
   const available = await app.evaluate(() => !!window.__crownfallLegacyDiagnostics);
   if (!available) return { available: false, reason: 'Open My Legacy in a development build first.' };
@@ -106,233 +125,127 @@ const isMain = !!process.argv[1] && import.meta.url === pathToFileURL(process.ar
 if (isMain) await main();
 
 async function main() {
-
   const option = (name, fallback) => { const index = process.argv.indexOf(name); return index === -1 ? fallback : process.argv[index + 1]; };
   const directory = option('--out', 'artifacts/legacy/latest');
+  const session = option('--session', 'production');
+  const prefix = session === 'production' ? '' : `${session.replace(/[^a-z0-9-]/g, '-')}-`;
   await mkdir(directory, { recursive: true });
-  const bin = existsSync('node_modules/.bin/iwsdk') ? ['node_modules/.bin/iwsdk'] : ['npx', '--no-install', '@iwsdk/cli'];
-  const emulatorScale = (() => { try { return Number(/VITE_CROWNFALL_EMULATOR_SCALE=([\d.]+)/.exec(readFileSync('.env.local', 'utf8'))?.[1]) || 1; } catch { return 1; } })();
+  const d = createLegacyDriver();
+  const { cli, state, fields, inspect, poll, target, look, pinch, menuPinch, poke, pinchLandmark } = d;
   const evidence = {
     passed: false,
+    session,
     startedAt: new Date().toISOString(),
     profile: {
-      sdk: '1.1.0-rc.2', runtime: 'IWER Meta Quest 3 browser emulation (managed headless Chromium)', input: 'hand ray + pinch only; both controllers disconnected',
-      pinchHoldSeconds: [0.01, 0.15, 0.3], developmentFramebufferScale: emulatorScale, physicalHeadset: false,
+      sdk: '1.1.0-rc.2', runtime: 'IWER Meta Quest 3 browser emulation (managed headless Chromium)',
+      input: 'hand rays + pinches with either hand, and index-fingertip presses (poke) on the touch tray; both controllers disconnected',
+      pinchHoldSeconds: [0.01, 0.15, 0.3], developmentFramebufferScale: d.emulatorScale, physicalHeadset: false,
       rendering: 'SwiftShader software WebGL on a shared 4-CPU host; frame timings are not representative of a Quest',
-      menuPinchView: 'While the menu is shown (Home, its pause view), the emulated head looks almost straight down (88 degrees) during each pinch so the 80k-triangle hero and the menu atmosphere leave the view and software frames stay inside the 800 ms click window; the ray, hit test and pinch are unchanged. Legacy pinches use a level view.',
+      menuPinchView: `While the menu is shown (Home, its pause view), the emulated head looks almost straight down (${HOME_HEAD_PITCH_DEGREES} degrees) during each pinch so the 80k-triangle hero and the menu atmosphere leave the view and software frames stay inside the 800 ms click window; the ray, hit test and pinch are unchanged. Legacy pinches use a level view; tray presses look down at the tray.`,
     },
-    checks: [], interactions: [], observations: {},
+    checks: [], interactions: d.interactions, observations: {},
     limitations: [
-      'Browser emulation is not physical Quest validation: tracking quality, comfort, cold start and GPU frame pacing are unmeasured.',
-      'Direct fingertip poke is wired (PokeInteractable) but not exercised here, so direct touch is not claimed as a passed runtime test.',
+      'Browser emulation is not physical Quest validation: tracking quality, comfort, reach for a particular body, cold start and GPU frame pacing are unmeasured.',
+      'The emulated fingertip press moves the hand to the control; reach is evidenced by the control\'s measured distance from the eye, not by a body model.',
     ],
   };
-  function cli(domain, action, input, extra = []) {
-    const [command, ...prefix] = bin;
-    const result = spawnSync(command, [...prefix, domain, action, ...(input === undefined ? [] : ['--input-json', JSON.stringify(input)]), ...extra], { encoding: 'utf8', timeout: 120000, maxBuffer: 20 * 1024 * 1024 });
-    let response; try { response = JSON.parse(result.stdout || result.stderr); } catch { throw Error(result.stderr || result.stdout || `${domain} ${action} returned no JSON`); }
-    if (!response.ok) throw Object.assign(Error(JSON.stringify(response.error)), { sdkError: response.error });
-    return response.data.result ?? response.data;
-  }
   const record = (check) => { evidence.checks.push(check); console.log(`PASS ${check}`); };
-  let stateIndex, panelIndex, dockIndex;
-  const findIndex = (pattern) => cli('ecs', 'find', { namePattern: pattern, limit: 5 }).entities[0].entityIndex;
-  function discover() {
-    stateIndex = cli('ecs', 'find', { withComponents: ['CrownfallQuestState'] }).entities[0].entityIndex;
-    panelIndex = findIndex('^My Legacy Panel$');
-    dockIndex = findIndex('^My Legacy Dock$');
-  }
-  const state = () => cli('ecs', 'query', { entityIndex: stateIndex, components: ['CrownfallQuestState'] }).components[0].values;
-  const owner = (id) => id.startsWith('Legacy_Dock') ? dockIndex : id.startsWith('Legacy') ? panelIndex : stateIndex;
-  const inspect = (id) => cli('ui', 'inspect', { entityIndex: owner(id), selector: `#${id}` }).elements[0];
-  function poll(expected, attempts = 6) {
-    let value;
-    for (let attempt = 0; attempt < attempts; attempt++) { value = state(); if (expected(value)) return value; }
-    throw Error(`Expected state was not reached: ${JSON.stringify(value)}`);
-  }
-  function target(name) {
-    const found = cli('xr', 'list-targets').targets.find((item) => item.name === name);
-    assert.ok(found, `Visible hand target exists: ${name}`);
-    return found;
-  }
-  // Software-rendered frames can be slow on a shared host. A press only clicks when its start and end are
-  // sampled within the pointer's 800 ms click window, so each retry holds the pinch a little longer.
-  const PINCH_HOLDS = [0.01, 0.15, 0.3];
-  const signature = (v) => `${v.screen}|${v.modal}|${v.paused}|${v.legacyView}|${v.legacyActive}`;
-  /** Aims a hand ray at a panel control, proves the ray hovers it, pinches, and waits for the expected state. */
-  function pinch(id, expected, device = 'hand-right', attempts = PINCH_HOLDS.length) {
-    for (let attempt = 0; attempt < attempts; attempt++) {
-      cli('xr', 'look-at', { device, target: target(id).position });
-      const before = inspect(id);
-      if (!before?.state.hovered || !before.state.displayed) { evidence.interactions.push({ id, device, attempt: attempt + 1, aim: before?.state ?? null }); continue; }
-      const start = state();
-      const hold = PINCH_HOLDS[attempt % PINCH_HOLDS.length];
-      cli('xr', 'select', { device, duration: hold });
-      let after;
-      for (let query = 0; query < 6; query++) { after = state(); if (expected(after)) break; }
-      evidence.interactions.push({ id, device, attempt: attempt + 1, holdSeconds: hold, legacyView: after.legacyView, screen: after.screen });
-      if (expected(after)) return after;
-      // A late click that moved somewhere unexpected must not be followed by a blind second press.
-      if (signature(after) !== signature(start)) throw Error(`${id} led to an unexpected state: ${signature(after)}`);
-    }
-    throw Error(`Hand pinch did not produce the expected state for ${id}`);
-  }
-  /** Points a hand ray at a landmark in the holding, proves the environment reports the hover, then pinches it. */
-  function pinchLandmark(id, device = 'hand-left') {
-    for (let attempt = 0; attempt < PINCH_HOLDS.length; attempt++) {
-      cli('xr', 'look-at', { device, target: target(`Landmark_${id}`).position });
-      let hovered = false;
-      for (let query = 0; query < 3 && !hovered; query++) hovered = state().legacyHover === id;
-      if (!hovered) { evidence.interactions.push({ id: `Landmark_${id}`, device, attempt: attempt + 1, hover: state().legacyHover }); continue; }
-      cli('xr', 'select', { device, duration: PINCH_HOLDS[attempt] });
-      let after;
-      for (let query = 0; query < 6; query++) { after = state(); if (after.legacyLandmark === id && after.legacySelectSource === 'world') break; }
-      evidence.interactions.push({ id: `Landmark_${id}`, device, attempt: attempt + 1, holdSeconds: PINCH_HOLDS[attempt], legacyView: after.legacyView, landmark: after.legacyLandmark });
-      if (after.legacyLandmark === id && after.legacySelectSource === 'world') return after;
-    }
-    throw Error(`Pointing at ${id} in the holding did not open it`);
-  }
-  // Software rendering of the 80k-triangle hero takes about a second per frame on this shared host, longer than the
-  // pointer's 800 ms click window. While the menu is shown, the emulated head looks down (the hero leaves the
-  // 60-degree view) during each pinch; the hand ray, hit test and pinch are unchanged. Legacy pinches keep a level view.
-  const HOME_HEAD_PITCH_DEGREES = -88;
-  function headPitch(degrees) {
-    const half = (degrees * Math.PI / 180) / 2;
-    cli('xr', 'set-transform', { device: 'headset', position: { x: 0, y: 1.6, z: 0 }, orientation: { x: Math.sin(half), y: 0, z: 0, w: Math.cos(half) } });
-  }
-  /** A pinch on a menu control (Home, its pause view or onboarding) with the head looking down. */
-  function homePinch(id, expected, attempts = PINCH_HOLDS.length) {
-    headPitch(HOME_HEAD_PITCH_DEGREES);
-    try { return pinch(id, expected, 'hand-right', attempts); } finally { headPitch(0); }
-  }
-  /** Animation-frame intervals of the app with the menu shown, level and with the head looking down. */
-  function homeFrames() {
-    const [command, ...prefix] = bin;
-    const sample = () => {
-      const result = spawnSync(command, [...prefix, 'browser', 'run', 'scripts/verify-legacy.mjs', '--timeout', '60000'], { encoding: 'utf8', timeout: 90000, env: { ...process.env, CROWNFALL_LEGACY_PROBE: 'frames' } });
-      try { const response = JSON.parse(result.stdout || result.stderr); return response.ok ? response.data.result ?? response.data : { unavailable: response.error?.message ?? 'browser run failed' }; }
-      catch { return { unavailable: 'browser run failed' }; }
-    };
-    const level = sample();
-    headPitch(HOME_HEAD_PITCH_DEGREES);
-    const headDown = sample();
-    headPitch(0);
-    return { level, headDown, headDownPitchDegrees: HOME_HEAD_PITCH_DEGREES };
-  }
-  /** Selects the page's Enter VR control and waits until the immersive session is active. */
-  function enterXR() {
-    // Entering while the hero model is still decoding has crashed the managed software browser; wait for it first.
-    for (let wait = 0; wait < 30; wait++) { try { if (state().modelReady) break; } catch { /* The page is still loading. */ } spawnSync('sleep', ['2']); }
-    // Fonts, panels and shaders keep the page busy for a while after load; entering in that window crashed the browser too.
-    spawnSync('sleep', ['20']);
-    for (let attempt = 0; attempt < 2; attempt++) {
-      try { enterQuestXR(cli); } catch (error) {
-        // A slow software frame can time out the click's acknowledgement even though the click was delivered.
-        if (error.sdkError?.details?.code !== 'browser_command_timeout') throw error;
-      }
-      for (let poll = 0; poll < 20; poll++) { if (cli('xr', 'status').sessionActive) return; spawnSync('sleep', ['2']); }
-    }
-    throw Error('The immersive session did not start after Enter VR');
-  }
-  function prepareHands() {
-    cli('xr', 'set-input-mode', { mode: 'hand' });
-    for (const device of ['controller-left', 'controller-right']) cli('xr', 'set-connected', { device, connected: false });
-    for (const device of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device, connected: true });
-    cli('xr', 'set-device-state', { state: { stereoEnabled: false, fov: 60 } });
-    cli('xr', 'set-transform', { device: 'headset', position: { x: 0, y: 1.6, z: 0 }, orientation: { x: 0, y: 0, z: 0, w: 1 } });
-    for (const [device, x] of [['hand-left', -0.25], ['hand-right', 0.25]]) cli('xr', 'set-transform', { device, anchor: 'target-ray', position: { x, y: 1.3, z: -0.35 } });
-  }
-  function assertHandsOnly() {
-    const device = cli('xr', 'get-device-state', {});
-    assert.equal(device.inputMode, 'hand');
-    assert.equal(device.controllers.left.connected, false); assert.equal(device.controllers.right.connected, false);
-    return device;
-  }
+  const probe = (name, env = {}, timeout = 90000) => d.browserRun('scripts/verify-legacy.mjs', { CROWNFALL_LEGACY_PROBE: name, ...env }, timeout);
   function anchorYaw() {
     const [x, y, z, w] = cli('scene', 'transform', { nodeId: 'legacy-anchor' }).globalQuaternion;
     return Math.atan2(2 * (w * y + x * z), 1 - 2 * (y * y + x * x));
   }
   const angleDelta = (a, b) => Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b)));
-  /** Renderer counts, an idle frame profile and (with browser automation) the update-path allocation probe. */
+  /** Renderer counts, an idle frame profile, main-thread script time per frame and the update-path allocation probe. */
   function measurePerformance(label) {
     const stats = cli('scene', 'render-stats', {});
     const renderer = { calls: stats.calls, triangles: stats.triangles, geometries: stats.geometries, textures: stats.textures, programs: stats.programs };
     let frames = null;
     try {
       cli('browser', 'profile', { action: 'start', mode: 'rendering', maxDurationMs: 8000 });
-      spawnSync('sleep', ['5']);
+      sleep(5);
       const profile = cli('browser', 'profile', { action: 'stop' });
       frames = { durationMs: profile.durationMs, frameTimeMs: profile.summary?.frameTimeMs ?? null, longTasks: profile.summary?.longTasks ?? null };
     } catch (error) { frames = { error: String(error.message || error) }; }
+    let scriptTime;
+    try { scriptTime = probe('script-time', {}, 120000); } catch (error) { scriptTime = { unavailable: String(error.message || error) }; }
     let allocation;
-    try {
-      const [command, ...prefix] = bin;
-      const result = spawnSync(command, [...prefix, 'browser', 'run', 'scripts/verify-legacy.mjs', '--timeout', '100000'], { encoding: 'utf8', timeout: 130000, maxBuffer: 20 * 1024 * 1024 });
-      const response = JSON.parse(result.stdout || result.stderr);
-      allocation = response.ok ? response.data.result ?? response.data : { unavailable: response.error?.message ?? 'browser run failed' };
-    } catch (error) { allocation = { unavailable: String(error.message || error) }; }
-    const measured = { label, renderer, frames, allocation, caveat: 'Software-rendered (SwiftShader) emulation on a shared, heavily loaded 4-CPU host: frame times are not representative of a Quest.' };
+    try { allocation = probe('allocation', {}, 130000); } catch (error) { allocation = { unavailable: String(error.message || error) }; }
+    const measured = { label, renderer, frames, scriptTime, allocation, caveat: 'Software-rendered (SwiftShader) emulation on a shared, heavily loaded 4-CPU host: frame and script times include the IWER emulator and are not representative of a Quest.' };
     (evidence.performance ??= []).push(measured);
-    console.log(`MEASURE ${label}: ${JSON.stringify({ renderer, frameTimeMs: frames?.frameTimeMs, legacyAllocatedBytes: allocation?.legacyAllocatedBytes })}`);
+    console.log(`MEASURE ${label}: ${JSON.stringify({ renderer, scriptMsPerFrame: scriptTime?.scriptMsPerFrame, legacyUpdateMs: scriptTime?.legacyUpdate?.msPerUpdate, legacyAllocatedBytes: allocation?.legacyAllocatedBytes })}`);
     return measured;
   }
-  const legacyFields = (s) => Object.fromEntries(Object.entries(s).filter(([key]) => key.startsWith('legacy') || ['screen', 'paused', 'entered', 'pauseReason'].includes(key)));
-
-  /** Home -> My Legacy from whatever place the runtime is in, with hands only. */
-  function openLegacyFromHome() {
-    let s = state();
-    if (s.paused) s = s.screen === 'pause' && s.legacyActive ? pinch('Legacy_Resume', (v) => !v.paused) : homePinch('Btn_Resume', (v) => !v.paused);
-    if (s.screen === 'onboarding') s = homePinch('Btn_SkipVisit', (v) => v.screen === 'home');
-    if (s.legacyActive) s = pinch('Legacy_DockHome', (v) => v.screen === 'home' && !v.legacyActive);
-    if (s.modal) s = homePinch('Btn_Cancel', (v) => !v.modal);
-    if (s.screen !== 'home') s = homePinch('Nav_Home', (v) => v.screen === 'home');
-    // Home renders the sorcerer and atmosphere, the heaviest frames on a software renderer, so it gets more attempts.
-    return homePinch('Home_legacy', (v) => v.screen === 'legacy' && v.legacyActive && !v.modal, 6);
+  /** Animation-frame intervals of the app with the menu shown, level and with the head looking down. */
+  function homeFrames() {
+    const sample = () => { try { return probe('frames'); } catch (error) { return { unavailable: String(error.message || error) }; } };
+    const level = sample();
+    look(HOME_HEAD_PITCH_DEGREES);
+    const headDown = sample();
+    look(0);
+    return { level, headDown, headDownPitchDegrees: HOME_HEAD_PITCH_DEGREES };
   }
+  const legacyResources = (resources) => resources.filter((name) => /legacy-experience|legacy\.uikitml|legacy-dock\.uikitml|\/legacy\/(?!environment-contract)/.test(name));
+  const openLandmark = (landmark, device = 'hand-left') => pinch(`Legacy_Landmark_${landmark}`, (v) => v.legacyView === landmark && v.legacySelectSource === 'list', { device });
 
-  /** Errors that mean the managed browser itself went away; the app reloaded and the flow must start again. */
-  const browserLost = (error) => /Browser not ready|browser_relaunched|Managed browser is closing|Target disconnected|connection_lost|browser_command_timeout|browser_not_launched/
-    .test(String(error?.message || error));
-  function waitForRuntime() {
-    const [command, ...prefix] = bin;
-    spawnSync(command, [...prefix, 'runtime', 'recover'], { encoding: 'utf8', timeout: 180000 });
-    for (let attempt = 0; attempt < 40; attempt++) {
-      try { if (cli('dev', 'status').state.browserCommandReady) { discover(); return; } } catch { /* Still relaunching. */ }
-      spawnSync('sleep', ['5']);
-    }
-    throw Error('The managed browser did not come back after a relaunch');
-  }
-
-  function runFlow() {
-    discover();
-    if (!cli('xr', 'status').sessionActive) enterXR();
-    prepareHands();
+  /** Enters the session, proves hands only, and opens My Legacy lazily from Home. */
+  function enterLegacy() {
+    d.discover();
+    if (!cli('xr', 'status').sessionActive) d.enterXR();
+    d.prepareHands();
     const status = cli('xr', 'status');
     assert.equal(status.sessionActive, true); assert.ok(status.enabledFeatures.includes('hand-tracking'));
-    const device = assertHandsOnly();
+    const device = d.assertHandsOnly();
     evidence.observations.session = { active: status.sessionActive, features: status.enabledFeatures, inputMode: device.inputMode, controllers: device.controllers };
     record('Active immersive session with required hand tracking, both controllers disconnected');
+  }
+
+  function production() {
+    enterLegacy();
     evidence.observations.hostLoadAtStart = readFileSync('/proc/loadavg', 'utf8').trim();
     evidence.observations.menuFrames = homeFrames();
+    const beforeEntry = probe('marks');
+    assert.deepEqual(legacyResources(beforeEntry.resources), [], 'no My Legacy code or panel was requested before My Legacy was opened');
+    evidence.observations.beforeEntry = { marks: beforeEntry.marks, resources: beforeEntry.resources.length, legacyResources: [] };
+    assert.equal(cli('ecs', 'find', { namePattern: '^My Legacy (Panel|Dock)$' }).entities.length, 0, 'the Legacy panels are not created at launch');
+    record('Home is interactive with no My Legacy chunk or panel document requested (the Legacy panels do not exist yet)');
 
-    let s = openLegacyFromHome();
-    assert.equal(s.modal, ''); assert.equal(s.legacyActive, true);
+    let s = d.reachLegacy();
+    assert.equal(s.modal, ''); assert.equal(s.legacyActive, true); assert.equal(s.legacyLoad, 'ready');
     const menuTargets = cli('xr', 'list-targets').targets.map((item) => item.name);
     assert.equal(menuTargets.includes('Home_legacy'), false, 'Menu controls leave the hand targets while My Legacy is shown');
-    s = poll((v) => v.legacyEnvironmentReady, 8);
-    evidence.observations.entry = legacyFields(s);
-    record(`Home -> My Legacy opens a route (no modal); the menu panel, sorcerer and atmosphere are hidden; environment: ${s.legacyEnvironment}`);
+    const afterEntry = probe('marks');
+    const mark = (name) => afterEntry.marks.find((item) => item.name === name)?.at ?? null;
+    evidence.observations.entry = {
+      ...fields(s), menuReadyMs: mark('crownfall:menu-ready'), legacyRequestedMs: mark('crownfall:legacy-requested'), legacyReadyMs: mark('crownfall:legacy-ready'),
+      legacyLoadMs: mark('crownfall:legacy-ready') !== null && mark('crownfall:legacy-requested') !== null ? mark('crownfall:legacy-ready') - mark('crownfall:legacy-requested') : null,
+      legacyResources: legacyResources(afterEntry.resources),
+      note: 'Development server (unbundled modules): the first-entry load time is not the production figure.',
+    };
+    record(`Home -> My Legacy loads its chunk and panels on this first entry (${evidence.observations.entry.legacyLoadMs} ms in the development server), then hides the menu, sorcerer and atmosphere; environment: ${s.legacyEnvironment}`);
+    assert.ok(s.legacyPanelTopDegrees < 13 && s.legacyPanelBottomDegrees > -24, `the reading panel spans ${s.legacyPanelTopDegrees.toFixed(1)} to ${s.legacyPanelBottomDegrees.toFixed(1)} degrees`);
+    assert.ok(s.legacyTrayDistance <= 0.62, `the touch tray is ${s.legacyTrayDistance.toFixed(2)} m from the eye`);
+    evidence.observations.staging = { panelTopDegrees: s.legacyPanelTopDegrees, panelBottomDegrees: s.legacyPanelBottomDegrees, panelDistance: s.legacyPanelDistance, trayDistance: s.legacyTrayDistance, trayElevationDegrees: s.legacyTrayElevationDegrees };
+    record(`The reading panel sits from ${s.legacyPanelTopDegrees.toFixed(1)} to ${s.legacyPanelBottomDegrees.toFixed(1)} degrees at ${s.legacyPanelDistance.toFixed(2)} m; the touch tray is ${s.legacyTrayDistance.toFixed(2)} m from the eye at ${s.legacyTrayElevationDegrees.toFixed(1)} degrees`);
 
+    if (s.legacyView === 'aftermath') s = pinch('Legacy_AftermathLater', (v) => v.legacyView === 'overview');
     if (s.legacyFounded) {
+      s = openLandmark('banner-hall');
       s = pinch('Legacy_ResetOpen', (v) => v.legacyView === 'reset');
       assert.equal(inspect('Legacy_ResetConfirm').state.displayed, true);
       s = pinch('Legacy_ResetConfirm', (v) => v.legacyView === 'nation' && !v.legacyFounded);
-      record('An existing banner is dissolved only after its confirmation, and founding begins again');
+      record('An existing banner is dissolved from the Banner Hall only after its confirmation, and founding begins again');
     }
     assert.equal(s.legacyView, 'nation');
+    assert.equal(s.legacySaved, false, 'nothing is claimed as saved during founding');
+    assert.notEqual(inspect('Legacy_DockLabel').text, 'Saved on this device');
     s = pinch('Legacy_Nation_aethelgard', (v) => v.legacyNation === 'aethelgard');
-    s = pinch('Legacy_Nation_korvenia', (v) => v.legacyNation === 'korvenia');
-    s = pinch('Legacy_NationNext', (v) => v.legacyView === 'name');
+    s = pinch('Legacy_Nation_korvenia', (v) => v.legacyNation === 'korvenia', { device: 'hand-left' });
+    assert.equal(s.legacyMirrorPrimary, 'Legacy_NationNext');
+    const nationPress = poke('Legacy_DockPrimary', (v) => v.legacyView === 'name');
+    s = nationPress.state;
+    evidence.observations.poke = [{ control: 'Legacy_DockPrimary (mirrors Continue)', distanceFromEye: nationPress.distanceFromEye, contactMs: nationPress.press?.contactMs ?? null }];
+    record(`A fingertip press on the touch tray, ${nationPress.distanceFromEye.toFixed(2)} m from the eye, presses the founding step's Continue`);
     const firstSuggestion = inspect('Legacy_Suggestion_0_Label').text;
     pinch('Legacy_MoreNames', () => inspect('Legacy_Suggestion_0_Label').text !== firstSuggestion);
     s = pinch('Legacy_OpenKeyboard', (v) => v.legacyView === 'keyboard');
@@ -342,65 +255,98 @@ async function main() {
       const expectedText = buffer;
       pinch(`Legacy_Key_${key}`, () => inspect('Legacy_Keyboard_Value').text === expectedText);
     }
-    const typed = inspect('Legacy_Keyboard_Value').text;
-    assert.equal(typed, 'Rook', 'typed in name case with the large-key keyboard');
+    assert.equal(inspect('Legacy_Keyboard_Value').text, 'Rook', 'typed in name case with the large-key keyboard');
     s = pinch('Legacy_KeyboardCancel', (v) => v.legacyView === 'name' && v.legacyDraftName === '');
     const suggestion = inspect('Legacy_Suggestion_1_Label').text;
-    s = pinch('Legacy_Suggestion_1', (v) => v.legacyDraftName === suggestion);
+    s = pinch('Legacy_Suggestion_1', (v) => v.legacyDraftName === suggestion, { device: 'hand-left' });
     s = pinch('Legacy_NameNext', (v) => v.legacyView === 'arms');
     const defaultArms = s.legacyHeraldry;
     s = pinch('Legacy_Preset_2', (v) => v.legacyHeraldry !== defaultArms);
     const presetArms = s.legacyHeraldry;
     s = pinch('Legacy_Part_charge', (v) => v.legacyHeraldry !== presetArms);
-    s = pinch('Legacy_PartPrev_charge', (v) => v.legacyHeraldry === presetArms);
+    s = pinch('Legacy_PartPrev_charge', (v) => v.legacyHeraldry === presetArms, { device: 'hand-left' });
     s = pinch('Legacy_ArmsNext', (v) => v.legacyView === 'confirm');
+    s = pinch('Legacy_ConfirmMotto', (v) => v.legacyView === 'keyboard');
+    for (const key of ['W', 'E', 'Space', 'H', 'O', 'L', 'D']) pinch(key === 'Space' ? 'Legacy_Key_Space' : `Legacy_Key_${key}`, () => true);
+    s = pinch('Legacy_KeyboardDone', (v) => v.legacyView === 'confirm' && v.legacyMotto === 'We hold');
     assert.equal(inspect('Legacy_Confirm_Name').text, suggestion);
-    s = pinch('Legacy_ConfirmRaise', (v) => v.legacyFounded && v.legacyView === 'overview');
-    assert.equal(s.legacyBanner, suggestion); assert.equal(s.legacyNation, 'korvenia'); assert.equal(s.legacyHeraldry, presetArms);
-    if (s.legacyPersistent) assert.equal(s.legacySave, 'saved');
-    evidence.observations.founded = legacyFields(s);
+    assert.equal(inspect('Legacy_Confirm_Motto').text, '"We hold"');
+    s = pinch('Legacy_ConfirmRaise', (v) => v.legacyFounded && v.legacyView === 'raised');
+    assert.equal(inspect('Legacy_Raised_Heading').text, 'A banner is raised');
+    assert.equal(inspect('Legacy_Raised_Name').text, suggestion);
+    s = poke('Legacy_DockPrimary', (v) => v.legacyView === 'overview').state;
+    assert.equal(s.legacyBanner, suggestion); assert.equal(s.legacyNation, 'korvenia'); assert.equal(s.legacyHeraldry, presetArms); assert.equal(s.legacyMotto, 'We hold');
+    if (s.legacyPersistent) { assert.equal(s.legacySave, 'saved'); assert.equal(s.legacySaved, true); assert.equal(inspect('Legacy_DockLabel').text, 'Saved on this device'); }
+    evidence.observations.founded = fields(s);
     measurePerformance('My Legacy overview with the stand-in environment (menu, sorcerer and atmosphere hidden)');
-    record(`Founding with pinches: nation, More names, large-key keyboard (typed then cancelled), suggested name "${suggestion}", preset and per-element arms, confirmed; save: ${s.legacySave}`);
+    record(`Founding with pinches from either hand: nation, Other names, the keyboard typed then cancelled, suggested name "${suggestion}", preset and per-element arms, motto "We hold" typed, raised; the raising beat continued by a fingertip press; save: ${s.legacySave}`);
 
     const landmarks = ['banner-hall', 'muster-grounds', 'war-record', 'heralds-station'];
     const inspectorBack = { 'banner-hall': 'Legacy_HallBack', 'muster-grounds': 'Legacy_MusterBack', 'war-record': 'Legacy_RecordBack', 'heralds-station': 'Legacy_HeraldBack' };
     for (const landmark of landmarks) {
-      s = pinchLandmark(landmark);
+      s = pinchLandmark(landmark, 'hand-right');
       assert.equal(s.legacyView, landmark);
+      assert.equal(s.legacyLandmark, landmark, 'the inspected landmark is emphasised in the holding');
     }
-    evidence.observations.worldSelection = legacyFields(s);
-    record('Every landmark opens by pointing at it in the holding and pinching (environment hover and select callbacks)');
-    s = pinch(inspectorBack['heralds-station'], (v) => v.legacyView === 'overview');
+    evidence.observations.worldSelection = fields(s);
+    record('Every landmark opens by pointing at it in the holding with the right hand and pinching (environment hover and select callbacks)');
+    s = pinch(inspectorBack['heralds-station'], (v) => v.legacyView === 'overview', { device: 'hand-left' });
     for (const landmark of landmarks) {
-      s = pinch(`Legacy_Landmark_${landmark}`, (v) => v.legacyView === landmark && v.legacySelectSource === 'list' && v.legacyLandmark === landmark);
-      if (landmark === 'war-record') assert.ok(inspect('Legacy_Record_Entry_0_Title').text.length > 0, 'the War Record lists the founding entry');
-      if (landmark === 'banner-hall') assert.equal(inspect('Legacy_Hall_Name').text, suggestion);
-      s = pinch(inspectorBack[landmark], (v) => v.legacyView === 'overview' && v.legacyLandmark === '');
+      s = openLandmark(landmark, 'hand-left');
+      if (landmark === 'war-record') {
+        assert.equal(s.legacyRecordTab, 'unresolved', 'with no conflicts the War Record opens on its open matters');
+        assert.match(inspect('Legacy_Record_Entry_0_Title').text, /^Open challenge from /, 'the rival\'s open challenge is listed, not only counted');
+        s = pinch('Legacy_RecordTab_ledger', (v) => v.legacyRecordTab === 'ledger', { device: 'hand-left' });
+        assert.ok(inspect('Legacy_Record_Entry_0_Title').text.length > 0, 'the ledger lists the founding');
+        s = pinch('Legacy_RecordTab_conflicts', (v) => v.legacyRecordTab === 'conflicts', { device: 'hand-left' });
+        assert.equal(inspect('Legacy_Record_Empty').text, 'No conflicts recorded yet.');
+      }
+      if (landmark === 'banner-hall') {
+        assert.equal(inspect('Legacy_Hall_Name').text, suggestion);
+        assert.equal(inspect('Legacy_Hall_Motto').text, '"We hold"');
+        assert.equal(inspect('Legacy_ResetOpen').state.displayed, true, 'Dissolve banner lives in the Banner Hall');
+      }
+      s = pinch(inspectorBack[landmark], (v) => v.legacyView === 'overview' && v.legacyLandmark === '', { device: 'hand-left' });
     }
-    record('Every landmark also opens from the hand-accessible landmark list, with Back returning to the overview');
+    assert.equal(inspect('Legacy_AftermathReview').state.displayed, false);
+    record('Every landmark also opens from the landmark list with the left hand; the War Record\'s three sections list open matters, the ledger and (honestly empty) conflicts');
 
-    s = pinch('Legacy_Landmark_muster-grounds', (v) => v.legacyView === 'muster-grounds');
+    s = openLandmark('muster-grounds', 'hand-right');
+    assert.equal(inspect('Legacy_Legend_player').text, 'Your banner / 0', 'before a nomination no one on the board belongs to the house');
+    s = pinch('Legacy_MusterChoose', (v) => v.legacyView === 'nominate');
     s = pinch('Legacy_Member_1', (v) => v.legacyMemberChoice === 'member-2');
     const fileId = ['a', 'b', 'c', 'f', 'g', 'h'].map((file) => `Legacy_File_${file}`).find((id) => inspect(id)?.state.displayed);
     assert.ok(fileId, 'An open Muster file is offered');
     const file = fileId.slice(-1);
     s = pinch(fileId, (v) => v.legacyFileChoice === file);
-    s = pinch('Legacy_MusterNominate', (v) => v.legacyRepresentative !== '' && v.legacyFile === file);
+    s = pinch('Legacy_MusterNominate', (v) => v.legacyView === 'muster-grounds' && v.legacyRepresentative !== '' && v.legacyFile === file);
     assert.equal(inspect('Legacy_Muster_RepName').text, s.legacyRepresentative);
+    assert.equal(inspect('Legacy_Muster_Row_0_Value').text, suggestion, 'the ledger names the banner allegiance');
+    assert.equal(inspect('Legacy_Legend_player').text, 'Your banner / 1', 'the formation shows the one member of the house on the board');
     if (s.legacyPersistent) assert.equal(s.legacySave, 'saved');
-    evidence.observations.nomination = legacyFields(s);
-    record(`Nomination: ${s.legacyRepresentative} on the ${file}-file, shown at the Muster Grounds and saved`);
+    evidence.observations.nomination = fields(s);
+    record(`Nomination: ${s.legacyRepresentative} on the ${file}-file, shown in the Muster ledger and the formation, and saved`);
 
     s = pinch('Legacy_MusterBack', (v) => v.legacyView === 'overview');
-    s = pinch('Legacy_Landmark_heralds-station', (v) => v.legacyView === 'heralds-station');
+    s = openLandmark('heralds-station', 'hand-right');
     s = pinch('Legacy_Notice_0', (v) => v.legacyView === 'notice' && v.legacyNotice !== '');
-    const wager = inspect('Legacy_NoticeView_Wager').text;
-    assert.match(wager, /^These are the terms of this Muster conflict against /, 'the wager is stated before any match');
+    const terms = [0, 1, 2, 3].map((index) => ({ when: inspect(`Legacy_NoticeView_Term_${index}_When`).text, then: inspect(`Legacy_NoticeView_Term_${index}_Then`).text }));
+    assert.match(inspect('Legacy_NoticeView_WagerIntro').text, /^These are the terms of this Muster conflict against /, 'the wager is stated before any match');
+    assert.match(terms[0].then, /held captive until your house wins a later Muster/);
+    assert.match(terms[1].then, /wounded and recover after one further recorded match/);
     s = pinch('Legacy_NoticeAccept', (v) => v.legacyView === 'accept');
+    assert.equal(inspect('Legacy_Accept_Term_0_Then').text, terms[0].then, 'the acceptance repeats the same terms');
     s = pinch('Legacy_AcceptConfirm', (v) => v.legacyView === 'awaiting' && v.legacyChallenge === 'accepted');
     assert.equal(inspect('Legacy_Title').text, 'Awaiting the board');
-    evidence.observations.challenge = { ...legacyFields(s), wager };
-    record('The rival challenge states its wager; Accept -> confirmation -> "Awaiting the board", with no match played or recorded');
+    evidence.observations.challenge = { ...fields(s), terms };
+    record('The rival challenge states its wager as four terms, repeated on Accept; confirming shows "Awaiting the board", with no match played or recorded');
+    assert.equal(s.legacyMirrorBack, 'Legacy_AwaitingBack');
+    const backPress = poke('Legacy_DockBack', (v) => v.legacyView === 'heralds-station', { device: 'hand-left' });
+    s = backPress.state;
+    evidence.observations.poke.push({ control: 'Legacy_DockBack (mirrors Back)', device: 'hand-left', distanceFromEye: backPress.distanceFromEye, contactMs: backPress.press?.contactMs ?? null });
+    record(`A left fingertip press on the tray's Back (${backPress.distanceFromEye.toFixed(2)} m from the eye) returns to the Herald's Station`);
+    s = pinch('Legacy_Notice_0', (v) => v.legacyView === 'notice');
+    s = pinch('Legacy_NoticeAwaiting', (v) => v.legacyView === 'awaiting');
 
     for (const hand of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device: hand, connected: false });
     const lost = poll((v) => v.paused && v.legacyView === 'pause' && !v.leftTracked && !v.rightTracked, 8);
@@ -411,33 +357,40 @@ async function main() {
     s = pinch('Legacy_Resume', (v) => !v.paused && v.screen === 'legacy' && v.legacyView === 'awaiting');
     cli('xr', 'set-connected', { device: 'hand-left', connected: true });
     cli('xr', 'set-transform', { device: 'hand-left', anchor: 'target-ray', position: { x: -0.25, y: 1.3, z: -0.35 } });
-    evidence.observations.trackingLoss = { lost: legacyFields(lost), recovered: legacyFields(recovered), resumed: legacyFields(s) };
+    evidence.observations.trackingLoss = { lost: fields(lost), recovered: fields(recovered), resumed: fields(s) };
     record('Losing both hands pauses My Legacy; a returning hand enables Resume, which restores the exact Legacy view and state');
+
+    s = pinch('Legacy_DockPause', (v) => v.paused && v.legacyView === 'pause', { pitch: 44 });
+    assert.equal(s.legacyMirrorPrimary, 'Legacy_Resume', 'while paused the tray mirrors Resume');
+    s = pinch('Legacy_PauseHome', (v) => !v.paused && v.screen === 'home' && !v.legacyActive);
+    evidence.observations.pauseHome = fields(s);
+    record('The tray\'s Pause (pinched) pauses My Legacy, and the pause view\'s Return to Home (pinched) goes Home');
+    s = d.reachLegacy();
+    assert.equal(s.legacyView, 'awaiting', 'reopening My Legacy returns to the same place');
 
     const recentersBefore = s.legacyRecenters;
     const yaw = 0.5;
     cli('xr', 'set-transform', { device: 'headset', orientation: { x: 0, y: Math.sin(yaw / 2), z: 0, w: Math.cos(yaw / 2) } });
     const headBefore = cli('xr', 'get-transform', { device: 'headset' });
-    s = pinch('Legacy_DockRecenter', (v) => v.legacyRecenters === recentersBefore + 1);
+    const recenterTarget = target('Legacy_DockRecenter').position;
+    cli('xr', 'set-transform', { device: 'hand-right', anchor: 'target-ray', position: { x: 0.25, y: 1.3, z: -0.35 } });
+    cli('xr', 'look-at', { device: 'hand-right', target: recenterTarget });
+    cli('xr', 'select', { device: 'hand-right', duration: 0.15 });
+    s = poll((v) => v.legacyRecenters === recentersBefore + 1, 8);
     const head = cli('xr', 'get-transform', { device: 'headset' });
     assert.deepEqual(head, headBefore, 'Recenter never moves or rotates the viewer');
     const recenteredYaw = anchorYaw();
     assert.ok(angleDelta(recenteredYaw, yaw) < 0.05, `the Legacy anchor turned to the view (${recenteredYaw.toFixed(3)} vs ${yaw})`);
-    cli('xr', 'set-transform', { device: 'headset', orientation: { x: 0, y: 0, z: 0, w: 1 } });
-    s = pinch('Legacy_DockRecenter', (v) => v.legacyRecenters === recentersBefore + 2);
+    look(0);
+    s = pinch('Legacy_DockRecenter', (v) => v.legacyRecenters === recentersBefore + 2, { pitch: 44 });
     assert.ok(angleDelta(anchorYaw(), 0) < 0.05);
     evidence.observations.recenter = { headAfterTurn: head, anchorYawAfterTurn: recenteredYaw, viewerMovedByApp: false };
-    record('Recenter moves the Legacy anchor in front of the current view; the viewer pose is only ever set by the test, never by the app');
+    record('Recenter moves the Legacy anchor, panel and tray in front of the current view; the viewer pose is only ever set by the test, never by the app');
 
     const place = { view: s.legacyView, banner: s.legacyBanner, representative: s.legacyRepresentative, file: s.legacyFile, challenge: s.legacyChallenge };
-    s = pinch('Legacy_DockHome', (v) => v.screen === 'home' && !v.legacyActive);
-    const homeTargets = cli('xr', 'list-targets').targets.map((item) => item.name);
-    assert.ok(homeTargets.includes('Home_legacy') && !homeTargets.includes('Legacy_DockHome'), 'Home is interactive again and the Legacy panels are hidden');
-    s = homePinch('Home_legacy', (v) => v.legacyActive && v.screen === 'legacy', 6);
-    assert.equal(s.legacyView, place.view); assert.equal(s.legacyBanner, place.banner);
-    record('Back to Home restores the menu; reopening My Legacy returns to the same place');
-
     const beforeExit = state();
+    look(44);
+    cli('xr', 'set-transform', { device: 'hand-right', anchor: 'target-ray', position: { x: 0.25, y: 1.3, z: -0.35 } });
     cli('xr', 'look-at', { device: 'hand-right', target: target('Legacy_DockExit').position });
     assert.ok(inspect('Legacy_DockExit').state.hovered, 'The hand ray reaches Exit VR');
     let acknowledgement = 'Command completed normally';
@@ -449,110 +402,128 @@ async function main() {
     const exited = poll((v) => !v.entered);
     assert.equal(cli('xr', 'status').sessionActive, false);
     assert.equal(exited.screen, 'legacy'); assert.equal(exited.legacyView, beforeExit.legacyView);
-    enterXR();
-    prepareHands();
+    d.enterXR();
+    d.prepareHands();
     s = poll((v) => v.entered, 8);
     if (s.paused) s = pinch('Legacy_Resume', (v) => !v.paused);
     assert.equal(s.screen, 'legacy'); assert.equal(s.legacyView, place.view); assert.equal(s.legacyBanner, place.banner);
     assert.equal(s.legacyRepresentative, place.representative); assert.equal(s.legacyChallenge, place.challenge);
-    evidence.observations.exitReentry = { acknowledgement, exited: legacyFields(exited), reentered: legacyFields(s) };
-    record('Exit VR ends the immersive session from the dock; re-entry returns to the same Legacy place');
+    evidence.observations.exitReentry = { acknowledgement, exited: fields(exited), reentered: fields(s) };
+    record('Exit VR ends the immersive session from the tray; re-entry returns to the same Legacy place');
 
-    let reloadSkipped = false;
-    if (s.legacyPersistent) {
-      const [command, ...prefix] = bin;
-      const probe = spawnSync(command, [...prefix, 'browser', 'run', 'scripts/verify-legacy.mjs', '--timeout', '60000'], { encoding: 'utf8', timeout: 90000, env: { ...process.env, CROWNFALL_LEGACY_PROBE: 'storage' } });
-      const response = JSON.parse(probe.stdout || probe.stderr);
-      assert.ok(response.ok, 'The stored save can be read back');
-      const raw = response.data.result ?? response.data;
-      const stored = JSON.parse(raw);
-      assert.equal(stored.banner?.name, place.banner);
-      assert.equal(stored.nomination?.file, place.file);
-      assert.ok(stored.notices.some((notice) => notice.status === 'accepted'), 'the accepted challenge is in the save');
-      evidence.observations.storedSave = {
-        key: 'crownfall.legacy.save', bytes: raw.length, schemaVersion: stored.schemaVersion, banner: stored.banner.name,
-        nominationFile: stored.nomination.file, acceptedNotices: stored.notices.filter((notice) => notice.status === 'accepted').length,
-      };
-      record('The banner, nomination and accepted challenge are written to crownfall.legacy.save in this browser');
-      try {
-        cli('browser', 'reload', {});
-        let ready = false;
-        for (let attempt = 0; attempt < 20 && !ready; attempt++) {
-          try { discover(); ready = true; } catch { spawnSync('sleep', ['3']); }
-        }
-        assert.ok(ready, 'The app reloaded');
-        enterXR();
-        prepareHands();
-        s = openLegacyFromHome();
-        s = poll((v) => v.legacyFounded, 6);
-        assert.equal(s.legacySession, 'stored'); assert.equal(s.legacyBanner, place.banner);
-        assert.equal(s.legacyRepresentative, place.representative); assert.equal(s.legacyFile, place.file); assert.equal(s.legacyChallenge, place.challenge);
-        evidence.observations.reload = legacyFields(s);
-        record('After a page reload the saved banner, nomination and accepted challenge load from crownfall.legacy.save');
-      } catch (error) {
-        if (!browserLost(error)) throw error;
-        // The software browser has closed while re-entering right after a reload on this loaded host. The save was read
-        // back above; restoring it on reload is then left unclaimed rather than restarting the whole flow.
-        reloadSkipped = true;
-        evidence.limitations.push(`Restoring the save after a page reload was not exercised in this run: the managed software browser closed while re-entering (${String(error.message || error).slice(0, 160)}). The save itself was read back from crownfall.legacy.save; loading it is covered by the shared persistence tests.`);
-      }
-    } else {
-      evidence.limitations.push(`This run used a ${s.legacySession} session, so persistence across reload was not exercised.`);
-    }
-
-    if (!reloadSkipped) {
-      evidence.observations.final = { state: legacyFields(state()), session: cli('xr', 'status'), device: assertHandsOnly() };
-      for (const hand of ['hand-left', 'hand-right']) cli('xr', 'run-sequence', { device: hand, steps: [{ pinch: 0, duration: 0.15 }] });
+    if (!s.legacyPersistent) { evidence.limitations.push(`This run used a ${s.legacySession} session, so persistence across reload was not exercised.`); return; }
+    const raw = probe('storage');
+    const stored = JSON.parse(raw);
+    assert.equal(stored.banner?.name, place.banner);
+    assert.equal(stored.banner?.motto, 'We hold');
+    assert.equal(stored.nomination?.file, place.file);
+    assert.ok(stored.notices.some((notice) => notice.status === 'accepted'), 'the accepted challenge is in the save');
+    evidence.observations.storedSave = {
+      key: SAVE_KEY, bytes: raw.length, schemaVersion: stored.schemaVersion, banner: stored.banner.name, motto: stored.banner.motto,
+      nominationFile: stored.nomination.file, acceptedNotices: stored.notices.filter((notice) => notice.status === 'accepted').length,
+    };
+    record(`The banner, motto, nomination and accepted challenge are written to ${SAVE_KEY} in this browser`);
+    try {
+      d.reload();
+      d.enterXR();
+      d.prepareHands();
+      s = d.reachLegacy();
+      assert.equal(s.legacySession, 'stored'); assert.equal(s.legacyBanner, place.banner); assert.equal(s.legacySaved, true);
+      assert.equal(s.legacyRepresentative, place.representative); assert.equal(s.legacyFile, place.file); assert.equal(s.legacyChallenge, place.challenge);
+      evidence.observations.reload = fields(s);
+      record('After a page reload the saved banner, nomination and accepted challenge load from storage, and the tray says so');
+    } catch (error) {
+      if (!browserLost(error)) throw error;
+      evidence.limitations.push(`Restoring the save after a page reload was not exercised in this run: the managed software browser closed while re-entering (${String(error.message || error).slice(0, 160)}). The save was read back above; loading it is covered by the session and persistence tests.`);
     }
   }
 
-  /** Optional software-emulation setup through the browser runner (runtime started with --allow-browser-automation). */
-  function prepareEmulation() {
-    const [command, ...prefix] = bin;
-    const env = { ...process.env, CROWNFALL_LEGACY_PROBE: 'prepare', CROWNFALL_VIEWPORT: '640x480', CROWNFALL_QUEST_PREFERENCES: JSON.stringify({ quality: 'low', motion: false }), CROWNFALL_QUEST_VISITED: '1' };
-    const result = spawnSync(command, [...prefix, 'browser', 'run', 'scripts/verify-legacy.mjs', '--timeout', '90000'], { encoding: 'utf8', timeout: 120000, env });
-    let response; try { response = JSON.parse(result.stdout || result.stderr); } catch { response = { ok: false, error: { message: result.stderr || result.stdout } }; }
-    if (!response.ok) { evidence.profile.emulationSetup = { applied: false, reason: response.error?.message ?? 'browser runner unavailable' }; return; }
-    // The comfort preferences and visit flag apply on load; reload only when the running app does not already use them,
-    // since re-entering right after a reload is where the managed software browser has closed on this host.
-    let current = null;
-    try { discover(); current = state(); } catch { /* The app is still loading. */ }
-    if (!current || current.quality !== 'low' || current.motion !== false || !current.visitComplete) {
-      if (cli('xr', 'status').sessionActive) { try { cli('xr', 'exit', {}); } catch { /* An ended-session acknowledgement is expected. */ } }
-      cli('browser', 'reload', {});
-      for (let attempt = 0; attempt < 30; attempt++) { try { discover(); break; } catch { spawnSync('sleep', ['3']); } }
+  /** Guest and preview sessions must never write storage: an earlier tester's record stays byte-identical. */
+  function sessionWithoutStorage(kind) {
+    const sentinel = JSON.stringify({ note: 'An earlier tester\'s save, which this session must neither read into the panels nor change', at: evidence.startedAt });
+    if (cli('xr', 'status').sessionActive) { try { cli('xr', 'exit', {}); } catch { /* An ended-session acknowledgement is expected. */ } }
+    assert.equal(probe('set-save', { CROWNFALL_LEGACY_SAVE: sentinel }), sentinel);
+    const search = kind === 'guest' ? '?legacy=fresh' : `?legacyPreview=${kind.slice('preview:'.length)}`;
+    evidence.observations.navigation = d.run(['browser', 'run', 'scripts/capture-legacy.mjs'], { CROWNFALL_LEGACY_SEARCH: search });
+    for (let attempt = 0; attempt < 30; attempt++) { try { d.discover(); break; } catch { sleep(3); } }
+    enterLegacy();
+    let s = d.reachLegacy();
+    evidence.observations.entry = fields(s);
+    if (kind === 'guest') {
+      assert.equal(s.legacySession, 'guest'); assert.equal(s.legacyPersistent, false); assert.equal(s.legacyView, 'nation');
+      assert.equal(inspect('Legacy_DockLabel').text, 'Guest session - not saved');
+      s = poke('Legacy_DockPrimary', (v) => v.legacyView === 'name').state;
+      s = pinch('Legacy_Suggestion_0', (v) => v.legacyDraftName !== '');
+      s = pinch('Legacy_NameNext', (v) => v.legacyView === 'arms');
+      s = pinch('Legacy_ArmsNext', (v) => v.legacyView === 'confirm');
+      assert.equal(inspect('Legacy_Confirm_Body').text, 'This guest banner lasts for this visit only and will not be saved.');
+      s = pinch('Legacy_ConfirmRaise', (v) => v.legacyView === 'raised' && v.legacyFounded);
+      s = pinch('Legacy_RaisedContinue', (v) => v.legacyView === 'overview');
+      s = openLandmark('muster-grounds');
+      s = pinch('Legacy_MusterChoose', (v) => v.legacyView === 'nominate');
+      s = pinch('Legacy_MusterNominate', (v) => v.legacyView === 'muster-grounds' && v.legacyRepresentative !== '');
+      s = pinch('Legacy_MusterBack', (v) => v.legacyView === 'overview');
+      s = openLandmark('banner-hall');
+      s = pinch('Legacy_ResetOpen', (v) => v.legacyView === 'reset');
+      s = pinch('Legacy_ResetConfirm', (v) => v.legacyView === 'nation' && !v.legacyFounded);
+      record('A guest founds, nominates and dissolves a banner with hands only, labelled "Guest session - not saved" throughout');
+    } else {
+      assert.equal(s.legacySession, 'preview'); assert.equal(s.legacyPersistent, false);
+      if (s.legacyView === 'aftermath') {
+        assert.equal(inspect('Legacy_Aftermath_0_Body').text.endsWith('...'), false, 'the aftermath is shown whole');
+        s = pinch('Legacy_AftermathDismiss', (v) => v.legacyView === 'overview' && v.legacyAftermath === 0);
+      }
+      s = openLandmark('banner-hall');
+      assert.equal(inspect('Legacy_ResetOpen').state.displayed, false, 'a development preview has no Dissolve control');
+      assert.equal(inspect('Legacy_Hall_Locked').text, 'Development previews are fixture data and cannot be dissolved or saved.');
+      s = pinch('Legacy_HallBack', (v) => v.legacyView === 'overview');
+      record(`A development preview acknowledges its aftermath and cannot be dissolved; it stays labelled "${s.legacyLabel}"`);
     }
-    evidence.profile.emulationSetup = {
-      applied: true, ...(response.data.result ?? response.data),
-      note: 'Software-emulation accommodation only: a 640x480 managed viewport, Quest Render Quality Low and Ambient Motion Off, and the short visit marked complete so entry opens Home.',
-    };
+    const after = probe('storage');
+    assert.equal(after, sentinel, `${kind}: the stored save is byte-identical after the session`);
+    evidence.observations.storage = { key: SAVE_KEY, before: 'sentinel', afterIdentical: after === sentinel, session: s.legacySession };
+    record(`${kind}: ${SAVE_KEY} is byte-identical before and after the session, so nothing was read into it or written`);
+    probe('set-save', { CROWNFALL_LEGACY_SAVE: '' });
   }
 
   let failure;
   try {
-    if (!process.argv.includes('--no-prepare')) prepareEmulation();
+    if (!process.argv.includes('--no-prepare')) {
+      evidence.profile.emulationSetup = {
+        applied: true,
+        ...d.prepareEmulation({
+          viewport: '640x480', preferences: { quality: 'low', motion: false },
+          reloadIf: (current) => current.quality !== 'low' || current.motion !== false || !current.visitComplete,
+        }),
+        note: 'Software-emulation accommodation only: a 640x480 managed viewport, Quest Render Quality Low and Ambient Motion Off, and the short visit marked complete so entry opens Home.',
+      };
+    }
     for (let attempt = 1; ; attempt++) {
-      try { runFlow(); break; } catch (error) {
+      try {
+        if (session === 'production') production();
+        else if (session === 'guest' || session.startsWith('preview:')) sessionWithoutStorage(session);
+        else throw Error(`Unknown session ${session}`);
+        break;
+      } catch (error) {
         if (attempt >= 3 || !browserLost(error)) throw error;
         // A relaunched browser loses the immersive session and page state: record it and run the whole flow again.
         (evidence.restarts ??= []).push({ attempt, reason: String(error.message || error).slice(0, 400), checksBeforeRestart: evidence.checks.slice() });
         evidence.checks.length = 0;
-        evidence.interactions.length = 0;
+        d.interactions.length = 0;
         evidence.observations = {};
-        waitForRuntime();
-        // A relaunched browser starts from its default viewport, so the emulation setup is applied again.
-        if (!process.argv.includes('--no-prepare')) prepareEmulation();
+        d.waitForRuntime();
       }
     }
+    try { evidence.observations.final = { state: fields(state()), session: cli('xr', 'status'), device: d.assertHandsOnly() }; } catch { /* Not in a session. */ }
     evidence.passed = true;
   } catch (error) {
     failure = error;
     evidence.failure = String(error.stack || error);
-    try { evidence.observations.atFailure = legacyFields(state()); } catch { /* The runtime may be gone. */ }
+    try { evidence.observations.atFailure = fields(state()); } catch { /* The runtime may be gone. */ }
   } finally {
     evidence.finishedAt = new Date().toISOString();
-    await writeFile(`${directory}/verification.json`, `${JSON.stringify(evidence, null, 2)}\n`);
-    console.log(`${evidence.passed ? 'PASS' : 'FAIL'} ${evidence.checks.length} checks -> ${directory}/verification.json`);
+    await writeFile(`${directory}/${prefix}verification.json`, `${JSON.stringify(evidence, null, 2)}\n`);
+    console.log(`${evidence.passed ? 'PASS' : 'FAIL'} ${evidence.checks.length} checks -> ${directory}/${prefix}verification.json`);
   }
   if (failure) throw failure;
 }

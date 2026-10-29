@@ -1,18 +1,21 @@
-// Mono 60-degree captures of the Quest My Legacy destination in an active,
-// emulated immersive session (IWER browser emulation, not a physical headset),
-// reached only through real hand rays and pinches. Captures: founding (nation
-// and arms), the overview with the holding, landmark inspections, a Herald
-// notice with its wager, and pause. With --session guest or --session
-// preview:<id>, the managed app frame is first reopened with ?legacy=fresh or
-// ?legacyPreview=<id> through the IWSDK browser runner (start the runtime with
-// --allow-browser-automation) and the labelled browser entry panel is captured too.
-//   node scripts/capture-legacy.mjs [--out artifacts/legacy/latest] [--session production|guest|preview:<id>]
+// Mono 60-degree captures of the Quest My Legacy destination in an active, emulated immersive
+// session (IWER browser emulation, not a physical headset), reached only through real hand rays,
+// pinches and fingertip presses. Sessions:
+//   production        founding (all four steps, the motto keyboard and the raising beat), overview,
+//                     every landmark, the War Record's three sections, the nomination, the Herald's list,
+//                     a notice with its wager, the acceptance, Awaiting the board, the dissolve
+//                     confirmation, the touch tray, pause from the tray, and the standing posture.
+//   guest             ?legacy=fresh: the labelled browser entry and the guest founding.
+//   preview:<id>      ?legacyPreview=<id>: the aftermath, then the holding's responses to it.
+//   recovery:<kind>   an unreadable (corrupt) or newer (future) save left untouched, with its choices.
+//   comfort:<size>    Text Size 125 or 150 percent, with the stored banner's overview and a notice.
+// The app frame is reopened with a session query through the IWSDK browser runner (start the runtime
+// with --allow-browser-automation).
+//   node scripts/capture-legacy.mjs [--out artifacts/legacy/latest] [--session production|guest|preview:<id>|recovery:corrupt|recovery:future|comfort:125|comfort:150]
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
-import { enterQuestXR } from './enter-quest.mjs';
+import { browserLost, createLegacyDriver, sleep } from './legacy-driver.mjs';
 
 /** Browser-runner entry: reopens the app frame with a Legacy session query (guest or development preview). */
 export default async ({ page, frame }) => {
@@ -34,228 +37,209 @@ async function main() {
   const session = option('--session', 'production');
   const prefix = session === 'production' ? '' : `${session.replace(/[^a-z0-9-]/g, '-')}-`;
   await mkdir(directory, { recursive: true });
-  const bin = existsSync('node_modules/.bin/iwsdk') ? ['node_modules/.bin/iwsdk'] : ['npx', '--no-install', '@iwsdk/cli'];
-  const emulatorScale = (() => { try { return Number(/VITE_CROWNFALL_EMULATOR_SCALE=([\d.]+)/.exec(readFileSync('.env.local', 'utf8'))?.[1]) || 1; } catch { return 1; } })();
-  const run = (args, env) => {
-    const [command, ...rest] = bin;
-    const result = spawnSync(command, [...rest, ...args], { encoding: 'utf8', timeout: 120000, maxBuffer: 20 * 1024 * 1024, env: { ...process.env, ...env } });
-    let response; try { response = JSON.parse(result.stdout || result.stderr); } catch { throw Error(result.stderr || result.stdout); }
-    if (!response.ok) throw Object.assign(Error(JSON.stringify(response.error)), { sdkError: response.error });
-    return response.data.result ?? response.data;
-  };
-  const cli = (domain, action, input, extra = []) => run([domain, action, ...(input === undefined ? [] : ['--input-json', JSON.stringify(input)]), ...extra]);
+  const d = createLegacyDriver();
   const evidence = {
     session, startedAt: new Date().toISOString(),
     profile: {
-      runtime: 'IWER Meta Quest 3 browser emulation, managed headless Chromium', view: 'mono, 60-degree field of view', input: 'hand ray + pinch; both controllers disconnected',
-      developmentFramebufferScale: emulatorScale, physicalHeadset: false,
+      runtime: 'IWER Meta Quest 3 browser emulation, managed headless Chromium', view: 'mono, 60-degree field of view',
+      input: 'hand ray + pinch, and index-fingertip presses on the touch tray; both controllers disconnected',
+      developmentFramebufferScale: d.emulatorScale, physicalHeadset: false,
       note: 'Development captures from software-rendered (SwiftShader) emulation, including emulator hand and ray overlays; not a headset recording.',
       menuPinchView: 'Menu pinches (reaching My Legacy) look almost straight down (88 degrees) so the hero and the menu atmosphere leave the view and software frames stay inside the 800 ms click window.',
     },
-    captures: [], interactions: [],
+    captures: [], interactions: d.interactions,
   };
-  let stateIndex, panelIndex, dockIndex;
-  const discover = () => {
-    stateIndex = cli('ecs', 'find', { withComponents: ['CrownfallQuestState'] }).entities[0].entityIndex;
-    panelIndex = cli('ecs', 'find', { namePattern: '^My Legacy Panel$' }).entities[0].entityIndex;
-    dockIndex = cli('ecs', 'find', { namePattern: '^My Legacy Dock$' }).entities[0].entityIndex;
-  };
-  const state = () => cli('ecs', 'query', { entityIndex: stateIndex, components: ['CrownfallQuestState'] }).components[0].values;
-  const owner = (id) => id.startsWith('Legacy_Dock') ? dockIndex : id.startsWith('Legacy') ? panelIndex : stateIndex;
-  const inspect = (id) => cli('ui', 'inspect', { entityIndex: owner(id), selector: `#${id}` }).elements[0];
-  const poll = (expected, attempts = 8) => { let value; for (let i = 0; i < attempts; i++) { value = state(); if (expected(value)) return value; } throw Error(`State not reached: ${JSON.stringify(value)}`); };
-  const target = (name) => { const found = cli('xr', 'list-targets').targets.find((item) => item.name === name); assert.ok(found, name); return found; };
-  const lowerHands = () => {
-    for (const [device, x] of [['hand-left', -0.3], ['hand-right', 0.3]]) {
-      cli('xr', 'set-transform', { device, anchor: 'target-ray', position: { x, y: 0.95, z: -0.3 } });
-      // Resting rays point at the floor, so no hover highlight or pointing status is left in the capture.
-      cli('xr', 'look-at', { device, target: { x, y: 0, z: -0.35 } });
-    }
-  };
-  const holds = [0.01, 0.15, 0.3];
-  const pinch = (id, expected, device = 'hand-right', attempts = holds.length) => {
-    for (let attempt = 0; attempt < attempts; attempt++) {
-      cli('xr', 'set-transform', { device, anchor: 'target-ray', position: { x: device === 'hand-right' ? 0.25 : -0.25, y: 1.3, z: -0.35 } });
-      cli('xr', 'look-at', { device, target: target(id).position });
-      const control = inspect(id);
-      if (!control?.state.hovered) { evidence.interactions.push({ id, attempt: attempt + 1, aim: control?.state ?? null }); continue; }
-      const hold = holds[attempt % holds.length];
-      cli('xr', 'select', { device, duration: hold });
-      let after; for (let query = 0; query < 6; query++) { after = state(); if (expected(after)) break; }
-      evidence.interactions.push({ id, attempt: attempt + 1, holdSeconds: hold, legacyView: after.legacyView });
-      if (expected(after)) return after;
-    }
-    throw Error(`Hand pinch failed: ${id}`);
-  };
-  /** Head pitch for a capture: 0 looks level at the panel; a small downward pitch frames panel and holding together. */
-  const look = (pitchDegrees) => {
-    const half = (-pitchDegrees * Math.PI / 180) / 2;
-    cli('xr', 'set-transform', { device: 'headset', position: { x: 0, y: 1.6, z: 0 }, orientation: { x: Math.sin(half), y: 0, z: 0, w: Math.cos(half) } });
-  };
-  const capture = (name, pitchDegrees, note) => {
-    look(pitchDegrees);
-    lowerHands();
+  /** Captures the runtime view with the head pitched down by `pitch` degrees, recording the Legacy state shown. */
+  const capture = (name, pitch, note, yaw = 0) => {
     const file = `${directory}/${prefix}${name}.png`;
-    const metadata = cli('browser', 'screenshot', undefined, ['--output-file', file]);
-    const s = state();
-    evidence.captures.push({ name, file, headPitchDegrees: pitchDegrees, note, legacyView: s.legacyView, session: s.legacySession, label: s.legacyLabel, metadata });
+    const metadata = d.screenshot(file, pitch, yaw);
+    const s = d.state();
+    evidence.captures.push({ name, file, headPitchDegrees: pitch, headYawDegrees: yaw, note, legacyView: s.legacyView, session: s.legacySession, label: s.legacyLabel, recordTab: s.legacyRecordTab, comfort: { textScale: s.textScale, posture: s.posture, panelDistance: s.panelDistance, panelHeight: s.panelHeight }, metadata });
     console.log(`CAPTURE ${file}`);
-    look(0);
   };
-  const enterXR = () => {
-    // Entering while the hero model is still decoding has crashed the managed software browser; wait for it first.
-    for (let wait = 0; wait < 30; wait++) { try { if (state().modelReady) break; } catch { /* The page is still loading. */ } spawnSync('sleep', ['2']); }
-    // Fonts, panels and shaders keep the page busy for a while after load; entering in that window crashed the browser too.
-    spawnSync('sleep', ['20']);
-    for (let attempt = 0; attempt < 2; attempt++) {
-      try { enterQuestXR(cli); } catch (error) {
-        // A slow software frame can time out the click's acknowledgement even though the click was delivered.
-        if (error.sdkError?.details?.code !== 'browser_command_timeout') throw error;
-      }
-      for (let poll = 0; poll < 20; poll++) { if (cli('xr', 'status').sessionActive) return; spawnSync('sleep', ['2']); }
-    }
-    throw Error('The immersive session did not start after Enter VR');
+  const preferences = (extra = {}) => ({ quality: 'low', motion: false, ...extra });
+  const comfort = session.startsWith('comfort:') ? Number(session.slice('comfort:'.length)) : 100;
+  const setup = () => {
+    evidence.emulationSetup = {
+      applied: true,
+      ...d.prepareEmulation({
+        viewport: option('--viewport', '800x560'),
+        preferences: preferences(comfort !== 100 ? { textScale: comfort } : {}),
+        reloadIf: (current) => current.quality !== 'low' || current.motion !== false || !current.visitComplete || current.textScale !== comfort,
+      }),
+      note: 'Software-emulation accommodation only: the capture viewport, Quest Render Quality Low and Ambient Motion Off, and the short visit marked complete so entry opens Home.',
+    };
   };
-  const prepareHands = () => {
-    cli('xr', 'set-input-mode', { mode: 'hand' });
-    for (const device of ['controller-left', 'controller-right']) cli('xr', 'set-connected', { device, connected: false });
-    for (const device of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device, connected: true });
-    cli('xr', 'set-device-state', { state: { stereoEnabled: false, fov: 60 } });
-    look(0);
+  const openSession = (search) => {
+    if (d.cli('xr', 'status').sessionActive) { try { d.cli('xr', 'exit', {}); } catch { /* An ended session acknowledgement is fine. */ } }
+    evidence.navigation = d.run(['browser', 'run', 'scripts/capture-legacy.mjs'], { CROWNFALL_LEGACY_SEARCH: search });
+    let ready = false;
+    for (let attempt = 0; attempt < 30 && !ready; attempt++) { try { d.discover(); ready = true; } catch { sleep(3); } }
+    assert.ok(ready, 'The app reopened with the Legacy session query');
   };
-  /**
-   * A pinch on a menu control with the head looking almost straight down (88 degrees): software rendering of the 80k-triangle hero
-   * takes about a second per frame here, longer than the pointer's 800 ms click window. The ray and pinch are unchanged.
-   */
-  const menuPinch = (id, expected, attempts) => {
-    look(88);
-    try { return pinch(id, expected, 'hand-right', attempts); } finally { look(0); }
+  const enter = () => {
+    d.discover();
+    if (!d.cli('xr', 'status').sessionActive) d.enterXR();
+    d.prepareHands();
+    return d.reachLegacy();
   };
-  const reachLegacy = () => {
-    let s = state();
-    if (s.paused) s = s.legacyActive ? pinch('Legacy_Resume', (v) => !v.paused) : menuPinch('Btn_Resume', (v) => !v.paused);
-    if (s.screen === 'onboarding') s = menuPinch('Btn_SkipVisit', (v) => v.screen === 'home');
-    if (!s.legacyActive) {
-      if (s.modal) s = menuPinch('Btn_Cancel', (v) => !v.modal);
-      if (s.screen !== 'home') s = menuPinch('Nav_Home', (v) => v.screen === 'home');
-      s = menuPinch('Home_legacy', (v) => v.legacyActive, 6);
-    }
-    return poll((v) => v.legacyEnvironmentReady);
-  };
-  /**
-   * Software-emulation setup shared with verify-legacy.mjs: the capture viewport, Quest Render Quality Low and
-   * Ambient Motion Off (lighter software frames), and the short visit marked complete so entry opens Home.
-   */
-  const prepareEmulation = () => {
-    const viewport = option('--viewport', '800x560');
-    const env = { CROWNFALL_LEGACY_PROBE: 'prepare', CROWNFALL_VIEWPORT: viewport, CROWNFALL_QUEST_PREFERENCES: JSON.stringify({ quality: 'low', motion: false }), CROWNFALL_QUEST_VISITED: '1' };
-    try {
-      evidence.emulationSetup = { applied: true, ...run(['browser', 'run', 'scripts/verify-legacy.mjs', '--timeout', '90000'], env) };
-      // Preferences apply on load; reload only when the running app does not already use them (re-entering right
-      // after a reload is where the managed software browser has closed on this host).
-      let current = null;
-      try { discover(); current = state(); } catch { /* The app is still loading. */ }
-      if (!current || current.quality !== 'low' || current.motion !== false || !current.visitComplete) {
-        if (cli('xr', 'status').sessionActive) { try { cli('xr', 'exit', {}); } catch { /* An ended-session acknowledgement is expected. */ } }
-        cli('browser', 'reload', {});
-        for (let attempt = 0; attempt < 30; attempt++) { try { discover(); break; } catch { spawnSync('sleep', ['3']); } }
-      }
-    } catch (error) { evidence.emulationSetup = { applied: false, reason: String(error.message || error) }; }
-  };
-  /** The whole capture sequence from the current page; run again from the start after a browser relaunch. */
-  const captureFlow = () => {
-    if (session !== 'production') {
-      const search = session === 'guest' ? '?legacy=fresh' : `?legacyPreview=${session.slice('preview:'.length)}`;
-      assert.ok(session === 'guest' || session.startsWith('preview:'), `Unknown session ${session}`);
-      if (cli('xr', 'status').sessionActive) { try { cli('xr', 'exit', {}); } catch { /* An ended session acknowledgement is fine. */ } }
-      evidence.navigation = run(['browser', 'run', 'scripts/capture-legacy.mjs'], { CROWNFALL_LEGACY_SEARCH: search });
-      let ready = false;
-      for (let attempt = 0; attempt < 30 && !ready; attempt++) { try { discover(); ready = true; } catch { spawnSync('sleep', ['3']); } }
-      assert.ok(ready, 'The app reopened with the Legacy session query');
-      const file = `${directory}/${prefix}browser-entry.png`;
-      evidence.captures.push({ name: 'browser-entry', file, note: 'Browser entry panel before entering VR, showing the session label', metadata: cli('browser', 'screenshot', undefined, ['--output-file', file]) });
-      console.log(`CAPTURE ${file}`);
-    }
-    discover();
-    if (!cli('xr', 'status').sessionActive) enterXR();
-    prepareHands();
-    let s = reachLegacy();
-    if (session === 'production') {
+  const back = (id, view) => d.pinch(id, (v) => v.legacyView === view);
+  const openLandmark = (landmark) => d.pinch(`Legacy_Landmark_${landmark}`, (v) => v.legacyView === landmark);
+
+  const flows = {
+    production() {
+      let s = enter();
+      if (s.legacyView === 'aftermath') s = d.pinch('Legacy_AftermathLater', (v) => v.legacyView === 'overview');
       if (s.legacyFounded) {
-        s = pinch('Legacy_ResetOpen', (v) => v.legacyView === 'reset');
-        s = pinch('Legacy_ResetConfirm', (v) => v.legacyView === 'nation');
+        s = openLandmark('banner-hall');
+        s = d.pinch('Legacy_ResetOpen', (v) => v.legacyView === 'reset');
+        s = d.pinch('Legacy_ResetConfirm', (v) => v.legacyView === 'nation');
       }
       capture('founding-nation', 0, 'Founding step 1: the four nations from shared content');
-      s = pinch('Legacy_NationNext', (v) => v.legacyView === 'name');
-      s = pinch('Legacy_OpenKeyboard', (v) => v.legacyView === 'keyboard');
-      for (const key of ['A', 'S', 'H']) pinch(`Legacy_Key_${key}`, () => true);
+      s = d.pinch('Legacy_NationNext', (v) => v.legacyView === 'name');
+      s = d.pinch('Legacy_OpenKeyboard', (v) => v.legacyView === 'keyboard');
+      for (const key of ['A', 'S', 'H']) d.pinch(`Legacy_Key_${key}`, () => true);
       capture('founding-keyboard', 0, 'Optional large-key letter keyboard for a custom banner name');
-      s = pinch('Legacy_KeyboardCancel', (v) => v.legacyView === 'name');
-      s = pinch('Legacy_Suggestion_0', (v) => v.legacyDraftName !== '');
+      s = d.pinch('Legacy_KeyboardCancel', (v) => v.legacyView === 'name');
+      s = d.pinch('Legacy_Suggestion_0', (v) => v.legacyDraftName !== '');
       capture('founding-name', 0, 'Quick name suggestions with Other names and Type a name');
-      s = pinch('Legacy_NameNext', (v) => v.legacyView === 'arms');
-      s = pinch('Legacy_Preset_1', (v) => v.legacyHeraldry !== '');
+      s = d.pinch('Legacy_NameNext', (v) => v.legacyView === 'arms');
+      s = d.pinch('Legacy_Preset_1', (v) => v.legacyHeraldry !== '');
       capture('founding-arms', 0, 'Heraldry presets, per-element cycling and the live shared raster preview');
-      s = pinch('Legacy_ArmsNext', (v) => v.legacyView === 'confirm');
-      s = pinch('Legacy_ConfirmRaise', (v) => v.legacyFounded && v.legacyView === 'overview');
-      capture('overview', 10, 'Overview: landmark list above the holding; head pitched 10 degrees down to frame panel, dock and holding');
-      s = pinch('Legacy_Landmark_banner-hall', (v) => v.legacyView === 'banner-hall');
-      capture('landmark-banner-hall', 10, 'Banner Hall inspection with the founded arms and honest empty honours');
-      s = pinch('Legacy_HallBack', (v) => v.legacyView === 'overview');
-      s = pinch('Legacy_Landmark_muster-grounds', (v) => v.legacyView === 'muster-grounds');
-      s = pinch('Legacy_Member_0', (v) => v.legacyMemberChoice === 'member-1');
-      const file = ['a', 'b', 'c', 'f', 'g', 'h'].map((letter) => `Legacy_File_${letter}`).find((id) => inspect(id)?.state.displayed);
-      s = pinch(file, (v) => v.legacyFileChoice === file.slice(-1));
-      s = pinch('Legacy_MusterNominate', (v) => v.legacyRepresentative !== '');
-      capture('landmark-muster-grounds', 10, 'Muster Grounds after nominating a member and an open file');
-      s = pinch('Legacy_MusterBack', (v) => v.legacyView === 'overview');
-      s = pinch('Legacy_Landmark_heralds-station', (v) => v.legacyView === 'heralds-station');
-      s = pinch('Legacy_Notice_0', (v) => v.legacyView === 'notice');
-      capture('notice-wager', 0, 'Formal challenge with its wager stated before any match');
-    } else if (session === 'guest') {
-      capture('founding-nation', 0, 'Guest founding: the session band says the banner is not saved');
-    } else {
-      capture('overview', 10, 'Development preview: fixture data, at most two aftermath messages');
-      s = pinch('Legacy_Landmark_muster-grounds', (v) => v.legacyView === 'muster-grounds');
-      capture('landmark-muster-grounds', 10, 'Development preview of the Muster Grounds');
-      s = pinch('Legacy_MusterBack', (v) => v.legacyView === 'overview');
-    }
-    for (const device of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device, connected: false });
-    poll((v) => v.paused && v.legacyView === 'pause');
-    capture('pause', 0, 'Hand-tracking loss pauses My Legacy; Resume waits for a tracked hand');
-    cli('xr', 'set-connected', { device: 'hand-right', connected: true });
-    poll((v) => v.rightTracked);
-    pinch('Legacy_Resume', (v) => !v.paused);
-    cli('xr', 'set-connected', { device: 'hand-left', connected: true });
-    evidence.final = { state: Object.fromEntries(Object.entries(state()).filter(([key]) => key.startsWith('legacy') || key === 'screen')), session: cli('xr', 'status') };
+      s = d.pinch('Legacy_ArmsNext', (v) => v.legacyView === 'confirm');
+      s = d.pinch('Legacy_ConfirmMotto', (v) => v.legacyView === 'keyboard');
+      for (const key of ['W', 'E', 'Space', 'H', 'O', 'L', 'D']) d.pinch(key === 'Space' ? 'Legacy_Key_Space' : `Legacy_Key_${key}`, () => true);
+      capture('founding-motto', 0, 'The optional motto on the same large-key keyboard, in sentence case');
+      s = d.pinch('Legacy_KeyboardDone', (v) => v.legacyView === 'confirm' && v.legacyMotto !== '');
+      capture('founding-confirm', 0, 'Founding step 4: the arms, the motto, the sworn members and what raising the banner saves');
+      s = d.pinch('Legacy_ConfirmRaise', (v) => v.legacyView === 'raised' && v.legacyFounded);
+      capture('founding-raised', 0, 'The raising beat: the new arms and the founding line, before the Bannerhold');
+      s = d.pinch('Legacy_RaisedContinue', (v) => v.legacyView === 'overview');
+      capture('overview', 10, 'Overview: crest, landmark list and the holding below; head pitched 10 degrees down');
+      s = openLandmark('war-record');
+      capture('record-unresolved', 0, 'War Record: with no conflicts yet it opens on the open matters, here the rival\'s challenge');
+      s = d.pinch('Legacy_RecordTab_ledger', (v) => v.legacyRecordTab === 'ledger');
+      capture('record-ledger', 0, 'War Record ledger: every entry, newest first, shown whole');
+      s = d.pinch('Legacy_RecordTab_conflicts', (v) => v.legacyRecordTab === 'conflicts');
+      capture('record-conflicts-empty', 0, 'War Record conflicts: honestly empty until a real match is recorded');
+      s = back('Legacy_RecordBack', 'overview');
+      s = openLandmark('banner-hall');
+      capture('landmark-banner-hall', 0, 'Banner Hall: arms, motto, standing, honours, both houses with their arms, and Dissolve banner');
+      s = d.pinch('Legacy_ResetOpen', (v) => v.legacyView === 'reset');
+      capture('reset-confirm', 0, 'Dissolving asks first; Keep the banner leaves everything as it was');
+      s = d.pinch('Legacy_ResetCancel', (v) => v.legacyView === 'banner-hall');
+      s = back('Legacy_HallBack', 'overview');
+      s = openLandmark('muster-grounds');
+      capture('landmark-muster-grounds-empty', 0, 'Muster Grounds before a nomination: no one on the board belongs to the house yet');
+      s = d.pinch('Legacy_MusterChoose', (v) => v.legacyView === 'nominate');
+      s = d.pinch('Legacy_Member_1', (v) => v.legacyMemberChoice === 'member-2');
+      capture('muster-nominate', 0, 'Nominate: a member and an open file; claimed files are named');
+      s = d.pinch('Legacy_MusterNominate', (v) => v.legacyView === 'muster-grounds' && v.legacyRepresentative !== '');
+      capture('landmark-muster-grounds', 0, 'Muster Grounds: the representative\'s ledger beside the house\'s side of the formation');
+      s = back('Legacy_MusterBack', 'overview');
+      s = openLandmark('heralds-station');
+      capture('herald-list', 0, 'Herald\'s Station: notices newest first, with Muster readiness');
+      s = d.pinch('Legacy_Notice_0', (v) => v.legacyView === 'notice');
+      capture('notice-wager', 0, 'The formal challenge with its wager as four stated terms, before any match');
+      s = d.pinch('Legacy_NoticeAccept', (v) => v.legacyView === 'accept');
+      capture('accept-wager', 0, 'The acceptance repeats the same terms');
+      s = d.pinch('Legacy_AcceptConfirm', (v) => v.legacyView === 'awaiting' && v.legacyChallenge === 'accepted');
+      capture('awaiting-board', 0, 'Awaiting the board: no match is played or recorded in this build');
+      capture('touch-tray', 44, 'The touch tray within reach below the holding: Back, the view\'s primary action, Home, Recenter, Pause, Exit VR');
+      s = d.pinch('Legacy_DockPause', (v) => v.paused && v.legacyView === 'pause', { pitch: 44 });
+      capture('pause', 0, 'Pause from the tray: Resume and Return to Home');
+      s = d.pinch('Legacy_Resume', (v) => !v.paused && v.legacyView === 'awaiting');
+    },
+    guest() {
+      openSession('?legacy=fresh');
+      const file = `${directory}/${prefix}browser-entry.png`;
+      evidence.captures.push({ name: 'browser-entry', file, note: 'Browser entry panel before entering VR, showing the session label', metadata: d.cli('browser', 'screenshot', undefined, ['--output-file', file]) });
+      enter();
+      capture('founding-nation', 0, 'Guest founding: the session band and the tray say the banner is not saved');
+    },
+    preview(id) {
+      openSession(`?legacyPreview=${id}`);
+      const file = `${directory}/${prefix}browser-entry.png`;
+      evidence.captures.push({ name: 'browser-entry', file, note: 'Browser entry panel before entering VR, showing the development preview label', metadata: d.cli('browser', 'screenshot', undefined, ['--output-file', file]) });
+      let s = enter();
+      if (s.legacyView === 'aftermath') {
+        capture('aftermath', 0, 'Aftermath: at most two prominent messages, each shown whole; every fact is in the War Record');
+        s = d.pinch('Legacy_AftermathLater', (v) => v.legacyView === 'overview');
+      }
+      capture('overview', 10, 'Overview after the preview\'s matches; a set-aside aftermath can be reviewed');
+      s = openLandmark('muster-grounds');
+      capture('landmark-muster-grounds', 0, 'Muster Grounds in the preview, with the representative\'s condition as recorded');
+      s = back('Legacy_MusterBack', 'overview');
+      s = openLandmark('war-record');
+      capture('record-conflicts', 0, 'War Record conflicts: outcome, reason, moves and the representative\'s fate');
+      s = d.pinch('Legacy_RecordTab_unresolved', (v) => v.legacyRecordTab === 'unresolved');
+      capture('record-unresolved', 0, 'War Record open matters, including threads opened by a win');
+      s = back('Legacy_RecordBack', 'overview');
+      s = openLandmark('banner-hall');
+      capture('landmark-banner-hall', 0, 'Banner Hall in a development preview: honours from fixtures, and no Dissolve control');
+      s = back('Legacy_HallBack', 'overview');
+      s = openLandmark('heralds-station');
+      capture('herald-list', 0, 'Herald\'s Station in the preview');
+      s = back('Legacy_HeraldBack', 'overview');
+      if (s.legacyAftermath > 0) {
+        s = d.pinch('Legacy_AftermathReview', (v) => v.legacyView === 'aftermath');
+        s = d.pinch('Legacy_AftermathDismiss', (v) => v.legacyView === 'overview' && v.legacyAftermath === 0);
+        capture('overview-acknowledged', 10, 'After Acknowledge: the aftermath is cleared for this preview (never saved)');
+      }
+    },
+    recovery(kind) {
+      const raw = kind === 'future' ? JSON.stringify({ schemaVersion: 99, banner: null }) : '{"schemaVersion":1,"banner":';
+      if (d.cli('xr', 'status').sessionActive) { try { d.cli('xr', 'exit', {}); } catch { /* An ended session acknowledgement is fine. */ } }
+      evidence.storedBefore = d.browserRun('scripts/verify-legacy.mjs', { CROWNFALL_LEGACY_PROBE: 'set-save', CROWNFALL_LEGACY_SAVE: raw });
+      d.reload();
+      enter();
+      capture('recovery', 0, kind === 'future' ? 'A save from a newer version, left untouched' : 'An unreadable save, left untouched, with a guest visit or a new banner offered');
+      evidence.storedAfter = d.browserRun('scripts/verify-legacy.mjs', { CROWNFALL_LEGACY_PROBE: 'storage' });
+      assert.equal(evidence.storedAfter, raw, 'the unreadable save is exactly as it was');
+      d.pinch('Legacy_RecoveryHome', (v) => v.screen === 'home');
+      evidence.restored = d.browserRun('scripts/verify-legacy.mjs', { CROWNFALL_LEGACY_PROBE: 'set-save', CROWNFALL_LEGACY_SAVE: '' });
+    },
+    comfort() {
+      let s = enter();
+      if (s.legacyView === 'aftermath') s = d.pinch('Legacy_AftermathLater', (v) => v.legacyView === 'overview');
+      capture('overview', 10, `Text Size ${comfort}%: the panel grows about its centre and stays clear of the holding`);
+      capture('overview-level', 0, `Text Size ${comfort}%: level view, panel top ${s.legacyPanelTopDegrees.toFixed(1)} degrees`);
+      if (s.legacyFounded) {
+        s = openLandmark('heralds-station');
+        s = d.pinch('Legacy_Notice_0', (v) => v.legacyView === 'notice');
+        capture('notice-wager', 0, `Text Size ${comfort}%: the wager terms`);
+        s = d.pinch('Legacy_NoticeBack', (v) => v.legacyView === 'heralds-station');
+        s = back('Legacy_HeraldBack', 'overview');
+      }
+    },
   };
-  /** Errors that mean the managed browser itself went away or stalled; the capture sequence must start again. */
-  const browserLost = (error) => /Browser not ready|browser_relaunched|Managed browser is closing|Target disconnected|connection_lost|browser_command_timeout|browser_not_launched/
-    .test(String(error?.message || error));
-  const waitForRuntime = () => {
-    try { run(['runtime', 'recover']); } catch { /* Still relaunching. */ }
-    for (let attempt = 0; attempt < 40; attempt++) {
-      try { if (cli('dev', 'status').state.browserCommandReady) return; } catch { /* Still relaunching. */ }
-      spawnSync('sleep', ['5']);
-    }
-    throw Error('The managed browser did not come back after a relaunch');
-  };
+
   let failure;
   try {
-    if (!process.argv.includes('--no-prepare')) prepareEmulation();
+    if (!process.argv.includes('--no-prepare')) setup();
     for (let attempt = 1; ; attempt++) {
-      try { captureFlow(); break; } catch (error) {
+      try {
+        if (session === 'production') flows.production();
+        else if (session === 'guest') flows.guest();
+        else if (session.startsWith('preview:')) flows.preview(session.slice('preview:'.length));
+        else if (session.startsWith('recovery:')) flows.recovery(session.slice('recovery:'.length));
+        else if (session.startsWith('comfort:')) flows.comfort();
+        else throw Error(`Unknown session ${session}`);
+        break;
+      } catch (error) {
         if (attempt >= 3 || !browserLost(error)) throw error;
         (evidence.restarts ??= []).push({ attempt, reason: String(error.message || error).slice(0, 400), capturesBeforeRestart: evidence.captures.map((item) => item.name) });
         evidence.captures.length = 0;
-        evidence.interactions.length = 0;
-        waitForRuntime();
-        if (!process.argv.includes('--no-prepare')) prepareEmulation();
+        d.interactions.length = 0;
+        d.waitForRuntime();
+        if (!process.argv.includes('--no-prepare')) setup();
       }
     }
+    evidence.final = { state: d.fields(d.state()), session: d.cli('xr', 'status') };
   } catch (error) {
     failure = error;
     evidence.failure = String(error.stack || error);
+    try { evidence.atFailure = d.fields(d.state()); } catch { /* The runtime may be gone. */ }
   } finally {
     evidence.finishedAt = new Date().toISOString();
     await writeFile(`${directory}/${prefix}capture-evidence.json`, `${JSON.stringify(evidence, null, 2)}\n`);

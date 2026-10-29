@@ -24,7 +24,7 @@ export const BANNER_NAME_SUGGESTIONS: Readonly<Record<NationId, readonly string[
     "House Hrothwyn", "House Eldbrand", "House Wulfmere", "House Thornhallow",
     "House Osgrave", "House Holtmere", "House Cynewald", "House Haelstan",
     "The Cairn Watch", "The Ashwood Oath", "Keepers of the Old Fire", "The Antler Hearth",
-    "Children of the Barrow", "The Hearthstone Levy",
+    "Children of the Barrow", "The Longhall Levy",
   ],
   "kwind-09": [
     "House Arata-Kwok", "House Seto-Lam", "House Ishiro-Vance", "House Mak-Hollis",

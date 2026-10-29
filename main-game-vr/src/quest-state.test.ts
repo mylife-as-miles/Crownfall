@@ -16,11 +16,12 @@ const play = () => reduceQuestState(createQuestState(), { type: "nav", screen: "
 test("Quest preferences validate independently of unsafe desktop render controls", () => {
   assert.deepEqual(normalizeQuestPreferences(undefined), DEFAULT_QUEST_PREFERENCES);
   for (const invalid of [null, false, [], "saved", 1]) assert.deepEqual(normalizeQuestPreferences(invalid), DEFAULT_QUEST_PREFERENCES);
-  const prefs = normalizeQuestPreferences({ motion: false, quality: "ultra", showHints: false, textScale: 999, panelDistance: 0,
+  const prefs = normalizeQuestPreferences({ motion: false, quality: "ultra", showHints: false, textScale: 999, panelDistance: 0, panelHeight: "ceiling",
     posture: "walking", contrast: "high", volume: 1000, frameLimit: 30, renderScale: 10, fullscreen: true });
   assert.equal(prefs.motion, false); assert.equal(prefs.showHints, false); assert.equal(prefs.contrast, "high");
   assert.equal(prefs.quality, "medium"); assert.equal(prefs.textScale, 100); assert.equal(prefs.panelDistance, 1.5);
-  assert.equal(prefs.posture, "seated"); assert.equal(prefs.volume, 100);
+  assert.equal(prefs.posture, "seated"); assert.equal(prefs.volume, 100); assert.equal(prefs.panelHeight, "middle");
+  assert.equal(normalizeQuestPreferences({ panelHeight: "lower" }).panelHeight, "lower", "a saved Menu Height is kept");
   assert.equal("frameLimit" in prefs, false); assert.equal("renderScale" in prefs, false);
   assert.equal(normalizeQuestPreferences({ volume: -50 }).volume, 0);
   assert.equal(normalizeQuestPreferences({ volume: NaN }).volume, 65);
@@ -32,7 +33,7 @@ test("all supported adjustments are bounded cycles and read-only IDs cannot muta
   const prefs = normalizeQuestPreferences(DEFAULT_QUEST_PREFERENCES);
   for (const [id, key, count] of [
     ["ambient-motion", "motion", 2], ["show-hints", "showHints", 2], ["contrast", "contrast", 2],
-    ["quality", "quality", 3], ["text-scale", "textScale", 3], ["panel-distance", "panelDistance", 3], ["posture", "posture", 2],
+    ["quality", "quality", 3], ["text-scale", "textScale", 3], ["panel-distance", "panelDistance", 3], ["panel-height", "panelHeight", 3], ["posture", "posture", 2],
   ] as const) {
     let changed = prefs;
     for (let index = 0; index < count; index++) changed = adjustQuestPreference(changed, id);

@@ -1,14 +1,16 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import { LEGACY_COPY } from "../content/copy";
 import { defaultHeraldry } from "../content/heraldry";
-import { buildLegacyPreview, getLegacyPreviewRecords } from "../domain/fixtures";
+import { LEGACY_PREVIEW_IDS, buildLegacyPreview, getLegacyPreviewRecords, listLegacyPreviews } from "../domain/fixtures";
 import { openChallenge } from "../domain/notices";
 import {
-  LEGACY_STORAGE_KEY, clearLegacy, loadLegacy, parseLegacySave, readSearchParam, resolveLegacySession, saveLegacy,
-  serializeLegacy, validateLegacySave,
+  LEGACY_STORAGE_KEY, clearLegacy, loadLegacy, parseLegacySave, readSearchParam, requestsLegacyPreview, resolveLegacySession,
+  saveLegacy, serializeLegacy, validateLegacySave,
 } from "../domain/persistence";
-import type { LegacyMigration, LegacyStorageLike } from "../domain/persistence";
+import type { LegacyMigration, LegacyPreviewSource, LegacyStorageLike } from "../domain/persistence";
+import { loadLegacyPreviewSource, resolveLegacySessionLazily } from "../domain/preview-loader";
 import { reduceLegacy } from "../domain/reducer";
 import { createLegacyState } from "../domain/state";
 import type { LegacyState } from "../types";
@@ -244,6 +246,7 @@ test("guest and preview sessions never touch storage", () => {
   assert.equal(missing.kind, "preview-missing");
   assert.equal(missing.state.mode, "production");
   assert.equal(missing.persistent, false);
+  assert.deepEqual(missing.kind === "preview-missing" && missing.previews.map((listing) => listing.id), [...LEGACY_PREVIEW_IDS], "the existing previews are offered");
   // legacyPreview takes precedence over legacy=fresh; an empty preview id is reported, still without storage.
   assert.equal(resolveLegacySession("?legacy=fresh&legacyPreview=", POISONED).kind, "preview-missing");
 });
@@ -267,4 +270,54 @@ test("query parsing decodes values without DOM APIs", () => {
   assert.equal(readSearchParam("?a=%E2%9C", "a"), null);
   assert.equal(readSearchParam("", "a"), null);
   assert.equal(readSearchParam("?flag", "flag"), "");
+});
+
+test("previews resolve through an injected source, and the lazy resolver fetches them only for preview URLs", async () => {
+  const custom = buildLegacyPreview("captive");
+  assert.ok(custom);
+  const source: LegacyPreviewSource = {
+    buildLegacyPreview: (id) => (id === "custom" ? custom : null),
+    listLegacyPreviews: () => [{ id: "custom", title: "Custom preview", description: "Injected for this test.", nationId: "korvenia" }],
+  };
+  const injected = resolveLegacySession("?legacyPreview=custom", POISONED, { previews: source });
+  assert.equal(injected.kind, "preview");
+  assert.equal(injected.kind === "preview" && injected.title, "Custom preview");
+  assert.equal(injected.state, custom);
+  const unknown = resolveLegacySession("?legacyPreview=captive", POISONED, { previews: source });
+  assert.equal(unknown.kind, "preview-missing", "only the injected source is consulted");
+  assert.deepEqual(unknown.kind === "preview-missing" && unknown.previews.map((listing) => listing.id), ["custom"]);
+
+  assert.equal(requestsLegacyPreview("?a=1&legacyPreview=captive"), true);
+  assert.equal(requestsLegacyPreview("?legacyPreview="), true);
+  assert.equal(requestsLegacyPreview("?legacy=fresh"), false);
+
+  // Ordinary visits never fetch the previews.
+  let loads = 0;
+  const counting = (): Promise<LegacyPreviewSource> => {
+    loads += 1;
+    return loadLegacyPreviewSource();
+  };
+  const storage = new MemoryStorage();
+  assert.equal((await resolveLegacySessionLazily("", storage, { loadPreviews: counting })).kind, "new");
+  assert.equal((await resolveLegacySessionLazily("?legacy=fresh", POISONED, { loadPreviews: counting, at: AT })).kind, "guest");
+  assert.equal(loads, 0);
+
+  // A preview URL loads the fixture chunk and resolves exactly as the built-in path does.
+  const lazy = await resolveLegacySessionLazily("?legacyPreview=returned", POISONED, { loadPreviews: counting });
+  assert.equal(loads, 1);
+  assert.equal(lazy.kind, "preview");
+  assert.equal(JSON.stringify(lazy.state), JSON.stringify(resolveLegacySession("?legacyPreview=returned", POISONED).state));
+  assert.deepEqual((await loadLegacyPreviewSource()).listLegacyPreviews(), listLegacyPreviews());
+
+  // A chunk that fails to load is reported as a missing preview, without touching storage.
+  const failed = await resolveLegacySessionLazily("?legacyPreview=captive", POISONED, { loadPreviews: () => Promise.reject(new Error("chunk failed")), at: AT });
+  assert.equal(failed.kind, "preview-missing");
+  assert.equal(failed.kind === "preview-missing" && failed.error, `${LEGACY_COPY.preview.unavailable} chunk failed`);
+  assert.deepEqual(failed.kind === "preview-missing" && failed.previews, []);
+  assert.equal(failed.state.createdAt, AT);
+
+  // The loader stays lazy: fixtures are only ever imported dynamically there.
+  const loader = readFileSync(new URL("../domain/preview-loader.ts", import.meta.url), "utf8");
+  assert.doesNotMatch(loader, /^import[^;]*from "\.\/fixtures"/m);
+  assert.match(loader, /import\("\.\/fixtures"\)/);
 });

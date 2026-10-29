@@ -7,7 +7,7 @@
 // ray- and poke-interactable proxies.
 
 import {
-  BoxGeometry, Color, CylinderGeometry, DoubleSide, ExtrudeGeometry, Group, LatheGeometry, Mesh, MeshBasicMaterial,
+  BoxGeometry, Color, ConeGeometry, CylinderGeometry, DoubleSide, ExtrudeGeometry, Group, LatheGeometry, Mesh, MeshBasicMaterial,
   MeshStandardMaterial, OctahedronGeometry, PlaneGeometry, PokeInteractable, RayInteractable, RingGeometry, Shape, SphereGeometry,
   Vector2,
 } from '@iwsdk/core';
@@ -24,28 +24,18 @@ import type {
 import { HeraldryTexture } from '../heraldry-texture.js';
 import { legacyLandmarkTargetName } from '../legacy-ui-contract.js';
 import { QUEST_LEGACY_COPY } from '../quest-legacy-copy.js';
-import { DEFAULT_LEGACY_STAGING } from '../legacy-staging.js';
+import { DEFAULT_LEGACY_STAGING, STAND_IN_LANDMARK_OFFSETS } from '../legacy-staging.js';
 import { drawPlacard } from './standin-labels.js';
 
-type Vec3 = readonly [number, number, number];
-
-
-/**
- * Marker positions on the base, in anchor metres relative to the surface centre: one shallow arc in
- * landmark-list order, spaced so a hand ray from either side reaches each marker without first
- * crossing a neighbour's proxy (a staggered layout let the front marker capture rays aimed behind it).
- */
-const LANDMARK_OFFSETS: Readonly<Record<LandmarkId, Vec3>> = {
-  'banner-hall': [-0.36, 0, 0],
-  'muster-grounds': [-0.12, 0, -0.05],
-  'war-record': [0.12, 0, -0.05],
-  'heralds-station': [0.36, 0, 0],
-};
+/** Marker positions on the base (a staggered layout let the front marker capture rays aimed behind it). */
+const LANDMARK_OFFSETS = STAND_IN_LANDMARK_OFFSETS;
 
 const PLACARD_SIZE = [0.17, 0.0425] as const;
+/** Height of the focus marker above the base, clear of the tallest marker (the hall's standard). */
+const FOCUS_MARKER_HEIGHT = 0.21;
 const PLINTH_NEUTRAL = new Color('#2a2520');
 const PAWN_IVORY = new Color('#d8cfba');
-/** Pick volumes hug the markers, so rays aimed past the holding at the dock clear them. */
+/** Pick volumes hug the markers, so rays aimed past the holding at the reading panel clear them. */
 const PROXY_SIZE = [0.2, 0.13, 0.16] as const;
 
 interface LandmarkParts {
@@ -82,6 +72,8 @@ class StandInEnvironment implements QuestLegacyEnvironment {
   private readonly pawn: Group;
   private readonly emptyPlace: Mesh;
   private readonly unreadMarker: Mesh;
+  /** A gold marker above the landmark whose inspector is open, tying the panel to its place in the holding. */
+  private readonly focusMarker: Mesh;
   private readonly caption: Mesh;
   private readonly staging: QuestStagingInfo;
   private readonly descriptors: LandmarkDescriptor[];
@@ -185,6 +177,13 @@ class StandInEnvironment implements QuestLegacyEnvironment {
       map: drawPlacard({ title: QUEST_LEGACY_COPY.environment.standin, subtitle: QUEST_LEGACY_COPY.environment.standinNote }, 1024, 256),
       transparent: true, side: DoubleSide,
     }));
+    const markerGeometry = this.geometry(new ConeGeometry(0.018, 0.04, 4));
+    markerGeometry.rotateX(Math.PI);
+    this.focusMarker = new Mesh(markerGeometry, this.focusMaterial);
+    this.focusMarker.name = 'Legacy Stand-in Focus Marker';
+    this.focusMarker.visible = false;
+    this.root.add(this.focusMarker);
+
     this.caption = new Mesh(this.geometry(new PlaneGeometry(0.36, 0.09)), captionMaterial);
     this.caption.name = 'Legacy Stand-in Caption';
     this.caption.position.set(0, 0.045, 0.215);
@@ -356,6 +355,9 @@ class StandInEnvironment implements QuestLegacyEnvironment {
       parts.ring.material = focused ? this.focusMaterial : this.hoverMaterial;
       if (!focused) parts.ring.scale.setScalar(1);
     }
+    const offset = this.focused ? LANDMARK_OFFSETS[this.focused] : null;
+    this.focusMarker.visible = offset !== null;
+    if (offset) this.focusMarker.position.set(offset[0], FOCUS_MARKER_HEIGHT, offset[2]);
   }
 
   getLandmarks(): readonly LandmarkDescriptor[] {
@@ -406,6 +408,10 @@ class StandInEnvironment implements QuestLegacyEnvironment {
       this.unreadMarker.rotation.y = time * 1.2;
       this.unreadMarker.position.y = 0.15 + Math.sin(time * 1.8) * 0.006;
     }
+    if (this.focusMarker.visible) {
+      this.focusMarker.rotation.y = time * 0.9;
+      this.focusMarker.position.y = FOCUS_MARKER_HEIGHT + Math.sin(time * 2.1) * 0.008;
+    }
   }
 
   setQuality(_quality: QuestEnvironmentQuality): void {
@@ -424,6 +430,8 @@ class StandInEnvironment implements QuestLegacyEnvironment {
       for (const parts of this.landmarks) parts.ring.scale.setScalar(1);
       this.unreadMarker.rotation.y = 0;
       this.unreadMarker.position.y = 0.15;
+      this.focusMarker.rotation.y = 0;
+      this.focusMarker.position.y = FOCUS_MARKER_HEIGHT;
     }
   }
 

@@ -6,13 +6,25 @@ import { findMember } from "../../../../shared/legacy/domain/state";
 import type { LegacyState } from "../../../../shared/legacy/types";
 import { DESKTOP_LEGACY_COPY as UI } from "../desktop-copy";
 import { formatLegacyTime } from "../format";
+import { NextStepAction } from "../LegacyTerms";
+import type { NextStep } from "../next-step";
 import { PanelSection } from "./InspectionPanel";
 
-/** The house's physical record: conflicts, open matters and every chronicle entry, newest first. */
-export function WarRecordPanel({ state }: { state: LegacyState }) {
+interface WarRecordPanelProps {
+  state: LegacyState;
+  nextStep: NextStep | null;
+  onNextStep(step: NextStep): void;
+}
+
+/**
+ * The house's physical record: conflicts, open matters and every War Record
+ * entry, newest first, opening on the next step toward a match.
+ */
+export function WarRecordPanel({ state, nextStep, onNextStep }: WarRecordPanelProps) {
   const matches = state.matches.slice().reverse();
   const entries = chronicleNewestFirst(state);
   return <>
+    {nextStep && <div className="legacy-panel-next"><NextStepAction step={nextStep} onGo={onNextStep} variant="panel" /></div>}
     <PanelSection title={UI.conflicts}>
       {matches.length === 0 ? <p className="legacy-empty" data-empty="matches">{LEGACY_COPY.empty.matches}</p> : <ol className="legacy-record-list">
         {matches.map((match) => {
@@ -25,7 +37,7 @@ export function WarRecordPanel({ state }: { state: LegacyState }) {
               </header>
               <p>{sentenceCase(END_REASON_PHRASES[match.reason])} · {UI.moves(Math.ceil(match.plies / 2))} · <time dateTime={match.completedAt}>{formatLegacyTime(match.completedAt)}</time></p>
               {representative && <p className="legacy-muted">
-                {representative.name}{match.representativeFile ? ` (${LEGACY_COPY.inspector.fileName(match.representativeFile)})` : ""}: {UI.fate[match.representativeFate]}
+                {representative.name}{match.representativeFile ? ` (${LEGACY_COPY.inspector.fileName(match.representativeFile)})` : ""}: {LEGACY_COPY.fate[match.representativeFate]}
                 {match.representativeCapturedBy ? ` · ${sentenceCase(houseDisplayName(match.representativeCapturedBy))}` : ""}
                 {match.representativeCaptures > 0 ? ` · ${LEGACY_COPY.inspector.captures} ${match.representativeCaptures}` : ""}
               </p>}
@@ -36,9 +48,9 @@ export function WarRecordPanel({ state }: { state: LegacyState }) {
     </PanelSection>
     <PanelSection title={UI.unresolved}>
       {state.unresolved.length === 0 ? <p className="legacy-empty" data-empty="unresolved">{LEGACY_COPY.empty.unresolved}</p> : <ul className="legacy-record-list">
+        {/* Each matter's title already names its kind; the kind colours the rule beside it. */}
         {state.unresolved.map((matter) => <li key={matter.id}>
-          <article className={`legacy-matter legacy-matter--${matter.kind}`} tabIndex={0} data-nav data-matter={matter.id}>
-            <span className="legacy-matter-kind">{LEGACY_COPY.unresolvedKinds[matter.kind]}</span>
+          <article className={`legacy-matter legacy-matter--${matter.kind}`} tabIndex={0} data-nav data-matter={matter.id} data-matter-kind={matter.kind}>
             <p className="legacy-entry-title">{matter.title}</p>
             <p className="legacy-muted">{matter.body}</p>
           </article>

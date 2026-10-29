@@ -4,7 +4,10 @@
 // Controller input is simulated through a mocked standard Gamepad API; it is
 // not physical controller validation. WebGL here is software-rendered.
 import assert from "node:assert/strict";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import { waitForBootReady } from "./boot-helpers.mjs";
 
@@ -50,7 +53,15 @@ async function createPage({ viewport = { width: 1280, height: 720 }, params = {}
     if (observeLongTasks) {
       // The standard's long-task signal: every main-thread task over 50 ms, as the page itself sees it.
       window.__longTasks = [];
-      new PerformanceObserver((list) => { for (const entry of list.getEntries()) window.__longTasks.push(entry.duration); }).observe({ type: "longtask", buffered: true });
+      window.__longTaskStarts = [];
+      new PerformanceObserver((list) => { for (const entry of list.getEntries()) { window.__longTasks.push(entry.duration); window.__longTaskStarts.push(entry.startTime); } }).observe({ type: "longtask", buffered: true });
+      // Entry feedback: when a loading indicator first enters the DOM, and when a frame including it has been produced.
+      window.__loading = {};
+      new MutationObserver(() => {
+        if (window.__loading.inserted !== undefined || !document.querySelector(".legacy-layer-loading, .legacy-loading")) return;
+        window.__loading.inserted = performance.now();
+        requestAnimationFrame(() => setTimeout(() => { window.__loading.framed = performance.now(); }, 0));
+      }).observe(document, { subtree: true, childList: true });
     }
     // Seed once per tab so reloads keep whatever the app saved.
     if (!sessionStorage.getItem("__legacySeeded")) {
@@ -80,6 +91,7 @@ async function createPage({ viewport = { width: 1280, height: 720 }, params = {}
         }];
       },
     });
+    window.addEventListener("load", () => window.dispatchEvent(new Event("gamepadconnected")));
   }, { storage, gamepad, key: SAVE_KEY, preferences, observeLongTasks });
   await page.goto(address(params, model));
   await waitForBootReady(page);
@@ -184,7 +196,6 @@ async function foundByPointer(page) {
   await card.getByRole("button", { name: "Continue", exact: true }).click();
   await card.getByRole("button", { name: "Continue", exact: true }).click();
   await card.getByRole("button", { name: "Raise the banner", exact: true }).click();
-  await page.locator("dialog.legacy-dialog[open]").getByRole("button", { name: /Raise the banner/ }).click();
   await finishBeat(page);
 }
 
@@ -243,7 +254,8 @@ async function traceFrames(cdp, action) {
   cdp.on("Tracing.dataCollected", collect);
   await cdp.send("Profiler.enable");
   await cdp.send("Profiler.setSamplingInterval", { interval: 500 });
-  await cdp.send("Tracing.start", { traceConfig: { includedCategories: ["toplevel", "devtools.timeline", "disabled-by-default-devtools.timeline.frame", "cc", "blink"], recordMode: "recordAsMuchAsPossible" }, transferMode: "ReportEvents" });
+  // gpu and gpu.service add the renderer's command-buffer waits and the GPU process's own tasks, so a long task can be attributed.
+  await cdp.send("Tracing.start", { traceConfig: { includedCategories: ["toplevel", "devtools.timeline", "disabled-by-default-devtools.timeline.frame", "cc", "blink", "gpu", "disabled-by-default-gpu.service"], recordMode: "recordAsMuchAsPossible" }, transferMode: "ReportEvents" });
   await cdp.send("Profiler.start");
   await action();
   const { profile } = await cdp.send("Profiler.stop");
@@ -252,8 +264,12 @@ async function traceFrames(cdp, action) {
   await complete;
   cdp.off("Tracing.dataCollected", collect);
   const selfTimeMs = attribute(profile);
-  const main = events.find((event) => event.name === "thread_name" && event.args?.name === "CrRendererMain");
+  // The page's renderer main thread is the one with the most events; the GPU process main thread does SwiftShader's compositing and GL work.
+  const mains = events.filter((event) => event.name === "thread_name" && event.args?.name === "CrRendererMain");
+  const eventCount = (thread) => events.reduce((count, event) => count + (event.pid === thread.pid && event.tid === thread.tid ? 1 : 0), 0);
+  const main = mains.sort((a, b) => eventCount(b) - eventCount(a))[0];
   if (!main) return { frames: 0, selfTimeMs };
+  const gpuMain = events.find((event) => event.name === "thread_name" && event.args?.name === "CrGpuMain");
   const onMain = (event) => event.pid === main.pid && event.tid === main.tid;
   const frameStarts = events.filter((event) => onMain(event) && event.name === "BeginMainThreadFrame").map((event) => event.ts).sort((a, b) => a - b);
   const scripts = events.filter((event) => onMain(event) && event.ph === "X" && SCRIPT_EVENTS.has(event.name)).sort((a, b) => a.ts - b.ts);
@@ -279,13 +295,41 @@ async function traceFrames(cdp, action) {
     if (!outerTasks.some((kept) => contains(kept, task))) outerTasks.push(task);
   }
   const longTasks = outerTasks.map((event) => round(event.dur / 1000));
-  // What the longest tasks spent their time on: inclusive durations by event name, and the time inside script events (JavaScript plus any native work it waits on).
-  const longTaskAnatomy = outerTasks.slice(0, 4).map((task) => {
+  // What the long tasks spent their time on: inclusive durations by event name, the time inside script events, the renderer
+  // thread's own CPU time, its waits on the GPU process (command-buffer round trips), and what the GPU process was doing meanwhile.
+  const gpuTasks = [];
+  if (gpuMain) {
+    for (const task of events.filter((event) => event.pid === gpuMain.pid && event.tid === gpuMain.tid && isTask(event)).sort((a, b) => (b.dur ?? 0) - (a.dur ?? 0))) {
+      if (!gpuTasks.some((kept) => contains(kept, task))) gpuTasks.push(task);
+    }
+  }
+  const overlap = (event, task) => Math.max(0, Math.min(event.ts + (event.dur ?? 0), task.ts + task.dur) - Math.max(event.ts, task.ts)) / 1000;
+  const longTaskAnatomy = outerTasks.slice(0, 6).map((task) => {
     const inside = events.filter((event) => onMain(event) && event.ph === "X" && !isTask(event) && contains(task, event));
     const byName = new Map();
     for (const event of inside) byName.set(event.name, (byName.get(event.name) ?? 0) + (event.dur ?? 0) / 1000);
     const scriptEventMs = topLevel.filter((event) => contains(task, event)).reduce((sum, event) => sum + (event.dur ?? 0) / 1000, 0);
-    return { ms: round(task.dur / 1000), scriptEventMs: round(scriptEventMs), top: [...byName.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([name, ms]) => `${name} ${round(ms)}`) };
+    const gpuWaitMs = inside.filter((event) => /^CommandBufferProxyImpl::WaitFor/.test(event.name)).reduce((sum, event) => sum + (event.dur ?? 0) / 1000, 0);
+    const gpuBusyMs = gpuTasks.reduce((sum, gpuTask) => sum + overlap(gpuTask, task), 0);
+    const gpuByName = new Map();
+    if (gpuMain) for (const event of events) if (event.pid === gpuMain.pid && event.tid === gpuMain.tid && event.ph === "X" && !isTask(event)) { const ms = overlap(event, task); if (ms > 0) gpuByName.set(event.name, (gpuByName.get(event.name) ?? 0) + ms); }
+    const wallMs = task.dur / 1000;
+    const threadMs = typeof task.tdur === "number" ? task.tdur / 1000 : null;
+    const harness = byName.has("CpuProfiler::StartProfiling");
+    const cause = harness ? "harness (CPU profiler start)"
+      : gpuWaitMs >= 0.5 * wallMs ? "waiting on the GPU process"
+        : threadMs !== null && threadMs < 0.5 * wallMs ? "renderer thread off-CPU (host contention)"
+          : "renderer main-thread work";
+    return {
+      ms: round(wallMs),
+      threadMs: threadMs === null ? null : round(threadMs),
+      scriptEventMs: round(scriptEventMs),
+      gpuWaitMs: round(gpuWaitMs),
+      gpuProcessBusyMs: round(gpuBusyMs),
+      cause,
+      top: [...byName.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([name, ms]) => `${name} ${round(ms)}`),
+      gpuProcessTop: [...gpuByName.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4).map(([name, ms]) => `${name} ${round(ms)}`),
+    };
   });
   // The page's own main-thread JavaScript (bundles, the native APIs they call and GC); the harness's scripts are excluded.
   const javascript = selfTimeMs.legacyCode + selfTimeMs.otherBundles + selfTimeMs.webglCalls + selfTimeMs.gamepadPolling + selfTimeMs.otherNative + selfTimeMs.garbageCollector;
@@ -301,10 +345,19 @@ async function traceFrames(cdp, action) {
   };
 }
 
-/** Render-submission cost of the most recent rendered frames (up to 120), from the contract's frame times. */
-function submission(stats) {
-  const times = (stats?.frameTimesMs ?? []).slice().sort((a, b) => a - b);
+function distribution(values) {
+  const times = (values ?? []).slice().sort((a, b) => a - b);
   return { samples: times.length, p50: round(percentile(times, 0.5)), p95: round(percentile(times, 0.95)), max: round(times[times.length - 1] ?? 0) };
+}
+
+/** Render-submission cost (main-thread time inside renderer.render) of the most recent rendered frames, up to 120. */
+function submission(stats) {
+  return distribution(stats?.submissionTimesMs);
+}
+
+/** Frame pacing: intervals between rendered frames during continuous rendering (the contract's frameTimesMs, as the stand-in fills it). */
+function pacing(stats) {
+  return distribution(stats?.frameTimesMs);
 }
 
 async function heapAndStats(page, cdp) {
@@ -350,13 +403,22 @@ async function measurePerformance() {
   const development = await fetch(new URL("/@vite/client", origin)).then((response) => response.ok && /javascript/.test(response.headers.get("content-type") ?? "")).catch(() => false);
   const report = { measuredAt: new Date().toISOString(), target: origin, build: development ? "development (Vite dev server)" : "production build (vite preview)", scenarioPreset: "Low (75 % render scale), 1280×720, reduced motion", scenarios: {}, presets: {}, roundTrips: null, throttled4x: {} };
   const scenario = async (bucket, name, page, cdp, action) => {
-    await page.evaluate(() => { window.__longTasks.length = 0; });
+    await page.evaluate(() => { window.__longTasks.length = 0; window.__longTaskStarts.length = 0; });
     const started = Date.now();
     const traced = await traceFrames(cdp, action);
     const wallMs = Date.now() - started;
     const tasks = await page.evaluate(() => window.__longTasks.slice());
     const stats = await page.evaluate(() => window.__legacyStats?.() ?? null);
-    bucket[name] = { wallMs, longTasks: { count: tasks.length, maxMs: round(tasks.length ? Math.max(...tasks) : 0), totalMs: round(tasks.reduce((sum, value) => sum + value, 0)) }, ...traced, renderSubmissionMs: submission(stats) };
+    const attributed = (traced.longTaskAnatomy ?? []).filter((task) => !task.cause.startsWith("harness"));
+    bucket[name] = {
+      wallMs,
+      longTasks: { count: tasks.length, maxMs: round(tasks.length ? Math.max(...tasks) : 0), totalMs: round(tasks.reduce((sum, value) => sum + value, 0)) },
+      // Long tasks by cause, from the trace (the CPU profiler's own start-up task is excluded).
+      longTaskCauses: attributed.reduce((causes, task) => ({ ...causes, [task.cause]: (causes[task.cause] ?? 0) + 1 }), {}),
+      ...traced,
+      renderSubmissionMs: submission(stats),
+      framePacingMs: pacing(stats),
+    };
     console.log(`PERF ${name}: ${JSON.stringify(bucket[name])}`);
   };
   {
@@ -365,6 +427,12 @@ async function measurePerformance() {
     await cdp.send("Performance.enable");
     await scenario(report.scenarios, "entry", page, cdp, async () => { await openLegacyByKeyboard(page); await page.waitForTimeout(1000); });
     report.scenarios.entry.afterEntry = await heapAndStats(page, cdp);
+    // Every entry long task should start after the loading state was on screen (inserted and a frame produced).
+    const feedback = await page.evaluate(() => ({ ...window.__loading, starts: window.__longTaskStarts.slice() }));
+    report.scenarios.entry.loadingFeedback = {
+      loadingFramedAtMs: feedback.framed === undefined ? null : round(feedback.framed),
+      longTasksBeforeFeedback: feedback.framed === undefined ? feedback.starts.length : feedback.starts.filter((start) => start < feedback.framed).length,
+    };
     await scenario(report.scenarios, "idle10s", page, cdp, () => page.waitForTimeout(10000));
     await scenario(report.scenarios, "orbitDrag5s", page, cdp, () => orbitDrag(page, 5000));
     await scenario(report.scenarios, "landmarkCycling", page, cdp, () => cycleLandmarks(page));
@@ -423,11 +491,193 @@ async function measurePerformance() {
     await cdp.send("Emulation.setCPUThrottlingRate", { rate: 1 });
     await context.close();
   }
-  report.caveat = "Software-rendered WebGL (SwiftShader) on a shared 4-CPU container with no GPU, under heavy load from other jobs. Frame intervals and absolute times understate real hardware and never prove smoothness. JavaScript self time by owner (CPU profile), render submission per frame, renderer counts and heap are the closest hardware-independent signals. Long tasks come from the page's longtask observer; selfTimeMs.browserNative is native browser work outside JavaScript (with software WebGL this includes waiting on the rasterizing GPU process), so a long task without matching JavaScript self time is not script work. scriptPerFrameMs buckets top-level script events between frame starts and overstates the tail when frames are sparse. Real-GPU and device smoothness must be confirmed by a person on that hardware.";
-  report.notes = { programs: "Linked shader programs come from the stand-in's extra programs field; the contract's stats do not include programs yet.", renderSubmissionMs: "The environment's own frame times: the duration of each renderer.render call over the most recent rendered frames (up to 120)." };
+  report.caveat = "Software-rendered WebGL (SwiftShader) on a shared 4-CPU container with no GPU, under heavy load from other jobs. Long tasks are attributed from the trace (longTaskAnatomy and longTaskCauses): with SwiftShader the GPU process composites and rasterizes on the CPU, so synchronous WebGL calls (context creation, the first use of a shader program) can wait behind a slow SwapBuffers. Frame intervals and absolute times understate real hardware and never prove smoothness. JavaScript self time by owner (CPU profile), render submission per frame, renderer counts and heap are the closest hardware-independent signals. Long tasks come from the page's longtask observer; selfTimeMs.browserNative is native browser work outside JavaScript (with software WebGL this includes waiting on the rasterizing GPU process), so a long task without matching JavaScript self time is not script work. scriptPerFrameMs buckets top-level script events between frame starts and overstates the tail when frames are sparse. Real-GPU and device smoothness must be confirmed by a person on that hardware.";
+  report.notes = {
+    programs: "Linked shader programs come from the stand-in's extra programs field; the contract's stats do not include programs yet.",
+    renderSubmissionMs: "Main-thread time inside each renderer.render call over the most recent rendered frames (up to 120), from the stand-in's extra submissionTimesMs field.",
+    framePacingMs: "The contract's frameTimesMs as the stand-in fills it: intervals between rendered frames during continuous rendering (a definition requested for the contract), so GPU-bound frames count. Adaptive quality reads it.",
+    longTaskAnatomy: "Per long task: wall time, the renderer main thread's own CPU time (threadMs), time inside script events, time blocked on GPU-process round trips (gpuWaitMs: CommandBufferProxyImpl::WaitFor* slices), how long the GPU process main thread was busy meanwhile and with what (gpuProcessTop). cause classifies the task: waiting on the GPU process, renderer thread off-CPU (host contention: wall time far above thread time without GPU waits), or renderer main-thread work.",
+  };
   await mkdir(directory, { recursive: true });
   await writeFile(`${directory}/performance.json`, JSON.stringify(report, null, 2) + "\n");
   record(`Performance protocol measured (${environmentSource}); numbers in ${directory}/performance.json with the software-rendering caveat`);
+}
+
+// ---------------------------------------------------------------- chess comes first
+
+/**
+ * One launch of the menu: navigation start to the menu accepting input on the Play tab, to the first key
+ * press selecting the Classic card, and to the Classic card opening (it opens a preview: no board is connected).
+ * Records every Legacy request and every read of the Legacy save before My Legacy is opened.
+ */
+async function measureLaunch({ save, model, run }) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 720 }, reducedMotion: "reduce" });
+  const page = await context.newPage();
+  page.setDefaultTimeout(180000);
+  const requests = [];
+  page.on("request", (request) => requests.push(new URL(request.url()).pathname));
+  await page.addInitScript(({ save, key }) => {
+    localStorage.setItem("crownfall.main-game.preferences", JSON.stringify({ quality: "low", motion: false, volume: 65 }));
+    if (save) localStorage.setItem(key, save);
+    else localStorage.removeItem(key);
+    window.__saveReads = 0;
+    const getItem = Storage.prototype.getItem;
+    Storage.prototype.getItem = function (name) { if (name === key) window.__saveReads++; return getItem.call(this, name); };
+    window.__launch = {};
+    const mark = (name) => { if (window.__launch[name] === undefined) window.__launch[name] = performance.now(); };
+    new MutationObserver(() => {
+      if (document.querySelector('.menu-shell[data-boot-state="ready"]')) mark("menuReady");
+      if (document.querySelector('.game-card[aria-label="Classic"][aria-pressed="true"]')) mark("classicSelected");
+      if (document.querySelector("dialog.menu-dialog[open]")) mark("classicOpened");
+    }).observe(document, { subtree: true, childList: true, attributes: true, attributeFilter: ["data-boot-state", "aria-pressed", "open"] });
+  }, { save, key: SAVE_KEY });
+  await page.goto(address({}, model));
+  await waitForBootReady(page);
+  await page.waitForFunction(() => window.__launch.menuReady !== undefined);
+  // The menu opens on the Play tab with Local Duel selected; one key selects Classic, Enter opens it.
+  const keyAt = await page.evaluate(() => performance.now());
+  await page.keyboard.press("ArrowLeft");
+  await page.waitForFunction(() => window.__launch.classicSelected !== undefined);
+  await page.keyboard.press("Enter");
+  await page.waitForFunction(() => window.__launch.classicOpened !== undefined);
+  assert.match(await page.locator("dialog.menu-dialog").innerText(), /Classic[\s\S]*not connected to this menu/);
+  const marks = await page.evaluate(() => ({ ...window.__launch, saveReads: window.__saveReads }));
+  await context.close();
+  const legacyRequests = requests.filter((path) => /LegacyScreen|createStandInEnvironment|createLegacyEnvironment|\/legacy\//.test(path));
+  return {
+    model: model ?? "default",
+    save: save !== null,
+    run,
+    menuReadyMs: round(marks.menuReady),
+    firstKeySentMs: round(keyAt),
+    firstInputAcceptedMs: round(marks.classicSelected),
+    classicOpenedMs: round(marks.classicOpened),
+    saveReads: marks.saveReads,
+    legacyRequests,
+  };
+}
+
+/** Starting states for the actions-back-to-Play count, each with how to reach it from a freshly opened My Legacy. */
+const ACTION_STARTS = [
+  { start: "founding (nation step)", params: { legacy: "fresh" }, setup: async () => {} },
+  {
+    start: "founding (review step)",
+    params: { legacy: "fresh" },
+    setup: async (page) => {
+      const card = page.locator(".legacy-founding");
+      await card.getByRole("button", { name: "Continue", exact: true }).click();
+      await card.getByRole("button", { name: "Suggest", exact: true }).click();
+      await card.getByRole("button", { name: "Continue", exact: true }).click();
+      await card.getByRole("button", { name: "Continue", exact: true }).click();
+      await page.locator('[data-founding-step="confirm"]').waitFor();
+    },
+  },
+  { start: "overview", params: { legacyPreview: "founded" }, setup: async () => {} },
+  ...["banner-hall", "muster-grounds", "war-record", "heralds-station"].map((id) => ({
+    start: `inspector: ${id}`,
+    params: { legacyPreview: "founded" },
+    setup: async (page) => {
+      await page.locator(`.legacy-label[data-landmark="${id}"]`).click();
+      await page.locator(`[data-landmark-panel="${id}"]`).waitFor();
+    },
+  })),
+  {
+    start: "dialog (accept the challenge)",
+    params: { legacyPreview: "founded" },
+    setup: async (page) => {
+      await page.locator('.legacy-label[data-landmark="heralds-station"]').click();
+      await page.locator("[data-accept]").first().click();
+      await page.locator("dialog.legacy-dialog[open]").waitFor();
+    },
+  },
+  { start: "aftermath", params: { legacyPreview: "captive" }, setup: async (page) => { await page.locator(".legacy-aftermath").waitFor(); } },
+];
+
+/**
+ * Counts the inputs from a Legacy screen to the Play tab, and on to opening the Classic card: by pointer
+ * (the footer Play route; an open dialog is closed with its Back button first) or by keyboard (Escape, the
+ * configured Back key, until Play shows; then Left to Classic if needed and Enter).
+ */
+async function measureActionsToPlay({ start, params, setup }, method) {
+  const { context, page } = await createPage({ params });
+  await openLegacyByKeyboard(page);
+  await setup(page);
+  const onPlay = async () => (await page.locator(".game-cards").count()) > 0 && (await page.locator('.main-nav [role="tab"][aria-label="Play"]').getAttribute("aria-selected")) === "true";
+  let toPlay = 0;
+  if (method === "pointer") {
+    const dialog = page.locator("dialog.legacy-dialog[open]");
+    if (await dialog.count()) {
+      await dialog.locator(".legacy-dialog-actions button").last().click();
+      toPlay++;
+      await dialog.waitFor({ state: "detached" });
+    }
+    await page.locator("[data-legacy-play]").click();
+    toPlay++;
+  } else {
+    for (let attempt = 0; attempt < 10 && !(await onPlay()); attempt++) {
+      await page.keyboard.press("Escape");
+      toPlay++;
+      await page.waitForTimeout(180);
+    }
+  }
+  await page.locator(".game-cards").waitFor({ timeout: 10000 }).catch(() => {});
+  const reachedPlay = await onPlay();
+  let toClassic = toPlay;
+  if (reachedPlay) {
+    const classic = page.getByRole("button", { name: "Classic", exact: true });
+    if (method === "pointer") {
+      await classic.click();
+      toClassic++;
+    } else {
+      for (let attempt = 0; attempt < 4 && (await classic.getAttribute("aria-pressed")) !== "true"; attempt++) {
+        await page.keyboard.press("ArrowLeft");
+        toClassic++;
+      }
+      await page.keyboard.press("Enter");
+      toClassic++;
+    }
+    await page.locator("dialog.menu-dialog[open]").waitFor();
+  }
+  await context.close();
+  return { start, method, toPlay, toClassicOpened: toClassic, reachedPlay };
+}
+
+/** Walks the web chess app's import graph from its entry (static and dynamic imports, the @ alias) without bundling it. */
+async function webEntryGraph() {
+  const scriptDirectory = dirname(fileURLToPath(import.meta.url));
+  const webRoot = resolve(scriptDirectory, "../../web");
+  const entry = join(webRoot, "src/main.tsx");
+  const seen = new Set();
+  const packages = new Set();
+  const queue = [entry];
+  const specifiers = /(?:^|[\s;])(?:import|export)\s+(?:type\s+)?(?:[\w*{}\s,$]+\s+from\s+)?["']([^"']+)["']|import\(\s*["']([^"']+)["']\s*\)/g;
+  const exists = (file) => access(file).then(() => true, () => false);
+  const resolveFile = async (base) => {
+    for (const candidate of [base, `${base}.ts`, `${base}.tsx`, `${base}.js`, `${base}.jsx`, `${base}.mjs`, join(base, "index.ts"), join(base, "index.tsx"), join(base, "index.js")]) {
+      if (/\.(ts|tsx|js|jsx|mjs)$/.test(candidate) && await exists(candidate)) return candidate;
+    }
+    return null;
+  };
+  while (queue.length) {
+    const file = queue.pop();
+    if (seen.has(file)) continue;
+    seen.add(file);
+    const text = await readFile(file, "utf8");
+    for (const match of text.matchAll(specifiers)) {
+      const specifier = match[1] ?? match[2];
+      if (!specifier) continue;
+      let base = null;
+      if (specifier.startsWith("./") || specifier.startsWith("../")) base = resolve(dirname(file), specifier);
+      else if (specifier.startsWith("@/")) base = join(webRoot, "src", specifier.slice(2));
+      else { packages.add(specifier); continue; }
+      const target = await resolveFile(base);
+      if (target) queue.push(target);
+    }
+  }
+  const files = [...seen].map((file) => file.slice(webRoot.length + 1));
+  const legacyFiles = files.filter((file) => /(^|\/)legacy(\/|$)/i.test(file) || /shared\/legacy/.test(file));
+  const legacyPackages = [...packages].filter((name) => /legacy/i.test(name));
+  return { entry: "web/src/main.tsx", files: files.length, legacyFiles: [...legacyFiles, ...legacyPackages], packages: [...packages].sort() };
 }
 
 try {
@@ -502,11 +752,10 @@ try {
     await page.keyboard.type("We keep the wells");
     await page.keyboard.press("ArrowDown");
     await focusIs(page, () => document.activeElement?.textContent?.trim() === "Raise the banner");
-    await page.keyboard.press("Enter");
-    await page.locator("dialog.legacy-dialog[open]").waitFor();
-    assert.match(await page.locator("dialog.legacy-dialog").innerText(), /saved on this device/);
+    assert.match(await page.locator(".legacy-raise-note").innerText(), /saved on this device/, "the review step states that the banner is saved");
     await page.keyboard.press("Enter");
     await page.locator(".legacy-beat").waitFor({ timeout: 5000 });
+    assert.equal(await page.locator("dialog.legacy-dialog[open]").count(), 0, "raising asks no second confirmation");
     await finishBeat(page);
     validSave = await storedSave(page);
     const saved = JSON.parse(validSave);
@@ -516,7 +765,7 @@ try {
     assert.equal(saved.banner.heraldry.division === "plain", false, "edited division is saved");
     assert.equal(saved.members.length, 3);
     assert.equal(await page.locator(".legacy-crest-name").innerText(), "HOUSE AMBERWELL");
-    record("Keyboard-only founding: arrows choose Solforiz, the typed name is validated (invalid name blocked), heraldry cycles live in 2D and 3D, the motto is typed, Raise asks for confirmation, the banner-raising beat plays and the found-banner event is saved");
+    record("Keyboard-only founding: arrows choose Solforiz, the typed name is validated (invalid name blocked), heraldry cycles live in 2D and 3D, the motto is typed, the review step states what is saved and Raise founds directly (no repeated confirmation), the banner-raising beat plays and the found-banner event is saved");
 
     await page.reload();
     await waitForBootReady(page);
@@ -525,7 +774,10 @@ try {
     assert.equal(await page.locator(".legacy-crest-name").innerText(), "HOUSE AMBERWELL");
     assert.equal(JSON.parse(await storedSave(page)).banner.id, saved.banner.id);
     assert.equal(await page.locator(".legacy-label").count(), 4);
-    record("The banner, nation, heraldry and motto persist across a reload; re-entry opens the Bannerhold overview with four landmark labels");
+    const strip = page.locator(".legacy-next-strip [data-next-step]");
+    assert.equal(await strip.getAttribute("data-next-step"), "nominate");
+    assert.match(await strip.innerText(), /NEXT STEP[\s\S]*Name your Pawn at the Muster Grounds[\s\S]*Nominate a member and an open file for the Muster\./i);
+    record("The banner, nation, heraldry and motto persist across a reload; re-entry opens the Bannerhold overview with four landmark labels and a Next step strip (Name your Pawn at the Muster Grounds) with a direct jump");
 
     // Landmark selection by keyboard: directions, Q/E and Home/End move between the DOM labels.
     await focusIs(page, () => document.activeElement?.getAttribute("data-landmark") === "banner-hall");
@@ -556,17 +808,22 @@ try {
     await focusIs(page, () => document.activeElement?.getAttribute("data-landmark") === "heralds-station");
     record("Each landmark opens a contextual inspection panel (Banner Hall, Muster Grounds, War Record, Herald's Station); E cycles panels and Back returns focus to the landmark label");
 
-    // Banner Hall details.
+    // Banner Hall details: its primary action is the next step toward a match; dissolving waits behind Manage banner.
     await page.locator('.legacy-label[data-landmark="banner-hall"]').click();
     const hallText = await page.locator(".legacy-panel").innerText();
-    for (const fragment of ["HOUSE AMBERWELL", "The Scorched Caliphate of Solforiz", "Minor Banner", "Recognition 0", "Founding hall", "No honours yet. Honours come only from recorded results.", "Abandon banner and found anew", "We keep the wells"]) assert.ok(hallText.includes(fragment), `Banner Hall shows ${fragment}`);
-    record("Banner Hall shows identity, heraldry and blazon, nation, Minor Banner rank, recognition, hall development and the honest empty honours state");
+    for (const fragment of ["HOUSE AMBERWELL", "The Scorched Caliphate of Solforiz", "Minor Banner", "Founding hall", "No honours yet. Honours come only from recorded results.", "We keep the wells", "MANAGE BANNER"]) assert.ok(hallText.includes(fragment), `Banner Hall shows ${fragment}`);
+    assert.equal(await page.locator(".legacy-ledger-row", { hasText: "Recognition" }).locator("dd").innerText(), "0", "recognition is a number under its label, not repeated");
+    assert.equal(await page.locator(".legacy-panel").getByRole("button", { name: "Dissolve banner", exact: true }).isVisible(), false, "dissolving is not a primary control");
+    await focusIs(page, () => document.activeElement?.getAttribute("data-next-step") === "nominate");
+    record("Banner Hall shows identity, heraldry and blazon, nation, Minor Banner rank, recognition (a plain number), hall development and the honest empty honours state; its focused primary action is the next step toward a match, and the dissolve control sits behind a closed Manage banner disclosure");
 
-    // Muster Grounds nomination with claimed files and the formation.
-    await page.locator(".legacy-panel-cycle--next").click();
+    // Muster Grounds nomination with claimed files and the formation, reached through the Banner Hall's next step.
+    await page.keyboard.press("Enter");
     await page.locator('[data-landmark-panel="muster-grounds"]').waitFor();
     const panel = page.locator(".legacy-panel");
-    assert.match(await panel.innerText(), /No representative nominated/);
+    assert.equal(await panel.locator("[data-seat]").count(), 0, "no representative is shown before a nomination");
+    await focusIs(page, () => document.activeElement?.hasAttribute("data-nominate"));
+    assert.equal(await panel.locator('.legacy-formation-section .legacy-formation').count(), 1, "the formation leads the panel");
     const claimed = panel.locator(".legacy-file.is-claimed").first();
     assert.match(await claimed.getAttribute("aria-label"), /Claimed by /);
     // aria-disabled keeps the file focusable and clickable: activating it explains the claim.
@@ -576,20 +833,28 @@ try {
     const openFile = await panel.locator(".legacy-file:not(.is-claimed)").nth(1);
     const fileLetter = await openFile.getAttribute("data-file");
     await openFile.click();
+    assert.equal(await panel.locator(".legacy-member-origin").count(), 3, "every member row shows the person's origin");
     await panel.getByRole("button", { name: "Nominate", exact: true }).click();
     await page.locator(".legacy-representative .legacy-rep-name").waitFor();
-    const nominated = JSON.parse(await storedSave(page)).nomination;
-    assert.deepEqual(nominated, { memberId: "member-2", file: fileLetter });
+    const savedAfterNomination = JSON.parse(await storedSave(page));
+    assert.deepEqual(savedAfterNomination.nomination, { memberId: "member-2", file: fileLetter });
+    const nominee = savedAfterNomination.members.find((member) => member.id === "member-2");
+    assert.equal(await panel.locator(".legacy-rep-origin").innerText(), nominee.origin, "the representative card shows the person's origin");
+    assert.equal(await panel.locator('[data-seat="available"]').count(), 1, "the formation names the representative and their condition");
+    // The nomination stands, so the panel's primary action moves on to the next step and focus follows it.
+    await focusIs(page, () => document.activeElement?.getAttribute("data-next-step") === "answer");
+    assert.match(await page.evaluate(() => document.activeElement?.innerText ?? ""), /Answer House \S+.*'s challenge/);
     const muster = await panel.innerText();
-    for (const fragment of ["Banner", "HOUSE AMBERWELL", `${fileLetter}-file`, "Available", "You command the entire formation, but not everyone on the board belongs to you.", "The national formation follows standard chess. Your file decides who stands there, not how many pieces you move."]) assert.ok(muster.toUpperCase().includes(fragment.toUpperCase()), `Muster Grounds shows ${fragment}`);
+    for (const fragment of ["Banner", "HOUSE AMBERWELL", `${fileLetter}-file`, "Available", "You move the entire formation, but not everyone on the board belongs to your house.", "The national formation follows standard chess. Your file decides who stands there, not how many pieces you move."]) assert.ok(muster.toUpperCase().includes(fragment.toUpperCase()), `Muster Grounds shows ${fragment}`);
     assert.equal(await panel.locator(".legacy-formation-cell.is-player").count(), 1, "exactly one formation piece belongs to the banner");
     assert.equal(await panel.locator(".legacy-formation-cell").count(), 16);
+    assert.equal(await panel.locator(".legacy-file.is-claimed .legacy-formation-mark").count(), await panel.locator(".legacy-file.is-claimed").count(), "every claimed file carries its holder's mark");
     const before = await page.locator(".legacy-panel").getAttribute("data-landmark-panel");
     await panel.getByRole("button", { name: /^Inspect / }).click();
     assert.equal(await panel.getByRole("button", { name: "Show the grounds", exact: true }).count(), 1);
     await page.keyboard.press("Escape");
     assert.equal(await page.locator(".legacy-panel").getAttribute("data-landmark-panel"), before, "Back first leaves the representative close-up");
-    record("Muster Grounds: claimed files carry their houses and refuse nomination, an available member and open file are nominated and saved, the representative card shows banner allegiance, file and status, Inspect frames the representative, and the 16-piece formation shows one piece of your banner");
+    record("Muster Grounds: the 16-piece formation leads the panel and its pawn row is the file choice (claimed files carry the holder's mark and refuse nomination); member rows and the representative card show each person's origin; Nominate is the focused primary action, the nomination is saved, the formation shows one piece of your banner, and focus then moves to the next step (answer the challenge); Inspect frames the representative");
 
     // War Record: honest empty conflict state plus the real ledger.
     await page.locator(".legacy-panel-cycle--next").click();
@@ -599,13 +864,21 @@ try {
     assert.match(ledger, /House Amberwell is raised/);
     assert.match(ledger, /is named to the Muster/);
     assert.ok(await page.locator(".legacy-matter--challenge").count() >= 1, "the open challenge is an unresolved matter");
-    record("War Record: no fabricated conflicts (honest empty state), unresolved matters and the ledger come from saved data (founding and nomination entries)");
+    assert.equal(await page.locator(".legacy-matter-kind").count(), 0, "matters do not repeat their kind above a title that names it");
+    assert.equal(await page.locator('.legacy-panel [data-next-step="answer"]').count(), 1, "the War Record points to the next step");
+    record("War Record: no fabricated conflicts (honest empty state), unresolved matters (without a repeated kind label) and the ledger come from saved data (founding and nomination entries); it opens on the next step toward the match");
 
     // Herald's Station: the formal challenge states its wager; accepting shows Awaiting the board.
     await page.locator(".legacy-panel-cycle--next").click();
     await page.locator('[data-landmark-panel="heralds-station"]').waitFor();
     const challenge = page.locator('[data-notice-kind="rival-challenge"]');
     assert.match(await challenge.innerText(), /THE WAGER[\s\S]*terms of this Muster conflict/i);
+    assert.equal(await challenge.locator("[data-stance]").innerText(), "WARY", "the rival's stance sits beside its seal");
+    assert.equal(await page.locator(".legacy-notice-from").count(), 0, "no separate From line repeats the sender");
+    assert.equal(await challenge.locator("[data-wager-term]").count(), 4, "the wager lists its stated terms from the shared builder");
+    const wagerSize = await challenge.locator("[data-wager-term] dd").first().evaluate((element) => parseFloat(getComputedStyle(element).fontSize));
+    const bodySize = await page.locator(".legacy-screen").evaluate((element) => parseFloat(getComputedStyle(element).fontSize));
+    assert.ok(wagerSize >= bodySize && wagerSize >= 12, `the wager is set at body size or larger (${wagerSize}px, body ${bodySize}px)`);
     assert.match(await page.locator('[data-readiness]').innerText(), /Accept the challenge and its wager first/);
     await page.locator('[data-notice-kind="muster-summons"]').locator("xpath=..").getByRole("button", { name: "Mark as read", exact: true }).click();
     await page.locator('[data-notice-kind="muster-summons"].is-read').waitFor();
@@ -623,13 +896,14 @@ try {
     assert.match(await challenge.innerText(), /Accepted · awaiting the board/i);
     assert.equal(JSON.parse(await storedSave(page)).notices.find((notice) => notice.kind === "rival-challenge").status, "accepted");
     assert.equal(await page.locator('[data-readiness="ready"]').count(), 1);
-    record("Herald's Station: summons and the formal challenge with its national wager stated prominently; read marks are saved; accepting confirms the wager again and shows the truthful Awaiting the board state");
+    record("Herald's Station: summons and the formal challenge with stance chips beside the seals, no repeated sender line, and the wager as its four stated terms at body size; read marks are saved; accepting confirms the wager again and shows the truthful Awaiting the board state");
 
     // Back unwinds dialog → inspection → overview → Home.
     await page.locator('[data-notice-kind="muster-summons"]').focus();
     await page.keyboard.press("Escape");
     await focusIs(page, () => document.activeElement?.getAttribute("data-landmark") === "heralds-station");
     assert.equal(await legacyMode(page), "bannerhold");
+    assert.match(await page.locator(".legacy-next-strip [data-next-step]").innerText(), /Ready for the Muster[\s\S]*Accepted · awaiting the board/i);
     await page.keyboard.press("Escape");
     await page.locator(".home-grid").waitFor();
     await focusIs(page, () => document.activeElement?.getAttribute("aria-label") === "My Legacy");
@@ -641,17 +915,19 @@ try {
     await page.keyboard.press("Home");
     await page.keyboard.press("Enter");
     await page.locator('[data-landmark-panel="banner-hall"]').waitFor();
-    await page.getByRole("button", { name: "Abandon banner and found anew", exact: true }).click();
+    await page.locator("[data-manage-banner] summary").click();
+    await page.getByRole("button", { name: "Dissolve banner", exact: true }).click();
     await page.locator("dialog.legacy-dialog[open]").waitFor();
-    await focusIs(page, () => document.activeElement?.textContent?.includes("Keep the current banner"));
+    assert.match(await page.locator("dialog.legacy-dialog").innerText(), /Dissolve this banner\?/i);
+    await focusIs(page, () => document.activeElement?.textContent?.includes("Keep the banner"));
     await page.keyboard.press("Enter");
     await page.locator("dialog.legacy-dialog[open]").waitFor({ state: "detached" });
     assert.ok(await storedSave(page), "keeping the banner leaves the save");
-    await page.getByRole("button", { name: "Abandon banner and found anew", exact: true }).click();
-    await page.locator("dialog.legacy-dialog[open]").getByRole("button", { name: /Dissolve and begin anew/ }).click();
+    await page.getByRole("button", { name: "Dissolve banner", exact: true }).click();
+    await page.locator("dialog.legacy-dialog[open]").getByRole("button", { name: /Dissolve the banner/ }).click();
     await waitMode(page, "founding");
     assert.equal(await storedSave(page), null);
-    record("Abandon banner and found anew asks for confirmation (defaulting to Keep), then dissolves the saved banner and restarts the founding ceremony");
+    record("Dissolve banner (inside Manage banner, the shared label on both platforms) asks for confirmation with the shared wording (defaulting to Keep), then dissolves the saved banner and restarts the founding ceremony");
     await context.close();
   }
 
@@ -682,7 +958,9 @@ try {
     assert.ok(await page.locator(".legacy-match--defeat").count() === 1, "the fixture defeat is listed");
     await page.keyboard.press("Escape");
     await page.locator('.legacy-label[data-landmark="banner-hall"]').click();
-    assert.match(await page.locator(".legacy-panel").innerText(), /Development previews are fixture data/);
+    await page.locator("[data-manage-banner] summary").click();
+    assert.match(await page.locator(".legacy-panel").innerText(), /Development previews are fixture data and cannot be dissolved or saved\./);
+    assert.equal(await page.locator(".legacy-panel").getByRole("button", { name: "Dissolve banner", exact: true }).count(), 0, "a preview cannot be dissolved");
     assert.deepEqual(await writes(page), [], "preview sessions never write the Legacy save");
     assert.equal(await storedSave(page), null);
     record("?legacyPreview=captive shows the persistent preview label and title, at most two aftermath messages with the War Record note (Back sets them aside), the captive state, and makes no storage writes even after interaction");
@@ -725,9 +1003,23 @@ try {
     assert.equal(await page.locator("[data-session-label]").innerText(), GUEST_LABEL);
     await foundByPointer(page);
     assert.equal(await page.locator("[data-session-label]").innerText(), GUEST_LABEL);
+    // Accepting before a Pawn is named: the dialog says so and offers the Muster Grounds instead.
+    await page.locator('.legacy-label[data-landmark="heralds-station"]').click();
+    await page.locator("[data-accept]").click();
+    const acceptDialog = page.locator("dialog.legacy-dialog[open]");
+    await acceptDialog.waitFor();
+    assert.equal(await acceptDialog.locator("[data-dialog-warning]").innerText(), "Nominate a member and an open file for the Muster.");
+    const alternate = acceptDialog.locator("[data-dialog-alternate]");
+    assert.equal(await alternate.innerText(), "Name your Pawn at the Muster Grounds");
+    await page.keyboard.press("ArrowRight");
+    await focusIs(page, () => document.activeElement?.hasAttribute("data-dialog-alternate"));
+    await page.keyboard.press("Enter");
+    await page.locator('[data-landmark-panel="muster-grounds"]').waitFor();
+    assert.equal(await page.locator("dialog.legacy-dialog[open]").count(), 0, "the dialog closes on the way to the Muster Grounds");
+    await focusIs(page, () => document.activeElement?.hasAttribute("data-nominate"));
     assert.equal(await storedSave(page), stored, "the stored banner is untouched");
     assert.deepEqual(await writes(page), []);
-    record("?legacy=fresh starts a labelled guest founding that ignores and never writes the stored banner");
+    record("?legacy=fresh starts a labelled guest founding that ignores and never writes the stored banner; accepting the challenge before a Pawn is named states the readiness gap and offers Name your Pawn at the Muster Grounds, which opens the Muster Grounds on Nominate");
     await context.close();
   }
 
@@ -789,8 +1081,7 @@ try {
     await pad(page, [15], () => page.waitForFunction((previous) => document.querySelector("#legacy-arms-preset")?.getAttribute("aria-valuetext") !== previous, preset));
     await padUntilFocus(page, 13, "Continue");
     await pad(page, [0], () => page.locator('[data-founding-step="confirm"]').waitFor());
-    await pad(page, [0], () => page.locator("dialog.legacy-dialog[open]").waitFor());
-    await pad(page, [0]);
+    await pad(page, [0], () => page.locator(".legacy-beat").waitFor({ timeout: 10000 }));
     await finishBeat(page);
     record("Controller-only founding: D-pad and A choose a nation, Suggest supplies the name, D-pad cycles the arms and A raises the banner");
 
@@ -819,7 +1110,8 @@ try {
     const result = await page.evaluate(() => {
       const stage = document.querySelector(".menu-stage").getBoundingClientRect();
       const box = (element) => { const rect = element.getBoundingClientRect(); return { name: element.className.toString().split(" ")[0], left: Math.round(rect.left), top: Math.round(rect.top), right: Math.round(rect.right), bottom: Math.round(rect.bottom) }; };
-      const boxes = [...document.querySelectorAll(".legacy-panel, .legacy-card, .legacy-header, .legacy-footer, .legacy-aftermath, .legacy-label[data-visible='true']")].filter((element) => element.getClientRects().length && getComputedStyle(element).visibility !== "hidden").map(box);
+      const shown = (element) => element.getClientRects().length > 0 && getComputedStyle(element).visibility !== "hidden";
+      const boxes = [...document.querySelectorAll(".legacy-panel, .legacy-card, .legacy-header, .legacy-footer, .legacy-aftermath, .legacy-next-strip, .legacy-label[data-visible='true']")].filter(shown).map(box);
       const outside = boxes.filter((rect) => rect.left < stage.left - 1 || rect.right > stage.right + 1 || rect.top < stage.top - 1 || rect.bottom > stage.bottom + 1);
       const clipped = [...document.querySelectorAll(".legacy-screen h1, .legacy-screen h2, .legacy-screen h3, .legacy-screen button, .legacy-screen .legacy-entry-title, .legacy-screen .legacy-label-title")]
         .filter((element) => element.getClientRects().length && getComputedStyle(element).visibility !== "hidden" && element.scrollWidth > element.clientWidth + 1 && getComputedStyle(element).textOverflow !== "ellipsis")
@@ -832,8 +1124,35 @@ try {
         const top = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
         badgeCovered = !top || !badge.contains(top);
       }
-      return { overflow: document.documentElement.scrollWidth > innerWidth, outside, clipped, badgeCovered, stage: { width: Math.round(stage.width), height: Math.round(stage.height) } };
+      // The next-step strip must leave every landmark label clickable in the establishing framing.
+      const strip = document.querySelector(".legacy-next-strip");
+      const stripCovers = [];
+      if (strip && shown(strip)) {
+        const area = strip.getBoundingClientRect();
+        for (const label of document.querySelectorAll(".legacy-label[data-visible='true']")) {
+          if (!shown(label)) continue;
+          const rect = label.getBoundingClientRect();
+          if (rect.left < area.right && rect.right > area.left && rect.top < area.bottom && rect.bottom > area.top) stripCovers.push(label.getAttribute("data-landmark"));
+        }
+      }
+      // Type floor: no Legacy text below 11 px (controller key glyphs and the stand-in's development caption excepted).
+      let smallest = Infinity;
+      let smallestText = "";
+      const walker = document.createTreeWalker(document.querySelector(".legacy-screen"), NodeFilter.SHOW_TEXT);
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        const parent = node.parentElement;
+        if (!parent || !node.textContent.trim() || parent.closest(".controller-key, .legacy-key, .legacy-standin-caption, dialog:not([open])")) continue;
+        if (!shown(parent)) continue;
+        const size = parseFloat(getComputedStyle(parent).fontSize);
+        if (size < smallest) { smallest = size; smallestText = node.textContent.trim().slice(0, 40); }
+      }
+      const actions = document.querySelector(".legacy-card-actions");
+      const actionsBackground = actions && shown(actions) ? getComputedStyle(actions).backgroundColor : null;
+      return { overflow: document.documentElement.scrollWidth > innerWidth, outside, clipped, badgeCovered, stripCovers, smallestFontPx: Number.isFinite(smallest) ? smallest : null, smallestText, actionsBackground, stage: { width: Math.round(stage.width), height: Math.round(stage.height) } };
     });
+    assert.deepEqual(result.stripCovers, [], `${state} @${viewport.width}: the next-step strip covers a landmark label`);
+    assert.ok(result.smallestFontPx === null || result.smallestFontPx >= 11, `${state} @${viewport.width}: text below the 11 px floor (${result.smallestFontPx}px: "${result.smallestText}")`);
+    if (result.actionsBackground) assert.match(result.actionsBackground, /^rgb\(/, `${state} @${viewport.width}: the founding actions bar is opaque (${result.actionsBackground})`);
     assert.equal(result.badgeCovered, false, `${state} @${viewport.width}: the session label is covered`);
     assert.equal(result.overflow, false, `${state} @${viewport.width}: horizontal page overflow`);
     assert.deepEqual(result.outside, [], `${state} @${viewport.width}: elements outside the stage`);
@@ -871,7 +1190,7 @@ try {
       await context.close();
     }
   }
-  if (section("layout")) record("Founding steps, overview and all four panels fit the stage at 844×390, 1280×720 and 1920×1080 with no horizontal overflow or clipped text");
+  if (section("layout")) record("Founding steps, overview (with the next-step strip clear of every landmark label) and all four panels fit the stage at 844×390, 1280×720 and 1920×1080 with no horizontal overflow or clipped text, no Legacy text below 11 px, and an opaque founding actions bar");
 
   // 8. The decoded sorcerer survives a Legacy round trip: same canvas, no second download.
   if (section("sorcerer")) {
@@ -972,7 +1291,160 @@ try {
     await context.close();
   }
 
-  // 11. Performance protocol (opt-in): traces, long tasks, heap and renderer statistics.
+
+  // 11. A failed Legacy chunk stays inside the Legacy layer: Home and Play keep working, Back returns Home, re-entry and Retry re-import it.
+  if (section("boundary")) {
+    const legacyChunk = /\/LegacyScreen(?:-[\w-]+)?\.(?:js|tsx)$/;
+    const blockingPage = async () => {
+      const context = await browser.newContext({ viewport: { width: 1280, height: 720 }, reducedMotion: "reduce" });
+      const page = await context.newPage();
+      page.setDefaultTimeout(30000);
+      // This group provokes the failure on purpose, so its console output is checked here rather than failing the suite.
+      const provoked = [];
+      page.on("pageerror", (error) => provoked.push(`pageerror: ${error.message}`));
+      page.on("console", (message) => { if (message.type() === "error") provoked.push(`console: ${message.text()}`); });
+      const network = { blocked: true, blockedRequests: 0 };
+      await page.route((url) => legacyChunk.test(url.pathname), (route) => {
+        if (!network.blocked) return route.continue();
+        network.blockedRequests++;
+        return route.abort("failed");
+      });
+      await page.addInitScript(() => localStorage.setItem("crownfall.main-game.preferences", JSON.stringify({ quality: "low", motion: false, volume: 65 })));
+      await page.goto(address({ legacy: "fresh" }));
+      await waitForBootReady(page);
+      await page.getByRole("tab", { name: "Home", exact: true }).click();
+      await page.locator(".home-grid").waitFor();
+      // Each attempt to load the screen is numbered on the layer, so a check never reads the previous attempt's failure.
+      const enter = async (attempt) => {
+        await page.getByRole("button", { name: "My Legacy", exact: true }).click();
+        await page.locator(`[data-legacy-layer="active"][data-legacy-attempt="${attempt}"] [data-legacy-failure]`).waitFor();
+      };
+      const unexpected = () => provoked.filter((message) => !/Failed to load resource|ERR_FAILED|Failed to fetch dynamically imported module|My Legacy could not open/i.test(message));
+      return { context, page, network, enter, unexpected };
+    };
+    {
+      const { context, page, network, enter, unexpected } = await blockingPage();
+      await enter(0);
+      const failure = page.locator("[data-legacy-failure]");
+      assert.ok(network.blockedRequests >= 1, "the Legacy screen chunk request was blocked");
+      assert.equal(await failure.getAttribute("data-legacy-failure"), "chunk");
+      assert.match(await failure.innerText(), /My Legacy could not open[\s\S]*Home and Play are unaffected/i);
+      await focusIs(page, () => document.activeElement?.hasAttribute("data-failure-retry"));
+      await page.locator("[data-failure-home]").click();
+      await page.locator(".home-grid").waitFor();
+      await focusIs(page, () => document.activeElement?.getAttribute("aria-label") === "My Legacy");
+      await page.getByRole("tab", { name: "Play", exact: true }).click();
+      await page.locator(".game-cards").waitFor();
+      await page.getByRole("button", { name: "Classic", exact: true }).click();
+      await page.locator("dialog.menu-dialog[open]").waitFor();
+      assert.match(await page.locator("dialog.menu-dialog").innerText(), /Classic/);
+      await page.keyboard.press("Escape");
+      await page.locator("dialog.menu-dialog[open]").waitFor({ state: "detached" });
+      await page.getByRole("tab", { name: "Home", exact: true }).click();
+      await page.locator(".home-grid").waitFor();
+      const attempts = network.blockedRequests;
+      await enter(1);
+      assert.ok(network.blockedRequests > attempts, "re-entering retried the download");
+      await page.keyboard.press("Escape");
+      await page.locator(".home-grid").waitFor();
+      await focusIs(page, () => document.activeElement?.getAttribute("aria-label") === "My Legacy");
+      network.blocked = false;
+      await page.getByRole("button", { name: "My Legacy", exact: true }).click();
+      await waitForLegacy(page);
+      assert.equal(await legacyMode(page), "founding", "re-entering after recovery opens My Legacy");
+      assert.deepEqual(unexpected(), [], "only the provoked chunk failure was reported");
+      record("A blocked Legacy screen chunk shows the honest My Legacy could not open state inside the Legacy layer (Retry focused); Return to Home restores Home with focus, the Play tab and its Classic card still work, re-entering retries the download, Escape leaves the failure for Home, and re-entering after recovery opens the founding ceremony");
+      await context.close();
+    }
+    {
+      const { context, page, network, enter, unexpected } = await blockingPage();
+      await enter(0);
+      const failureHome = await page.locator("[data-failure-home]").innerText();
+      network.blocked = false;
+      await focusIs(page, () => document.activeElement?.hasAttribute("data-failure-retry"));
+      await page.keyboard.press("Enter");
+      await waitForLegacy(page);
+      assert.equal(await legacyMode(page), "founding", "Retry re-imported the screen");
+      assert.equal(await page.locator("[data-legacy-failure]").count(), 0);
+      assert.equal(failureHome, await page.locator("[data-legacy-back]").getAttribute("aria-label"), "the failure state's Return to Home matches the shared label");
+      await page.locator("[data-legacy-back]").click();
+      await page.locator(".home-grid").waitFor();
+      assert.deepEqual(unexpected(), [], "only the provoked chunk failure was reported");
+      record("Retry (Enter on the focused button) re-imports the Legacy chunk under a fresh URL once the network recovers (browsers keep failed module fetches) and opens the founding ceremony; its Return to Home label matches the shared one");
+      await context.close();
+    }
+  }
+
+  // 12. Chess comes first (docs/legacy/BRIEF.md): launch timings with and without a saved banner,
+  // actions from every Legacy screen back to Play, and the web chess app's entry graph.
+  if (section("chessfirst")) {
+    const development = await fetch(new URL("/@vite/client", origin)).then((response) => response.ok && /javascript/.test(response.headers.get("content-type") ?? "")).catch(() => false);
+    const report = {
+      measuredAt: new Date().toISOString(),
+      target: origin,
+      build: development ? "development (Vite dev server)" : "production build (vite preview)",
+      launchToFirstMove: "Not measurable in this build: the menu's Play cards are previews and no chess board is connected to this menu, so there is no first move to time. The numbers below time launch to the menu accepting input on the Play tab, to the Classic card being selected by the first key press, and to the Classic card opening.",
+      caveat: "Measured in headless Chromium with software WebGL on a shared, heavily loaded 4-CPU container. Absolute times overstate real hardware; the comparison with and without a saved banner and the Legacy requests and save reads during launch are the meaningful signals.",
+      launch: [],
+      actionsToPlay: [],
+      webEntry: null,
+    };
+    // A real saved banner, founded through the UI (the founding group's, or a quick one when this group runs alone).
+    let savedBanner = validSave || null;
+    if (!savedBanner) {
+      const { context, page } = await createPage();
+      await openLegacyByKeyboard(page);
+      await foundByPointer(page);
+      savedBanner = await storedSave(page);
+      await context.close();
+    }
+    assert.ok(savedBanner && JSON.parse(savedBanner).banner, "a saved banner is available for the launch comparison");
+    for (const config of [{ model: "none", runs: 3 }, { model: null, runs: 1 }]) {
+      for (const withSave of [false, true]) {
+        for (let run = 0; run < config.runs; run++) {
+          report.launch.push(await measureLaunch({ save: withSave ? savedBanner : null, model: config.model, run }));
+        }
+      }
+    }
+    for (const entry of report.launch) {
+      assert.equal(entry.legacyRequests.length, 0, `launch (${entry.save ? "with" : "without"} a save) requested Legacy code: ${entry.legacyRequests.join(", ")}`);
+      assert.equal(entry.saveReads, 0, "launch never reads the Legacy save");
+    }
+    const median = (values) => { const sorted = values.slice().sort((a, b) => a - b); return sorted.length ? sorted[sorted.length >> 1] : null; };
+    report.launchSummary = {};
+    for (const model of ["none", "default"]) {
+      for (const save of [false, true]) {
+        const runs = report.launch.filter((entry) => entry.model === model && entry.save === save);
+        if (!runs.length) continue;
+        report.launchSummary[`${model === "none" ? "menuOnly" : "fullBoot"}${save ? "WithSave" : "WithoutSave"}`] = {
+          runs: runs.length,
+          menuReadyMs: median(runs.map((entry) => entry.menuReadyMs)),
+          firstInputAcceptedMs: median(runs.map((entry) => entry.firstInputAcceptedMs)),
+          classicOpenedMs: median(runs.map((entry) => entry.classicOpenedMs)),
+        };
+      }
+    }
+    record(`Launch timing recorded with and without a saved banner (${report.launch.length} launches, menu only and full boot): no Legacy code is requested and the Legacy save is never read before My Legacy opens; launch to first move is reported as not measurable while the Play cards are previews`);
+
+    for (const start of ACTION_STARTS) {
+      for (const method of ["pointer", "keys"]) report.actionsToPlay.push(await measureActionsToPlay(start, method));
+    }
+    for (const entry of report.actionsToPlay) assert.ok(entry.reachedPlay, `${entry.start} (${entry.method}) reaches Play`);
+    const pointerWorst = Math.max(...report.actionsToPlay.filter((entry) => entry.method === "pointer").map((entry) => entry.toPlay));
+    const keysWorst = Math.max(...report.actionsToPlay.filter((entry) => entry.method === "keys").map((entry) => entry.toPlay));
+    assert.ok(pointerWorst <= 2, `pointer: at most two actions from any Legacy screen to Play (worst ${pointerWorst})`);
+    report.actionsSummary = { pointerWorstToPlay: pointerWorst, keysWorstToPlay: keysWorst, controller: "Controller B is the same Back action as Escape (App maps both to back()); the gamepad group verifies B from the Bannerhold to Home." };
+    record(`Actions back to Play counted from founding, the overview, each inspector, a dialog and the aftermath: pointer worst ${pointerWorst} (the footer Play route; a dialog is closed first), keyboard worst ${keysWorst} (Escape chain)`);
+
+    report.webEntry = await webEntryGraph();
+    assert.ok(report.webEntry.files > 10, "the web entry graph was walked");
+    assert.deepEqual(report.webEntry.legacyFiles, [], "the web app's entry imports no Legacy code");
+    record(`The web chess app's entry graph (web/src/main.tsx, ${report.webEntry.files} modules, static and dynamic imports) contains no Legacy module`);
+    await mkdir(directory, { recursive: true });
+    await writeFile(`${directory}/chess-first.json`, JSON.stringify(report, null, 2) + "\n");
+  }
+
+  // 13. Performance protocol (opt-in): traces, long tasks, heap and renderer statistics.
   if (perfRequested) await measurePerformance();
 
   assert.deepEqual(errors, [], "no JavaScript or console errors");

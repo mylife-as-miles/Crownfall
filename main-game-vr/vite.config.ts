@@ -38,7 +38,8 @@ export default defineConfig({
       server.httpServer?.once('close', () => server.watcher.off('change', update));
     },
   }, iwsdkDev()],
-  server: { host: '0.0.0.0', port: 8081, open: false },
+  // CROWNFALL_QUEST_PORT moves the runtime off 8081 when another checkout's runtime already holds it on a shared host.
+  server: { host: '0.0.0.0', port: Number(process.env.CROWNFALL_QUEST_PORT) || 8081, open: false },
   build: {
     outDir: 'dist',
     sourcemap: process.env.NODE_ENV !== 'production',

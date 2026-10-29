@@ -9,7 +9,9 @@ import { getAlliedHouse, getRivalHouse } from "../content/houses";
 import { eligibleMusterFiles, isFileLetter } from "../content/muster";
 import { isNationId } from "../content/nations";
 import { chronicleEntryId } from "./chronicle";
+// Deprecated default for callers that pass no preview source; see LegacySessionOptions.previews.
 import { buildLegacyPreview, listLegacyPreviews } from "./fixtures";
+import type { LegacyPreviewListing } from "./fixtures";
 import { validateBannerName, validateMotto } from "./founding";
 import { isKnownHouseId } from "./identity";
 import { createLegacyState } from "./state";
@@ -357,8 +359,11 @@ export type LegacySession =
   | { kind: "guest"; persistent: false; state: LegacyState; label: string }
   /** ?legacyPreview=<id>: a fixture state, never saved. */
   | { kind: "preview"; persistent: false; previewId: string; title: string; description: string; state: LegacyState; label: string }
-  /** ?legacyPreview=<unknown>: an empty guest state with the error to show. Storage is untouched. */
-  | { kind: "preview-missing"; persistent: false; previewId: string; error: string; state: LegacyState; label: string }
+  /**
+   * ?legacyPreview=<unknown>, or previews that could not be loaded: an empty guest state with the error
+   * to show and the previews that do exist (empty when none could be loaded). Storage is untouched.
+   */
+  | { kind: "preview-missing"; persistent: false; previewId: string; error: string; previews: LegacyPreviewListing[]; state: LegacyState; label: string }
   /** No storage available: progress lasts for this visit only. */
   | { kind: "unavailable"; persistent: false; state: LegacyState; error: string }
   | { kind: "stored"; persistent: true; state: LegacyState; migratedFrom: number | null }
@@ -366,9 +371,25 @@ export type LegacySession =
   /** The stored save was refused and left untouched; the UI offers a new banner or a guest session. */
   | { kind: "recovery"; persistent: true; state: LegacyState; reason: LegacyRefusalReason; error: string };
 
+/**
+ * Development preview states and their listings. domain/fixtures satisfies it;
+ * domain/preview-loader.ts loads it as a separate chunk only for ?legacyPreview
+ * URLs, so production chunks need not carry fixture tapes.
+ */
+export interface LegacyPreviewSource {
+  buildLegacyPreview(id: string): LegacyState | null;
+  listLegacyPreviews(): LegacyPreviewListing[];
+}
+
 export interface LegacySessionOptions extends PersistenceOptions {
   /** createdAt for fresh states; defaults to LEGACY_EPOCH. Founding stamps the real time. */
   at?: string;
+  /**
+   * Previews for ?legacyPreview URLs, from loadLegacyPreviewSource(). Omitting it falls back to the
+   * built-in fixtures, which keeps them in the caller's chunk: a deprecated default, removed once
+   * both apps pass a source.
+   */
+  previews?: LegacyPreviewSource;
 }
 
 /** Reads one query parameter from a location.search string without DOM APIs. */
@@ -392,6 +413,16 @@ export function readSearchParam(search: string, key: string): string | null {
   return null;
 }
 
+/** True when the URL asks for a development preview, so the caller loads a preview source first. */
+export function requestsLegacyPreview(search: string): boolean {
+  return readSearchParam(search, "legacyPreview") !== null;
+}
+
+/** The session for a preview that cannot be shown: an empty in-memory state, never storage. */
+export function previewMissingSession(previewId: string, error: string, previews: LegacyPreviewListing[], at?: string): LegacySession {
+  return { kind: "preview-missing", persistent: false, previewId, error, previews, state: createLegacyState({ at }), label: LEGACY_COPY.guest.label };
+}
+
 /**
  * Decides where this visit's Legacy state comes from. Preview and guest URLs
  * never touch storage; otherwise the stored save is loaded, an empty store
@@ -401,26 +432,19 @@ export function resolveLegacySession(search: string, storage: LegacyStorageLike 
   const at = options.at;
   const previewId = readSearchParam(search, "legacyPreview");
   if (previewId !== null) {
-    const state = buildLegacyPreview(previewId);
-    if (state) {
-      let title = previewId;
-      let description = "";
-      for (const listing of listLegacyPreviews()) {
-        if (listing.id === previewId) {
-          title = listing.title;
-          description = listing.description;
-        }
+    const source: LegacyPreviewSource = options.previews ?? { buildLegacyPreview, listLegacyPreviews };
+    const listings = source.listLegacyPreviews();
+    const state = source.buildLegacyPreview(previewId);
+    if (!state) return previewMissingSession(previewId, LEGACY_COPY.preview.missing(previewId), listings, at);
+    let title = previewId;
+    let description = "";
+    for (const listing of listings) {
+      if (listing.id === previewId) {
+        title = listing.title;
+        description = listing.description;
       }
-      return { kind: "preview", persistent: false, previewId, title, description, state, label: LEGACY_COPY.preview.label };
     }
-    return {
-      kind: "preview-missing",
-      persistent: false,
-      previewId,
-      error: LEGACY_COPY.preview.missing(previewId),
-      state: createLegacyState({ at }),
-      label: LEGACY_COPY.guest.label,
-    };
+    return { kind: "preview", persistent: false, previewId, title, description, state, label: LEGACY_COPY.preview.label };
   }
   if (readSearchParam(search, "legacy") === "fresh") {
     return { kind: "guest", persistent: false, state: createLegacyState({ at }), label: LEGACY_COPY.guest.label };

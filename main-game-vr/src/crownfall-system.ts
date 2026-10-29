@@ -8,12 +8,13 @@ import type { HomeTileAction, SettingsCategory } from '../../shared/menu/types';
 import { CrownfallQuestState } from './quest-components.js';
 import {
   adjustQuestPreference, createQuestState, getQuestSettingsRows, normalizeQuestPreferences,
-  QUEST_PREFERENCES_KEY, QUEST_VISIT_ARENAS, QUEST_VISIT_STEPS, reduceQuestState,
+  QUEST_PANEL_HEIGHT_OFFSETS, QUEST_PREFERENCES_KEY, QUEST_VISIT_ARENAS, QUEST_VISIT_STEPS, reduceQuestState,
 } from './quest-state.js';
 import type { QuestEvent, QuestPreferences, QuestState } from './quest-state.js';
 import { QUEST_UI_LAYOUT, QUEST_VIEW_IDS, QUEST_SETTING_ROWS } from './ui-contract.js';
 import { CrownfallAtmosphere } from './atmosphere.js';
-import { QuestLegacyExperience } from './legacy/legacy-experience.js';
+// Type-only: My Legacy is a separate chunk, imported the first time its route opens.
+import type { LegacyHostActions, QuestLegacyExperience } from './legacy/legacy-experience.js';
 
 const SELECTION_GROUPS = {
   home: HOME_CONTENT.map(item => `Home_${item.action}`),
@@ -40,7 +41,12 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   private heroAnchor!: Object3D;
   private atmosphere!: CrownfallAtmosphere;
   private atmosphereObject!: Object3D;
-  private legacy!: QuestLegacyExperience;
+  private legacy: QuestLegacyExperience | null = null;
+  private legacyActions!: LegacyHostActions;
+  /** My Legacy is loaded on first entry: idle until then, loading while its chunk and panels arrive. */
+  private legacyLoad: 'idle' | 'loading' | 'ready' | 'failed' = 'idle';
+  private legacyStatus = '';
+  private heroStatus = '';
   /** False while My Legacy replaces the menu views, sorcerer and atmosphere. */
   private menuShown = true;
   private elements = new Map<string, UIKit.Text>();
@@ -88,13 +94,13 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.heroAnchor = this.world.requireSceneEntity('sorcerer-anchor').object3D!;
     this.atmosphereObject = this.world.requireSceneObject<Object3D>('atmosphere-anchor');
     this.atmosphere = new CrownfallAtmosphere(this.atmosphereObject);
-    this.legacy = new QuestLegacyExperience(this.world, this.stateEntity, {
+    this.legacyActions = {
       home: () => this.dispatch(this.state.paused ? { type: 'pause-home' } : { type: 'back' }),
       pause: () => this.dispatch({ type: 'pause', reason: 'Take your time. Your place is kept.' }),
       resume: () => { if (!this.state.entered || this.leftTracked || this.rightTracked) this.dispatch({ type: 'resume' }); },
       exit: () => { void this.exit(); },
       recenter: () => this.recenter(),
-    });
+    };
     const bind = (id: string, callback: () => void) => {
       const element = this.element(id);
       element.name = id;
@@ -139,7 +145,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.cleanupFuncs.push(() => this.reducedMotion.removeEventListener('change', onMotion));
     this.cleanupFuncs.push(this.world.visibilityState.subscribe(visibility => this.onVisibility(visibility)));
     this.cleanupFuncs.push(this.world.onXRFrame(frame => this.onHandsFrame(frame)));
-    this.cleanupFuncs.push(() => { this.alive = false; this.atmosphere.dispose(); this.legacy.dispose(); this.mixer?.stopAllAction(); if (this.hero) this.hero.dispose(); });
+    this.cleanupFuncs.push(() => { this.alive = false; this.atmosphere.dispose(); this.legacy?.dispose(); this.legacy = null; this.mixer?.stopAllAction(); if (this.hero) this.hero.dispose(); });
     if (navigator.xr) void navigator.xr.isSessionSupported('immersive-vr').then(supported => { this.canEnter = supported; this.render(); }).catch(() => this.browserStatus('VR availability could not be checked. Try opening this page in your headset browser.'));
     // Explicit development-only accommodation for software headset emulation.
     // Production headset rendering keeps the native framebuffer scale.
@@ -150,6 +156,8 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.applyComfort();
     this.render();
     void this.loadHero();
+    // Home is bound and drawn: the launch-to-interactive mark that verification reads.
+    performance.mark('crownfall:menu-ready');
   }
 
   private element(id: string): UIKit.Text {
@@ -247,7 +255,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.display('Btn_Back', !s.paused && !s.modal);
     this.display('Status_Hint', false);
     this.display('Status_Tracking', false);
-    this.display('Status_Boot', this.modelFailed);
+    this.renderStatus();
     this.display('Btn_RetryCreature', this.modelFailed);
     this.text('Status_Hint', 'Point and pinch, or touch a button.');
     this.text('Status_Tracking', s.entered ? this.trackingLabel() : 'Hands-first / no controller required');
@@ -302,11 +310,50 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   private syncLegacy(): void {
     const s = this.state;
     const active = s.screen === 'legacy' || (s.paused && s.previousScreen === 'legacy');
-    if (active && this.menuShown) this.legacy.placeAnchor(this.anchor.position, this.anchor.rotation.y, false);
+    if (active && !this.legacy) this.loadLegacy();
+    const legacy = this.legacy;
+    // Until My Legacy has loaded, Home stays in view with its status line, so the visit is never left blank.
+    if (!legacy) { this.setMenuShown(true); return; }
+    if (active && this.menuShown) legacy.placeAnchor(this.anchor.position, this.anchor.rotation.y, false);
     // Keep one poke target set registered at all times so fingertip touch never toggles off between them.
     if (!active) this.setMenuShown(true);
-    this.legacy.sync({ active, paused: s.paused, pauseReason: s.pauseReason, entered: s.entered, handTracked: this.leftTracked || this.rightTracked });
+    legacy.sync({ active, paused: s.paused, pauseReason: s.pauseReason, entered: s.entered, handTracked: this.leftTracked || this.rightTracked });
     if (active) this.setMenuShown(false);
+  }
+  /**
+   * Loads My Legacy the first time its route opens: its chunk, its two lazy panel documents and its session.
+   * A failure returns to Home with an honest status line; choosing My Legacy again retries.
+   */
+  private loadLegacy(): void {
+    if (this.legacyLoad === 'loading' || this.legacyLoad === 'ready') return;
+    this.legacyLoad = 'loading';
+    this.legacyStatus = 'Preparing My Legacy...';
+    performance.mark('crownfall:legacy-requested');
+    import('./legacy/legacy-experience.js')
+      .then(({ QuestLegacyExperience }) => QuestLegacyExperience.create(this.world, this.stateEntity, this.legacyActions))
+      .then((legacy) => {
+        if (!this.alive) { legacy.dispose(); return; }
+        this.legacy = legacy;
+        this.legacyLoad = 'ready';
+        this.legacyStatus = '';
+        performance.mark('crownfall:legacy-ready');
+        this.applyComfort();
+        this.render();
+      })
+      .catch((error: unknown) => {
+        console.error('[My Legacy] My Legacy could not be loaded.', error);
+        if (!this.alive) return;
+        this.legacyLoad = 'failed';
+        this.legacyStatus = 'My Legacy could not open. Select My Legacy again to retry.';
+        if (this.state.screen === 'legacy') this.dispatch({ type: 'back' });
+        else this.render();
+      });
+  }
+  /** The menu's status line: My Legacy loading or failing comes first, then a sorcerer that could not load. */
+  private renderStatus(): void {
+    const status = this.legacyStatus || (this.modelFailed ? this.heroStatus : '');
+    if (status) this.text('Status_Boot', status);
+    this.display('Status_Boot', status.length > 0);
   }
   private setMenuShown(shown: boolean): void {
     if (this.menuShown === shown) return;
@@ -349,7 +396,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     if (before !== this.preferences) {
       try { localStorage.setItem(QUEST_PREFERENCES_KEY, JSON.stringify(this.preferences)); } catch { /* In-memory controls remain available. */ }
       this.applyComfort();
-      if (before.panelDistance !== this.preferences.panelDistance || before.posture !== this.preferences.posture) this.recenter();
+      if (before.panelDistance !== this.preferences.panelDistance || before.panelHeight !== this.preferences.panelHeight || before.posture !== this.preferences.posture) this.recenter();
     }
     this.render();
   }
@@ -357,13 +404,15 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     // Enlarge the entire desktop design uniformly. A35-unit detail row is
     // physically hand-sized without altering the approved visual proportions.
     this.menuObject.scale.setScalar(QUEST_UI_LAYOUT.authoredScale * this.preferences.textScale / 100);
-    this.menuObject.position.set(0, this.preferences.posture === 'seated' ? -.12 : -.2, -this.preferences.panelDistance);
+    const height = QUEST_PANEL_HEIGHT_OFFSETS[this.preferences.panelHeight];
+    this.menuObject.position.set(0, (this.preferences.posture === 'seated' ? -.12 : -.2) + height, -this.preferences.panelDistance);
     this.heroAnchor.position.z = -this.preferences.panelDistance - .85;
     this.atmosphereObject.position.set(0, this.preferences.posture === 'seated' ? -.12 : -.2, -this.preferences.panelDistance - .85);
     this.atmosphereObject.scale.setScalar(.22 * this.preferences.textScale / 100);
     this.world.renderer.xr.setFoveation({ low: 1, medium: .5, high: 0 }[this.preferences.quality]);
-    this.legacy.setComfort({
+    this.legacy?.setComfort({
       quality: this.preferences.quality, posture: this.preferences.posture, textScale: this.preferences.textScale,
+      panelDistance: this.preferences.panelDistance, panelHeight: height,
       reducedMotion: !this.preferences.motion || this.reducedMotion.matches,
     });
     if (!this.world.renderer.xr.isPresenting) this.world.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5) * { low: .75, medium: 1, high: 1.15 }[this.preferences.quality]);
@@ -376,7 +425,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     if (this.headDirection.x * this.headDirection.x + this.headDirection.z * this.headDirection.z < .001) return;
     this.anchor.position.copy(this.headPosition);
     this.anchor.rotation.set(0, Math.atan2(-this.headDirection.x, -this.headDirection.z), 0);
-    this.legacy.placeAnchor(this.anchor.position, this.anchor.rotation.y, true);
+    this.legacy?.placeAnchor(this.anchor.position, this.anchor.rotation.y, true);
     this.applyComfort();
   }
   private writeState(): void {
@@ -388,6 +437,8 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     e.setValue(c, 'chapterIndex', s.chapterIndex); e.setValue(c, 'arenaIndex', s.arenaIndex);
     e.setValue(c, 'quality', this.preferences.quality); e.setValue(c, 'textScale', this.preferences.textScale);
     e.setValue(c, 'panelDistance', this.preferences.panelDistance); e.setValue(c, 'posture', this.preferences.posture);
+    e.setValue(c, 'panelHeight', this.preferences.panelHeight);
+    e.setValue(c, 'legacyLoad', this.legacyLoad === 'idle' ? '' : this.legacyLoad);
     e.setValue(c, 'motion', this.preferences.motion);
     e.setValue(c, 'handsTracked', this.leftTracked || this.rightTracked);
     e.setValue(c, 'leftTracked', this.leftTracked); e.setValue(c, 'rightTracked', this.rightTracked);
@@ -444,7 +495,8 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   }
   private async loadHero(): Promise<void> {
     if (this.loadingHero || this.hero) return;
-    this.loadingHero = true; this.modelFailed = false; this.text('Status_Boot', 'The sorcerer is arriving. The menu is ready.');
+    this.loadingHero = true; this.modelFailed = false; this.heroStatus = 'The sorcerer is arriving. The menu is ready.';
+    this.renderStatus();
     this.display('Btn_RetryCreature', false);
     AssetManager.loadingManager.setURLModifier(url => {
       const name = new URL(url, document.baseURI).pathname.split('/').pop();
@@ -468,12 +520,14 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
       model.name = 'Crownfall Sorcerer';
       this.mixer = new AnimationMixer(model);
       this.mixer.clipAction(idle).setLoop(LoopRepeat, Infinity).setEffectiveTimeScale(1).play();
-      this.text('Status_Boot', 'Crownfall / menu and arena preview');
+      this.heroStatus = 'Crownfall / menu and arena preview';
+      this.renderStatus();
       this.writeState();
     } catch {
       if (!this.alive) return;
       this.modelFailed = true;
-      this.text('Status_Boot', 'The sorcerer could not load. You can keep exploring or retry.');
+      this.heroStatus = 'The sorcerer could not load. You can keep exploring or retry.';
+      this.renderStatus();
       this.display('Btn_RetryCreature', true);
     } finally { this.loadingHero = false; }
   }
@@ -486,7 +540,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
       if (frame === 60 || !this.preferences.motion || this.reducedMotion.matches) this.finishTransition();
     }
     // One render loop at a time: the hidden sorcerer and atmosphere stop while My Legacy is shown.
-    if (!this.menuShown) { this.legacy.update(delta, time); return; }
+    if (!this.menuShown) { this.legacy?.update(delta, time); return; }
     const motion = this.preferences.motion && !this.reducedMotion.matches;
     const paused = this.state.paused || document.hidden;
     if (motion && !paused) this.atmosphereTime += delta;

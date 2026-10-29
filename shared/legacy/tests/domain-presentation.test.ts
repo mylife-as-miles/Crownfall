@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { defaultHeraldry } from "../content/heraldry";
 import { getAlliedHouse, getRivalHouse } from "../content/houses";
+import { prominentAftermath } from "../domain/aftermath";
 import { buildLegacyPreview, getLegacyPreviewRecords, LEGACY_PREVIEW_IDS, listLegacyPreviews } from "../domain/fixtures";
 import { generateFoundingMembers } from "../domain/founding";
 import { validateLegacySave } from "../domain/persistence";
@@ -136,6 +137,7 @@ test("every representative condition presents from real state", () => {
   assert.deepEqual(classic.matchMarkers, [{ matchId: "fixture-classic-1", outcome: "defeat", stakes: "classic" }]);
   assert.equal(classicState.members[0].timesCaptured, 1);
   assert.ok(classicState.chronicle.some((e) => e.kind === "capture" && /left the board unharmed/.test(e.body)));
+  assert.deepEqual(prominentAftermath(classicState).map((e) => e.kind), ["capture", "match"], "the aftermath says nobody was harmed");
 
   const alliedLoss = presentBannerhold(preview("allied-loss"));
   assert.equal(alliedLoss.alliedHouse?.stance, "disdainful");

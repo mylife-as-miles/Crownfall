@@ -1,8 +1,10 @@
-// Desktop presentation labels that LEGACY_COPY does not provide yet. Every
-// feature string (founding, statuses, notices, empty states, wagers) comes from
-// shared/legacy/content/copy.ts; these are only headings, control hints and
-// button verbs. A request to move them into LEGACY_COPY, so Quest can use the
-// same words, is recorded in the gameplay workflow's report.
+// Desktop presentation labels that LEGACY_COPY does not provide: headings,
+// control hints, button verbs and the desktop-only flows (the next-step strip,
+// the Play route and the failure state). Every feature string (founding,
+// statuses, notices, readiness, wagers, the Muster principle, the dissolve
+// control) comes from shared/legacy/content/copy.ts. A request to move the
+// next-step strings into LEGACY_COPY, so Quest can use the same words, is
+// recorded in the gameplay workflow's report.
 
 export const DESKTOP_LEGACY_COPY = {
   screenLabel: "My Legacy",
@@ -14,59 +16,54 @@ export const DESKTOP_LEGACY_COPY = {
   landmarks: "Landmarks",
   lookAround: "Look around",
   pointerHint: "Drag to look around · Scroll to zoom",
+  /** Leaves My Legacy for the menu's Play tab, from any Legacy screen. */
+  play: "Play",
+  playLabel: "Leave My Legacy for Play",
   suggest: "Suggest",
   customArms: "Custom",
-  principle: "You command the entire formation, but not everyone on the board belongs to you.",
   bannerhold: "Bannerhold",
-  identity: "Identity",
   nation: "Nation",
   rank: "Rank",
   recognition: "Recognition",
   hall: "Hall",
-  motto: "Motto",
-  arms: "Arms",
   honours: "Honours",
   standing: "Standing",
-  abandon: "Abandon banner and found anew",
-  previewLocked: "Development previews are fixture data and cannot be dissolved or saved.",
+  manageBanner: "Manage banner",
   representative: "Representative",
   inspect: "Inspect",
   showGrounds: "Show the grounds",
   nomination: "Nomination",
-  openFile: "Open to your banner",
-  formation: "Your side of the formation",
-  formationLegend: (houses: number, pieces: number) => `${pieces} pieces under your command · ${houses} houses and the crown`,
-  yourBanner: "Your banner",
-  members: "Members",
   conflicts: "Conflicts",
   unresolved: "Unresolved matters",
   ledger: "Ledger",
   notices: "Notices",
-  houses: "Houses",
-  alliedHouse: "Allied Great House",
-  rivalHouse: "Rival house",
-  holdsCaptive: "Holds a member of your house",
-  readiness: "Muster readiness",
-  ready: "Your house is ready for the Muster.",
   moves: (count: number) => `${count} ${count === 1 ? "move" : "moves"}`,
-  fate: {
-    survived: "Came through unharmed",
-    captured: "Taken on the board",
-    promoted: "Promoted on the board",
-    "captured-after-promotion": "Promoted, then taken",
-    absent: "Did not take the field",
-  },
   levelOf: (current: number, total: number) => `${current} / ${total}`,
-  continueLabel: "Continue",
-  stepOf: (name: string) => `Current step: ${name}`,
-  draftHint: "The holding behind this card previews your choices.",
   sworn: "Sworn members",
   entries: (count: number) => `${count} ${count === 1 ? "entry" : "entries"}`,
   unreadCount: (count: number) => `${count} unread`,
   noticeCount: (count: number) => `${count} ${count === 1 ? "notice" : "notices"}`,
   controls: "My Legacy controls",
   noRepresentative: "No representative",
-  invalidName: "Banner name",
   presetName: { low: "Low", medium: "Medium", high: "High" },
   qualityStepped: (preset: string) => `Graphics stepped down to ${preset} to hold a smooth frame rate.`,
+  /** The overview strip and each landmark's primary action: the next step toward a Muster match. */
+  nextStep: {
+    heading: "Next step",
+    nominate: "Name your Pawn at the Muster Grounds",
+    renominate: "Name another Pawn at the Muster Grounds",
+    answer: (houseName: string) => `Answer ${houseName}'s challenge`,
+    ready: "Ready for the Muster",
+    noChallenge: "Read the notices at the Herald's Station",
+  },
+  failure: {
+    title: "My Legacy could not open",
+    body: "Something stopped My Legacy from loading. Home and Play are unaffected.",
+    retry: "Retry",
+    reload: "Reload the page",
+    reloadNote: "It failed again. Reloading the page fetches the current version of Crownfall.",
+    /** Mirrors LEGACY_COPY.backToHome: the failure state must render without the Legacy chunk (verify-legacy checks they match). */
+    home: "Return to Home",
+    details: "Details",
+  },
 } as const;

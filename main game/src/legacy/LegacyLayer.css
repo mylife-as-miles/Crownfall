@@ -46,6 +46,53 @@
   0%, 100% { opacity: .35; }
   50% { opacity: 1; }
 }
+/* Failure state: styled here, in the menu bundle, because the Legacy chunk and
+   its stylesheet may be exactly what failed to arrive. */
+.legacy-failure {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  display: grid;
+  gap: max(10px, 1.6cqh);
+  width: min(560px, calc(100% - 32px));
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  padding: max(18px, 3cqh) max(18px, 2.2cqw);
+  border: 1px solid #b8893f40;
+  background: linear-gradient(180deg, rgba(23, 19, 13, .96), rgba(14, 12, 8, .97));
+  box-shadow: inset 0 0 0 4px #0c0a07, inset 0 0 0 5px #b8893f1f, 0 1.6cqh 5cqh #000b;
+  color: #cdc6b8;
+  font-size: max(13px, 1.05cqw);
+  line-height: 1.5;
+  transform: translate(-50%, -50%);
+}
+.legacy-failure p { margin: 0; }
+.legacy-failure h2 {
+  margin: 0;
+  color: #d49130;
+  font-size: max(17px, 1.6cqw);
+  font-weight: 600;
+  letter-spacing: .05em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+.legacy-failure-eyebrow { color: #a8936a; font-size: max(11px, .86cqw); letter-spacing: .16em; text-transform: uppercase; }
+.legacy-failure-note { color: #e3c18c; }
+.legacy-failure-actions { display: flex; flex-wrap: wrap; gap: max(10px, 1cqw); margin-top: max(4px, .6cqh); }
+.legacy-failure-actions button {
+  min-height: max(34px, 4.6cqh);
+  padding: 0 max(14px, 1.2cqw);
+  border: 1px solid #86765045;
+  background: #17140e80;
+  color: #d0c6b3;
+  font-size: max(13px, 1.05cqw);
+}
+.legacy-failure-actions button:hover { border-color: #b08b4d88; color: #efe3c9; }
+.legacy-failure-actions button.is-primary { border-color: #b8893f80; background: linear-gradient(120deg, #6f491b66, #2c2d1999); color: #e2bd78; }
+.legacy-failure-actions button:focus-visible { outline: 2px solid #df8a26; outline-offset: 3px; }
+.legacy-failure-details summary { cursor: pointer; color: #c79548; font-size: max(11px, .86cqw); letter-spacing: .08em; text-transform: uppercase; }
+.legacy-failure-details p { margin-top: .6em; color: #a6a18f; font-family: ui-monospace, monospace; font-size: max(11px, .86cqw); overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) {
   .legacy-layer, .legacy-layer.is-active { transition: none; }
   .legacy-loading-mark { animation: none; }

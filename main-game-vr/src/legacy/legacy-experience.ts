@@ -1,47 +1,50 @@
 // The Quest My Legacy destination: binds the generated Legacy panels to the
 // shared Legacy domain, keeps the session and saves, owns the Legacy anchor and
 // panel staging, and drives the environment strictly through the Quest
-// environment contract. The Home menu system owns navigation (QuestState) and
-// tells this experience when My Legacy is shown, paused or left.
+// environment contract. The Home menu system owns navigation (QuestState),
+// loads this module only when My Legacy is first opened, and tells it when My
+// Legacy is shown, paused or left. The reading panel and the touch tray are
+// instantiated from their lazy UIKitML manifest entries on that first entry.
 
 import { PokeInteractable, RayInteractable } from '@iwsdk/core';
 import type { Entity, Object3D, UIKit, UIKitMLAsset, Vector3, World } from '@iwsdk/core';
 import { HERALDRY_PRESETS, describeHeraldry } from '../../../shared/legacy/content/heraldry';
 import { LEGACY_COPY } from '../../../shared/legacy/content/copy';
-import { FILES } from '../../../shared/legacy/content/muster';
+import { FILES, eligibleMusterFiles } from '../../../shared/legacy/content/muster';
 import { NATION_ORDER, defaultLegacyNation, isNationFoundable } from '../../../shared/legacy/content/nations';
 import { prominentAftermath } from '../../../shared/legacy/domain/aftermath';
+import { validateMotto } from '../../../shared/legacy/domain/founding';
 import { openChallenge } from '../../../shared/legacy/domain/notices';
-import { clearLegacy, resolveLegacySession, saveLegacy } from '../../../shared/legacy/domain/persistence';
-import type { LegacySession, LegacyStorageLike } from '../../../shared/legacy/domain/persistence';
 import { presentBannerhold, presentFoundingDraft } from '../../../shared/legacy/domain/presentation';
-import { reduceLegacy } from '../../../shared/legacy/domain/reducer';
-import { createLegacyState, findMember } from '../../../shared/legacy/domain/state';
+import { findMember } from '../../../shared/legacy/domain/state';
 import { LEGACY_LANDMARKS } from '../../../shared/legacy/environment-contract';
 import type { LegacyEnvironmentStats, LegacySceneState } from '../../../shared/legacy/environment-contract';
 import type { LandmarkId, LegacyEvent, LegacyState } from '../../../shared/legacy/types';
 import { CrownfallQuestState } from '../quest-components.js';
 import type { QuestEnvironmentQuality, QuestLegacyEnvironment, QuestPosture } from './environment-contract.js';
 import { provideQuestLegacyEnvironment } from './environment-provider.js';
-import { installLegacyDiagnostics } from './legacy-diagnostics.js';
 import type { QuestEnvironmentSource } from './environment-provider.js';
 import { HeraldryTexture } from './heraldry-texture.js';
 import { legacyButtonStyle, legacyButtonStyleKey } from './legacy-button-style.js';
 import type { LegacyButtonVariant } from './legacy-button-style.js';
+import { installLegacyDiagnostics } from './legacy-diagnostics.js';
 import {
-  acceptsLandmarkSelection, createLegacyFlow, isFoundingView, landmarkOfView, reduceLegacyFlow, suggestionSlots,
+  LEGACY_RECORD_TABS, acceptsLandmarkSelection, createLegacyFlow, isFoundingView, landmarkOfView, reduceLegacyFlow, suggestionSlots,
 } from './legacy-flow.js';
 import type { LegacyFlowEvent, LegacyFlowState } from './legacy-flow.js';
-import { LEGACY_PANEL_METRES, fallbackLegacyStaging } from './legacy-staging.js';
+import { LegacySessionController } from './legacy-session.js';
+import { fallbackLegacyStaging, placeLegacyPanels } from './legacy-staging.js';
+import type { LegacyPanelPlacements } from './legacy-staging.js';
 import { browserLegacyStorage } from './legacy-storage.js';
 import {
-  LEGACY_DOCK_ACTION_IDS, LEGACY_HERALDRY_IMAGE_IDS, LEGACY_HERALDRY_PARTS, LEGACY_HERALDRY_RASTER, LEGACY_KEY_ACTIONS, LEGACY_KEY_ROWS, LEGACY_LIVE_TEXT,
-  LEGACY_MEMBER_SLOTS, LEGACY_NOTICE_PAGE, LEGACY_RECORD_PAGE, LEGACY_SCENE_NODES, LEGACY_SUGGESTION_SLOTS, LEGACY_UI_LAYOUT, LEGACY_VIEW_IDS,
-  legacyFileId, legacyKeyActionId, legacyKeyId, legacyLandmarkButtonId, legacyNationId, legacyPartId, legacyPartPreviousId,
+  LEGACY_DOCK_ACTION_IDS, LEGACY_HERALDRY_IMAGE_IDS, LEGACY_HERALDRY_PARTS, LEGACY_HERALDRY_RASTER, LEGACY_HOUSE_SHIELD_IDS, LEGACY_KEY_ACTIONS,
+  LEGACY_KEY_ROWS, LEGACY_LIVE_TEXT, LEGACY_MEMBER_SLOTS, LEGACY_NOTICE_PAGE, LEGACY_PANEL_NAMES, LEGACY_RECORD_PAGE, LEGACY_SCENE_NODES,
+  LEGACY_SHIELD_RASTER, LEGACY_SUGGESTION_SLOTS, LEGACY_UI_LAYOUT, LEGACY_VIEW_IDS,
+  legacyFileId, legacyKeyActionId, legacyKeyId, legacyLandmarkButtonId, legacyNationId, legacyPartId, legacyPartPreviousId, legacyRecordTabId,
 } from './legacy-ui-contract.js';
-import type { LegacyViewId } from './legacy-ui-contract.js';
-import { buildLegacyDockModel, buildLegacyPanelModel, noticesNewestFirst } from './legacy-view-model.js';
-import type { LegacyControlState, LegacyModelInput, LegacySessionInfo } from './legacy-view-model.js';
+import type { LegacyPanelActionId, LegacyViewId } from './legacy-ui-contract.js';
+import { buildLegacyDockModel, buildLegacyPanelModel, defaultRecordTab, noticesNewestFirst, recordItems } from './legacy-view-model.js';
+import type { LegacyControlState, LegacyDockModel, LegacyElementStyle, LegacyModelInput } from './legacy-view-model.js';
 import { QUEST_LEGACY_COPY } from './quest-legacy-copy.js';
 import { spatialText } from './spatial-text.js';
 
@@ -68,13 +71,19 @@ export interface LegacyComfort {
   quality: QuestEnvironmentQuality;
   posture: QuestPosture;
   textScale: number;
+  /** Home's Menu Distance in metres; the reading panel follows it. */
+  panelDistance: number;
+  /** Panel Height offset in metres. */
+  panelHeight: number;
   reducedMotion: boolean;
 }
 
 /** Controls that show a selected state; all use the standard button surface. */
-const SELECTABLE_PREFIXES = ['Legacy_Nation_', 'Legacy_Suggestion_', 'Legacy_Preset_', 'Legacy_Member_', 'Legacy_File_', 'Legacy_Landmark_', 'Legacy_Key_Shift'];
+const SELECTABLE_PREFIXES = ['Legacy_Nation_', 'Legacy_Suggestion_', 'Legacy_Preset_', 'Legacy_Member_', 'Legacy_File_', 'Legacy_Landmark_', 'Legacy_RecordTab_', 'Legacy_Key_Shift'];
 /** Generated control classes and the look each one starts from. */
 const BUTTON_CLASSES: ReadonlyArray<readonly [string, LegacyButtonVariant]> = [['lg-btn', 'button'], ['lg-btn-primary', 'primary'], ['lg-btn-danger', 'danger']];
+/** Controls that still answer while My Legacy is paused: the pause view's own, and the tray's Recenter, Exit and mirrors of them. */
+const PAUSED_CONTROLS = new Set<string>(['Legacy_Resume', 'Legacy_PauseHome', 'Legacy_DockRecenter', 'Legacy_DockExit', 'Legacy_DockBack', 'Legacy_DockPrimary']);
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -97,64 +106,87 @@ function faceEye(object: Object3D, x: number, y: number, z: number): void {
 }
 
 export class QuestLegacyExperience {
-  private readonly anchorEntity: Entity;
   private readonly anchor: Object3D;
-  private readonly panelEntity: Entity;
-  private readonly panelObject: Object3D;
-  private readonly panel: UIKitMLAsset;
-  private readonly dockEntity: Entity;
-  private readonly dockObject: Object3D;
-  private readonly dock: UIKitMLAsset;
   private readonly elements = new Map<string, UIKit.Text>();
   private readonly textCache = new Map<string, string>();
   private readonly displayCache = new Map<string, boolean>();
   private readonly styleCache = new Map<string, string>();
+  private readonly dataStyleCache = new Map<string, string>();
   private readonly positionCache = new Map<string, number>();
   private readonly controlStates = new Map<string, LegacyControlState>();
+  /** Each control's guarded activation, so the tray's mirrors press exactly what the panel would. */
+  private readonly activators = new Map<string, () => void>();
   /** Controls the pointer is over, from each control's onHoverChange. */
   private readonly hovered = new Set<string>();
   /** Generated control containers by visual variant, read once from their classes. */
   private readonly buttonVariants = new Map<object, LegacyButtonVariant>();
   private readonly heraldry = new HeraldryTexture(LEGACY_HERALDRY_RASTER.width, LEGACY_HERALDRY_RASTER.height);
+  private readonly alliedShield = new HeraldryTexture(LEGACY_SHIELD_RASTER.width, LEGACY_SHIELD_RASTER.height, 'shield');
+  private readonly rivalShield = new HeraldryTexture(LEGACY_SHIELD_RASTER.width, LEGACY_SHIELD_RASTER.height, 'shield');
   private readonly cleanup: (() => void)[] = [];
-  private session: LegacySession | null = null;
-  private storage: LegacyStorageLike | null = null;
-  private state: LegacyState = createLegacyState();
+  private readonly session = new LegacySessionController(browserLegacyStorage());
+  private sessionRequested = false;
   private flow: LegacyFlowState = createLegacyFlow(defaultLegacyNation());
   private environment: QuestLegacyEnvironment | null = null;
   private environmentSource: QuestEnvironmentSource | null = null;
   private environmentFellBack = false;
   private environmentRequested = false;
-  private interactive = true;
+  private interactive = false;
   private status: LegacyHostStatus = { active: false, paused: false, pauseReason: '', entered: false, handTracked: false };
-  private comfort: LegacyComfort = { quality: 'medium', posture: 'seated', textScale: 100, reducedMotion: false };
+  private comfort: LegacyComfort = { quality: 'medium', posture: 'seated', textScale: 100, panelDistance: 1.5, panelHeight: 0, reducedMotion: false };
+  private placement: LegacyPanelPlacements | null = null;
   private activeView: LegacyViewId | null = null;
+  private mirror: LegacyDockModel['mirror'] = { back: null, primary: null };
   private focused: LandmarkId | null = null;
   private highlighted: LandmarkId | null = null;
   private worldHover: LandmarkId | null = null;
   private listHover: LandmarkId | null = null;
   private selectSource: 'world' | 'list' | '' = '';
   private message = '';
-  private saveStatus: 'saved' | 'failed' | 'none' = 'none';
-  private savedOnce = false;
   private recenters = 0;
   private sceneDirty = true;
   private disposed = false;
   private readonly sessionLabel: HTMLElement | null;
 
-  constructor(private readonly world: World, private readonly stateEntity: Entity, private readonly actions: LegacyHostActions) {
-    this.anchorEntity = world.requireSceneEntity(LEGACY_SCENE_NODES.anchor);
-    this.anchor = this.anchorEntity.object3D!;
-    this.panelEntity = world.requireSceneEntity(LEGACY_SCENE_NODES.panel);
-    this.panelObject = this.panelEntity.object3D!;
-    this.panel = world.requireSceneObject<UIKitMLAsset>(LEGACY_SCENE_NODES.panel);
-    this.dockEntity = world.requireSceneEntity(LEGACY_SCENE_NODES.dock);
-    this.dockObject = this.dockEntity.object3D!;
-    this.dock = world.requireSceneObject<UIKitMLAsset>(LEGACY_SCENE_NODES.dock);
-    // Hidden until Home opens My Legacy; hidden panels also leave the pointer target lists.
+  /**
+   * Instantiates the reading panel and the touch tray from their lazy manifest entries under the
+   * scene-authored Legacy anchor, then binds them. Rejects, leaving nothing behind, when either fails.
+   */
+  static async create(world: World, stateEntity: Entity, actions: LegacyHostActions): Promise<QuestLegacyExperience> {
+    const anchorEntity = world.requireSceneEntity(LEGACY_SCENE_NODES.anchor);
+    const [panel, dock] = await Promise.all([
+      world.assets.instantiate<UIKitMLAsset>(LEGACY_UI_LAYOUT.panelManifestId),
+      world.assets.instantiate<UIKitMLAsset>(LEGACY_UI_LAYOUT.dockManifestId),
+    ]);
+    panel.name = LEGACY_PANEL_NAMES.panel;
+    dock.name = LEGACY_PANEL_NAMES.dock;
+    const panelEntity = world.createTransformEntity(panel, { parent: anchorEntity });
+    const dockEntity = world.createTransformEntity(dock, { parent: anchorEntity });
+    try {
+      return new QuestLegacyExperience(world, stateEntity, actions, anchorEntity, panelEntity, panel, dockEntity, dock);
+    } catch (error) {
+      panelEntity.dispose();
+      dockEntity.dispose();
+      throw error;
+    }
+  }
+
+  private constructor(
+    private readonly world: World,
+    private readonly stateEntity: Entity,
+    private readonly actions: LegacyHostActions,
+    private readonly anchorEntity: Entity,
+    private readonly panelEntity: Entity,
+    private readonly panel: UIKitMLAsset,
+    private readonly dockEntity: Entity,
+    private readonly dock: UIKitMLAsset,
+  ) {
+    this.anchor = anchorEntity.object3D!;
+    // Hidden until Home shows My Legacy; hidden panels also stay out of the pointer target lists.
     this.anchor.visible = false;
-    this.setInteractive(false);
     for (const id of LEGACY_HERALDRY_IMAGE_IDS) this.panel.requireElementById<UIKit.Image>(id).setProperties({ src: this.heraldry.texture });
+    this.panel.requireElementById<UIKit.Image>(LEGACY_HOUSE_SHIELD_IDS.allied).setProperties({ src: this.alliedShield.texture });
+    this.panel.requireElementById<UIKit.Image>(LEGACY_HOUSE_SHIELD_IDS.rival).setProperties({ src: this.rivalShield.texture });
     // Live texts arrive with a placeholder so UIKitML gives them a text node; clear them before first display.
     for (const owner of [this.panel, this.dock]) {
       for (const element of owner.document.getElementsByClassName(LEGACY_LIVE_TEXT.className)) element.setProperties({ text: '' });
@@ -186,7 +218,7 @@ export class QuestLegacyExperience {
       if (!this.status.active || this.disposed) return;
       const state = this.controlStates.get(id);
       if (state && (!state.visible || !state.enabled)) return;
-      if (this.status.paused && id !== 'Legacy_Resume' && id !== 'Legacy_PauseHome' && id !== 'Legacy_DockRecenter' && id !== 'Legacy_DockExit') return;
+      if (this.status.paused && !PAUSED_CONTROLS.has(id)) return;
       activate();
     };
     const onHoverChange = (hover: boolean): void => {
@@ -196,6 +228,7 @@ export class QuestLegacyExperience {
       if (state) this.styleControl(id, state);
       onHover?.(hover);
     };
+    this.activators.set(id, click);
     element.addEventListener('click', click);
     element.setProperties({ onHoverChange });
     this.cleanup.push(() => {
@@ -208,11 +241,17 @@ export class QuestLegacyExperience {
     return () => { this.message = ''; this.dispatchFlow(event); };
   }
 
+  /** Presses the panel control the tray mirrors in the current view, with that control's own guards. */
+  private pressMirror(slot: 'back' | 'primary'): void {
+    const source = this.mirror[slot];
+    if (source) this.activators.get(source)?.();
+  }
+
   private bindControls(): void {
     this.bind('Legacy_RecoveryHome', () => this.actions.home());
     this.bind('Legacy_RecoveryGuest', () => {
-      this.session = { kind: 'guest', persistent: false, state: createLegacyState({ at: nowIso() }), label: LEGACY_COPY.guest.label };
-      this.state = this.session.state;
+      this.session.continueAsGuest(nowIso());
+      this.sceneDirty = true;
       this.updateBrowserLabel();
       this.beginFounding();
     });
@@ -246,8 +285,18 @@ export class QuestLegacyExperience {
     }
     this.bind('Legacy_ArmsBack', this.flowEvent({ type: 'founding-step', view: 'name' }));
     this.bind('Legacy_ArmsNext', this.flowEvent({ type: 'founding-step', view: 'confirm' }));
+    this.bind('Legacy_ConfirmMotto', this.flowEvent({ type: 'open-motto' }));
+    this.bind('Legacy_ConfirmClearMotto', this.flowEvent({ type: 'clear-motto' }));
     this.bind('Legacy_ConfirmBack', this.flowEvent({ type: 'founding-step', view: 'arms' }));
     this.bind('Legacy_ConfirmRaise', () => this.raiseBanner());
+    this.bind('Legacy_RaisedContinue', () => this.finishBeat());
+    this.bind('Legacy_AftermathLater', this.flowEvent({ type: 'defer-aftermath' }));
+    this.bind('Legacy_AftermathDismiss', () => {
+      this.message = '';
+      if (this.commit({ type: 'dismiss-aftermath' })) this.dispatchFlow({ type: 'acknowledged' });
+      else this.render();
+    });
+    this.bind('Legacy_AftermathReview', this.flowEvent({ type: 'review-aftermath' }));
     for (const landmark of LEGACY_LANDMARKS) {
       this.bind(legacyLandmarkButtonId(landmark), () => this.openLandmark(landmark, 'list'), (hover) => {
         if (hover) this.listHover = landmark;
@@ -255,23 +304,25 @@ export class QuestLegacyExperience {
         this.render();
       });
     }
-    this.bind('Legacy_AftermathDismiss', () => { this.message = ''; this.commit({ type: 'dismiss-aftermath' }); this.render(); });
     this.bind('Legacy_ResetOpen', this.flowEvent({ type: 'request-reset' }));
     this.bind('Legacy_ResetCancel', this.flowEvent({ type: 'cancel-reset' }));
     this.bind('Legacy_ResetConfirm', () => this.dissolveBanner());
     for (const id of ['Legacy_HallBack', 'Legacy_MusterBack', 'Legacy_RecordBack', 'Legacy_HeraldBack']) this.bind(id, this.flowEvent({ type: 'overview' }));
+    this.bind('Legacy_MusterChoose', () => this.openNomination());
+    this.bind('Legacy_NominateBack', this.flowEvent({ type: 'close-nominate' }));
     for (let index = 0; index < LEGACY_MEMBER_SLOTS; index++) {
       this.bind(`Legacy_Member_${index}`, () => {
-        const member = this.state.members[index];
+        const member = this.session.state.members[index];
         if (member) { this.message = ''; this.dispatchFlow({ type: 'select-member', memberId: member.id }); }
       });
     }
     for (const file of FILES) this.bind(legacyFileId(file), this.flowEvent({ type: 'select-file', file }));
     this.bind('Legacy_MusterNominate', () => this.nominate());
-    const recordPages = (): number => Math.max(1, Math.ceil(this.state.chronicle.length / LEGACY_RECORD_PAGE));
+    for (const tab of LEGACY_RECORD_TABS) this.bind(legacyRecordTabId(tab), this.flowEvent({ type: 'record-tab', tab }));
+    const recordPages = (): number => Math.max(1, Math.ceil(recordItems(this.session.state, this.flow.recordTab).length / LEGACY_RECORD_PAGE));
     this.bind('Legacy_RecordPrev', () => this.dispatchFlow({ type: 'page', list: 'record', delta: -1, total: recordPages() }));
     this.bind('Legacy_RecordNext', () => this.dispatchFlow({ type: 'page', list: 'record', delta: 1, total: recordPages() }));
-    const noticePages = (): number => Math.max(1, Math.ceil(this.state.notices.length / LEGACY_NOTICE_PAGE));
+    const noticePages = (): number => Math.max(1, Math.ceil(this.session.state.notices.length / LEGACY_NOTICE_PAGE));
     this.bind('Legacy_HeraldPrev', () => this.dispatchFlow({ type: 'page', list: 'notices', delta: -1, total: noticePages() }));
     this.bind('Legacy_HeraldNext', () => this.dispatchFlow({ type: 'page', list: 'notices', delta: 1, total: noticePages() }));
     for (let index = 0; index < LEGACY_NOTICE_PAGE; index++) this.bind(`Legacy_Notice_${index}`, () => this.openNotice(index));
@@ -284,6 +335,8 @@ export class QuestLegacyExperience {
     this.bind('Legacy_Resume', () => this.actions.resume());
     this.bind('Legacy_PauseHome', () => this.actions.home());
     const dock: Record<typeof LEGACY_DOCK_ACTION_IDS[number], () => void> = {
+      Legacy_DockBack: () => this.pressMirror('back'),
+      Legacy_DockPrimary: () => this.pressMirror('primary'),
       Legacy_DockHome: () => this.actions.home(),
       Legacy_DockRecenter: () => this.actions.recenter(),
       Legacy_DockPause: () => this.actions.pause(),
@@ -294,60 +347,32 @@ export class QuestLegacyExperience {
 
   // ---------------------------------------------------------------- session and domain
 
+  private get state(): LegacyState {
+    return this.session.state;
+  }
+
   /** Resolves where this visit's banner comes from, once, on the first entry to My Legacy. */
   private ensureSession(): void {
-    if (this.session) return;
-    this.storage = browserLegacyStorage();
-    const session = resolveLegacySession(window.location.search, this.storage, { at: nowIso() });
-    this.session = session;
-    this.state = session.state;
-    this.sceneDirty = true;
-    if (session.kind === 'recovery') this.dispatchFlow({ type: 'show', view: 'recovery' });
-    else if (session.state.banner) this.dispatchFlow({ type: 'show', view: 'overview' });
-    else this.beginFounding();
-    if (session.kind === 'preview-missing' || session.kind === 'unavailable') this.message = session.error;
-    this.updateBrowserLabel();
+    if (this.sessionRequested) return;
+    this.sessionRequested = true;
+    void this.session.resolve(window.location.search, nowIso()).then((session) => {
+      if (this.disposed) return;
+      this.sceneDirty = true;
+      if (session.kind === 'recovery') this.dispatchFlow({ type: 'show', view: 'recovery' });
+      else if (session.state.banner) this.dispatchFlow({ type: 'show', view: prominentAftermath(session.state).length > 0 ? 'aftermath' : 'overview' });
+      else this.beginFounding();
+      if (session.kind === 'preview-missing' || session.kind === 'unavailable') this.message = session.error;
+      this.updateBrowserLabel();
+      this.render();
+    });
   }
 
-  /** Saving is real only for a persistent session with working storage and a production state. */
-  private canSave(): boolean {
-    return !!this.session && this.session.persistent && this.storage !== null && this.state.mode === 'production';
-  }
-
-  private sessionInfo(): LegacySessionInfo {
-    const session = this.session;
-    const persistent = this.canSave();
-    if (!session) return { kind: 'new', persistent, label: null, error: null, reason: null, title: null };
-    switch (session.kind) {
-      case 'guest': return { kind: 'guest', persistent: false, label: session.label, error: null, reason: null, title: null };
-      case 'preview': return { kind: 'preview', persistent: false, label: session.label, error: null, reason: null, title: session.title };
-      case 'preview-missing': return { kind: 'preview-missing', persistent: false, label: session.label, error: session.error, reason: null, title: null };
-      case 'unavailable': return { kind: 'unavailable', persistent: false, label: null, error: session.error, reason: 'unavailable', title: null };
-      case 'recovery':
-        // Once a new banner has been saved over the unreadable record, the session is an ordinary stored one.
-        return this.savedOnce
-          ? { kind: 'stored', persistent, label: null, error: null, reason: null, title: null }
-          : { kind: 'recovery', persistent, label: null, error: session.error, reason: session.reason, title: null };
-      case 'new':
-        return { kind: this.savedOnce ? 'stored' : 'new', persistent, label: null, error: null, reason: null, title: null };
-      case 'stored': return { kind: 'stored', persistent, label: null, error: null, reason: null, title: null };
-    }
-  }
-
-  /** Applies a domain event; a refusal becomes the panel message and leaves everything as it was. */
+  /** Applies a domain event; a refusal or failed save becomes the panel message. Returns whether it was accepted. */
   private commit(event: LegacyEvent): boolean {
-    const transition = reduceLegacy(this.state, event);
-    if (transition.error) { this.message = transition.error; return false; }
-    if (transition.state === this.state) return true;
-    this.state = transition.state;
-    this.sceneDirty = true;
-    if (this.canSave() && this.storage) {
-      const saved = saveLegacy(this.storage, this.state);
-      this.saveStatus = saved.ok ? 'saved' : 'failed';
-      if (saved.ok) this.savedOnce = true;
-      else this.message = saved.error;
-    }
-    return true;
+    const result = this.session.commit(event);
+    if (result.changed) this.sceneDirty = true;
+    if (result.error) this.message = result.error;
+    return result.changed || result.error === null;
   }
 
   private dispatchFlow(event: LegacyFlowEvent): void {
@@ -369,33 +394,57 @@ export class QuestLegacyExperience {
   private raiseBanner(): void {
     const draft = this.flow.draft;
     this.message = '';
-    if (!this.commit({ type: 'found-banner', name: draft.name, nationId: draft.nationId, heraldry: draft.heraldry, motto: null, at: nowIso(), seed: draft.seed })) {
-      this.render();
-      return;
-    }
+    const motto = validateMotto(draft.motto);
+    if (motto.ok === false) { this.message = motto.error; this.render(); return; }
+    const before = this.state;
+    this.commit({ type: 'found-banner', name: draft.name, nationId: draft.nationId, heraldry: draft.heraldry, motto: motto.motto, at: nowIso(), seed: draft.seed });
+    if (this.state === before || !this.state.banner) { this.render(); return; }
     this.dispatchFlow({ type: 'founded' });
   }
 
+  /**
+   * Ends the raising beat and opens the Bannerhold. Unlike desktop's timed beat, the headset waits for
+   * Continue, so nobody reading the founding line in the headset is moved on mid-sentence.
+   */
+  private finishBeat(): void {
+    this.dispatchFlow({ type: 'raised-done' });
+  }
+
   private dissolveBanner(): void {
-    const transition = reduceLegacy(this.state, { type: 'reset', at: nowIso() });
-    if (transition.error) { this.message = transition.error; this.render(); return; }
-    this.state = transition.state;
+    const error = this.session.dissolve(nowIso());
+    if (error) { this.message = error; this.render(); return; }
     this.sceneDirty = true;
-    this.saveStatus = 'none';
-    if (this.canSave() && this.storage) {
-      const cleared = clearLegacy(this.storage);
-      if (!cleared.ok) this.message = cleared.error;
-    }
     this.beginFounding();
+  }
+
+  /** Opens the nomination with the current nominee and file, or the first available member and open file. */
+  private openNomination(): void {
+    const state = this.state;
+    if (!state.banner) return;
+    this.message = '';
+    this.dispatchFlow({ type: 'open-nominate' });
+    if (!this.flow.member) {
+      let first: string | null = null;
+      for (const member of state.members) if (!first && member.status === 'available') first = member.id;
+      if (first) this.dispatchFlow({ type: 'select-member', memberId: first });
+    }
+    if (!this.flow.file) {
+      const open = eligibleMusterFiles(state.banner.nationId);
+      if (open.length > 0) this.dispatchFlow({ type: 'select-file', file: open[0] });
+    }
   }
 
   private nominate(): void {
     const { member, file } = this.flow;
     if (!member || !file) return;
     this.message = '';
-    if (this.commit({ type: 'nominate', memberId: member, file, at: nowIso() })) {
+    const before = this.state;
+    this.commit({ type: 'nominate', memberId: member, file, at: nowIso() });
+    if (this.state !== before) {
       const latest = this.state.chronicle[this.state.chronicle.length - 1];
-      if (latest && latest.kind === 'nomination') this.message = latest.title;
+      if (latest && latest.kind === 'nomination' && this.message === '') this.message = latest.title;
+      this.dispatchFlow({ type: 'nominated' });
+      return;
     }
     this.render();
   }
@@ -412,7 +461,9 @@ export class QuestLegacyExperience {
     const noticeId = this.flow.noticeId;
     if (!noticeId) return;
     this.message = '';
-    if (this.commit({ type: 'accept-challenge', noticeId, at: nowIso() })) this.dispatchFlow({ type: 'accepted' });
+    const before = this.state;
+    this.commit({ type: 'accept-challenge', noticeId, at: nowIso() });
+    if (this.state !== before) this.dispatchFlow({ type: 'accepted' });
     else this.render();
   }
 
@@ -420,7 +471,10 @@ export class QuestLegacyExperience {
     if (!this.state.banner || !acceptsLandmarkSelection(this.flow.view)) return;
     this.selectSource = source;
     this.message = '';
-    this.dispatchFlow({ type: 'open-landmark', landmark, member: this.state.nomination.memberId, file: this.state.nomination.file });
+    this.dispatchFlow({
+      type: 'open-landmark', landmark, member: this.state.nomination.memberId, file: this.state.nomination.file,
+      recordTab: defaultRecordTab(this.state),
+    });
   }
 
   // ---------------------------------------------------------------- environment and staging
@@ -478,17 +532,17 @@ export class QuestLegacyExperience {
     this.openLandmark(id, 'world');
   }
 
-  /** Places the panels at the environment's published anchors, facing the viewer's eye. */
+  /** Places the reading panel and the touch tray from the published staging and the viewer's comfort settings. */
   private stagePanels(): void {
     const staging = this.environment ? this.environment.getStaging() : fallbackLegacyStaging(this.comfort.posture);
-    const scale = this.comfort.textScale / 100;
-    const primary = staging.panelAnchors.primary;
-    const dock = staging.panelAnchors.dock;
-    // Larger text grows the panel upward and the dock downward so the two never overlap.
-    faceEye(this.panelObject, primary[0], primary[1] + (scale - 1) * LEGACY_PANEL_METRES.panel[1] / 2, primary[2]);
-    faceEye(this.dockObject, dock[0], dock[1] - (scale - 1) * LEGACY_PANEL_METRES.dock[1] / 2, dock[2]);
-    this.panelObject.scale.setScalar(LEGACY_UI_LAYOUT.authoredScale * scale);
-    this.dockObject.scale.setScalar(LEGACY_UI_LAYOUT.authoredScale * scale);
+    const placement = placeLegacyPanels(staging, this.comfort);
+    this.placement = placement;
+    const [px, py, pz] = placement.panel.position;
+    const [tx, ty, tz] = placement.tray.position;
+    faceEye(this.panel, px, py, pz);
+    faceEye(this.dock, tx, ty, tz);
+    this.panel.scale.setScalar(placement.panel.scale);
+    this.dock.scale.setScalar(placement.tray.scale);
   }
 
   private setInteractive(interactive: boolean): void {
@@ -525,7 +579,7 @@ export class QuestLegacyExperience {
     this.render();
   }
 
-  /** Comfort preferences shared with the Home menu: quality, posture, text size and motion. */
+  /** Comfort preferences shared with the Home menu: quality, posture, text size, distance, height and motion. */
   setComfort(comfort: LegacyComfort): void {
     const previous = this.comfort;
     this.comfort = comfort;
@@ -535,6 +589,7 @@ export class QuestLegacyExperience {
       if (previous.reducedMotion !== comfort.reducedMotion) this.environment.setReducedMotion(comfort.reducedMotion);
     }
     this.stagePanels();
+    this.writeInspection();
   }
 
   /** Moves the Legacy anchor to the given eye position and heading; the viewer is never moved. */
@@ -561,7 +616,11 @@ export class QuestLegacyExperience {
     this.cleanup.length = 0;
     this.environment?.dispose();
     this.environment = null;
+    this.panelEntity.dispose();
+    this.dockEntity.dispose();
     this.heraldry.dispose();
+    this.alliedShield.dispose();
+    this.rivalShield.dispose();
     this.sessionLabel?.remove();
   }
 
@@ -571,7 +630,7 @@ export class QuestLegacyExperience {
     return {
       state: this.state,
       flow: this.flow,
-      session: this.sessionInfo(),
+      session: this.session.info(),
       pause: { paused: this.status.paused, reason: this.status.pauseReason, canResume: !this.status.entered || this.status.handTracked },
       entered: this.status.entered,
       environment: { kind: this.environmentSource, ready: this.environment !== null, fallback: this.environmentFellBack },
@@ -585,7 +644,7 @@ export class QuestLegacyExperience {
     if (this.disposed || !this.status.active) { this.writeInspection(); return; }
     const input = this.modelInput();
     const model = buildLegacyPanelModel(input);
-    const dock = buildLegacyDockModel(input);
+    const dock = buildLegacyDockModel(input, model);
     if (model.view !== this.activeView) {
       for (const id of LEGACY_VIEW_IDS) this.setDisplay(id, id === model.view);
       this.activeView = model.view;
@@ -596,9 +655,15 @@ export class QuestLegacyExperience {
     for (const id in model.displays) this.setDisplay(id, model.displays[id]);
     for (const id in model.controls) this.applyControl(id, model.controls[id]);
     for (const id in model.positions) this.setPosition(id, model.positions[id]);
+    for (const id in model.styles) this.setStyle(id, model.styles[id]);
     for (const id in dock.texts) this.setText(id, dock.texts[id]);
     for (const id in dock.controls) this.applyControl(id, dock.controls[id]);
+    this.mirror = dock.mirror;
     if (model.heraldry) this.heraldry.show(model.heraldry);
+    if (model.houses) {
+      this.alliedShield.show(model.houses.allied);
+      this.rivalShield.show(model.houses.rival);
+    }
     if (this.environment) {
       if (this.sceneDirty) {
         this.environment.setState(this.sceneState());
@@ -629,6 +694,13 @@ export class QuestLegacyExperience {
     if (this.positionCache.get(id) === left) return;
     this.positionCache.set(id, left);
     this.element(id).setProperties({ positionLeft: left });
+  }
+
+  private setStyle(id: string, style: LegacyElementStyle): void {
+    const key = `${style.backgroundColor ?? ''}|${style.borderColor ?? ''}|${style.color ?? ''}`;
+    if (this.dataStyleCache.get(id) === key) return;
+    this.dataStyleCache.set(id, key);
+    this.element(id).setProperties(style);
   }
 
   private applyControl(id: string, state: LegacyControlState): void {
@@ -662,21 +734,23 @@ export class QuestLegacyExperience {
   private writeInspection(): void {
     const e = this.stateEntity, c = CrownfallQuestState;
     const state = this.state, flow = this.flow, banner = state.banner;
-    const info = this.sessionInfo();
+    const info = this.session.info();
     const nominee = findMember(state, state.nomination.memberId);
     const challenge = openChallenge(state);
     const shownHeraldry = isFoundingView(flow.view) ? flow.draft.heraldry : banner?.heraldry ?? null;
     e.setValue(c, 'legacyActive', this.status.active);
     e.setValue(c, 'legacyView', this.status.active && this.status.paused ? 'pause' : flow.view);
-    e.setValue(c, 'legacySession', this.session ? info.kind : '');
+    e.setValue(c, 'legacySession', this.session.session ? info.kind : '');
     e.setValue(c, 'legacyPersistent', info.persistent);
-    e.setValue(c, 'legacySave', this.saveStatus);
+    e.setValue(c, 'legacySaved', info.saved);
+    e.setValue(c, 'legacySave', this.session.saveStatus);
     e.setValue(c, 'legacyLabel', info.label ?? '');
     e.setValue(c, 'legacyPreview', state.previewId ?? '');
     e.setValue(c, 'legacyFounded', banner !== null);
     e.setValue(c, 'legacyBanner', banner?.name ?? '');
     e.setValue(c, 'legacyNation', banner?.nationId ?? flow.draft.nationId);
     e.setValue(c, 'legacyDraftName', flow.draft.name);
+    e.setValue(c, 'legacyMotto', banner ? banner.motto ?? '' : flow.draft.motto);
     e.setValue(c, 'legacyHeraldry', shownHeraldry ? describeHeraldry(shownHeraldry) : '');
     e.setValue(c, 'legacyRepresentative', nominee?.name ?? '');
     e.setValue(c, 'legacyFile', state.nomination.file ?? '');
@@ -687,13 +761,28 @@ export class QuestLegacyExperience {
     e.setValue(c, 'legacySelectSource', this.selectSource);
     e.setValue(c, 'legacyNotice', flow.noticeId ?? '');
     e.setValue(c, 'legacyChallenge', challenge ? challenge.status : '');
+    e.setValue(c, 'legacyRecordTab', flow.recordTab);
     e.setValue(c, 'legacyChronicle', state.chronicle.length);
     e.setValue(c, 'legacyUnread', state.notices.filter((notice) => notice.status === 'unread').length);
     e.setValue(c, 'legacyAftermath', prominentAftermath(state).length);
+    e.setValue(c, 'legacyMirrorBack', this.mirror.back ?? '');
+    e.setValue(c, 'legacyMirrorPrimary', this.mirror.primary ?? '');
     e.setValue(c, 'legacyEnvironment', this.environmentSource ?? '');
     e.setValue(c, 'legacyEnvironmentReady', this.environment !== null);
     e.setValue(c, 'legacyRecenters', this.recenters);
     e.setValue(c, 'legacyMessage', this.message);
+    const placement = this.placement;
+    if (placement) {
+      const [px, py, pz] = placement.panel.position;
+      const half = LEGACY_UI_LAYOUT.panel.height / 200 * placement.panel.scale;
+      const horizontal = Math.hypot(px, pz);
+      const [tx, ty, tz] = placement.tray.position;
+      e.setValue(c, 'legacyPanelTopDegrees', Math.atan2(py + half, horizontal) * 180 / Math.PI);
+      e.setValue(c, 'legacyPanelBottomDegrees', Math.atan2(py - half, horizontal) * 180 / Math.PI);
+      e.setValue(c, 'legacyPanelDistance', Math.hypot(px, py, pz));
+      e.setValue(c, 'legacyTrayDistance', Math.hypot(tx, ty, tz));
+      e.setValue(c, 'legacyTrayElevationDegrees', Math.atan2(ty, Math.hypot(tx, tz)) * 180 / Math.PI);
+    }
   }
 
   /** The browser entry panel names guest and preview sessions before anyone enters the headset. */
@@ -714,7 +803,7 @@ export class QuestLegacyExperience {
   private updateBrowserLabel(): void {
     const label = this.sessionLabel;
     if (!label) return;
-    const info = this.sessionInfo();
+    const info = this.session.info();
     const text = info.label
       ? `${LEGACY_COPY.title}: ${info.label}${info.kind === 'preview' && info.title ? ` (${info.title})` : ''}${info.error ? `. ${info.error}` : ''}`
       : '';

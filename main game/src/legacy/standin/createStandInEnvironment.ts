@@ -3,8 +3,10 @@
 // marker per landmark, an "Environment stand-in" caption). It exists so the
 // Legacy UI, input mapping and verification run against the real contract
 // before the environment workflow's renderer lands. Renders on demand only:
-// camera moves, highlight fades and state changes request frames; an idle
-// scene costs nothing.
+// camera moves, highlight fades and visible state changes request frames; an
+// idle scene, or a state change it does not show, costs nothing. Creation is
+// spread over frames (context, scene, banner, one shader program per frame) so
+// the loading state keeps painting between the steps.
 
 import * as THREE from "three";
 import { LEGACY_COPY } from "../../../../shared/legacy/content/copy";
@@ -30,6 +32,14 @@ const PIXEL_RATIO_CAP: Readonly<Record<DesktopEnvironmentQuality["preset"], numb
 const CAMERA_FOV = 38;
 const TWEEN_MS = 950;
 const FRAME_SAMPLES = 120;
+/**
+ * Frame pacing is sampled only inside runs of continuous rendering (a drag, a
+ * camera move, a highlight fade): frames further apart than this are a pause
+ * of the on-demand renderer, not a slow frame, and the first two frames of a
+ * run are skipped.
+ */
+const FRAME_GAP_MS = 500;
+const RUN_WARMUP_FRAMES = 2;
 const DRAG_THRESHOLD_PX = 5;
 const NEUTRAL_DARK = new THREE.Color("#15120e");
 const NEUTRAL_GROUND = new THREE.Color("#4d463a");
@@ -63,12 +73,41 @@ function heraldryKey(heraldry: Heraldry | null): string {
   return `${heraldry.division}|${heraldry.field[0]}|${heraldry.field[1]}|${heraldry.ordinary}|${heraldry.ordinaryTincture}|${heraldry.charge}|${heraldry.chargeTincture}`;
 }
 
+/** Oldest-first copy of a ring buffer of samples. */
+function ringToArray(ring: Float32Array, count: number, cursor: number): number[] {
+  const out: number[] = [];
+  const start = count < ring.length ? 0 : cursor;
+  for (let index = 0; index < count; index++) out.push(ring[(start + index) % ring.length]);
+  return out;
+}
+
+/** Resolves after the next frame has been produced, so a long step never shares a task with the previous one. */
+function nextFrame(): Promise<void> {
+  return new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+}
+
+/**
+ * Everything the stand-in draws from a scene state, as one comparable value.
+ * Fields it does not show (the banner name typed during founding, honours,
+ * counts) are left out, so changing them never costs a WebGL frame.
+ */
+function visibleStateKey(state: LegacySceneState): string {
+  const representative = state.representative;
+  let levy = 0;
+  for (const member of state.levy) if (member.status !== "captive") levy++;
+  let markers = "";
+  for (let index = 0; index < state.matchMarkers.length && index < MAX_RECORD_STONES; index++) markers += state.matchMarkers[index].outcome.charAt(0);
+  const lantern = state.unreadNotices > 0 ? 2 : state.noticeKinds.length > 0 ? 1 : 0;
+  const rep = representative ? `${representative.status}|${representative.promotedTo ?? ""}` : "none";
+  return `${state.nationId}|${heraldryKey(state.heraldry)}|${state.hallTier}|${rep}|${Math.min(levy, 3)}|${markers}|${lantern}`;
+}
+
 class StandInEnvironment implements DesktopLegacyEnvironment {
   private readonly container: HTMLElement;
   private readonly renderer: THREE.WebGLRenderer;
   private readonly scene = new THREE.Scene();
   private readonly camera = new THREE.PerspectiveCamera(CAMERA_FOV, 16 / 9, 0.5, 180);
-  private readonly disposables = new Disposables();
+  private readonly disposables: Disposables;
   private readonly parts: StandInParts;
   private readonly hemisphere = new THREE.HemisphereLight("#d8cdb8", "#2a2219", 1.5);
   private readonly sun = new THREE.DirectionalLight("#ffe7c4", 2.1);
@@ -118,12 +157,20 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
   /** True until prepare() finishes: its grouped warm-up renders stay off screen and no frame is drawn mid-way. */
   private preparing = true;
   private firstFrameDone = false;
-  private readonly frameTimes = new Float32Array(FRAME_SAMPLES);
-  private frameTimeCount = 0;
-  private frameTimeCursor = 0;
+  /** Intervals between consecutive rendered frames during continuous rendering (frame pacing, GPU-bound frames included). */
+  private readonly frameIntervals = new Float32Array(FRAME_SAMPLES);
+  private frameIntervalCount = 0;
+  private frameIntervalCursor = 0;
+  /** Main-thread time inside renderer.render (render submission only). */
+  private readonly submissions = new Float32Array(FRAME_SAMPLES);
+  private submissionCount = 0;
+  private submissionCursor = 0;
+  private lastRenderedAt = 0;
+  private runLength = 0;
 
   private nationId: NationId | null = null;
   private bannerKey = "\u0000";
+  private stateKey = "";
   private hovered: LandmarkId | null = null;
   private pointerDown = false;
   private dragging = false;
@@ -135,9 +182,11 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
   private hoverX = 0;
   private hoverY = 0;
 
-  constructor(options: DesktopLegacyEnvironmentOptions, renderer: THREE.WebGLRenderer) {
+  constructor(options: DesktopLegacyEnvironmentOptions, renderer: THREE.WebGLRenderer, disposables: Disposables, parts: StandInParts) {
     this.container = options.container;
     this.renderer = renderer;
+    this.disposables = disposables;
+    this.parts = parts;
     this.quality = { ...options.quality };
     this.frameLimit = normalizeFrameLimit(options.quality.frameLimit);
     this.reducedMotion = options.reducedMotion;
@@ -155,7 +204,6 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
     renderer.domElement.setAttribute("aria-hidden", "true");
     this.container.appendChild(renderer.domElement);
 
-    this.parts = buildStandInScene(this.disposables);
     this.scene.add(this.parts.root, this.hemisphere, this.sun);
     this.sun.position.set(-9, 16, 11);
     this.scene.fog = this.fog;
@@ -183,7 +231,6 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
 
     this.applyPixelRatio();
     this.resize();
-    this.setState(options.state);
   }
 
   /**
@@ -247,10 +294,13 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
 
   setState(state: LegacySceneState): void {
     if (this.disposed) return;
+    const key = visibleStateKey(state);
+    if (key === this.stateKey) return;
+    this.stateKey = key;
     if (state.nationId !== this.nationId) this.applyPalette(state.nationId);
-    const key = heraldryKey(state.heraldry);
-    if (key !== this.bannerKey) {
-      this.bannerKey = key;
+    const banner = heraldryKey(state.heraldry);
+    if (banner !== this.bannerKey) {
+      this.bannerKey = banner;
       this.paintBanner(state.heraldry);
     }
     const tier = state.hallTier;
@@ -461,7 +511,8 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
     if (!this.contextLost) {
       const start = performance.now();
       this.renderer.render(this.scene, this.camera);
-      this.recordFrameTime(performance.now() - start);
+      this.recordSubmission(performance.now() - start);
+      this.recordFrameInterval(now);
       if (!this.firstFrameDone) {
         this.firstFrameDone = true;
         this.renderer.domElement.classList.add("is-ready");
@@ -493,10 +544,24 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
     return animating;
   }
 
-  private recordFrameTime(ms: number): void {
-    this.frameTimes[this.frameTimeCursor] = ms;
-    this.frameTimeCursor = (this.frameTimeCursor + 1) % FRAME_SAMPLES;
-    if (this.frameTimeCount < FRAME_SAMPLES) this.frameTimeCount++;
+  private recordSubmission(ms: number): void {
+    this.submissions[this.submissionCursor] = ms;
+    this.submissionCursor = (this.submissionCursor + 1) % FRAME_SAMPLES;
+    if (this.submissionCount < FRAME_SAMPLES) this.submissionCount++;
+  }
+
+  private recordFrameInterval(now: number): void {
+    const interval = now - this.lastRenderedAt;
+    this.lastRenderedAt = now;
+    if (interval <= 0 || interval > FRAME_GAP_MS) {
+      this.runLength = 0;
+      return;
+    }
+    this.runLength++;
+    if (this.runLength <= RUN_WARMUP_FRAMES) return;
+    this.frameIntervals[this.frameIntervalCursor] = interval;
+    this.frameIntervalCursor = (this.frameIntervalCursor + 1) % FRAME_SAMPLES;
+    if (this.frameIntervalCount < FRAME_SAMPLES) this.frameIntervalCount++;
   }
 
   // ---------------------------------------------------------------- input
@@ -669,16 +734,17 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
 
   getStats(): LegacyEnvironmentStats {
     const info = this.renderer.info;
-    const frameTimesMs: number[] = [];
-    const start = this.frameTimeCount < FRAME_SAMPLES ? 0 : this.frameTimeCursor;
-    for (let index = 0; index < this.frameTimeCount; index++) frameTimesMs.push(this.frameTimes[(start + index) % FRAME_SAMPLES]);
-    // The linked program count is not in the contract's stats yet (requested); it rides along for the performance protocol.
+    // frameTimesMs is frame pacing (intervals between rendered frames while rendering continuously), so
+    // GPU-bound slowness shows; a request to define it this way in the contract is recorded. The linked
+    // program count and the render-submission times are not in the contract's stats; they ride along
+    // for the performance protocol.
     const stats = {
       triangles: info.render.triangles,
       drawCalls: info.render.calls,
       geometries: info.memory.geometries,
       textures: info.memory.textures,
-      frameTimesMs,
+      frameTimesMs: ringToArray(this.frameIntervals, this.frameIntervalCount, this.frameIntervalCursor),
+      submissionTimesMs: ringToArray(this.submissions, this.submissionCount, this.submissionCursor),
       programs: info.programs?.length ?? 0,
     };
     return stats;
@@ -710,6 +776,12 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
   }
 }
 
+/**
+ * Creates the stand-in one step per frame, behind the caller's loading state:
+ * the WebGL context (its synchronous capability queries are the step most
+ * likely to wait on a busy GPU process), then the scene graph, then the
+ * state and banner raster, then one shader program per frame in prepare().
+ */
 export const createStandInEnvironment: CreateDesktopLegacyEnvironment = async (options) => {
   let renderer: THREE.WebGLRenderer;
   try {
@@ -717,11 +789,23 @@ export const createStandInEnvironment: CreateDesktopLegacyEnvironment = async (o
   } catch {
     return createFlatStandIn(options);
   }
-  const environment = new StandInEnvironment(options, renderer);
+  const disposables = new Disposables();
+  let environment: StandInEnvironment | null = null;
   try {
+    await nextFrame();
+    const parts = buildStandInScene(disposables);
+    environment = new StandInEnvironment(options, renderer, disposables, parts);
+    await nextFrame();
+    environment.setState(options.state);
+    await nextFrame();
     await environment.prepare();
   } catch (error) {
-    environment.dispose();
+    if (environment) environment.dispose();
+    else {
+      disposables.dispose();
+      renderer.dispose();
+      renderer.forceContextLoss();
+    }
     throw error;
   }
   return environment;

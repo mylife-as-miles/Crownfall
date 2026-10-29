@@ -178,7 +178,7 @@ const FIXTURES: readonly PreviewFixture[] = [
   {
     id: "classic-capture",
     title: "Classic match capture",
-    description: "The nominated Pawn is taken in a lost Classic match. The Chronicle notes the capture; no one is wounded or held.",
+    description: "The nominated Pawn is taken in a lost Classic match. The War Record notes the capture; no one is wounded or held.",
     nationId: "korvenia",
     steps: [
       KORVENIA_FOUNDING,

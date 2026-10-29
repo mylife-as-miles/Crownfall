@@ -161,7 +161,7 @@
     },
     {
       "id": "legacy-anchor",
-      "name": "My Legacy Anchor (placed at the viewer on entry)",
+      "name": "My Legacy Anchor (placed at the viewer on entry; panels are created on first entry)",
       "transform": {
         "position": [
           0,
@@ -173,59 +173,7 @@
           180,
           0
         ]
-      },
-      "children": [
-        {
-          "id": "legacy-panel",
-          "name": "My Legacy Panel",
-          "content": {
-            "type": "asset",
-            "asset": "crownfall-legacy"
-          },
-          "transform": {
-            "position": [
-              0,
-              0.1,
-              -1.4
-            ],
-            "rotationDeg": [
-              4.09,
-              0,
-              0
-            ],
-            "scale": 0.15
-          },
-          "components": {
-            "RayInteractable": {},
-            "PokeInteractable": {}
-          }
-        },
-        {
-          "id": "legacy-dock",
-          "name": "My Legacy Dock",
-          "content": {
-            "type": "asset",
-            "asset": "crownfall-legacy-dock"
-          },
-          "transform": {
-            "position": [
-              0,
-              -0.36,
-              -1.4
-            ],
-            "rotationDeg": [
-              -14.42,
-              0,
-              0
-            ],
-            "scale": 0.15
-          },
-          "components": {
-            "RayInteractable": {},
-            "PokeInteractable": {}
-          }
-        }
-      ]
+      }
     },
     {
       "id": "key-light",

@@ -364,10 +364,11 @@ export function applyMatchRecord(state: LegacyState, record: LegacyMatchRecord):
       ? representative.battlefieldPromotions.concat({ matchId: record.matchId, to: analysis.promotedTo })
       : representative.battlefieldPromotions;
     if (captured && !muster) {
+      // Prominent, so the aftermath shows that a Classic match took nobody from the house.
       add({
         kind: "capture",
         text: LEGACY_TEXT.classicCapture(representative.name, analysis.capturedOnSquare ?? "the board", analysis.capturedByLabel ?? opponentName),
-        at, matchIndex, prominence: "minor", refs: { ...matchRefs, memberId: representative.id },
+        at, matchIndex, prominence: "major", refs: { ...matchRefs, memberId: representative.id },
       });
     } else if (captured && analysis.outcome === "defeat") {
       const captor = analysis.capturedBy ?? crownHouseId(record.opponentNationId);
@@ -431,7 +432,7 @@ export function applyMatchRecord(state: LegacyState, record: LegacyMatchRecord):
     if (analysis.alliedRepresentativeLost) {
       const entry = add({
         kind: "allied-reaction",
-        text: LEGACY_TEXT.alliedReaction(ally.name, ally.representative.name, opponentName),
+        text: LEGACY_TEXT.alliedReaction(ally.name, ally.representative.name),
         at, matchIndex, prominence: "major", refs: { ...matchRefs, houseId: ally.id },
       });
       relations = changeRelation(relations, ally.id, { disposition: ALLIED_LOSS_DISPOSITION, grievances: 1, remember: entry.id });

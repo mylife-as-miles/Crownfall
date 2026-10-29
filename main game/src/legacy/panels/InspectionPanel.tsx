@@ -1,9 +1,10 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import type { ReactNode } from "react";
 import { LEGACY_COPY } from "../../../../shared/legacy/content/copy";
 import { LEGACY_LANDMARKS } from "../../../../shared/legacy/environment-contract";
 import type { LandmarkId } from "../../../../shared/legacy/types";
 import { DESKTOP_LEGACY_COPY as UI } from "../desktop-copy";
+import { useScrollEdges } from "../scroll-edges";
 
 interface InspectionPanelProps {
   landmark: LandmarkId;
@@ -22,6 +23,8 @@ export const InspectionPanel = forwardRef<HTMLElement, InspectionPanelProps>(fun
   const copy = LEGACY_COPY.landmarks[landmark];
   const previous = neighbour(landmark, -1);
   const next = neighbour(landmark, 1);
+  const [body, setBody] = useState<HTMLDivElement | null>(null);
+  useScrollEdges(body);
   return <section ref={ref} key={landmark} className={`legacy-panel legacy-panel--${landmark}`} aria-labelledby="legacy-panel-title" data-landmark-panel={landmark}>
     <header className="legacy-panel-header">
       <p className="legacy-eyebrow">{UI.bannerhold}</p>
@@ -29,7 +32,7 @@ export const InspectionPanel = forwardRef<HTMLElement, InspectionPanelProps>(fun
       <p className="legacy-panel-lede">{copy.description}</p>
       <button type="button" className="legacy-panel-close" aria-label={UI.close} onClick={onClose}><span aria-hidden="true">×</span></button>
     </header>
-    <div className="legacy-panel-body">{children}</div>
+    <div ref={setBody} className="legacy-panel-body legacy-scroll-fade">{children}</div>
     <footer className="legacy-panel-footer">
       <button type="button" className="legacy-panel-cycle" onClick={() => onCycle(-1)}><span className="controller-key legacy-key" aria-hidden="true">LB</span><span className="legacy-panel-cycle-name">{LEGACY_COPY.landmarks[previous].title}</span></button>
       <button type="button" className="legacy-panel-cycle legacy-panel-cycle--next" onClick={() => onCycle(1)}><span className="legacy-panel-cycle-name">{LEGACY_COPY.landmarks[next].title}</span><span className="controller-key legacy-key" aria-hidden="true">RB</span></button>

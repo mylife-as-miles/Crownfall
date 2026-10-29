@@ -53,7 +53,7 @@ try {
     assert.equal(await readFile(join(root, 'main-game-vr/public/ui', committed), 'utf8'), expectedLegacy, `Quest ${committed} is stale; rebuild the Quest experience`);
     for (const match of expectedLegacy.matchAll(/url\(['"]?([^'"\)]+)['"]?\)/g)) await readFile(resolve(root, 'main-game-vr/public/ui', match[1]));
   }
-  console.log(`PASS My Legacy Quest panels match shared Legacy content (${legacyReport.panelElements + legacyReport.dockElements} elements, ${legacyReport.hitTargets} controls of at least ${legacyReport.smallestHitTarget} units)`);
+  console.log(`PASS My Legacy Quest panels match shared Legacy content (${legacyReport.panelElements + legacyReport.dockElements} elements, ${legacyReport.hitTargets} controls of at least ${legacyReport.smallestHitDegrees} degrees, touch-tray controls of at least ${(legacyReport.smallestTouchMetres * 100).toFixed(1)} cm, text of at least ${legacyReport.smallestTextDegrees} degrees)`);
   // Optional check owned by the Legacy environment workflow (docs/legacy/WORKFLOWS.md).
   const environmentCheck = join(root, 'scripts/check-legacy-environment.ts');
   if (existsSync(environmentCheck)) await (await import(pathToFileURL(environmentCheck).href)).checkLegacyEnvironment();

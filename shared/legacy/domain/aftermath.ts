@@ -5,10 +5,23 @@ import type { ChronicleEntry, ChronicleKind, LegacyState } from "../types";
 
 export const MAX_PROMINENT_AFTERMATH = 2;
 
-/** Highest priority first. Kinds not listed never become prominent aftermath. */
+/**
+ * Highest priority first. Kinds not listed never become prominent aftermath.
+ * "capture" is prominent only for a representative who yielded in a Classic
+ * match; the tally of captures a representative made stays minor.
+ */
 export const AFTERMATH_PRIORITY: readonly ChronicleKind[] = [
-  "captivity", "return", "allied-reaction", "grievance", "promotion", "injury", "match",
+  "captivity", "return", "allied-reaction", "grievance", "promotion", "injury", "capture", "match",
 ];
+
+/**
+ * Prominent aftermath copy is short enough to read whole at a glance: every
+ * entry that can become prominent keeps its title and body within these
+ * lengths for any house, member, nation and captor, so no platform has to
+ * shorten a consequence (domain-content tests enforce the worst cases).
+ */
+export const AFTERMATH_TITLE_BUDGET = 44;
+export const AFTERMATH_BODY_BUDGET = 125;
 
 export function aftermathPriority(kind: ChronicleKind): number {
   const index = AFTERMATH_PRIORITY.indexOf(kind);
