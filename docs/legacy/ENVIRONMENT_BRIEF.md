@@ -210,6 +210,28 @@ without frame-rate-hostile features. Measure actual performance; never claim sta
 rates without physical-device evidence. Original or properly licensed assets with provenance; no
 fragile external dependencies.
 
+**Library decisions (evaluated 29 Oct 2026):**
+- **meshoptimizer:** adopted, at build time only. Every exported GLB, including Blender hero prefabs,
+  goes through a pinned `gltfpack` as the final pipeline step. Use quantisation, which is
+  KHR_mesh_quantization and loads unchanged through IWSDK's AssetManager. Use simplification for
+  Quest LODs where it holds up visually. Never use the decoder-dependent compression flags (`-c` or
+  `-cc`) for anything Quest loads: IWSDK 1.1.0-rc.2 configures only Draco and KTX2 decoders. Export
+  from Blender with Draco and meshopt off, and record each pass in the asset provenance.
+- **Recast/Detour, Jolt and ozz-animation:** rejected for now. Life stays authored, deterministic and
+  allocation-free. Physics, if ever needed, goes through IWSDK's built-in engine, and animation
+  through three.js. Reopen navigation only if goals are chosen at runtime, a human-scale avatar
+  appears, or figures visibly clip in close-ups. In that case try navcat (pure JS) at build time
+  first.
+- **Route solidity:** add an `npc-solid` validator check. Sample every life route at 0.5 m intervals
+  against building masses inflated by 0.3 m, towers and solid dressing, keep the doorway allowance,
+  test tier-gated buildings at each tier, and fix the routes it flags.
+
+**Known overage to fix:** the Quest whole-build draw calls in TECHNICAL_SPEC §9 are 125–180 in every
+nation, against the 120 budget. The §9 Quest row also disagrees with quality.ts (16 agents and
+vegetation 0.45 against 10 and 0.26). Reconcile the two, then merge meshes by material and cut
+figure prototypes, before morph-target instancing for walk poses. The desktop High preset was
+measured at 2.66M triangles against its 1.5M budget. Critics treat both as blockers.
+
 ## Acceptance
 
 A concrete spatial blueprint; a believable settlement with roads, housing, a central Manor, Muster
