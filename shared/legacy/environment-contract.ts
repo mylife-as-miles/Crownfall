@@ -11,7 +11,7 @@ import type { BannerholdPresentation, LandmarkId, Tincture } from "./types";
 /** Everything the environment may show. Produced by gameplay's presentBannerhold / presentFoundingDraft. */
 export type LegacySceneState = BannerholdPresentation;
 
-export const LEGACY_LANDMARKS = ["banner-hall", "muster-grounds", "war-chronicle", "heralds-station"] as const satisfies readonly LandmarkId[];
+export const LEGACY_LANDMARKS = ["banner-hall", "muster-grounds", "war-record", "heralds-station"] as const satisfies readonly LandmarkId[];
 
 /** Authoritative tincture colours (sRGB). Heraldry content, rasters and environment palettes reuse this table. */
 export const TINCTURE_SRGB: Readonly<Record<Tincture, string>> = {

@@ -61,7 +61,7 @@ Districts:
   functional.
 - **E. Herald's Station and Main Gate** — a significant entrance where summons and communications
   arrive, with a road leading out toward the greater nation. Not a sealed snow globe.
-- **F. War Chronicle** — a physical archive or historical focal point connected to the Manor,
+- **F. War Record** — a physical archive or historical focal point connected to the Manor,
   ready for inspection of conflicts, losses and relationships. A real architectural place.
 - **G. Outer Territory** — terrain, distant roads, fields, outposts, neighbouring estates and distant
   settlements that make the larger civilisation believable.
@@ -144,7 +144,7 @@ fragile external dependencies.
 ## Acceptance
 
 A concrete spatial blueprint; a believable settlement with roads, housing, a central Manor, Muster
-Grounds, War Chronicle, Herald's Station and infrastructure; a larger nation implied by landscape,
+Grounds, War Record, Herald's Station and infrastructure; a larger nation implied by landscape,
 roads and distant architecture; real interactive 3D on desktop and Quest showing the same settlement
 and landmarks with platform-appropriate camera and interaction; interactive major landmarks; fixtures
 that demonstrate change without fabricated progress; an original coherent identity; existing
