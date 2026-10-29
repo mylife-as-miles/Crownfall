@@ -1,0 +1,358 @@
+{
+  "generatedBy": "main game/scripts/capture-legacy-environment-landmarks.mjs",
+  "note": "Software-rendered (SwiftShader) in a container without a GPU: frame times are not representative of real hardware. Draw calls, triangles, programs, geometries and textures are hardware-independent.",
+  "fixture": "founded",
+  "tier": null,
+  "width": 1600,
+  "height": 900,
+  "post": true,
+  "qualities": {
+    "medium": {
+      "loadMs": 15950,
+      "views": {
+        "establishing": {
+          "file": "landmarks-medium-establishing.png",
+          "drawCalls": 145,
+          "triangles": 970722,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "banner-hall": {
+          "file": "landmarks-medium-banner-hall.png",
+          "drawCalls": 134,
+          "triangles": 961550,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "muster-grounds": {
+          "file": "landmarks-medium-muster-grounds.png",
+          "drawCalls": 139,
+          "triangles": 963802,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "war-record": {
+          "file": "landmarks-medium-war-record.png",
+          "drawCalls": 128,
+          "triangles": 958354,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "heralds-station": {
+          "file": "landmarks-medium-heralds-station.png",
+          "drawCalls": 137,
+          "triangles": 966222,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "representative": {
+          "file": "landmarks-medium-representative.png",
+          "drawCalls": 136,
+          "triangles": 962398,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "founding": {
+          "file": "landmarks-medium-founding.png",
+          "drawCalls": 137,
+          "triangles": 961734,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:hall-front": {
+          "file": "landmarks-medium-lm-hall-front.png",
+          "drawCalls": 134,
+          "triangles": 961550,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:hall-west": {
+          "file": "landmarks-medium-lm-hall-west.png",
+          "drawCalls": 130,
+          "triangles": 955098,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:keep": {
+          "file": "landmarks-medium-lm-keep.png",
+          "drawCalls": 126,
+          "triangles": 951740,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:honour-court": {
+          "file": "landmarks-medium-lm-honour-court.png",
+          "drawCalls": 131,
+          "triangles": 961470,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:court-gate": {
+          "file": "landmarks-medium-lm-court-gate.png",
+          "drawCalls": 137,
+          "triangles": 961734,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:west-range": {
+          "file": "landmarks-medium-lm-west-range.png",
+          "drawCalls": 135,
+          "triangles": 960192,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:muster-dais": {
+          "file": "landmarks-medium-lm-muster-dais.png",
+          "drawCalls": 137,
+          "triangles": 963080,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:file-stones": {
+          "file": "landmarks-medium-lm-file-stones.png",
+          "drawCalls": 137,
+          "triangles": 962214,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:training": {
+          "file": "landmarks-medium-lm-training.png",
+          "drawCalls": 138,
+          "triangles": 961136,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:armoury": {
+          "file": "landmarks-medium-lm-armoury.png",
+          "drawCalls": 136,
+          "triangles": 963596,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:archive": {
+          "file": "landmarks-medium-lm-archive.png",
+          "drawCalls": 126,
+          "triangles": 951154,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:archive-tower": {
+          "file": "landmarks-medium-lm-archive-tower.png",
+          "drawCalls": 134,
+          "triangles": 961694,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:herald-door": {
+          "file": "landmarks-medium-lm-herald-door.png",
+          "drawCalls": 137,
+          "triangles": 963090,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:herald-tower": {
+          "file": "landmarks-medium-lm-herald-tower.png",
+          "drawCalls": 132,
+          "triangles": 963644,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:west-gate": {
+          "file": "landmarks-medium-lm-west-gate.png",
+          "drawCalls": 143,
+          "triangles": 964134,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:record-gallery": {
+          "file": "landmarks-medium-lm-record-gallery.png",
+          "drawCalls": 131,
+          "triangles": 961290,
+          "geometries": 92,
+          "textures": 75,
+          "programs": 64
+        }
+      },
+      "errors": [],
+      "build": {
+        "buildMs": 2022.8000000044703,
+        "budget": {
+          "drawCalls": 89,
+          "triangles": 664147,
+          "shadowCasterDraws": 67
+        },
+        "materials": 47,
+        "trianglesByPart": {
+          "terrain": 59150,
+          "far-terrain": 41646,
+          "dressing": 5183,
+          "heraldry": 740,
+          "landmark:banner-hall": 39694,
+          "landmark:heralds-station": 8596,
+          "landmark:muster-grounds": 5085,
+          "landmark:war-record": 14578,
+          "outer": 8688,
+          "settlement": 57849,
+          "skyline": 400,
+          "slots": 1578,
+          "water": 662,
+          "figures": 54654,
+          "clutter": 94080,
+          "vegetation": 294384
+        }
+      }
+    },
+    "high": {
+      "loadMs": 22820,
+      "views": {
+        "establishing": {
+          "file": "landmarks-high-establishing.png",
+          "drawCalls": 280,
+          "triangles": 2898658,
+          "geometries": 92,
+          "textures": 81,
+          "programs": 72
+        },
+        "banner-hall": {
+          "file": "landmarks-high-banner-hall.png",
+          "drawCalls": 254,
+          "triangles": 2871590,
+          "geometries": 92,
+          "textures": 81,
+          "programs": 72
+        },
+        "lm:hall-front": {
+          "file": "landmarks-high-lm-hall-front.png",
+          "drawCalls": 250,
+          "triangles": 2871590,
+          "geometries": 92,
+          "textures": 81,
+          "programs": 72
+        },
+        "lm:archive": {
+          "file": "landmarks-high-lm-archive.png",
+          "drawCalls": 230,
+          "triangles": 2846942,
+          "geometries": 92,
+          "textures": 81,
+          "programs": 72
+        }
+      },
+      "errors": [],
+      "build": {
+        "buildMs": 2941.2999999970198,
+        "budget": {
+          "drawCalls": 89,
+          "triangles": 1031029,
+          "shadowCasterDraws": 67
+        },
+        "materials": 47,
+        "trianglesByPart": {
+          "terrain": 149026,
+          "far-terrain": 82742,
+          "dressing": 5183,
+          "heraldry": 740,
+          "landmark:banner-hall": 53336,
+          "landmark:heralds-station": 10360,
+          "landmark:muster-grounds": 5279,
+          "landmark:war-record": 20548,
+          "outer": 8688,
+          "settlement": 58259,
+          "skyline": 400,
+          "slots": 1578,
+          "water": 662,
+          "figures": 54654,
+          "clutter": 176290,
+          "vegetation": 429344
+        }
+      }
+    },
+    "low": {
+      "loadMs": 17806,
+      "views": {
+        "establishing": {
+          "file": "landmarks-low-establishing.png",
+          "drawCalls": 61,
+          "triangles": 268244,
+          "geometries": 79,
+          "textures": 53,
+          "programs": 22
+        },
+        "banner-hall": {
+          "file": "landmarks-low-banner-hall.png",
+          "drawCalls": 50,
+          "triangles": 263106,
+          "geometries": 79,
+          "textures": 53,
+          "programs": 22
+        },
+        "lm:hall-front": {
+          "file": "landmarks-low-lm-hall-front.png",
+          "drawCalls": 49,
+          "triangles": 263026,
+          "geometries": 79,
+          "textures": 53,
+          "programs": 22
+        },
+        "lm:archive": {
+          "file": "landmarks-low-lm-archive.png",
+          "drawCalls": 40,
+          "triangles": 256972,
+          "geometries": 79,
+          "textures": 53,
+          "programs": 22
+        }
+      },
+      "errors": [],
+      "build": {
+        "buildMs": 1719.1999999955297,
+        "budget": {
+          "drawCalls": 79,
+          "triangles": 281772,
+          "shadowCasterDraws": 35
+        },
+        "materials": 43,
+        "trianglesByPart": {
+          "terrain": 22042,
+          "far-terrain": 20588,
+          "dressing": 1178,
+          "heraldry": 740,
+          "landmark:banner-hall": 17520,
+          "landmark:heralds-station": 5362,
+          "landmark:muster-grounds": 2660,
+          "landmark:war-record": 7068,
+          "outer": 8332,
+          "settlement": 44488,
+          "skyline": 400,
+          "slots": 1578,
+          "water": 662,
+          "figures": 23906,
+          "clutter": 28398,
+          "vegetation": 103280
+        }
+      }
+    }
+  }
+}

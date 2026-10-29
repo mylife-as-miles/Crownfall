@@ -1,0 +1,60 @@
+{
+  "generatedBy": "main game/scripts/capture-legacy-environment-landmarks.mjs",
+  "note": "Software-rendered (SwiftShader) in a container without a GPU: frame times are not representative of real hardware. Draw calls, triangles, programs, geometries and textures are hardware-independent.",
+  "fixture": "recognised",
+  "tier": null,
+  "width": 1600,
+  "height": 900,
+  "post": true,
+  "qualities": {
+    "medium": {
+      "loadMs": 36349,
+      "views": {
+        "lm:muster-dais": {
+          "file": "landmarks-recognised-medium-lm-muster-dais.png",
+          "drawCalls": 153,
+          "triangles": 969132,
+          "geometries": 105,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:herald-door": {
+          "file": "landmarks-recognised-medium-lm-herald-door.png",
+          "drawCalls": 165,
+          "triangles": 973956,
+          "geometries": 105,
+          "textures": 75,
+          "programs": 64
+        }
+      },
+      "errors": [],
+      "build": {
+        "buildMs": 3356.4000000059605,
+        "budget": {
+          "drawCalls": 102,
+          "triangles": 669457,
+          "shadowCasterDraws": 80
+        },
+        "materials": 47,
+        "trianglesByPart": {
+          "terrain": 59150,
+          "far-terrain": 41646,
+          "dressing": 5183,
+          "heraldry": 740,
+          "landmark:banner-hall": 39694,
+          "landmark:heralds-station": 8596,
+          "landmark:muster-grounds": 5085,
+          "landmark:war-record": 14578,
+          "outer": 8688,
+          "settlement": 57849,
+          "skyline": 400,
+          "slots": 1578,
+          "water": 662,
+          "figures": 54654,
+          "clutter": 94080,
+          "vegetation": 294384
+        }
+      }
+    }
+  }
+}

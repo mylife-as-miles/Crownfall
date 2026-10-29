@@ -1,0 +1,823 @@
+{
+  "startedAt": "2026-10-29T20:42:00.983Z",
+  "profile": {
+    "runtime": "IWSDK 1.1.0-rc.2 managed headless Chromium with IWER Meta Quest 3 emulation (not a physical headset)",
+    "rendering": "SwiftShader software WebGL on a shared 4-CPU host: frame times are NOT representative of a Quest; draw calls and triangles are.",
+    "view": "mono, 60-degree field of view unless noted",
+    "input": "hand ray + pinch only; both controllers disconnected",
+    "developmentFramebufferScale": 0.35,
+    "physicalHeadset": false,
+    "pinchView": "During each landmark pinch the emulated head looks up at the sky so software frames stay inside the pointer click window; the hand ray, its target and the pinch are unchanged.",
+    "overlays": "The blue edge vignette and the Remote Control badge are emulator overlays, not part of the scene. Captures marked \"playwright frame-element screenshot\" hide every emulator and workspace overlay."
+  },
+  "harness": {
+    "nation": "korvenia",
+    "fixture": "founded",
+    "quality": "high"
+  },
+  "captures": [
+    {
+      "name": "seated-overview",
+      "file": "seated-overview.png",
+      "note": "Seated: eyes 1.20 m above the floor; the miniature centre 0.82 m ahead and 0.46 m below the eyes; anchor recentred at the eyes",
+      "fixture": "founded",
+      "nation": "korvenia",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "",
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "seated-staging-wide",
+      "file": "seated-staging-wide.png",
+      "note": "Wide 100-degree check: getStaging() panel (left) and dock (right) areas at 150 % text width, clear of the holding, its skyline and every structure",
+      "fixture": "founded",
+      "nation": "korvenia",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "",
+      "fov": 100,
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "standing-overview",
+      "file": "standing-overview.png",
+      "note": "Standing: eyes 1.62 m; the miniature centre 0.85 m ahead and 0.64 m below the eyes",
+      "fixture": "founded",
+      "nation": "korvenia",
+      "quality": "high",
+      "posture": "standing",
+      "yaw": 0,
+      "focus": "",
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "lean-in-muster-pawn",
+      "file": "lean-in-muster-pawn.png",
+      "note": "Leaning in about 0.2 m from the nominated Pawn at the Muster Grounds; the environment never moves the viewer",
+      "fixture": "founded",
+      "nation": "korvenia",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "",
+      "headPosition": [
+        -0.1444,
+        0.8688,
+        -0.6012
+      ],
+      "pawn": [
+        -0.1644,
+        0.7488,
+        -0.7712
+      ],
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "reveal-muster-pawn",
+      "file": "reveal-muster-pawn.png",
+      "note": "Occlusion reveal on Quest: the head leans low behind the lower town; the building between the head and the Pawn dissolves in a noisy, dithered capsule (development fixture)",
+      "fixture": "founded",
+      "nation": "korvenia",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "muster-grounds",
+      "headPosition": [
+        -0.1644,
+        0.7788,
+        -0.5711999999999999
+      ],
+      "pawn": [
+        -0.1644,
+        0.7488,
+        -0.7712
+      ],
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "landmark-war-record-selected",
+      "file": "landmark-war-record-selected.png",
+      "note": "After the pinch: the War Record emphasised (label, ground ring, warm rim) with the hand ray still on it",
+      "fixture": "founded",
+      "nation": "korvenia",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "war-record",
+      "selected": "war-record",
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "fixture-captive",
+      "file": "fixture-captive.png",
+      "note": "Captive fixture: the Pawn stand at the Muster Grounds is empty and a sealed writ marks the captor (development fixture)",
+      "fixture": "captive",
+      "nation": "korvenia",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "",
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "fixture-recognised",
+      "file": "fixture-recognised.png",
+      "note": "Recognised fixture: hall tier 2 completes the unfinished range and adds development; honour places filled (development fixture)",
+      "fixture": "recognised",
+      "nation": "korvenia",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "",
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "seated-stereo",
+      "file": "seated-stereo.png",
+      "note": "Stereo emulation: both eyes side by side (development framebuffer scale)",
+      "fixture": "founded",
+      "nation": "korvenia",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "",
+      "stereo": true,
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "nation-solforiz-seated",
+      "file": "nation-solforiz-seated.png",
+      "note": "Seated overview of the solforiz first-pass layout through the same Quest pipeline",
+      "fixture": "founded",
+      "nation": "solforiz",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "",
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "nation-aethelgard-seated",
+      "file": "nation-aethelgard-seated.png",
+      "note": "Seated overview of the aethelgard first-pass layout through the same Quest pipeline",
+      "fixture": "founded",
+      "nation": "aethelgard",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "",
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    },
+    {
+      "name": "nation-kwind-09-seated",
+      "file": "nation-kwind-09-seated.png",
+      "note": "Seated overview of the kwind-09 first-pass layout through the same Quest pipeline",
+      "fixture": "founded",
+      "nation": "kwind-09",
+      "quality": "high",
+      "posture": "seated",
+      "yaw": 0,
+      "focus": "",
+      "method": "playwright frame-element screenshot",
+      "size": [
+        780,
+        493
+      ]
+    }
+  ],
+  "interactions": [
+    {
+      "id": "Landmark_war-record",
+      "device": "hand-right",
+      "attempt": 1,
+      "aim": [
+        0.30962745857299023,
+        0.8512000372774895,
+        -0.9824895267890777
+      ],
+      "hovered": true
+    },
+    {
+      "id": "Landmark_war-record",
+      "selected": true,
+      "holdSeconds": 0.05,
+      "selectCount": 1,
+      "focus": "war-record",
+      "hoverCount": 1
+    }
+  ],
+  "checks": [
+    "The ?legacyEnvironment harness shows the Bannerhold with a labelled development fixture (never production state)",
+    "Active immersive session entered through the page Enter VR button, hand input, both controllers disconnected",
+    "Occlusion reveal: with the Muster Grounds focused, a building between the head and the Pawn dissolves (strength 0.999, 61 occluder materials on dissolve variants)",
+    "A hand-ray pinch on the War Record proxy fired onLandmarkSelect (harness selectCount and lastSelect) and focusLandmark emphasised it without moving the viewer",
+    "Renderer frame: 158 draw calls, 375102 triangles over 2 view(s) (79 / 187551 per view; Quest budget 120 / 250k); environment alone 66 draws, 177363 triangles submitted"
+  ],
+  "nations": {
+    "solforiz": {
+      "views": 2,
+      "environmentVisibleDraws": 49,
+      "environmentVisibleTriangles": 112300,
+      "staticDraws": 44,
+      "instanceDraws": 33,
+      "rendererFrame": {
+        "calls": 124,
+        "triangles": 245024,
+        "geometries": 90,
+        "textures": 33,
+        "programs": 46
+      },
+      "textures": 12,
+      "textureMB": 17.33,
+      "buildMs": 1007,
+      "prepMs": 190,
+      "installMs": 15
+    },
+    "aethelgard": {
+      "views": 2,
+      "environmentVisibleDraws": 53,
+      "environmentVisibleTriangles": 88918,
+      "staticDraws": 45,
+      "instanceDraws": 37,
+      "rendererFrame": {
+        "calls": 128,
+        "triangles": 193160,
+        "geometries": 94,
+        "textures": 32,
+        "programs": 46
+      },
+      "textures": 11,
+      "textureMB": 16,
+      "buildMs": 507,
+      "prepMs": 318,
+      "installMs": 17
+    },
+    "kwind-09": {
+      "views": 2,
+      "environmentVisibleDraws": 57,
+      "environmentVisibleTriangles": 102885,
+      "staticDraws": 47,
+      "instanceDraws": 32,
+      "rendererFrame": {
+        "calls": 122,
+        "triangles": 223994,
+        "geometries": 88,
+        "textures": 36,
+        "programs": 45
+      },
+      "textures": 15,
+      "textureMB": 21.33,
+      "buildMs": 486,
+      "prepMs": 150,
+      "installMs": 10
+    }
+  },
+  "runtimeUrl": "https://localhost:8093/",
+  "session": {
+    "active": true,
+    "mode": "immersive-vr",
+    "features": [
+      "hand-tracking",
+      "local-floor",
+      "bounded-floor",
+      "viewer",
+      "local"
+    ],
+    "inputMode": "hand",
+    "controllers": {
+      "left": {
+        "connected": false,
+        "position": {
+          "x": -0.25,
+          "y": 1.5,
+          "z": -0.4000000059604645
+        },
+        "orientation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        }
+      },
+      "right": {
+        "connected": false,
+        "position": {
+          "x": 0.25,
+          "y": 1.5,
+          "z": -0.4000000059604645
+        },
+        "orientation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        }
+      }
+    },
+    "hands": {
+      "left": true,
+      "right": true
+    }
+  },
+  "staging": {
+    "seated": {
+      "scale": 0.008,
+      "footprint": [
+        1.04,
+        0.992
+      ],
+      "surfaceCenter": [
+        0,
+        -0.45999999999999996,
+        -0.82
+      ],
+      "panelAnchors": {
+        "primary": [
+          -0.7392057511395203,
+          0.060000000000000026,
+          -0.8809511095868248
+        ],
+        "dock": [
+          0.7392057511395203,
+          -0.16,
+          -0.8809511095868248
+        ]
+      },
+      "landmarks": [
+        {
+          "id": "banner-hall",
+          "position": [
+            0.05153682839372632,
+            -0.3031999999999999,
+            -1.0429976576538766
+          ]
+        },
+        {
+          "id": "muster-grounds",
+          "position": [
+            -0.1820166483041956,
+            -0.44399999999999995,
+            -0.7607552555908393
+          ]
+        },
+        {
+          "id": "war-record",
+          "position": [
+            0.3096274441184594,
+            -0.34879999999999994,
+            -0.9824895253506217
+          ]
+        },
+        {
+          "id": "heralds-station",
+          "position": [
+            -0.41398560986760097,
+            -0.40959999999999996,
+            -0.7771991259137093
+          ]
+        }
+      ]
+    },
+    "standing": {
+      "scale": 0.008,
+      "footprint": [
+        1.04,
+        0.992
+      ],
+      "surfaceCenter": [
+        0,
+        -0.6400000000000001,
+        -0.85
+      ],
+      "panelAnchors": {
+        "primary": [
+          -0.7392057511395203,
+          -0.03999999999999998,
+          -0.8809511095868248
+        ],
+        "dock": [
+          0.7392057511395203,
+          -0.23999999999999996,
+          -0.8809511095868248
+        ]
+      },
+      "landmarks": [
+        {
+          "id": "banner-hall",
+          "position": [
+            0.05153682839372632,
+            -0.4832000000000001,
+            -1.0729976576538767
+          ]
+        },
+        {
+          "id": "muster-grounds",
+          "position": [
+            -0.1820166483041956,
+            -0.6240000000000001,
+            -0.7907552555908394
+          ]
+        },
+        {
+          "id": "war-record",
+          "position": [
+            0.3096274441184594,
+            -0.5288000000000002,
+            -1.0124895253506216
+          ]
+        },
+        {
+          "id": "heralds-station",
+          "position": [
+            -0.41398560986760097,
+            -0.5896000000000001,
+            -0.8071991259137093
+          ]
+        }
+      ]
+    }
+  },
+  "reveal": {
+    "demonstrated": true,
+    "eye": [
+      -0.1644,
+      0.7788,
+      -0.5711999999999999
+    ],
+    "reveal": {
+      "strength": 0.999,
+      "active": true,
+      "sweeps": 16,
+      "occluders": 61,
+      "pairs": 61
+    }
+  },
+  "environment": {
+    "views": 2,
+    "environmentVisibleDraws": 66,
+    "environmentVisibleTriangles": 177363,
+    "staticDraws": 64,
+    "instanceDraws": 39,
+    "rendererFrame": {
+      "calls": 158,
+      "triangles": 375102,
+      "geometries": 131,
+      "textures": 40,
+      "programs": 48
+    },
+    "textures": 19,
+    "textureMB": 26.67,
+    "buildMs": 2292,
+    "prepMs": 643,
+    "installMs": 23
+  },
+  "environmentDebug": {
+    "nationId": "korvenia",
+    "quality": "high",
+    "posture": "seated",
+    "userYawDeg": 0,
+    "buildMs": 2292,
+    "prepMs": 643,
+    "installMs": 23,
+    "miniature": {
+      "groups": 64,
+      "instanceDraws": 39,
+      "staticTriangles": 115317,
+      "instanceTriangles": 76038,
+      "trianglesByPart": {
+        "terrain": 12891,
+        "far-terrain": 5158,
+        "dressing": 5139,
+        "heraldry": 740,
+        "landmark:banner-hall": 16140,
+        "landmark:heralds-station": 5106,
+        "landmark:muster-grounds": 3770,
+        "landmark:war-record": 6412,
+        "outer": 6035,
+        "settlement": 51045,
+        "skyline": 400,
+        "slots": 1578,
+        "water": 223,
+        "vr-section": 2184,
+        "figures": 13826,
+        "clutter": 12116,
+        "vegetation": 48592
+      },
+      "droppedTriangles": 20724,
+      "culledInstances": 195,
+      "sectionEdges": 185,
+      "prepMs": 643
+    },
+    "buildStats": {
+      "meshes": 145,
+      "instanceSets": 32,
+      "instances": 681,
+      "drawCalls": 185,
+      "triangles": 240196,
+      "vertices": 346088,
+      "materials": [
+        "bronze",
+        "candle",
+        "cloth-dyed",
+        "cloth-heraldry",
+        "door-oak",
+        "far-terrain",
+        "figure",
+        "fire",
+        "foliage-broadleaf",
+        "foliage-conifer",
+        "foliage-heath",
+        "gilt",
+        "glass-dark",
+        "glass-lit",
+        "hay",
+        "iron",
+        "kv-basalt-ashlar",
+        "kv-basalt-rubble",
+        "kv-black-marble",
+        "kv-lead",
+        "kv-limestone",
+        "kv-oak-frame-plaster",
+        "kv-shingle",
+        "kv-slate",
+        "kv-thatch-dark",
+        "kv-timber-raw",
+        "plaster-lime",
+        "road-cobble",
+        "road-flagstone",
+        "road-setts",
+        "silhouette",
+        "skyline",
+        "stone-generic",
+        "terrain",
+        "timber-dark",
+        "timber-raw",
+        "water"
+      ],
+      "trianglesByPart": {
+        "terrain": 15996,
+        "far-terrain": 13504,
+        "dressing": 5183,
+        "heraldry": 740,
+        "landmark:banner-hall": 16140,
+        "landmark:heralds-station": 5106,
+        "landmark:muster-grounds": 3770,
+        "landmark:war-record": 6412,
+        "outer": 8688,
+        "settlement": 57055,
+        "skyline": 400,
+        "slots": 1578,
+        "water": 662,
+        "figures": 13826,
+        "clutter": 15356,
+        "vegetation": 75780
+      }
+    },
+    "staticDraws": 64,
+    "instanceDraws": 39,
+    "visibleDraws": 66,
+    "visibleTriangles": 177363,
+    "textures": 19,
+    "textureBytes": 26563925,
+    "atlasBytes": 1398101,
+    "layout": {
+      "primary": {
+        "position": [
+          -0.7392057511395203,
+          0.060000000000000026,
+          -0.8809511095868248
+        ],
+        "yawDeg": -40,
+        "pitchDeg": 2.986636990475168,
+        "distance": 1.1500000000000001,
+        "clearance": 0.03663272271827411
+      },
+      "dock": {
+        "position": [
+          0.7392057511395203,
+          -0.16,
+          -0.8809511095868248
+        ],
+        "yawDeg": 40,
+        "pitchDeg": -7.920739901641072,
+        "distance": 1.1500000000000001,
+        "clearance": 0.04000243047847829
+      }
+    },
+    "frame": {
+      "posture": "seated",
+      "scale": 0.008,
+      "yaw": -0.13962634015954636,
+      "restYaw": -0.13962634015954636,
+      "cos": 0.9902680687415704,
+      "sin": -0.13917310096006544,
+      "centerX": -2.5,
+      "centerZ": -8.5,
+      "datumY": 0,
+      "surfaceY": -0.45999999999999996,
+      "distance": 0.82,
+      "halfWidth": 65,
+      "halfDepth": 62,
+      "lateral": 70,
+      "far": 150,
+      "near": 0,
+      "nearCut": 62
+    },
+    "renderer": {
+      "calls": 158,
+      "triangles": 375102,
+      "geometries": 131,
+      "textures": 40,
+      "programs": 48
+    },
+    "xrViews": 2,
+    "multiview": false,
+    "reveal": {
+      "strength": 0,
+      "active": false,
+      "sweeps": 73,
+      "occluders": 61,
+      "pairs": 61
+    }
+  },
+  "contractStats": {
+    "triangles": 375102,
+    "drawCalls": 158,
+    "geometries": 131,
+    "textures": 40,
+    "frameTimesMs": [
+      1017.7,
+      1071.6,
+      857.5,
+      817.2,
+      733.3,
+      721.1,
+      837.7,
+      895.8,
+      903.8,
+      740.2,
+      840.1,
+      886.7,
+      892.2,
+      995.8,
+      919,
+      1016.6,
+      1009.6,
+      984.8,
+      780.6,
+      914.1,
+      1037.1,
+      984.2,
+      989.2,
+      1024.1,
+      1002.2,
+      1053.6,
+      928.5,
+      660.8,
+      153.8,
+      1734.6,
+      35.7,
+      869.2,
+      1526.4,
+      664.5,
+      613.5,
+      759.4,
+      750.3,
+      30.5,
+      1480.1,
+      794.9,
+      741.1,
+      770.2,
+      612,
+      856.3,
+      732.8,
+      805.9,
+      870.9,
+      1546.3,
+      902.9,
+      1043.9,
+      678.1,
+      657,
+      798.1,
+      949.8,
+      817.3,
+      858.8,
+      987,
+      687.9,
+      741,
+      1010.4
+    ]
+  },
+  "renderStats": {
+    "available": true,
+    "calls": 158,
+    "triangles": 375102,
+    "points": 0,
+    "lines": 0,
+    "geometries": 131,
+    "textures": 40,
+    "programs": 48,
+    "meshCount": 623,
+    "materialCount": 549,
+    "shadowCasters": 0,
+    "environment": {
+      "canvas": {
+        "width": 780,
+        "height": 493
+      },
+      "pixelRatio": 1,
+      "renderer": "WebGLRenderer",
+      "shadows": false,
+      "toneMapping": 4
+    },
+    "sceneAssets": [
+      {
+        "id": "crownfall-atmosphere",
+        "meshCount": 3
+      },
+      {
+        "id": "crownfall-menu",
+        "meshCount": 481
+      }
+    ],
+    "note": "iwsdk scene render-stats of the last frame; meshCount and materialCount include the hidden menu nodes (not drawn)."
+  },
+  "frameTiming": {
+    "durationMs": 33177,
+    "frameTimeMs": {
+      "droppedFrameCount": 27,
+      "max": 1550,
+      "p50": 766.5999999999767,
+      "p95": 1316.5999999999767,
+      "sampleCount": 29,
+      "source": "requestAnimationFrame-interval"
+    },
+    "longTasks": {
+      "count": 10,
+      "totalDurationMs": 4633
+    },
+    "jsHeapUsedMB": 166.4,
+    "caveat": "SwiftShader software WebGL on a shared 4-CPU host: frame times are NOT representative of a Quest; draw calls and triangles are."
+  },
+  "budget": {
+    "drawCalls": 158,
+    "triangles": 375102,
+    "views": 2,
+    "perViewDrawCalls": 79,
+    "perViewTriangles": 187551,
+    "limits": {
+      "drawCalls": 120,
+      "triangles": 250000
+    },
+    "note": "renderer.info of the last frame: the whole harness frame (environment, sky, harness caption and controls, emulator hands and rays). Without multiview the emulator draws each eye separately, so per-view numbers are the frame divided by the views rendered."
+  },
+  "passed": true,
+  "finishedAt": "2026-10-29T20:59:12.457Z"
+}

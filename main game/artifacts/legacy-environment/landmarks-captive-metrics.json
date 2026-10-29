@@ -1,0 +1,52 @@
+{
+  "generatedBy": "main game/scripts/capture-legacy-environment-landmarks.mjs",
+  "note": "Software-rendered (SwiftShader) in a container without a GPU: frame times are not representative of real hardware. Draw calls, triangles, programs, geometries and textures are hardware-independent.",
+  "fixture": "captive",
+  "tier": null,
+  "width": 1600,
+  "height": 900,
+  "post": true,
+  "qualities": {
+    "medium": {
+      "loadMs": 34274,
+      "views": {
+        "lm:muster-dais": {
+          "file": "landmarks-captive-medium-lm-muster-dais.png",
+          "drawCalls": 136,
+          "triangles": 961784,
+          "geometries": 94,
+          "textures": 75,
+          "programs": 64
+        }
+      },
+      "errors": [],
+      "build": {
+        "buildMs": 3321.1999999955297,
+        "budget": {
+          "drawCalls": 91,
+          "triangles": 664157,
+          "shadowCasterDraws": 69
+        },
+        "materials": 47,
+        "trianglesByPart": {
+          "terrain": 59150,
+          "far-terrain": 41646,
+          "dressing": 5183,
+          "heraldry": 740,
+          "landmark:banner-hall": 39694,
+          "landmark:heralds-station": 8596,
+          "landmark:muster-grounds": 5085,
+          "landmark:war-record": 14578,
+          "outer": 8688,
+          "settlement": 57849,
+          "skyline": 400,
+          "slots": 1578,
+          "water": 662,
+          "figures": 54654,
+          "clutter": 94080,
+          "vegetation": 294384
+        }
+      }
+    }
+  }
+}

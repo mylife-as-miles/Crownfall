@@ -1,0 +1,68 @@
+{
+  "generatedBy": "main game/scripts/capture-legacy-environment-landmarks.mjs",
+  "note": "Software-rendered (SwiftShader) in a container without a GPU: frame times are not representative of real hardware. Draw calls, triangles, programs, geometries and textures are hardware-independent.",
+  "fixture": "founded",
+  "tier": 3,
+  "width": 1600,
+  "height": 900,
+  "post": true,
+  "qualities": {
+    "medium": {
+      "loadMs": 22867,
+      "views": {
+        "lm:hall-front": {
+          "file": "landmarks-tier3-medium-lm-hall-front.png",
+          "drawCalls": 163,
+          "triangles": 972258,
+          "geometries": 112,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:archive-tower": {
+          "file": "landmarks-tier3-medium-lm-archive-tower.png",
+          "drawCalls": 163,
+          "triangles": 972258,
+          "geometries": 112,
+          "textures": 75,
+          "programs": 64
+        },
+        "lm:record-gallery": {
+          "file": "landmarks-tier3-medium-lm-record-gallery.png",
+          "drawCalls": 158,
+          "triangles": 971816,
+          "geometries": 110,
+          "textures": 75,
+          "programs": 64
+        }
+      },
+      "errors": [],
+      "build": {
+        "buildMs": 2590,
+        "budget": {
+          "drawCalls": 89,
+          "triangles": 664147,
+          "shadowCasterDraws": 67
+        },
+        "materials": 47,
+        "trianglesByPart": {
+          "terrain": 59150,
+          "far-terrain": 41646,
+          "dressing": 5183,
+          "heraldry": 740,
+          "landmark:banner-hall": 39694,
+          "landmark:heralds-station": 8596,
+          "landmark:muster-grounds": 5085,
+          "landmark:war-record": 14578,
+          "outer": 8688,
+          "settlement": 57849,
+          "skyline": 400,
+          "slots": 1578,
+          "water": 662,
+          "figures": 54654,
+          "clutter": 94080,
+          "vegetation": 294384
+        }
+      }
+    }
+  }
+}

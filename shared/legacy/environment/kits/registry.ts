@@ -3,6 +3,7 @@
 // `kit` id (exact, then without the nation prefix, then by family), falling back to
 // the architecture kit; site kits run in order.
 
+import type { NationId } from "../../types";
 import type { Building } from "../blueprint";
 import type { MeshBuffer } from "../kernel";
 import { buildArchitecture } from "./architecture";
@@ -16,6 +17,10 @@ export interface SiteKit {
   order: number;
   /** May append to the context's builder and collectors, and/or return finished meshes. */
   build(ctx: KitContext): MeshBuffer[] | void;
+  /** Nation variant: the kit runs only for these nations (every nation when omitted). */
+  nations?: readonly NationId[];
+  /** Ids of generic site kits this nation variant stands in for; they do not run for its nations. */
+  replaces?: readonly string[];
 }
 
 export interface KitPackage {
@@ -64,7 +69,15 @@ export class KitRegistry {
     return "architecture";
   }
 
-  siteKits(): readonly SiteKit[] {
-    return this.sites;
+  /**
+   * Site kits in run order. With a nation, its nation variants run and the generic kits they
+   * replace are skipped; without one, only the generic (nation-free) kits are listed.
+   */
+  siteKits(nationId?: NationId): readonly SiteKit[] {
+    const replaced = new Set<string>();
+    if (nationId) {
+      for (const s of this.sites) if (s.nations && s.nations.indexOf(nationId) >= 0 && s.replaces) for (const r of s.replaces) replaced.add(r);
+    }
+    return this.sites.filter((s) => (s.nations ? nationId !== undefined && s.nations.indexOf(nationId) >= 0 : !replaced.has(s.id)));
   }
 }

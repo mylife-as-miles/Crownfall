@@ -60,8 +60,12 @@ function ellipseRing(y: number, a: number, c: number, seg: number, z = 0): numbe
   return out;
 }
 
+/** Current level of detail while a prototype is being built (0 = desktop, 1 = Quest miniature). */
+let LOD: 0 | 1 = 0;
+
 function limb(b: MeshBuilder, len: number, r0: number, r1: number): void {
-  lathe(b, [[r1, -len], [r0 * 0.96, -len * 0.5], [r0, 0]], 6, { smooth: true });
+  if (LOD >= 1) lathe(b, [[r1, -len], [r0, 0]], 4, { smooth: true, phase: Math.PI / 4 });
+  else lathe(b, [[r1, -len], [r0 * 0.96, -len * 0.5], [r0, 0]], 6, { smooth: true });
 }
 
 function col(b: MeshBuilder, hex: string, k = 1): void {
@@ -69,10 +73,15 @@ function col(b: MeshBuilder, hex: string, k = 1): void {
   b.color(c[0] * k, c[1] * k, c[2] * k);
 }
 
-/** Builds one figure prototype; heraldic tabards use the cloth-heraldry atlas material. */
-export function buildFigure(paletteId: string, pose: FigurePose): MeshBuffer[] {
+/**
+ * Builds one figure prototype; heraldic tabards use the cloth-heraldry atlas material.
+ * `lod` 1 is the Quest miniature representation (fewer segments, no facial planes): at
+ * 1:125 a figure is under 1.5 cm tall, so silhouette and palette carry it.
+ */
+export function buildFigure(paletteId: string, pose: FigurePose, lod: 0 | 1 = 0): MeshBuffer[] {
   const p = FIGURE_PALETTES[paletteId] ?? FIGURE_PALETTES.civilian;
   const j = POSES[pose];
+  LOD = lod;
   const b = new MeshBuilder();
   b.part("figures").material("figure").shadows(true, true);
   b.uvMode = "explicit";
@@ -103,6 +112,15 @@ export function buildFigure(paletteId: string, pose: FigurePose): MeshBuffer[] {
     b.push();
     b.transform(-0.3, 1.0, 0.12, 0.25);
     chamferBox(b, 0, -0.25, 0, 0.42, 0.55, 0.05, 0.08);
+    b.pop();
+  }
+  if (paletteId === "levy" && pose === "stand") {
+    col(b, "#3b2c20");
+    box(b, -0.3, 0, 0.1, 0.035, 2.05, 0.035);
+    col(b, p.metal, 1.15);
+    b.push();
+    b.translate(-0.3, 2.05, 0.1);
+    lathe(b, [[0.032, 0], [0.01, 0.24]], 4, { smooth: false });
     b.pop();
   }
   if (pose === "work") {
@@ -149,7 +167,8 @@ function bodyAt(b: MeshBuilder, p: FigurePalette, j: Joints, helmet: boolean): v
   b.transform(0, 0, 0, 0, j.lean, 0);
   // Torso loft.
   col(b, p.tunic);
-  loft(b, [
+  if (LOD >= 1) loft(b, [ellipseRing(0.88, 0.165, 0.11, 6), ellipseRing(1.3, 0.2, 0.12, 6), ellipseRing(1.47, 0.13, 0.09, 6)]);
+  else loft(b, [
     ellipseRing(0.88, 0.165, 0.11, 8),
     ellipseRing(1.04, 0.15, 0.1, 8),
     ellipseRing(1.24, 0.19, 0.12, 8),
@@ -158,53 +177,103 @@ function bodyAt(b: MeshBuilder, p: FigurePalette, j: Joints, helmet: boolean): v
   ]);
   // Tunic skirt flaring to the knees.
   col(b, p.tunic, 0.92);
-  loft(b, [ellipseRing(0.5, 0.25, 0.19, 8), ellipseRing(0.78, 0.2, 0.14, 8), ellipseRing(1.0, 0.163, 0.112, 8)]);
-  col(b, p.belt);
-  loft(b, [ellipseRing(0.98, 0.168, 0.116, 8), ellipseRing(1.04, 0.158, 0.108, 8)]);
+  if (LOD >= 1) loft(b, [ellipseRing(0.5, 0.25, 0.19, 6), ellipseRing(1.0, 0.163, 0.112, 6)]);
+  else loft(b, [ellipseRing(0.5, 0.25, 0.19, 8), ellipseRing(0.78, 0.2, 0.14, 8), ellipseRing(1.0, 0.163, 0.112, 8)]);
+  if (LOD < 1) {
+    col(b, p.belt);
+    loft(b, [ellipseRing(0.98, 0.168, 0.116, 8), ellipseRing(1.04, 0.158, 0.108, 8)]);
+    // Buckle.
+    col(b, p.metal, 1.1);
+    box(b, 0, 0.985, 0.112, 0.05, 0.05, 0.02);
+  }
   if (p.tabard) {
     const uv = atlasUv("player", "banner");
     b.material("cloth-heraldry");
     b.color(1, 1, 1);
-    for (const s of [1, -1]) {
-      const z = s * 0.135;
-      const a = b.vertex(-0.15, 0.52, z + s * 0.06, 0, 0, s, s > 0 ? uv[0] : uv[2], uv[1]);
-      const c = b.vertex(0.15, 0.52, z + s * 0.06, 0, 0, s, s > 0 ? uv[2] : uv[0], uv[1]);
-      const d = b.vertex(0.15, 1.42, z, 0, 0, s, s > 0 ? uv[2] : uv[0], uv[3]);
-      const e = b.vertex(-0.15, 1.42, z, 0, 0, s, s > 0 ? uv[0] : uv[2], uv[3]);
-      if (s > 0) b.quad(a, c, d, e);
-      else b.quad(c, a, e, d);
+    if (LOD >= 1) {
+      for (const s of [1, -1]) {
+        const z = s * 0.135;
+        const a = b.vertex(-0.15, 0.52, z + s * 0.06, 0, 0, s, s > 0 ? uv[0] : uv[2], uv[1]);
+        const c = b.vertex(0.15, 0.52, z + s * 0.06, 0, 0, s, s > 0 ? uv[2] : uv[0], uv[1]);
+        const d = b.vertex(0.15, 1.42, z, 0, 0, s, s > 0 ? uv[2] : uv[0], uv[3]);
+        const e = b.vertex(-0.15, 1.42, z, 0, 0, s, s > 0 ? uv[0] : uv[2], uv[3]);
+        if (s > 0) b.quad(a, c, d, e);
+        else b.quad(c, a, e, d);
+      }
+    } else {
+      // Draped panels that follow the torso and fall straight over the skirt to the hem.
+      const xs = [-0.165, -0.07, 0.07, 0.165];
+      const rows: [number, number, number][] = [[0.52, 0.205, 0.17], [1.0, 0.132, 0.05], [1.42, 0.128, 0.06]];
+      for (const s of [1, -1]) {
+        const grid: number[][] = [];
+        for (const [y, zc, ze] of rows) {
+          const line: number[] = [];
+          for (const x of xs) {
+            const t = Math.abs(x) / 0.165;
+            const z = s * (zc + (ze - zc) * t * t);
+            const u = s > 0 ? uv[0] + ((x + 0.165) / 0.33) * (uv[2] - uv[0]) : uv[2] - ((x + 0.165) / 0.33) * (uv[2] - uv[0]);
+            const v = uv[1] + ((y - 0.52) / 0.9) * (uv[3] - uv[1]);
+            const nx = x * 2.2, nz = s;
+            const nl = Math.hypot(nx, nz);
+            line.push(b.vertex(x, y, z, nx / nl, 0, nz / nl, u, v));
+          }
+          grid.push(line);
+        }
+        for (let r = 0; r < rows.length - 1; r++) {
+          for (let c = 0; c < xs.length - 1; c++) {
+            const a = grid[r][c], c1 = grid[r][c + 1], d = grid[r + 1][c + 1], e = grid[r + 1][c];
+            if (s > 0) b.quad(a, c1, d, e);
+            else b.quad(c1, a, e, d);
+          }
+        }
+      }
     }
     b.material("figure");
+    if (LOD < 1) {
+      // Belt cinching the tabard.
+      col(b, p.belt);
+      for (const s of [1, -1]) box(b, 0, 0.975, s * 0.14, 0.31, 0.055, 0.02);
+    }
   }
   if (p.cloak) {
     col(b, p.cloak);
-    loft(b, [ellipseRing(0.35, 0.3, 0.06, 6, -0.17), ellipseRing(0.95, 0.26, 0.05, 6, -0.15), ellipseRing(1.44, 0.22, 0.05, 6, -0.11)]);
+    if (LOD >= 1) loft(b, [ellipseRing(0.35, 0.3, 0.06, 5, -0.17), ellipseRing(1.44, 0.22, 0.05, 5, -0.11)]);
+    else loft(b, [ellipseRing(0.35, 0.3, 0.06, 6, -0.17), ellipseRing(0.95, 0.26, 0.05, 6, -0.15), ellipseRing(1.44, 0.22, 0.05, 6, -0.11)]);
   }
   // Neck and head.
   col(b, p.skin);
   b.push();
   b.translate(0, 1.47, 0.01);
-  lathe(b, [[0.05, 0], [0.048, 0.08]], 6, { smooth: true });
+  lathe(b, [[0.05, 0], [0.048, 0.08]], LOD >= 1 ? 4 : 6, { smooth: true });
   b.translate(0, 0.17, 0.01);
   b.push();
   b.transform(0, 0, 0, 0, 0, 0, 0.095, 0.118, 0.105);
-  lathe(b, [[0.02, -1], [0.75, -0.72], [1, -0.05], [0.9, 0.55], [0.02, 1]], 7, { smooth: true });
+  lathe(b, [[0.02, -1], [0.75, -0.72], [1, -0.05], [0.9, 0.55], [0.02, 1]], LOD >= 1 ? 5 : 8, { smooth: true });
   b.pop();
+  if (LOD < 1) {
+    // Facial planes: nose, brow and eye shadows so a face reads at inspection distance.
+    col(b, p.skin, 0.9);
+    chamferBox(b, 0, -0.035, 0.1, 0.032, 0.06, 0.04, 0.01);
+    col(b, p.hair, 0.8);
+    b.flatQuad(-0.05, 0.03, 0.104, 0.05, 0.03, 0.104, 0.05, 0.045, 0.1, -0.05, 0.045, 0.1);
+    col(b, "#1a1412");
+    for (const sx of [-1, 1]) b.flatQuad(sx * 0.034 - 0.013, 0.008, 0.106, sx * 0.034 + 0.013, 0.008, 0.106, sx * 0.034 + 0.013, 0.02, 0.104, sx * 0.034 - 0.013, 0.02, 0.104);
+  }
   if (helmet) {
-    // Conical nasal helm and a mail collar: reads as a soldier at any distance.
+    // Conical nasal helm on the brow and a mail collar: reads as a soldier at any distance.
     col(b, p.metal, 0.62);
-    lathe(b, [[0.105, -0.23], [0.085, -0.16], [0.06, -0.115]], 8, { smooth: true });
+    lathe(b, [[0.105, -0.23], [0.085, -0.16], [0.06, -0.115]], LOD >= 1 ? 5 : 8, { smooth: true });
     col(b, p.metal, 0.85);
-    lathe(b, [[0.118, -0.035], [0.12, 0.02], [0.094, 0.1], [0.05, 0.16], [0.012, 0.2]], 8, { smooth: false });
-    box(b, 0, -0.07, 0.112, 0.022, 0.085, 0.014);
+    lathe(b, [[0.112, 0.035], [0.114, 0.07], [0.09, 0.135], [0.05, 0.185], [0.012, 0.225]], LOD >= 1 ? 5 : 8, { smooth: false });
+    box(b, 0, -0.035, 0.112, 0.02, 0.075, 0.014);
   } else if (p.hood) {
     col(b, p.cloak ?? p.tunic, 0.9);
-    lathe(b, [[0.13, -0.16], [0.13, 0.04], [0.1, 0.12], [0.02, 0.15]], 7, { smooth: true });
+    lathe(b, [[0.13, -0.16], [0.13, 0.04], [0.1, 0.12], [0.02, 0.15]], LOD >= 1 ? 5 : 7, { smooth: true });
   } else {
     col(b, p.hair);
     b.push();
     b.transform(0, 0.03, -0.01, 0, 0, 0, 0.1, 0.1, 0.11);
-    lathe(b, [[0.6, -0.2], [1, 0.25], [0.6, 0.85], [0.02, 1]], 7, { smooth: true });
+    lathe(b, [[0.6, -0.2], [1, 0.25], [0.6, 0.85], [0.02, 1]], LOD >= 1 ? 5 : 7, { smooth: true });
     b.pop();
   }
   b.pop();

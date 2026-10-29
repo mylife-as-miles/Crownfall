@@ -55,7 +55,7 @@ function figureSpec(ctx: KitContext, key: string, palette: string, pose: FigureP
     lod: 0,
     motion: agents ? { kind: "agents" } : null,
     gate: null,
-    build: () => buildFigure(palette, pose),
+    build: () => buildFigure(palette, pose, ctx.quality.id === "quest" ? 1 : 0),
   });
 }
 

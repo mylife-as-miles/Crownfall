@@ -153,7 +153,7 @@ export function buildBannerhold(input: BuildInput): EnvironmentBuild {
   // Landmark membership from the blueprint's landmark anchors.
   const landmarkOf = new Map<string, LandmarkId>();
   for (const l of bp.landmarks) for (const id of l.buildingIds) landmarkOf.set(id, l.id);
-  const sites = registry.siteKits();
+  const sites = registry.siteKits(bp.nationId);
   for (const s of sites) if (s.order < 10) {
     const out = s.build(ctx);
     if (out) for (const m of out) finished.push(m);
