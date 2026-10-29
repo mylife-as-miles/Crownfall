@@ -12,6 +12,7 @@
     "build:quest": "npm --prefix main-game-vr run build",
     "build": "npm run build:desktop && npm run build:quest",
     "test:quest": "npm --prefix main-game-vr run test",
+    "test:legacy": "main-game-vr/node_modules/.bin/tsx --test shared/legacy/tests/*.test.ts",
     "check:sync": "npm --prefix main-game-vr run check:sync",
     "setup": "node scripts/setup-menus.mjs"
   }
