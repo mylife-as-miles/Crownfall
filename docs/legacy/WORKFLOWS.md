@@ -63,6 +63,12 @@ root `README.md`, `scripts/` except the two environment files above, `main game/
 **Orchestrator:** the contract files above, `docs/legacy/BRIEF.md`, `ENVIRONMENT_BRIEF.md`,
 `WORKFLOWS.md` and `shared/legacy/README.md`.
 
+## Performance standard
+
+Both workflows must meet `docs/legacy/PERFORMANCE.md`: smooth, lag-free browser performance,
+per-platform budgets, no long tasks during interaction, no leaks, and its measurement protocol in
+every evidence round. Critics treat violations as blockers.
+
 ## Shared machine resources
 
 - Desktop dev servers: gameplay uses ports 5173 and 5180–5189; environment uses 5174–5179.

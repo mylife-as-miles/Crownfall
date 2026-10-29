@@ -133,5 +133,5 @@ Grounds, War Chronicle, Herald's Station and infrastructure; a larger nation imp
 roads and distant architecture; real interactive 3D on desktop and Quest showing the same settlement
 and landmarks with platform-appropriate camera and interaction; interactive major landmarks; fixtures
 that demonstrate change without fabricated progress; an original coherent identity; existing
-functionality intact; builds and sync checks passing; real screenshots and performance evidence; a
+functionality intact; builds and sync checks passing; smooth, lag-free browser performance meeting every budget and the measurement protocol in `docs/legacy/PERFORMANCE.md`; real screenshots and performance evidence; a
 record of what was verified on hardware versus emulation.
