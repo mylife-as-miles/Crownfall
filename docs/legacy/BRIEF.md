@@ -154,7 +154,7 @@ inputs work; Quest works with tracked hands in an actual immersive session with 
 recovery; a named Pawn can be nominated and inspected; Chronicle and politics render from shared data
 with no fabricated production results; tests cover capture, victory, defeat, draw, reset and
 persistence; environment assets are optimised with measured frame timing and resource use; existing
-menus and the sorcerer stay intact; captures exist for desktop and Quest; browser emulation is never
+menus and the sorcerer stay intact; My Legacy runs smoothly in the browser without lag or hitches and meets every budget in `docs/legacy/PERFORMANCE.md` (measured each evidence round); captures exist for desktop and Quest; browser emulation is never
 presented as physical headset validation. Run the root build, Quest tests, `check:sync` and the
 applicable desktop tests. Document outstanding limitations honestly. Draft PR only; no merge or
 deployment without authorisation.
