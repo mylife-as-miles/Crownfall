@@ -78,7 +78,9 @@ benchmark, then extend the same architecture to the other nations.
   not the number of pieces controlled; the national formation follows standard chess. The Pawn has a
   recognisable presentation and can be inspected (name, banner allegiance, status). The data model
   must support future Knight/Bishop/Rook/Queen appointments without implementing that system.
-- **War Chronicle** — a physical record (war table, archive, ledger) instead of a stats panel.
+- **War Record** — a physical record (war table, archive, ledger) instead of a stats panel.
+  Naming: this is always the **War Record**, never "War Chronicle". *Chronicles* is the separate
+  world archive on Home (nations, history, institutions); what happens to the house belongs here.
   Records completed conflicts, legal chess outcomes, nominated representatives, notable captures,
   promotions, political grievances and unresolved matters, from persistent Legacy data. Never
   invent matches or fabricate progression in production.
@@ -154,7 +156,7 @@ Found a Minor Banner → the house contributes a named Pawn to the National Must
 challenge states the political context and the nation's stakes → a legal chess match (eventually
 through the existing game systems) → a result processor reads the factual match history and decides
 which named representatives were captured → outcomes are stored → back in My Legacy the holding,
-residents, War Chronicle and Herald's Station respond. Show at most **two** prominent aftermath
+residents, War Record and Herald's Station respond. Show at most **two** prominent aftermath
 messages while keeping every fact recorded. An unresolved thread must not require a loss. Until the
 real match integration exists, exercise consequences only through automated fixtures and clearly
 identified development previews — never fabricated production records, and never claim the Quest

@@ -288,7 +288,7 @@ export interface LegacyTransition {
 // from a LegacyState by domain/presentation.ts; renderers never read raw saves.
 // ---------------------------------------------------------------------------
 
-export type LandmarkId = "banner-hall" | "muster-grounds" | "war-chronicle" | "heralds-station";
+export type LandmarkId = "banner-hall" | "muster-grounds" | "war-record" | "heralds-station";
 
 export interface RepresentativePresentation {
   memberId: string;
