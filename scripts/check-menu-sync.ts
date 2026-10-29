@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import { readFile, mkdtemp, rm, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { generateQuestUI } from './generate-quest-ui.ts';
 import { sharedAssetPaths, menuPublicSource, questPublicDestination } from './sync-menu-assets.mjs';
 import { CHAPTERS, HOME_CONTENT, NAV_TABS, PLAY_CARDS, ARENAS } from '../shared/menu/content.ts';
@@ -43,4 +44,7 @@ try {
   };
   for (const path of sharedAssetPaths) await compare(path);
   console.log(`PASS shared desktop/Quest content, design tokens, ${verifiedFiles} byte-identical assets and ${resourcePaths.size} resolvable UI resources`);
+  // Optional check owned by the Legacy environment workflow (docs/legacy/WORKFLOWS.md).
+  const environmentCheck = join(root, 'scripts/check-legacy-environment.ts');
+  if (existsSync(environmentCheck)) await (await import(pathToFileURL(environmentCheck).href)).checkLegacyEnvironment();
 } finally { await rm(scratch, { recursive: true, force: true }); }

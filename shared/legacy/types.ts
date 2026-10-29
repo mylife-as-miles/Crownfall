@@ -304,16 +304,27 @@ export interface RepresentativePresentation {
   recentlyReturned: boolean;
 }
 
+/** A visible honour, always derived from a real recorded event (or a labelled preview fixture). */
+export interface LegacyHonour {
+  id: string;
+  kind: "muster-victory" | "return" | "battlefield-promotion" | "recognition";
+  label: string;
+  matchId: string | null;
+}
+
 export interface BannerholdPresentation {
   mode: LegacyMode;
   previewId: string | null;
   founded: boolean;
+  /** True while the founding ceremony previews an unsaved draft identity. */
+  draft: boolean;
   nationId: NationId;
   bannerName: string | null;
   heraldry: Heraldry | null;
   rank: HouseRank;
   /** 0 = modest founding hall; higher tiers add visible development earned through recognition. */
   hallTier: 0 | 1 | 2 | 3;
+  honours: LegacyHonour[];
   representative: RepresentativePresentation | null;
   levy: { memberId: string; name: string; status: MemberStatus }[];
   /** Files a minor banner may claim, and which houses hold the others. */

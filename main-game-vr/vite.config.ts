@@ -7,15 +7,21 @@
 
 import { iwsdkDev } from '@iwsdk/vite-plugin-dev';
 import { defineConfig } from 'vite';
-import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { generateQuestUI } from '../scripts/generate-quest-ui';
 import { menuPublicSource, syncMenuAssets } from '../scripts/sync-menu-assets.mjs';
+
+// Optional hook owned by the Legacy environment workflow (docs/legacy/WORKFLOWS.md):
+// mirrors canonical environment assets from the desktop app once that script exists.
+const environmentAssets = fileURLToPath(new URL('../scripts/sync-legacy-environment-assets.mjs', import.meta.url));
 
 export default defineConfig({
   plugins: [{
     name: 'crownfall-shared-menu',
     async configResolved() {
       syncMenuAssets();
+      if (existsSync(environmentAssets)) await (await import(pathToFileURL(environmentAssets).href)).syncLegacyEnvironmentAssets();
       await generateQuestUI(fileURLToPath(new URL('./public/ui/menu.uikitml', import.meta.url)));
     },
     configureServer(server) {

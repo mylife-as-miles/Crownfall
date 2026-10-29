@@ -17,18 +17,19 @@ for the product direction.
 - Never fabricate production history. Fixture match records (`source: "fixture"`) are accepted only
   by `mode: "preview"` states, which every persistence path refuses to save.
 
-## Layout
+## Layout and ownership
 
-| Path | Responsibility |
-| --- | --- |
-| `types.ts` | Domain, persistence and presentation contracts |
-| `content/` | Nations, availability config, heraldry vocabulary and suggestions, external houses, member name pools, Muster file claims, shared UI copy |
-| `domain/` | `reduceLegacy`, founding, nomination, match processing, politics, chronicle, aftermath selection, presentation view-model, Muster formation for the engine bridge, persistence/migration, preview fixtures |
-| `heraldry/` | Heraldry → RGBA rasters for standards, shields and UI previews |
-| `textures/` | Procedural material textures → RGBA rasters |
-| `mesh/` | Pure geometry kernel and architecture, terrain, prop and figure builders |
-| `scene/` | Per-nation Bannerhold layouts, camera framings, lighting presets, quality tiers, VR diorama constants, `buildBannerhold()` |
-| `tests/` | `node:test` suites (`npm run test:legacy`, also run by `npm run test:quest`) |
+Two workflows build My Legacy in parallel; see `docs/legacy/WORKFLOWS.md` for branches, seams and
+the full ownership table.
+
+| Path | Owner | Responsibility |
+| --- | --- | --- |
+| `types.ts`, `environment-contract.ts` | orchestrator | Domain, persistence, presentation and environment contracts |
+| `content/` | gameplay | Nations, availability config, heraldry vocabulary and suggestions, external houses, member name pools, Muster file claims, shared UI copy |
+| `domain/` | gameplay | `reduceLegacy`, founding, nomination, match processing, politics, chronicle, aftermath, presentation (`LegacySceneState`), Muster formation for the engine bridge, persistence and migration, preview fixtures |
+| `heraldry/` | gameplay | Heraldry → vector shapes and RGBA rasters for UI previews, standards and shields |
+| `environment/` | environment | Blueprint and layout data, building kits, geometry kernel, textures, terrain, life/motion metadata, per-nation environments, quality profiles, VR staging constants |
+| `tests/` | both | `domain-*` / `heraldry-*` (gameplay) and `environment-*` (environment) `node:test` suites |
 
 ## Legacy rules v1
 
