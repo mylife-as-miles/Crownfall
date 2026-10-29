@@ -28,6 +28,8 @@ export interface HomeTileContent {
   imageFit?: "cover" | "contain";
   imagePosition?: string;
   action?: HomeTileAction;
+  /** Opens a dedicated destination on both platforms instead of an information panel. */
+  destination?: "legacy";
 }
 
 export type HomeContent = readonly [

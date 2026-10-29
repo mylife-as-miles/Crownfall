@@ -64,14 +64,16 @@ export function getNextHomeTile(
   return current === 1 ? 2 : current;
 }
 
-// Titles and images are supplied content. Actions open the matching Home
-// information panel; they do not claim a completed progression or news system.
+// Titles and images are supplied content. My Legacy opens its 3D destination on
+// both platforms; the other tiles open information panels and do not claim a
+// completed chronicle or news system.
 export const HOME_CONTENT: HomeContent = [
   {
     id: "feature",
     title: "My Legacy",
     imageSrc: "/assets/home/my-legacy.webp",
     action: "legacy",
+    destination: "legacy",
   },
   {
     id: "upper",
