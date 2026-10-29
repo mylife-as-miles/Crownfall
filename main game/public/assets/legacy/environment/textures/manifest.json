@@ -1,0 +1,587 @@
+{
+  "version": 1,
+  "generator": "scripts/generate-legacy-environment-textures.ts",
+  "provenance": "Original procedural textures generated from shared/legacy/environment/textures (no external images).",
+  "encoder": "webp (sharp)",
+  "sets": {
+    "ashlar": {
+      "tileMetres": 2.4,
+      "meanLuminance": 0.0653,
+      "files": {
+        "albedo": {
+          "file": "ashlar-albedo.webp",
+          "size": 1024,
+          "sha256": "4db4827bf29f412752924c3b60fd4bfa77738a1e7c6ea36eb413cfbe88019114"
+        },
+        "albedo_512": {
+          "file": "ashlar-albedo-512.webp",
+          "size": 512,
+          "sha256": "d4a4591260524a307cf24a6a96559213166338b449c7c850b8c486781cf0ac33"
+        },
+        "normal": {
+          "file": "ashlar-normal.webp",
+          "size": 1024,
+          "sha256": "0347f8d0cca5c7427e9edd9b70c30860486bcaf80c25ea8681bf72c02c6ea4c8"
+        },
+        "normal_512": {
+          "file": "ashlar-normal-512.webp",
+          "size": 512,
+          "sha256": "6485be37b97c18e7ad106e51bdbbd1275ee5c51c9e4f5653604a0f37f5b92841"
+        },
+        "orm": {
+          "file": "ashlar-orm.webp",
+          "size": 1024,
+          "sha256": "aca535b6db44741e48e41159b64e9540887ff1f3ea9b2d020b5a3aef41b1bf3c"
+        },
+        "orm_512": {
+          "file": "ashlar-orm-512.webp",
+          "size": 512,
+          "sha256": "8144e40f206e2a3a94e3ede9dadf4b7a22abeda1d6fd7a2d9a8461edda0ec648"
+        }
+      }
+    },
+    "rubble": {
+      "tileMetres": 2.4,
+      "meanLuminance": 0.0856,
+      "files": {
+        "albedo": {
+          "file": "rubble-albedo.webp",
+          "size": 1024,
+          "sha256": "68b6c027425cf1ebb5bc5b2e73f52a3cd7e0a1024ca70d392472eca5330a5025"
+        },
+        "albedo_512": {
+          "file": "rubble-albedo-512.webp",
+          "size": 512,
+          "sha256": "c035d68fbbbf919d08e4e068388300f6b5aa90ffe32b1ead3114c835c353aaf7"
+        },
+        "normal": {
+          "file": "rubble-normal.webp",
+          "size": 1024,
+          "sha256": "d2a90fce363be67cb6685fd2f9dcd418e30c0780942faffad851505c9d86adbd"
+        },
+        "normal_512": {
+          "file": "rubble-normal-512.webp",
+          "size": 512,
+          "sha256": "036971ecff4c09528e2e022b420e7b40c8a374477923afe9f4b5df688d943191"
+        },
+        "orm": {
+          "file": "rubble-orm.webp",
+          "size": 1024,
+          "sha256": "e9871b8eff57fbd1e3dc2a1fbc1eb79e39481ffa07c5f7596b3b06bf33bf5af0"
+        },
+        "orm_512": {
+          "file": "rubble-orm-512.webp",
+          "size": 512,
+          "sha256": "ddcfc2d403200ed6725cf7244ead6fdfd0af2c1f4feb2969121a515f983afdd1"
+        }
+      }
+    },
+    "limestone": {
+      "tileMetres": 2.4,
+      "meanLuminance": 0.3177,
+      "files": {
+        "albedo_512": {
+          "file": "limestone-albedo-512.webp",
+          "size": 512,
+          "sha256": "8e72631bed755f550106cc6de2ff645cafc2201058588e16e8deeba7d5807b6d"
+        },
+        "normal_512": {
+          "file": "limestone-normal-512.webp",
+          "size": 512,
+          "sha256": "828a5b0c9a6ed91c20134d50b8f6842b51dbf01929f6206b4e1a27aed00612d5"
+        },
+        "orm_512": {
+          "file": "limestone-orm-512.webp",
+          "size": 512,
+          "sha256": "16524bf926cde0b707f8952590c751f57cb807df5c71dd67545af7c7c312627e"
+        }
+      }
+    },
+    "black-marble": {
+      "tileMetres": 2.4,
+      "meanLuminance": 0.0151,
+      "files": {
+        "albedo_512": {
+          "file": "black-marble-albedo-512.webp",
+          "size": 512,
+          "sha256": "9dcda345840595b9c6095462421df9cf9087eed56b9383a6f35ee72292f79674"
+        },
+        "normal_512": {
+          "file": "black-marble-normal-512.webp",
+          "size": 512,
+          "sha256": "cf9ca5a6d7ee75057cb1edf840e6342728e356ea18db3b29498f2ee9701014de"
+        },
+        "orm_512": {
+          "file": "black-marble-orm-512.webp",
+          "size": 512,
+          "sha256": "901a20c7ccb9260fe631ecae6270e7635b912574afb62e3e887cc12ab4e93c07"
+        }
+      }
+    },
+    "slate": {
+      "tileMetres": 2,
+      "meanLuminance": 0.0398,
+      "files": {
+        "albedo": {
+          "file": "slate-albedo.webp",
+          "size": 1024,
+          "sha256": "c68ff13c1610ed77d5d821f484c649d3d61d8ac657c51fa627c79b0b3fccf8fe"
+        },
+        "albedo_512": {
+          "file": "slate-albedo-512.webp",
+          "size": 512,
+          "sha256": "53f6d8f01b2b0c18d471b02ef3a0011091fedb58af6b30e65175fef167e7ab31"
+        },
+        "normal": {
+          "file": "slate-normal.webp",
+          "size": 1024,
+          "sha256": "0db9fbec497619645254b65a351a84d122bd57f5c47df32937a4fc8c212cc8f3"
+        },
+        "normal_512": {
+          "file": "slate-normal-512.webp",
+          "size": 512,
+          "sha256": "f43943cc12351953bddb04a4a277617618e3a5f50da3ebab404f2572b3cb4478"
+        },
+        "orm": {
+          "file": "slate-orm.webp",
+          "size": 1024,
+          "sha256": "2d0fa03ee372f448b7757030f28eaf495d7adb01c942b8dc1363daeeae0d596b"
+        },
+        "orm_512": {
+          "file": "slate-orm-512.webp",
+          "size": 512,
+          "sha256": "832954cd01b3e87dad2767e9577498194962f0d332fd5413ca15586f22bcbf83"
+        }
+      }
+    },
+    "lead": {
+      "tileMetres": 3,
+      "meanLuminance": 0.174,
+      "files": {
+        "albedo_512": {
+          "file": "lead-albedo-512.webp",
+          "size": 512,
+          "sha256": "effbcbd570ae8e27626e65f41c3c9610e0c39f36b096af759c7cb15dfe43ec75"
+        },
+        "normal_512": {
+          "file": "lead-normal-512.webp",
+          "size": 512,
+          "sha256": "e9982ed1887ccd91655f59b482dd92c8191777969a09ec8b9bda6651fdcbbc90"
+        },
+        "orm_512": {
+          "file": "lead-orm-512.webp",
+          "size": 512,
+          "sha256": "9e2d56b4c6dc2321b5afb5cd62f14fa6c3973889d51ad2e5f002edd2fe61b255"
+        }
+      }
+    },
+    "shingle": {
+      "tileMetres": 2,
+      "meanLuminance": 0.0608,
+      "files": {
+        "albedo_512": {
+          "file": "shingle-albedo-512.webp",
+          "size": 512,
+          "sha256": "6bff72bff7ea341bc4138906cabe9f9706095ab2b6db22e37d871dc4ea2f4a07"
+        },
+        "normal_512": {
+          "file": "shingle-normal-512.webp",
+          "size": 512,
+          "sha256": "f43eb8578de03ff2257334fca3814e441b0a975be5e4b3bcf64d9a6cdcc524ce"
+        },
+        "orm_512": {
+          "file": "shingle-orm-512.webp",
+          "size": 512,
+          "sha256": "91f534d1224e127ac60c6f53c53bfad8d2ad36049e453d9ac34ec840531b324e"
+        }
+      }
+    },
+    "thatch": {
+      "tileMetres": 2.4,
+      "meanLuminance": 0.0431,
+      "files": {
+        "albedo_512": {
+          "file": "thatch-albedo-512.webp",
+          "size": 512,
+          "sha256": "fa1384d4e07c9b13fc17304d4d42eccbeb3ca1a33c3203609e09497014eff52f"
+        },
+        "normal_512": {
+          "file": "thatch-normal-512.webp",
+          "size": 512,
+          "sha256": "3a4105d1084215e8fea41189f5df8f11457ca1b86f47d29447485b150ff5345d"
+        },
+        "orm_512": {
+          "file": "thatch-orm-512.webp",
+          "size": 512,
+          "sha256": "75cd8c3f9667e6b56e9ecab2bab9b35c8c839c30652713afff51e84e436f556e"
+        }
+      }
+    },
+    "timber": {
+      "tileMetres": 2,
+      "meanLuminance": 0.0549,
+      "files": {
+        "albedo_512": {
+          "file": "timber-albedo-512.webp",
+          "size": 512,
+          "sha256": "1da07f9ba7833adbce9c1f7399f72992b767c180944c0c0f7e5f287bc299626c"
+        },
+        "normal_512": {
+          "file": "timber-normal-512.webp",
+          "size": 512,
+          "sha256": "9be729ea839fe95629bd7bce86d25e2c9f2b41278c0ef6571ae6ea331f1bedf8"
+        },
+        "orm_512": {
+          "file": "timber-orm-512.webp",
+          "size": 512,
+          "sha256": "f0472d8f790f1692c543aa483a7a10964cafca2fd9241f3c20ba3945e9d91417"
+        }
+      }
+    },
+    "frame-plaster": {
+      "tileMetres": 3.2,
+      "meanLuminance": 0.2105,
+      "files": {
+        "albedo": {
+          "file": "frame-plaster-albedo.webp",
+          "size": 1024,
+          "sha256": "b0cc147222f231f155dceea643a262bd3986c0b75f93289f4bc0594e7db5efe7"
+        },
+        "albedo_512": {
+          "file": "frame-plaster-albedo-512.webp",
+          "size": 512,
+          "sha256": "bc9f0109fec05e38efaf409f5b5da71d09a2324a917b375503e3778ab4977747"
+        },
+        "normal": {
+          "file": "frame-plaster-normal.webp",
+          "size": 1024,
+          "sha256": "2a2ca643b0c4558609e1fa71d63a8a81b3dc7beb5fe367b6739d5afc6b715367"
+        },
+        "normal_512": {
+          "file": "frame-plaster-normal-512.webp",
+          "size": 512,
+          "sha256": "2a600432684cf619056797e5ce1239ba95da7d6c23bcb0dd5f6a36cb101caa98"
+        },
+        "orm": {
+          "file": "frame-plaster-orm.webp",
+          "size": 1024,
+          "sha256": "c2b78f190c6d837bba099e4b104653e72cad6831424368041288400a3954940a"
+        },
+        "orm_512": {
+          "file": "frame-plaster-orm-512.webp",
+          "size": 512,
+          "sha256": "0f6843216047e6f023f44fd24a57e73fe2ffb1538281cb51621baf38a8ef868a"
+        }
+      }
+    },
+    "plaster": {
+      "tileMetres": 3,
+      "meanLuminance": 0.3101,
+      "files": {
+        "albedo_512": {
+          "file": "plaster-albedo-512.webp",
+          "size": 512,
+          "sha256": "c73828ac137848773e9e0229d5888244862143f6bb77850e49dd4efa0a4e51d0"
+        },
+        "normal_512": {
+          "file": "plaster-normal-512.webp",
+          "size": 512,
+          "sha256": "6e3dad7d897527e5747910fb778f6841394d8fde994def3a2dbfe746c20054ac"
+        },
+        "orm_512": {
+          "file": "plaster-orm-512.webp",
+          "size": 512,
+          "sha256": "55a9180d2a22afc946354659b9f9f38d1f37f60e3c55b67bfa855c6ea0e129be"
+        }
+      }
+    },
+    "cobble": {
+      "tileMetres": 2,
+      "meanLuminance": 0.0796,
+      "files": {
+        "albedo": {
+          "file": "cobble-albedo.webp",
+          "size": 1024,
+          "sha256": "01ec0d2bb10fe67c3b05f6ef4e07cbeb4881db1b3979249c196e1639f131a360"
+        },
+        "albedo_512": {
+          "file": "cobble-albedo-512.webp",
+          "size": 512,
+          "sha256": "53571510babbcffe5b49d8acaa3ef1f010ab99b2b4b0e18aa40fc401283a71ff"
+        },
+        "normal": {
+          "file": "cobble-normal.webp",
+          "size": 1024,
+          "sha256": "0723584154b5beb4f686a325df77f6d234cd8e9aa5cae3ae1455542a65859737"
+        },
+        "normal_512": {
+          "file": "cobble-normal-512.webp",
+          "size": 512,
+          "sha256": "f1a225fe727376218363f388d892de845cda2db3ae92653547cc2689462684e8"
+        },
+        "orm": {
+          "file": "cobble-orm.webp",
+          "size": 1024,
+          "sha256": "bfc42d519b403fb676d941463d5163bf46608be45cd9b3ef5307c7739980b7a1"
+        },
+        "orm_512": {
+          "file": "cobble-orm-512.webp",
+          "size": 512,
+          "sha256": "95bdbe8b0516c71dc5760594efe52ae7f314233c08fbb626b2350affb0e0e5d1"
+        }
+      }
+    },
+    "setts": {
+      "tileMetres": 2,
+      "meanLuminance": 0.0655,
+      "files": {
+        "albedo_512": {
+          "file": "setts-albedo-512.webp",
+          "size": 512,
+          "sha256": "cc5db3b602190f5d2dbdd026aac718decc5556a74177b79da44b193f5bea5552"
+        },
+        "normal_512": {
+          "file": "setts-normal-512.webp",
+          "size": 512,
+          "sha256": "25ea8374c5d4fa04930f258750854d72eb4191ac96806b3667275ed2e9d3195b"
+        },
+        "orm_512": {
+          "file": "setts-orm-512.webp",
+          "size": 512,
+          "sha256": "7670fcd1e28e3fb7a6010fd13a3481e98015126944564659a4ce079f490bb960"
+        }
+      }
+    },
+    "flagstone": {
+      "tileMetres": 3,
+      "meanLuminance": 0.0663,
+      "files": {
+        "albedo_512": {
+          "file": "flagstone-albedo-512.webp",
+          "size": 512,
+          "sha256": "4ef98a5cf645fa0a9a51c4176d16eff2f9cacf2875d40379512dd1f43ac484b2"
+        },
+        "normal_512": {
+          "file": "flagstone-normal-512.webp",
+          "size": 512,
+          "sha256": "a22b0988972fe0923c9a85d5349c8d37c316f15550af0f1a4277d5425d82a950"
+        },
+        "orm_512": {
+          "file": "flagstone-orm-512.webp",
+          "size": 512,
+          "sha256": "a94e6bb380f948c9bc195d485d09f41712478747f7c50306ac1e5321c21eba92"
+        }
+      }
+    },
+    "earth": {
+      "tileMetres": 4,
+      "meanLuminance": 0.0432,
+      "files": {
+        "albedo_512": {
+          "file": "earth-albedo-512.webp",
+          "size": 512,
+          "sha256": "b548a5d81a559f735297677e8383f009d8ce0f7a0adf14847d4884180b93f5bc"
+        },
+        "normal_512": {
+          "file": "earth-normal-512.webp",
+          "size": 512,
+          "sha256": "bcaa8f79591a95268699655d2e51274f66e9d2824efea78dd140939eba699e25"
+        },
+        "orm_512": {
+          "file": "earth-orm-512.webp",
+          "size": 512,
+          "sha256": "c2d8198eef40238b9ba40887fefbda0e497a34b5cad6365e566876b85be8cc09"
+        }
+      }
+    },
+    "grass": {
+      "tileMetres": 4,
+      "meanLuminance": 0.0649,
+      "files": {
+        "albedo_512": {
+          "file": "grass-albedo-512.webp",
+          "size": 512,
+          "sha256": "145d0d5b946ea962f989e88e4fb5df4d71ff1234fd384355b20583c6e284b2d9"
+        },
+        "normal_512": {
+          "file": "grass-normal-512.webp",
+          "size": 512,
+          "sha256": "b9c8951b58f3f3fc976123067f60d0fc88de07508f376067d9d52457474669c2"
+        },
+        "orm_512": {
+          "file": "grass-orm-512.webp",
+          "size": 512,
+          "sha256": "11972366877ca37aa6b199692bdfff979ccce5142a526fbf2bacb2f67bc9ea9e"
+        }
+      }
+    },
+    "heath": {
+      "tileMetres": 4,
+      "meanLuminance": 0.0573,
+      "files": {
+        "albedo_512": {
+          "file": "heath-albedo-512.webp",
+          "size": 512,
+          "sha256": "eb698d227d1d71741c74bd0643fc13c9f0c12c87312a2d4041d81992fadb959c"
+        },
+        "normal_512": {
+          "file": "heath-normal-512.webp",
+          "size": 512,
+          "sha256": "3af16a765bc7dcfeefb8635c46f37689e8bb773b5dc27727f364dca127d5962c"
+        },
+        "orm_512": {
+          "file": "heath-orm-512.webp",
+          "size": 512,
+          "sha256": "6e048777b69be5de1fe473f62869f57d1ce3f0f4e9394a245bc5e1747d1df5a2"
+        }
+      }
+    },
+    "rock": {
+      "tileMetres": 6,
+      "meanLuminance": 0.0311,
+      "files": {
+        "albedo_512": {
+          "file": "rock-albedo-512.webp",
+          "size": 512,
+          "sha256": "84c5c6f1a9fccd7ff02b74aa7740dba0cadc840793cd78a36a6ffb3d729e4851"
+        },
+        "normal_512": {
+          "file": "rock-normal-512.webp",
+          "size": 512,
+          "sha256": "684c99c264c5f209cc30598e179e7f20ed79cb247e84f64f0da601c8d5cbb4ed"
+        },
+        "orm_512": {
+          "file": "rock-orm-512.webp",
+          "size": 512,
+          "sha256": "fb3b8cbc42b48a107bfa44c497edc59dc861c918038b9e40d4146d0d5a62fa3d"
+        }
+      }
+    },
+    "cloth": {
+      "tileMetres": 0.5,
+      "meanLuminance": 0.1879,
+      "files": {
+        "albedo_512": {
+          "file": "cloth-albedo-512.webp",
+          "size": 512,
+          "sha256": "59dff2c815714cab81157985973a0cf96e89b122e888b4b32da665e172689000"
+        },
+        "normal_512": {
+          "file": "cloth-normal-512.webp",
+          "size": 512,
+          "sha256": "cca47ed99a373b5e3faceb83cd3ee8081f1bf5196b757b6d8c25925307c7eb38"
+        },
+        "orm_512": {
+          "file": "cloth-orm-512.webp",
+          "size": 512,
+          "sha256": "bef80d7bc2040ea7b0c7e880678740396b32b3a5c60491ce5defb5daa72f7ffb"
+        }
+      }
+    },
+    "bark": {
+      "tileMetres": 1.5,
+      "meanLuminance": 0.0305,
+      "files": {
+        "albedo_512": {
+          "file": "bark-albedo-512.webp",
+          "size": 512,
+          "sha256": "39d58c74a192fecb47c870ae32c0dc47878d8572cbeb7c7d6b5a5edf295a8eb9"
+        },
+        "normal_512": {
+          "file": "bark-normal-512.webp",
+          "size": 512,
+          "sha256": "ffbb7133aa59bb06776a77b31a382bac38580101ae5e186f086e71be32d0e10d"
+        },
+        "orm_512": {
+          "file": "bark-orm-512.webp",
+          "size": 512,
+          "sha256": "2a9bd7f3628afffe7c8f7b786eeb516b4af15f4e95190e1b05dd5c2e10358f9a"
+        }
+      }
+    },
+    "foliage": {
+      "tileMetres": 2,
+      "meanLuminance": 0.0297,
+      "files": {
+        "albedo_512": {
+          "file": "foliage-albedo-512.webp",
+          "size": 512,
+          "sha256": "fea76e99174731e045ff0af816786631891a4e1f235e299361486d7a8d80784f"
+        },
+        "normal_512": {
+          "file": "foliage-normal-512.webp",
+          "size": 512,
+          "sha256": "a56c6d688880146d88270ced40a2a3e83490eb37963bec85a4597bc3847f6ff3"
+        },
+        "orm_512": {
+          "file": "foliage-orm-512.webp",
+          "size": 512,
+          "sha256": "1dbcb8724a5404e0bc3617ba5d02a8fc8ab7432b9b261e335c4a0a639184afdd"
+        }
+      }
+    },
+    "iron": {
+      "tileMetres": 1,
+      "meanLuminance": 0.0302,
+      "files": {
+        "albedo_512": {
+          "file": "iron-albedo-512.webp",
+          "size": 512,
+          "sha256": "99bcf9615af4c7e30ad04db37b17ad8155685e58cd1824048716b2e6bd537b3f"
+        },
+        "normal_512": {
+          "file": "iron-normal-512.webp",
+          "size": 512,
+          "sha256": "29a02bcd7349ebd3225594d512e3829ab279ce41432bd63968378337c946da72"
+        },
+        "orm_512": {
+          "file": "iron-orm-512.webp",
+          "size": 512,
+          "sha256": "9643312a3a3cae8725ae6697a42f7098a9e70b6d7b2922680fc9ce80221fe442"
+        }
+      }
+    },
+    "sandstone": {
+      "tileMetres": 2.4,
+      "meanLuminance": 0.2622,
+      "files": {
+        "albedo_512": {
+          "file": "sandstone-albedo-512.webp",
+          "size": 512,
+          "sha256": "1c04ecebf79bc9ee7e1dcf1edaa30cee1201ce2e47098edbf23c5f789d358f5a"
+        },
+        "normal_512": {
+          "file": "sandstone-normal-512.webp",
+          "size": 512,
+          "sha256": "caac484f6e8e0558c570f389561ad1357035335bc91b0a118b735fe8131a3e5d"
+        },
+        "orm_512": {
+          "file": "sandstone-orm-512.webp",
+          "size": 512,
+          "sha256": "5b492b41732e46f8d0f738bf7a01d6fc484c2a6f9210520ab6fdfa5d2ebf1598"
+        }
+      }
+    },
+    "mudbrick": {
+      "tileMetres": 3,
+      "meanLuminance": 0.1858,
+      "files": {
+        "albedo_512": {
+          "file": "mudbrick-albedo-512.webp",
+          "size": 512,
+          "sha256": "c3b9aeffd55fb7ab43e67d49045c1f161e102ff2cc8cebcfcc6fb87c8ed45a47"
+        },
+        "normal_512": {
+          "file": "mudbrick-normal-512.webp",
+          "size": 512,
+          "sha256": "498b04a5d870781a4f049f8bf79767f5f3e503cb3a2124ff0ab4ffaf7a08708a"
+        },
+        "orm_512": {
+          "file": "mudbrick-orm-512.webp",
+          "size": 512,
+          "sha256": "1ceeecb96a8e2d376f0944111734943af466dbaf6cc4de5278f60da5643c87a5"
+        }
+      }
+    }
+  }
+}

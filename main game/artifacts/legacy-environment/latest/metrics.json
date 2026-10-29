@@ -1,0 +1,587 @@
+{
+  "generatedBy": "main game/scripts/capture-legacy-environment.mjs",
+  "note": "Software-rendered (SwiftShader) in a container without a GPU: frame times are not representative of real hardware. Draw calls, triangles, programs, geometries and textures are hardware-independent.",
+  "nation": "korvenia",
+  "fixture": "founded",
+  "width": 1600,
+  "height": 900,
+  "post": true,
+  "qualities": {
+    "medium": {
+      "loadMs": 20117,
+      "views": {
+        "establishing": {
+          "file": "medium-establishing.png",
+          "drawCalls": 145,
+          "triangles": 899480,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "banner-hall": {
+          "file": "medium-banner-hall.png",
+          "drawCalls": 132,
+          "triangles": 890620,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "muster-grounds": {
+          "file": "medium-muster-grounds.png",
+          "drawCalls": 142,
+          "triangles": 892640,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "war-record": {
+          "file": "medium-war-record.png",
+          "drawCalls": 127,
+          "triangles": 889122,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "heralds-station": {
+          "file": "medium-heralds-station.png",
+          "drawCalls": 132,
+          "triangles": 895468,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "representative": {
+          "file": "medium-representative.png",
+          "drawCalls": 134,
+          "triangles": 891688,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "founding": {
+          "file": "medium-founding.png",
+          "drawCalls": 134,
+          "triangles": 890912,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "district:court": {
+          "file": "medium-district-court.png",
+          "drawCalls": 143,
+          "triangles": 899480,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "district:lower-town": {
+          "file": "medium-district-lower-town.png",
+          "drawCalls": 128,
+          "triangles": 889246,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "district:west-gate": {
+          "file": "medium-district-west-gate.png",
+          "drawCalls": 143,
+          "triangles": 899480,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "district:forge": {
+          "file": "medium-district-forge.png",
+          "drawCalls": 144,
+          "triangles": 892640,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "district:road": {
+          "file": "medium-district-road.png",
+          "drawCalls": 149,
+          "triangles": 899480,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        },
+        "district:eclipse": {
+          "file": "medium-district-eclipse.png",
+          "drawCalls": 134,
+          "triangles": 895126,
+          "geometries": 90,
+          "textures": 75,
+          "programs": 64
+        }
+      },
+      "errors": [],
+      "build": {
+        "buildMs": 1757,
+        "build": {
+          "meshes": 131,
+          "instanceSets": 38,
+          "instances": 3269,
+          "drawCalls": 177,
+          "triangles": 642758,
+          "vertices": 883668,
+          "materials": [
+            "black-marble",
+            "bronze",
+            "candle",
+            "cloth-dyed",
+            "cloth-heraldry",
+            "door-oak",
+            "far-terrain",
+            "figure",
+            "fire",
+            "foliage-broadleaf",
+            "foliage-conifer",
+            "foliage-heath",
+            "gilt",
+            "glass-dark",
+            "glass-lit",
+            "hay",
+            "iron",
+            "kv-basalt-ashlar",
+            "kv-basalt-rubble",
+            "kv-black-marble",
+            "kv-lead",
+            "kv-limestone",
+            "kv-oak-frame-plaster",
+            "kv-shingle",
+            "kv-slate",
+            "kv-thatch-dark",
+            "kv-timber-raw",
+            "plaster-lime",
+            "road-cobble",
+            "road-flagstone",
+            "road-setts",
+            "silhouette",
+            "skyline",
+            "stone-generic",
+            "terrain",
+            "timber-dark",
+            "timber-raw",
+            "water"
+          ],
+          "trianglesByPart": {
+            "terrain": 59150,
+            "far-terrain": 41646,
+            "dressing": 5183,
+            "heraldry": 712,
+            "landmark:banner-hall": 16990,
+            "landmark:heralds-station": 5302,
+            "landmark:muster-grounds": 2018,
+            "landmark:war-record": 3832,
+            "outer": 8688,
+            "settlement": 58823,
+            "skyline": 400,
+            "slots": 1578,
+            "water": 662,
+            "figures": 49310,
+            "clutter": 94080,
+            "vegetation": 294384
+          }
+        },
+        "quality": "desktop-medium",
+        "textures": 72,
+        "staticDrawables": 63,
+        "post": true,
+        "materials": 48,
+        "textureBytes": 112547157,
+        "shadowBytes": 16777216,
+        "budget": {
+          "drawCalls": 87,
+          "triangles": 625839,
+          "shadowCasterDraws": 67
+        }
+      },
+      "summary": {
+        "rendererDrawCalls": [
+          127,
+          149
+        ],
+        "rendererTriangles": [
+          889122,
+          899480
+        ],
+        "programs": [
+          64,
+          64
+        ],
+        "budgetEstimate": {
+          "drawCalls": 87,
+          "triangles": 625839,
+          "shadowCasterDraws": 67
+        },
+        "materials": 48,
+        "textureMemoryMB": 107.33,
+        "shadowMapMB": 16,
+        "buildMs": 1757
+      }
+    },
+    "high": {
+      "loadMs": 24652,
+      "views": {
+        "establishing": {
+          "file": "high-establishing.png",
+          "drawCalls": 272,
+          "triangles": 2683566,
+          "geometries": 90,
+          "textures": 81,
+          "programs": 72
+        },
+        "banner-hall": {
+          "file": "high-banner-hall.png",
+          "drawCalls": 254,
+          "triangles": 2657122,
+          "geometries": 90,
+          "textures": 81,
+          "programs": 72
+        },
+        "muster-grounds": {
+          "file": "high-muster-grounds.png",
+          "drawCalls": 266,
+          "triangles": 2661162,
+          "geometries": 90,
+          "textures": 81,
+          "programs": 72
+        },
+        "war-record": {
+          "file": "high-war-record.png",
+          "drawCalls": 236,
+          "triangles": 2654126,
+          "geometries": 90,
+          "textures": 81,
+          "programs": 72
+        },
+        "heralds-station": {
+          "file": "high-heralds-station.png",
+          "drawCalls": 250,
+          "triangles": 2673442,
+          "geometries": 90,
+          "textures": 81,
+          "programs": 72
+        },
+        "representative": {
+          "file": "high-representative.png",
+          "drawCalls": 254,
+          "triangles": 2659258,
+          "geometries": 90,
+          "textures": 81,
+          "programs": 72
+        },
+        "founding": {
+          "file": "high-founding.png",
+          "drawCalls": 258,
+          "triangles": 2657706,
+          "geometries": 90,
+          "textures": 81,
+          "programs": 72
+        },
+        "district:road": {
+          "file": "high-district-road.png",
+          "drawCalls": 276,
+          "triangles": 2683566,
+          "geometries": 90,
+          "textures": 81,
+          "programs": 72
+        },
+        "district:eclipse": {
+          "file": "high-district-eclipse.png",
+          "drawCalls": 242,
+          "triangles": 2674858,
+          "geometries": 90,
+          "textures": 81,
+          "programs": 72
+        }
+      },
+      "errors": [],
+      "build": {
+        "buildMs": 3007.89999999851,
+        "build": {
+          "meshes": 131,
+          "instanceSets": 38,
+          "instances": 5305,
+          "drawCalls": 177,
+          "triangles": 991476,
+          "vertices": 1261894,
+          "materials": [
+            "black-marble",
+            "bronze",
+            "candle",
+            "cloth-dyed",
+            "cloth-heraldry",
+            "door-oak",
+            "far-terrain",
+            "figure",
+            "fire",
+            "foliage-broadleaf",
+            "foliage-conifer",
+            "foliage-heath",
+            "gilt",
+            "glass-dark",
+            "glass-lit",
+            "hay",
+            "iron",
+            "kv-basalt-ashlar",
+            "kv-basalt-rubble",
+            "kv-black-marble",
+            "kv-lead",
+            "kv-limestone",
+            "kv-oak-frame-plaster",
+            "kv-shingle",
+            "kv-slate",
+            "kv-thatch-dark",
+            "kv-timber-raw",
+            "plaster-lime",
+            "road-cobble",
+            "road-flagstone",
+            "road-setts",
+            "silhouette",
+            "skyline",
+            "stone-generic",
+            "terrain",
+            "timber-dark",
+            "timber-raw",
+            "water"
+          ],
+          "trianglesByPart": {
+            "terrain": 149026,
+            "far-terrain": 82742,
+            "dressing": 5183,
+            "heraldry": 712,
+            "landmark:banner-hall": 17170,
+            "landmark:heralds-station": 5550,
+            "landmark:muster-grounds": 2018,
+            "landmark:war-record": 3832,
+            "outer": 8688,
+            "settlement": 58971,
+            "skyline": 400,
+            "slots": 1578,
+            "water": 662,
+            "figures": 49310,
+            "clutter": 176290,
+            "vegetation": 429344
+          }
+        },
+        "quality": "desktop-high",
+        "textures": 72,
+        "staticDrawables": 63,
+        "post": true,
+        "materials": 48,
+        "textureBytes": 175461717,
+        "shadowBytes": 67108864,
+        "budget": {
+          "drawCalls": 87,
+          "triangles": 974557,
+          "shadowCasterDraws": 67
+        }
+      },
+      "summary": {
+        "rendererDrawCalls": [
+          236,
+          276
+        ],
+        "rendererTriangles": [
+          2654126,
+          2683566
+        ],
+        "programs": [
+          72,
+          72
+        ],
+        "budgetEstimate": {
+          "drawCalls": 87,
+          "triangles": 974557,
+          "shadowCasterDraws": 67
+        },
+        "materials": 48,
+        "textureMemoryMB": 167.33,
+        "shadowMapMB": 64,
+        "buildMs": 3007.89999999851
+      }
+    },
+    "low": {
+      "loadMs": 19791,
+      "views": {
+        "establishing": {
+          "file": "low-establishing.png",
+          "drawCalls": 58,
+          "triangles": 261487,
+          "geometries": 76,
+          "textures": 51,
+          "programs": 21
+        },
+        "banner-hall": {
+          "file": "low-banner-hall.png",
+          "drawCalls": 50,
+          "triangles": 256657,
+          "geometries": 76,
+          "textures": 51,
+          "programs": 21
+        },
+        "muster-grounds": {
+          "file": "low-muster-grounds.png",
+          "drawCalls": 56,
+          "triangles": 258499,
+          "geometries": 76,
+          "textures": 51,
+          "programs": 21
+        },
+        "war-record": {
+          "file": "low-war-record.png",
+          "drawCalls": 43,
+          "triangles": 255159,
+          "geometries": 76,
+          "textures": 51,
+          "programs": 21
+        },
+        "heralds-station": {
+          "file": "low-heralds-station.png",
+          "drawCalls": 50,
+          "triangles": 258597,
+          "geometries": 76,
+          "textures": 51,
+          "programs": 21
+        },
+        "representative": {
+          "file": "low-representative.png",
+          "drawCalls": 52,
+          "triangles": 257775,
+          "geometries": 76,
+          "textures": 51,
+          "programs": 21
+        },
+        "founding": {
+          "file": "low-founding.png",
+          "drawCalls": 52,
+          "triangles": 256821,
+          "geometries": 76,
+          "textures": 51,
+          "programs": 21
+        },
+        "district:road": {
+          "file": "low-district-road.png",
+          "drawCalls": 58,
+          "triangles": 261507,
+          "geometries": 76,
+          "textures": 51,
+          "programs": 21
+        },
+        "district:eclipse": {
+          "file": "low-district-eclipse.png",
+          "drawCalls": 47,
+          "triangles": 257865,
+          "geometries": 77,
+          "textures": 51,
+          "programs": 21
+        }
+      },
+      "errors": [],
+      "build": {
+        "buildMs": 2142.900000002235,
+        "build": {
+          "meshes": 124,
+          "instanceSets": 32,
+          "instances": 1022,
+          "drawCalls": 164,
+          "triangles": 278878,
+          "vertices": 379796,
+          "materials": [
+            "black-marble",
+            "bronze",
+            "candle",
+            "cloth-heraldry",
+            "door-oak",
+            "far-terrain",
+            "figure",
+            "fire",
+            "foliage-broadleaf",
+            "foliage-conifer",
+            "foliage-heath",
+            "gilt",
+            "glass-dark",
+            "glass-lit",
+            "iron",
+            "kv-basalt-ashlar",
+            "kv-basalt-rubble",
+            "kv-black-marble",
+            "kv-lead",
+            "kv-limestone",
+            "kv-oak-frame-plaster",
+            "kv-shingle",
+            "kv-slate",
+            "kv-thatch-dark",
+            "kv-timber-raw",
+            "plaster-lime",
+            "road-cobble",
+            "road-flagstone",
+            "road-setts",
+            "silhouette",
+            "skyline",
+            "stone-generic",
+            "terrain",
+            "timber-dark",
+            "timber-raw",
+            "water"
+          ],
+          "trianglesByPart": {
+            "terrain": 22042,
+            "far-terrain": 20588,
+            "dressing": 1178,
+            "heraldry": 712,
+            "landmark:banner-hall": 14758,
+            "landmark:heralds-station": 4618,
+            "landmark:muster-grounds": 1708,
+            "landmark:war-record": 3472,
+            "outer": 8332,
+            "settlement": 46106,
+            "skyline": 400,
+            "slots": 1578,
+            "water": 662,
+            "figures": 21046,
+            "clutter": 28398,
+            "vegetation": 103280
+          }
+        },
+        "quality": "desktop-low",
+        "textures": 72,
+        "staticDrawables": 58,
+        "post": false,
+        "materials": 43,
+        "textureBytes": 112547157,
+        "shadowBytes": 0,
+        "budget": {
+          "drawCalls": 76,
+          "triangles": 273357,
+          "shadowCasterDraws": 34
+        }
+      },
+      "summary": {
+        "rendererDrawCalls": [
+          43,
+          58
+        ],
+        "rendererTriangles": [
+          255159,
+          261507
+        ],
+        "programs": [
+          21,
+          21
+        ],
+        "budgetEstimate": {
+          "drawCalls": 76,
+          "triangles": 273357,
+          "shadowCasterDraws": 34
+        },
+        "materials": 43,
+        "textureMemoryMB": 107.33,
+        "shadowMapMB": 0,
+        "buildMs": 2142.900000002235
+      }
+    }
+  }
+}

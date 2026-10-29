@@ -1,0 +1,189 @@
+{
+  "generatedBy": "main game/scripts/verify-legacy-environment.mjs",
+  "quality": "low",
+  "note": "Software-rendered (SwiftShader): behaviour checks only; frame timings are not representative and are not checked.",
+  "passed": 18,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "contract methods present",
+      "pass": true,
+      "detail": "14 methods"
+    },
+    {
+      "name": "four landmarks published",
+      "pass": true,
+      "detail": [
+        "banner-hall",
+        "heralds-station",
+        "muster-grounds",
+        "war-record"
+      ]
+    },
+    {
+      "name": "landmark anchors project at the establishing view",
+      "pass": true,
+      "detail": {
+        "visible": 4,
+        "anchors": {
+          "banner-hall": {
+            "x": 695.9470886663687,
+            "y": 239.73631926583863,
+            "visible": true
+          },
+          "muster-grounds": {
+            "x": 497.8735120604543,
+            "y": 442.55805748149044,
+            "visible": true
+          },
+          "war-record": {
+            "x": 925.3100681826534,
+            "y": 292.180981015565,
+            "visible": true
+          },
+          "heralds-station": {
+            "x": 308.2855467016925,
+            "y": 330.79628749665073,
+            "visible": true
+          }
+        }
+      }
+    },
+    {
+      "name": "focusLandmark moves to the landmark framing",
+      "pass": true,
+      "detail": {
+        "focusId": "landmark:war-record",
+        "anchor": {
+          "x": 643.8749757639891,
+          "y": 72.33771476714854,
+          "visible": true
+        }
+      }
+    },
+    {
+      "name": "pointer hover picks the landmark and lights it",
+      "pass": true,
+      "detail": {
+        "hovered": "war-record",
+        "uHighlight": 3
+      }
+    },
+    {
+      "name": "pointer click selects a landmark (onLandmarkSelect)",
+      "pass": true,
+      "detail": "landmark:banner-hall"
+    },
+    {
+      "name": "highlightLandmark sets and clears the shared highlight uniform",
+      "pass": true,
+      "detail": {
+        "set": 2,
+        "cleared": 0
+      }
+    },
+    {
+      "name": "resetView returns to the establishing composition",
+      "pass": true,
+      "detail": "establishing"
+    },
+    {
+      "name": "inspectRepresentative moves to the representative framing",
+      "pass": true,
+      "detail": "representative"
+    },
+    {
+      "name": "nudgeOrbit moves the camera within limits",
+      "pass": true,
+      "detail": {
+        "moved": 116.93
+      }
+    },
+    {
+      "name": "setState applies a captive state without a rebuild",
+      "pass": true,
+      "detail": {
+        "flags": [
+          "founded",
+          "allied-house",
+          "rival-house",
+          "frontier:solforiz",
+          "representative-captive"
+        ],
+        "pawn": 0,
+        "sameBuild": true
+      }
+    },
+    {
+      "name": "setState back to founded clears the captive flag",
+      "pass": true,
+      "detail": {
+        "flags": [
+          "founded",
+          "allied-house",
+          "rival-house",
+          "frontier:solforiz",
+          "rival-challenge"
+        ],
+        "pawn": 1
+      }
+    },
+    {
+      "name": "setQuality rebuilds per profile (PCF shadows and post on medium, neither on low; ACES)",
+      "pass": true,
+      "detail": {
+        "medium": {
+          "shadows": true,
+          "shadowType": 1,
+          "post": true,
+          "quality": "desktop-medium",
+          "toneMapping": 4
+        },
+        "low": {
+          "shadows": false,
+          "shadowType": 1,
+          "post": false,
+          "quality": "desktop-low",
+          "toneMapping": 4
+        }
+      }
+    },
+    {
+      "name": "setReducedMotion toggles reduced motion",
+      "pass": true
+    },
+    {
+      "name": "setPaused stops the loop",
+      "pass": true,
+      "detail": {
+        "t0": 15.995266666666673,
+        "t1": 15.995266666666673
+      }
+    },
+    {
+      "name": "getStats reports renderer counts",
+      "pass": true,
+      "detail": {
+        "drawCalls": 59,
+        "triangles": 261507,
+        "geometries": 76,
+        "textures": 56
+      }
+    },
+    {
+      "name": "dispose releases GPU resources and the canvas",
+      "pass": true,
+      "detail": {
+        "geometries": 0,
+        "textures": 1,
+        "canvasAttached": false,
+        "note": "one texture may remain: three's shared DFG LUT"
+      }
+    },
+    {
+      "name": "no page errors",
+      "pass": true,
+      "detail": []
+    }
+  ]
+}
