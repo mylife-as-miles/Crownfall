@@ -38,6 +38,28 @@ lore leaks and contradictions of the canon brief as blockers.
 - *The board records the move. The houses remember the consequence.* Absence can be as powerful
   as presence.
 
+## Chess comes first
+
+Crownfall is mainly a chess game. My Legacy exists to give matches weight, never to compete with
+them for the player's time. Critics treat a breach of these rules as a blocker.
+
+- **Never a gate.** Play is always one action from Home. A player can play chess without founding a
+  banner, and My Legacy is never shown before the first match unless the player chooses it.
+- **Every path leads back to the board.** Each landmark's primary action points toward a match:
+  nominate and answer the challenge, review what the last match changed, read the notice that
+  summons the next one. No landmark is a destination in itself.
+- **Only chess changes the house.** Recognition, captives, injuries, honours and the Bannerhold's
+  appearance change only through match results. There are no currencies, timers, crafting,
+  building queues, chores or idle loops, and nothing to grind between matches.
+- **Short by design.** The founding takes under two minutes, with a one-action suggested name. An
+  aftermath shows at most two prominent messages and can be dismissed at once. Inspecting a
+  landmark never forces reading.
+- **No cost to the chess experience.** My Legacy loads lazily and never adds to the time from launch
+  to the first legal move, on desktop or Quest. The chess board, its legality and its controls
+  are untouched, and no Legacy progress grants a chess advantage.
+- **Measured.** Verification records the time from launch to the first move with and without a
+  saved banner, and the number of actions from any Legacy screen back to a match.
+
 ## Art direction (AAA bar)
 
 - An explorable-in-place, spatially rich **Bannerhold**: authored settlement, uneven terrain,
