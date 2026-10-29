@@ -1,0 +1,1105 @@
+{
+  "passed": true,
+  "startedAt": "2026-10-29T16:54:02.633Z",
+  "profile": {
+    "sdk": "1.1.0-rc.2",
+    "runtime": "IWER Meta Quest 3 browser emulation (managed headless Chromium)",
+    "input": "hand ray + pinch only; both controllers disconnected",
+    "pinchHoldSeconds": [
+      0.01,
+      0.15,
+      0.3
+    ],
+    "developmentFramebufferScale": 0.25,
+    "physicalHeadset": false,
+    "rendering": "SwiftShader software WebGL on a shared 4-CPU host; frame timings are not representative of a Quest",
+    "menuPinchView": "While the menu is shown (Home, its pause view), the emulated head looks almost straight down (88 degrees) during each pinch so the 80k-triangle hero and the menu atmosphere leave the view and software frames stay inside the 800 ms click window; the ray, hit test and pinch are unchanged. Legacy pinches use a level view.",
+    "emulationSetup": {
+      "applied": true,
+      "viewport": {
+        "width": 640,
+        "height": 480
+      },
+      "preferences": {
+        "quality": "low",
+        "motion": false
+      },
+      "visitCompleted": true,
+      "note": "Software-emulation accommodation only: a 640x480 managed viewport, Quest Render Quality Low and Ambient Motion Off, and the short visit marked complete so entry opens Home."
+    }
+  },
+  "checks": [
+    "Active immersive session with required hand tracking, both controllers disconnected",
+    "Home -> My Legacy opens a route (no modal); the menu panel, sorcerer and atmosphere are hidden; environment: standin",
+    "An existing banner is dissolved only after its confirmation, and founding begins again",
+    "Founding with pinches: nation, More names, large-key keyboard (typed then cancelled), suggested name \"House Aubrecourt\", preset and per-element arms, confirmed; save: saved",
+    "Every landmark opens by pointing at it in the holding and pinching (environment hover and select callbacks)",
+    "Every landmark also opens from the hand-accessible landmark list, with Back returning to the overview",
+    "Nomination: Lucien on the a-file, shown at the Muster Grounds and saved",
+    "The rival challenge states its wager; Accept -> confirmation -> \"Awaiting the board\", with no match played or recorded",
+    "Losing both hands pauses My Legacy; a returning hand enables Resume, which restores the exact Legacy view and state",
+    "Recenter moves the Legacy anchor in front of the current view; the viewer pose is only ever set by the test, never by the app",
+    "Back to Home restores the menu; reopening My Legacy returns to the same place",
+    "Exit VR ends the immersive session from the dock; re-entry returns to the same Legacy place",
+    "The banner, nomination and accepted challenge are written to crownfall.legacy.save in this browser"
+  ],
+  "interactions": [
+    {
+      "id": "Btn_Resume",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "loading",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ResetOpen",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "reset",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ResetConfirm",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "nation",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Nation_aethelgard",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "nation",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Nation_korvenia",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "nation",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_NationNext",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "name",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_MoreNames",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "name",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_OpenKeyboard",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "keyboard",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Key_R",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "keyboard",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Key_O",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "keyboard",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Key_O",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "keyboard",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Key_K",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "keyboard",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_KeyboardCancel",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "name",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Suggestion_1",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "name",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_NameNext",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "arms",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Preset_2",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "arms",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Part_charge",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "arms",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_PartPrev_charge",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "arms",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ArmsNext",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "confirm",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ConfirmRaise",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Landmark_banner-hall",
+      "device": "hand-left",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "banner-hall",
+      "landmark": "banner-hall"
+    },
+    {
+      "id": "Landmark_muster-grounds",
+      "device": "hand-left",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "landmark": "muster-grounds"
+    },
+    {
+      "id": "Landmark_war-record",
+      "device": "hand-left",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "war-record",
+      "landmark": "war-record"
+    },
+    {
+      "id": "Landmark_heralds-station",
+      "device": "hand-left",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "heralds-station",
+      "landmark": "heralds-station"
+    },
+    {
+      "id": "Legacy_HeraldBack",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_banner-hall",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "banner-hall",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_HallBack",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_muster-grounds",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_MusterBack",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_war-record",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "war-record",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_RecordBack",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_heralds-station",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "heralds-station",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_HeraldBack",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_muster-grounds",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Member_1",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_File_a",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_MusterNominate",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_MusterBack",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_heralds-station",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "heralds-station",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Notice_0",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "notice",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_NoticeAccept",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "accept",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_AcceptConfirm",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "awaiting",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Resume",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "awaiting",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockRecenter",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "awaiting",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockRecenter",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "awaiting",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockHome",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "awaiting",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "awaiting",
+      "screen": "legacy"
+    }
+  ],
+  "observations": {
+    "session": {
+      "active": true,
+      "features": [
+        "hand-tracking",
+        "local-floor",
+        "bounded-floor",
+        "viewer",
+        "local"
+      ],
+      "inputMode": "hand",
+      "controllers": {
+        "left": {
+          "connected": false,
+          "position": {
+            "x": -0.25,
+            "y": 1.5,
+            "z": -0.4000000059604645
+          },
+          "orientation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          }
+        },
+        "right": {
+          "connected": false,
+          "position": {
+            "x": 0.25,
+            "y": 1.5,
+            "z": -0.4000000059604645
+          },
+          "orientation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          }
+        }
+      }
+    },
+    "hostLoadAtStart": "18.46 19.36 19.47 25/853 3299",
+    "menuFrames": {
+      "level": {
+        "frames": 4,
+        "p50": 1149.8999999999942,
+        "p95": 2783.199999999997,
+        "max": 2783.199999999997,
+        "visibility": "visible",
+        "framed": true
+      },
+      "headDown": {
+        "frames": 54,
+        "p50": 66.70000000001164,
+        "p95": 116.60000000000582,
+        "max": 166.60000000000582,
+        "visibility": "visible",
+        "framed": true
+      },
+      "headDownPitchDegrees": -88
+    },
+    "entry": {
+      "screen": "legacy",
+      "entered": true,
+      "paused": false,
+      "pauseReason": "",
+      "legacyActive": true,
+      "legacyView": "overview",
+      "legacySession": "stored",
+      "legacyPersistent": true,
+      "legacySave": "none",
+      "legacyLabel": "",
+      "legacyPreview": "",
+      "legacyFounded": true,
+      "legacyBanner": "The Marble Vigil",
+      "legacyNation": "korvenia",
+      "legacyDraftName": "",
+      "legacyHeraldry": "Per bend purpure and sable, a key argent",
+      "legacyRepresentative": "Clemence",
+      "legacyFile": "a",
+      "legacyMemberChoice": "",
+      "legacyFileChoice": "",
+      "legacyLandmark": "",
+      "legacyHover": "",
+      "legacySelectSource": "",
+      "legacyNotice": "",
+      "legacyChallenge": "read",
+      "legacyChronicle": 2,
+      "legacyUnread": 1,
+      "legacyAftermath": 0,
+      "legacyEnvironment": "standin",
+      "legacyEnvironmentReady": true,
+      "legacyRecenters": 1,
+      "legacyMessage": ""
+    },
+    "founded": {
+      "screen": "legacy",
+      "entered": true,
+      "paused": false,
+      "pauseReason": "",
+      "legacyActive": true,
+      "legacyView": "overview",
+      "legacySession": "stored",
+      "legacyPersistent": true,
+      "legacySave": "saved",
+      "legacyLabel": "",
+      "legacyPreview": "",
+      "legacyFounded": true,
+      "legacyBanner": "House Aubrecourt",
+      "legacyNation": "korvenia",
+      "legacyDraftName": "House Aubrecourt",
+      "legacyHeraldry": "Purpure, a chief argent, a tower or",
+      "legacyRepresentative": "",
+      "legacyFile": "",
+      "legacyMemberChoice": "",
+      "legacyFileChoice": "",
+      "legacyLandmark": "",
+      "legacyHover": "",
+      "legacySelectSource": "",
+      "legacyNotice": "",
+      "legacyChallenge": "unread",
+      "legacyChronicle": 1,
+      "legacyUnread": 2,
+      "legacyAftermath": 0,
+      "legacyEnvironment": "standin",
+      "legacyEnvironmentReady": true,
+      "legacyRecenters": 1,
+      "legacyMessage": ""
+    },
+    "worldSelection": {
+      "screen": "legacy",
+      "entered": true,
+      "paused": false,
+      "pauseReason": "",
+      "legacyActive": true,
+      "legacyView": "heralds-station",
+      "legacySession": "stored",
+      "legacyPersistent": true,
+      "legacySave": "saved",
+      "legacyLabel": "",
+      "legacyPreview": "",
+      "legacyFounded": true,
+      "legacyBanner": "House Aubrecourt",
+      "legacyNation": "korvenia",
+      "legacyDraftName": "House Aubrecourt",
+      "legacyHeraldry": "Purpure, a chief argent, a tower or",
+      "legacyRepresentative": "",
+      "legacyFile": "",
+      "legacyMemberChoice": "",
+      "legacyFileChoice": "",
+      "legacyLandmark": "heralds-station",
+      "legacyHover": "heralds-station",
+      "legacySelectSource": "world",
+      "legacyNotice": "",
+      "legacyChallenge": "unread",
+      "legacyChronicle": 1,
+      "legacyUnread": 2,
+      "legacyAftermath": 0,
+      "legacyEnvironment": "standin",
+      "legacyEnvironmentReady": true,
+      "legacyRecenters": 1,
+      "legacyMessage": ""
+    },
+    "nomination": {
+      "screen": "legacy",
+      "entered": true,
+      "paused": false,
+      "pauseReason": "",
+      "legacyActive": true,
+      "legacyView": "muster-grounds",
+      "legacySession": "stored",
+      "legacyPersistent": true,
+      "legacySave": "saved",
+      "legacyLabel": "",
+      "legacyPreview": "",
+      "legacyFounded": true,
+      "legacyBanner": "House Aubrecourt",
+      "legacyNation": "korvenia",
+      "legacyDraftName": "House Aubrecourt",
+      "legacyHeraldry": "Purpure, a chief argent, a tower or",
+      "legacyRepresentative": "Lucien",
+      "legacyFile": "a",
+      "legacyMemberChoice": "member-2",
+      "legacyFileChoice": "a",
+      "legacyLandmark": "muster-grounds",
+      "legacyHover": "heralds-station",
+      "legacySelectSource": "list",
+      "legacyNotice": "",
+      "legacyChallenge": "unread",
+      "legacyChronicle": 2,
+      "legacyUnread": 2,
+      "legacyAftermath": 0,
+      "legacyEnvironment": "standin",
+      "legacyEnvironmentReady": true,
+      "legacyRecenters": 1,
+      "legacyMessage": "Lucien is named to the Muster"
+    },
+    "challenge": {
+      "screen": "legacy",
+      "entered": true,
+      "paused": false,
+      "pauseReason": "",
+      "legacyActive": true,
+      "legacyView": "awaiting",
+      "legacySession": "stored",
+      "legacyPersistent": true,
+      "legacySave": "saved",
+      "legacyLabel": "",
+      "legacyPreview": "",
+      "legacyFounded": true,
+      "legacyBanner": "House Aubrecourt",
+      "legacyNation": "korvenia",
+      "legacyDraftName": "House Aubrecourt",
+      "legacyHeraldry": "Purpure, a chief argent, a tower or",
+      "legacyRepresentative": "Lucien",
+      "legacyFile": "a",
+      "legacyMemberChoice": "member-2",
+      "legacyFileChoice": "a",
+      "legacyLandmark": "heralds-station",
+      "legacyHover": "heralds-station",
+      "legacySelectSource": "list",
+      "legacyNotice": "notice-0002",
+      "legacyChallenge": "accepted",
+      "legacyChronicle": 3,
+      "legacyUnread": 1,
+      "legacyAftermath": 0,
+      "legacyEnvironment": "standin",
+      "legacyEnvironmentReady": true,
+      "legacyRecenters": 1,
+      "legacyMessage": "",
+      "wager": "These are the terms of this Muster conflict against Solforiz. If your representative is taken and Solforiz wins, they are held captive until your house wins a later Muster against Solforiz. If your re"
+    },
+    "trackingLoss": {
+      "lost": {
+        "screen": "pause",
+        "entered": true,
+        "paused": true,
+        "pauseReason": "Bring a hand into view, then select Resume. Your place is kept.",
+        "legacyActive": true,
+        "legacyView": "pause",
+        "legacySession": "stored",
+        "legacyPersistent": true,
+        "legacySave": "saved",
+        "legacyLabel": "",
+        "legacyPreview": "",
+        "legacyFounded": true,
+        "legacyBanner": "House Aubrecourt",
+        "legacyNation": "korvenia",
+        "legacyDraftName": "House Aubrecourt",
+        "legacyHeraldry": "Purpure, a chief argent, a tower or",
+        "legacyRepresentative": "Lucien",
+        "legacyFile": "a",
+        "legacyMemberChoice": "member-2",
+        "legacyFileChoice": "a",
+        "legacyLandmark": "heralds-station",
+        "legacyHover": "",
+        "legacySelectSource": "list",
+        "legacyNotice": "notice-0002",
+        "legacyChallenge": "accepted",
+        "legacyChronicle": 3,
+        "legacyUnread": 1,
+        "legacyAftermath": 0,
+        "legacyEnvironment": "standin",
+        "legacyEnvironmentReady": true,
+        "legacyRecenters": 1,
+        "legacyMessage": ""
+      },
+      "recovered": {
+        "screen": "pause",
+        "entered": true,
+        "paused": true,
+        "pauseReason": "Bring a hand into view, then select Resume. Your place is kept.",
+        "legacyActive": true,
+        "legacyView": "pause",
+        "legacySession": "stored",
+        "legacyPersistent": true,
+        "legacySave": "saved",
+        "legacyLabel": "",
+        "legacyPreview": "",
+        "legacyFounded": true,
+        "legacyBanner": "House Aubrecourt",
+        "legacyNation": "korvenia",
+        "legacyDraftName": "House Aubrecourt",
+        "legacyHeraldry": "Purpure, a chief argent, a tower or",
+        "legacyRepresentative": "Lucien",
+        "legacyFile": "a",
+        "legacyMemberChoice": "member-2",
+        "legacyFileChoice": "a",
+        "legacyLandmark": "heralds-station",
+        "legacyHover": "",
+        "legacySelectSource": "list",
+        "legacyNotice": "notice-0002",
+        "legacyChallenge": "accepted",
+        "legacyChronicle": 3,
+        "legacyUnread": 1,
+        "legacyAftermath": 0,
+        "legacyEnvironment": "standin",
+        "legacyEnvironmentReady": true,
+        "legacyRecenters": 1,
+        "legacyMessage": ""
+      },
+      "resumed": {
+        "screen": "legacy",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "legacyActive": true,
+        "legacyView": "awaiting",
+        "legacySession": "stored",
+        "legacyPersistent": true,
+        "legacySave": "saved",
+        "legacyLabel": "",
+        "legacyPreview": "",
+        "legacyFounded": true,
+        "legacyBanner": "House Aubrecourt",
+        "legacyNation": "korvenia",
+        "legacyDraftName": "House Aubrecourt",
+        "legacyHeraldry": "Purpure, a chief argent, a tower or",
+        "legacyRepresentative": "Lucien",
+        "legacyFile": "a",
+        "legacyMemberChoice": "member-2",
+        "legacyFileChoice": "a",
+        "legacyLandmark": "heralds-station",
+        "legacyHover": "",
+        "legacySelectSource": "list",
+        "legacyNotice": "notice-0002",
+        "legacyChallenge": "accepted",
+        "legacyChronicle": 3,
+        "legacyUnread": 1,
+        "legacyAftermath": 0,
+        "legacyEnvironment": "standin",
+        "legacyEnvironmentReady": true,
+        "legacyRecenters": 1,
+        "legacyMessage": ""
+      }
+    },
+    "recenter": {
+      "headAfterTurn": {
+        "device": "headset",
+        "position": {
+          "x": 0,
+          "y": 1.600000023841858,
+          "z": 0
+        },
+        "orientation": {
+          "x": 0,
+          "y": 0.24740396440029144,
+          "z": 0,
+          "w": 0.9689124226570129
+        },
+        "euler": {
+          "pitch": 0,
+          "yaw": 28.647890421357932,
+          "roll": 0
+        }
+      },
+      "anchorYawAfterTurn": 0.5000000116032417,
+      "viewerMovedByApp": false
+    },
+    "exitReentry": {
+      "acknowledgement": {
+        "code": "runtime_command_failed",
+        "message": "The XR session ended.",
+        "details": {
+          "browser": {
+            "lifecycle": {
+              "state": "running",
+              "policy": "eager",
+              "sessionId": "63246962-f0ee-4401-8ad9-157720fa23ff",
+              "browserEpoch": 4,
+              "revision": 59,
+              "stateEnteredAt": "2026-10-29T16:49:54.307Z",
+              "lastObservedAt": "2026-10-29T16:54:48.677Z",
+              "failures": 0,
+              "cleanupConfirmed": true,
+              "attemptLimit": 3,
+              "historyTruncated": false,
+              "retryEligible": false,
+              "nextAction": "Use runtime_list_targets to inspect endpoint readiness.",
+              "history": [
+                {
+                  "revision": 1,
+                  "state": "launching",
+                  "at": "2026-10-29T16:42:59.585Z",
+                  "reason": "launch"
+                },
+                {
+                  "revision": 2,
+                  "state": "launching",
+                  "at": "2026-10-29T16:42:59.585Z",
+                  "reason": "prepared"
+                },
+                {
+                  "revision": 3,
+                  "state": "running",
+                  "at": "2026-10-29T16:43:01.450Z",
+                  "reason": "running"
+                },
+                {
+                  "revision": 12,
+                  "state": "closing",
+                  "at": "2026-10-29T16:45:36.708Z",
+                  "reason": "Managed browser closed unexpectedly."
+                },
+                {
+                  "revision": 15,
+                  "state": "failed",
+                  "at": "2026-10-29T16:45:37.977Z",
+                  "reason": "Managed browser closed unexpectedly."
+                },
+                {
+                  "revision": 16,
+                  "state": "launching",
+                  "at": "2026-10-29T16:45:38.380Z",
+                  "reason": "launch"
+                },
+                {
+                  "revision": 17,
+                  "state": "launching",
+                  "at": "2026-10-29T16:45:38.381Z",
+                  "reason": "prepared"
+                },
+                {
+                  "revision": 18,
+                  "state": "running",
+                  "at": "2026-10-29T16:45:40.169Z",
+                  "reason": "running"
+                },
+                {
+                  "revision": 23,
+                  "state": "running",
+                  "at": "2026-10-29T16:46:10.216Z",
+                  "reason": "stable"
+                },
+                {
+                  "revision": 28,
+                  "state": "closing",
+                  "at": "2026-10-29T16:47:40.500Z",
+                  "reason": "Managed browser closed unexpectedly."
+                },
+                {
+                  "revision": 31,
+                  "state": "failed",
+                  "at": "2026-10-29T16:47:42.461Z",
+                  "reason": "Managed browser closed unexpectedly."
+                },
+                {
+                  "revision": 32,
+                  "state": "launching",
+                  "at": "2026-10-29T16:47:42.970Z",
+                  "reason": "launch"
+                },
+                {
+                  "revision": 33,
+                  "state": "launching",
+                  "at": "2026-10-29T16:47:42.971Z",
+                  "reason": "prepared"
+                },
+                {
+                  "revision": 34,
+                  "state": "running",
+                  "at": "2026-10-29T16:47:44.692Z",
+                  "reason": "running"
+                },
+                {
+                  "revision": 39,
+                  "state": "running",
+                  "at": "2026-10-29T16:48:14.694Z",
+                  "reason": "stable"
+                },
+                {
+                  "revision": 44,
+                  "state": "closing",
+                  "at": "2026-10-29T16:49:51.592Z",
+                  "reason": "Managed browser closed unexpectedly."
+                },
+                {
+                  "revision": 47,
+                  "state": "failed",
+                  "at": "2026-10-29T16:49:53.048Z",
+                  "reason": "Managed browser closed unexpectedly."
+                },
+                {
+                  "revision": 48,
+                  "state": "launching",
+                  "at": "2026-10-29T16:49:53.287Z",
+                  "reason": "launch"
+                },
+                {
+                  "revision": 49,
+                  "state": "launching",
+                  "at": "2026-10-29T16:49:53.288Z",
+                  "reason": "prepared"
+                },
+                {
+                  "revision": 50,
+                  "state": "running",
+                  "at": "2026-10-29T16:49:54.307Z",
+                  "reason": "running"
+                },
+                {
+                  "revision": 56,
+                  "state": "running",
+                  "at": "2026-10-29T16:50:24.309Z",
+                  "reason": "stable"
+                }
+              ],
+              "attemptId": "e335ac2c-f6bc-4997-a29e-e9865116d4de"
+            },
+            "status": "connected",
+            "clients": [
+              {
+                "commandReady": true,
+                "sessionId": "63246962-f0ee-4401-8ad9-157720fa23ff",
+                "browserEpoch": 4,
+                "deviceClass": "managed",
+                "pageId": "tab-mvts46bf-k2kgmf",
+                "role": "app",
+                "tabGeneration": 2
+              },
+              {
+                "commandReady": true,
+                "sessionId": "63246962-f0ee-4401-8ad9-157720fa23ff",
+                "browserEpoch": 4,
+                "deviceClass": "managed",
+                "pageId": "tab-mvts40am-dje7ng",
+                "role": "editor",
+                "sceneSessionId": "scene-vbhtkyuzrz9",
+                "tabGeneration": 1
+              }
+            ],
+            "lastBridgeConnectedAt": "2026-10-29T16:54:43.371Z",
+            "lastCommandReadyAt": "2026-10-29T16:54:48.677Z",
+            "connected": true,
+            "commandReady": true,
+            "connectedClientCount": 2,
+            "lastTransitionAt": "2026-10-29T16:49:54.307Z",
+            "audioMuted": false
+          }
+        }
+      },
+      "exited": {
+        "screen": "legacy",
+        "entered": false,
+        "paused": false,
+        "pauseReason": "",
+        "legacyActive": true,
+        "legacyView": "awaiting",
+        "legacySession": "stored",
+        "legacyPersistent": true,
+        "legacySave": "saved",
+        "legacyLabel": "",
+        "legacyPreview": "",
+        "legacyFounded": true,
+        "legacyBanner": "House Aubrecourt",
+        "legacyNation": "korvenia",
+        "legacyDraftName": "House Aubrecourt",
+        "legacyHeraldry": "Purpure, a chief argent, a tower or",
+        "legacyRepresentative": "Lucien",
+        "legacyFile": "a",
+        "legacyMemberChoice": "member-2",
+        "legacyFileChoice": "a",
+        "legacyLandmark": "heralds-station",
+        "legacyHover": "",
+        "legacySelectSource": "list",
+        "legacyNotice": "notice-0002",
+        "legacyChallenge": "accepted",
+        "legacyChronicle": 3,
+        "legacyUnread": 1,
+        "legacyAftermath": 0,
+        "legacyEnvironment": "standin",
+        "legacyEnvironmentReady": true,
+        "legacyRecenters": 3,
+        "legacyMessage": ""
+      },
+      "reentered": {
+        "screen": "legacy",
+        "entered": true,
+        "paused": false,
+        "pauseReason": "",
+        "legacyActive": true,
+        "legacyView": "awaiting",
+        "legacySession": "stored",
+        "legacyPersistent": true,
+        "legacySave": "saved",
+        "legacyLabel": "",
+        "legacyPreview": "",
+        "legacyFounded": true,
+        "legacyBanner": "House Aubrecourt",
+        "legacyNation": "korvenia",
+        "legacyDraftName": "House Aubrecourt",
+        "legacyHeraldry": "Purpure, a chief argent, a tower or",
+        "legacyRepresentative": "Lucien",
+        "legacyFile": "a",
+        "legacyMemberChoice": "member-2",
+        "legacyFileChoice": "a",
+        "legacyLandmark": "heralds-station",
+        "legacyHover": "heralds-station",
+        "legacySelectSource": "list",
+        "legacyNotice": "notice-0002",
+        "legacyChallenge": "accepted",
+        "legacyChronicle": 3,
+        "legacyUnread": 1,
+        "legacyAftermath": 0,
+        "legacyEnvironment": "standin",
+        "legacyEnvironmentReady": true,
+        "legacyRecenters": 4,
+        "legacyMessage": ""
+      }
+    },
+    "storedSave": {
+      "key": "crownfall.legacy.save",
+      "bytes": 4016,
+      "schemaVersion": 1,
+      "banner": "House Aubrecourt",
+      "nominationFile": "a",
+      "acceptedNotices": 1
+    }
+  },
+  "limitations": [
+    "Browser emulation is not physical Quest validation: tracking quality, comfort, cold start and GPU frame pacing are unmeasured.",
+    "Direct fingertip poke is wired (PokeInteractable) but not exercised here, so direct touch is not claimed as a passed runtime test.",
+    "Restoring the save after a page reload was not exercised in this run: the managed software browser closed while re-entering ({\"code\":\"runtime_command_failed\",\"message\":\"Browser not ready\",\"details\":{\"outcome\":\"not_executed\",\"browser\":{\"lifecycle\":{\"state\":\"failed\",\"policy\":\"eager\",\"se). The save itself was read back from crownfall.legacy.save; loading it is covered by the shared persistence tests."
+  ],
+  "performance": [
+    {
+      "label": "My Legacy overview with the stand-in environment (menu, sorcerer and atmosphere hidden)",
+      "renderer": {
+        "calls": 78,
+        "triangles": 22988,
+        "geometries": 52,
+        "textures": 34,
+        "programs": 20
+      },
+      "frames": {
+        "durationMs": 6303,
+        "frameTimeMs": {
+          "droppedFrameCount": 44,
+          "max": 316.5999999999767,
+          "p50": 133.29999999998836,
+          "p95": 266.70000000001164,
+          "sampleCount": 45,
+          "source": "requestAnimationFrame-interval"
+        },
+        "longTasks": {
+          "count": 14,
+          "totalDurationMs": 8862
+        }
+      },
+      "allocation": {
+        "available": true,
+        "frames": 20000,
+        "samplingIntervalBytes": 32,
+        "legacyAllocatedBytes": 484,
+        "legacyAllocationSites": {
+          "update legacy/legacy-experience.ts:517": 244,
+          "update legacy/standin/createStandInEnvironment.ts:343": 240
+        },
+        "heapUsedBefore": 191018504,
+        "heapUsedAfter": 191030556,
+        "environmentStats": {
+          "triangles": 196,
+          "drawCalls": 18,
+          "geometries": 20,
+          "textures": 6,
+          "frameTimesMs": 120
+        }
+      },
+      "caveat": "Software-rendered (SwiftShader) emulation on a shared, heavily loaded 4-CPU host: frame times are not representative of a Quest."
+    }
+  ],
+  "finishedAt": "2026-10-29T17:03:51.135Z"
+}

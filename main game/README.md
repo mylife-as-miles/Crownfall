@@ -29,9 +29,25 @@ Asset failures show Retry/Continue controls. A failed model can retry without ch
 
 Home uses one 298 × 434 tile on the left and two 298 × 215 tiles stacked on the right, with four-pixel gaps, at 1280 × 720. The full grid is 600 × 434 pixels. My Legacy is the tall tile, Chronicles is upper right, and Herald Board is lower right. The supplied king and portal images use centered cover crops; Chronicles contains the complete four-region map, retaining its context. Only the exact supplied titles appear on the tiles. There are no invented descriptions, statistics, story entries or news feeds.
 
-Each tile opens a clear unavailable-state dialog. The menu does not implement legacy profiles, chronicles or a herald feed. Home selection and the last right-hand row are remembered across navigation. Left/right moves between columns; up/down moves between the stacked tiles. Home/End selects the first/last tile. Keyboard, pointer and controller selection keep focus aligned. Settings returns to its originating screen. Back from Home returns to Play; Back from Play retains the Home confirmation.
+My Legacy opens its own screen (see My Legacy below). Chronicles and Herald Board open clear unavailable-state dialogs; the menu does not implement chronicles or a herald feed. Home selection and the last right-hand row are remembered across navigation. Left/right moves between columns; up/down moves between the stacked tiles. Home/End selects the first/last tile. Keyboard, pointer and controller selection keep focus aligned. Settings returns to its originating screen. Back from Home returns to Play; Back from Play retains the Home confirmation.
 
 `src/home-content.ts` configures the three content slots, image fit and supported actions. The original JPEGs are preserved byte-for-byte outside Git under `/workspace/crownfall-home-originals/`. Separate full-resolution WebP delivery copies are in `public/assets/home/`; mapping, hashes and display fits are in `artifacts/home-artwork.json`. The private Page and reference image remain unchanged and outside the repository.
+
+## My Legacy
+
+Home → My Legacy opens a full-stage 3D screen, not a dialog. The top navigation fades, and the sorcerer and particles pause and hide without unloading the decoded model, so the menu returns exactly as it was. The Legacy code and its renderer load lazily on first entry and then stay mounted while the menu shows, with the renderer paused and the hidden screen skipping style and layout work (`content-visibility: hidden`). Back (Escape, the configured Back key, controller B or the always-visible Return to Home control) unwinds dialog → close-up → inspection → overview → Home and restores focus to the My Legacy tile.
+
+`src/legacy/environment-provider.ts` discovers the environment workflow's `src/legacy/environment/createLegacyEnvironment.ts` with a lazy `import.meta.glob` (see `docs/legacy/WORKFLOWS.md`). Without it, the gameplay stand-in in `src/legacy/standin/` renders: neutral ground, simple landmark markers and a small "Environment stand-in" caption. It is a placeholder, not the Bannerhold art. `?legacyStandIn` forces the stand-in. The screen talks to either renderer only through `src/legacy/environment-contract.ts`.
+
+The shared Legacy domain in `../shared/legacy/` owns the rules, persistence and presentation; this app stores the save in `localStorage` (`crownfall.legacy.save`). `?legacy=fresh` starts a labelled guest session that neither reads nor writes the stored banner. `?legacyPreview=<id>` opens a development preview: fixture data, labelled on every surface and never saved; an unknown id lists the real previews. An unreadable save, or one from a newer version, opens a recovery panel and is left untouched; Raise a new banner asks for confirmation, and only the new banner's first save replaces the old record.
+
+The founding ceremony offers four nations, a validated banner name with Suggest, arms (division, field, ordinary, charge and tinctures, or presets) with a live 2D preview while the 3D banner updates, and an optional motto. Raise the banner asks for confirmation, saves the founding and plays a short banner-raising beat. Keyboard only, controller only and mouse all complete it.
+
+In the Bannerhold, HTML labels follow the four 3D landmarks. Hover or focus highlights a landmark; selecting it moves the camera and opens a docked inspection panel. The Banner Hall shows identity, arms, nation, rank, recognition, honours and hall development, plus Abandon banner and found anew (with confirmation). The Muster Grounds show the representative's condition (captive, injured, promoted or returned), an Inspect close-up, nomination with claimed files and the houses that hold them, and the 16-piece formation with the single piece that belongs to the player's banner. The War Record lists the ledger, conflicts and unresolved matters, with honest empty states. The Herald's Station holds notices and the formal challenge with its wager shown first; accepting it shows "Awaiting the board", because matches are not connected to My Legacy in this build. After a result, at most two aftermath messages appear, with a note that the War Record keeps every fact.
+
+Input: mouse hover and click, drag to orbit and wheel to zoom; the configured keyboard bindings (directions select landmarks spatially, Select, Back, First/Last, and Previous/Next tab cycle landmarks and panels); and a standard controller (left stick or D-pad, A, B, LB/RB, right stick to orbit, triggers to zoom). Focus stays visible. Saved or OS reduced motion removes camera moves and transitions. The quality preset, render scale and frame limit apply to the Legacy renderer. If frames stay slow (a median above 25 ms over at least 60 frames, after an 8-second grace), the preset steps down once for the page and says so once; the saved setting is not changed. `?legacyStats` exposes `window.__legacyStats()` for measurement.
+
+`node scripts/verify-legacy.mjs` checks these flows with Playwright (`CHROMIUM_PATH` defaults to `/opt/pw-browsers/chromium`; `CROWNFALL_LEGACY_ONLY=entry,founding,…` runs named sections). Its opt-in `perf` section follows `docs/legacy/PERFORMANCE.md` and is meant for a `npm run preview` server. `node scripts/capture-legacy.mjs --out <dir>` writes screenshots (default `artifacts/legacy/latest/`). Controller checks use a mocked standard Gamepad API, not physical hardware. WebGL here is software-rendered (SwiftShader), so recorded frame times do not represent real GPUs.
 
 ## Chapters
 
@@ -51,7 +67,7 @@ Screen changes use a short fade and directional glide, with restrained card stag
 
 ## Shared modals
 
-Home destinations, mode previews, chapter previews and Return to Home use one native `MenuDialog` matching the supplied modal reference: a transparent borderless surface over the dark defocused scene, a centered compact amber heading, centered muted copy, and small outlined A Confirm / B Cancel actions. The content sits above the vertical midpoint, retaining the reference’s deliberate spacing while longer disclosures wrap and landscape text stays readable. There is no separate boxed panel, eyebrow, corner close icon or repeated footer.
+The Chronicles and Herald Board destinations, mode previews, chapter previews and Return to Home use one native `MenuDialog` matching the supplied modal reference: a transparent borderless surface over the dark defocused scene, a centered compact amber heading, centered muted copy, and small outlined A Confirm / B Cancel actions. The content sits above the vertical midpoint, retaining the reference’s deliberate spacing while longer disclosures wrap and landscape text stays readable. There is no separate boxed panel, eyebrow, corner close icon or repeated footer.
 
 Confirm acknowledges informational previews; Return to Home confirms navigation to Home. Cancel, Escape, the configured Back binding and controller B dismiss without changing the destination. Focus remains trapped in the dialog and returns to the selected originating card. Left/right, custom bindings and controller navigation reach the actions; Q/E and bumpers cannot switch the menu behind an open dialog. Held Select/Back keys and held A/B buttons cannot accidentally repeat confirmations. The animated creature remains mounted behind the blur. Dialog fades honor both saved and OS reduced motion.
 
@@ -113,6 +129,7 @@ node scripts/verify-showcase.mjs
 node scripts/verify-chapters.mjs
 node scripts/verify-motion.mjs
 node scripts/verify-modals.mjs
+node scripts/verify-legacy.mjs
 node scripts/verify-render-controls.mjs
 node scripts/verify-framing.mjs
 ```

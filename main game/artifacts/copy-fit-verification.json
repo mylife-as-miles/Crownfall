@@ -1,19 +1,8 @@
 {
   "passed": true,
-  "domOnly": true,
-  "scope": "Three mode previews, two chapter previews, three Home panels and Back at desktop and landscape. Settings, Showcase and Chapters have dedicated screen verification. DOM-only model=none probe; actual GLB menu renders verified separately.",
+  "domOnly": false,
+  "scope": "Three mode previews, two chapter previews, the Chronicles and Herald Board panels and Back at desktop and landscape. My Legacy is a destination screen verified by verify-legacy.mjs. Settings, Showcase and Chapters have dedicated screen verification. DOM-only model=none probe; actual GLB menu renders verified separately.",
   "results": [
-    {
-      "viewport": {
-        "width": 1280,
-        "height": 720
-      },
-      "state": "legacy",
-      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
-      "horizontalOverflow": false,
-      "verticalScrollAvailable": false,
-      "offenders": []
-    },
     {
       "viewport": {
         "width": 1280,
@@ -98,17 +87,6 @@
       },
       "state": "chapter-02",
       "text": "CHAPTER 02\n\nChapter gameplay is not connected in this build.\n\nThis is a chapter-selection preview. Campaign progress and unlocks are not recorded.\n\nA\nConfirm\nB\nCancel",
-      "horizontalOverflow": false,
-      "verticalScrollAvailable": false,
-      "offenders": []
-    },
-    {
-      "viewport": {
-        "width": 844,
-        "height": 390
-      },
-      "state": "legacy",
-      "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel",
       "horizontalOverflow": false,
       "verticalScrollAvailable": false,
       "offenders": []

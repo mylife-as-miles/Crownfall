@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { generateQuestUI } from './generate-quest-ui.ts';
+import { generateQuestLegacyUI } from './generate-quest-legacy-ui.ts';
 import { sharedAssetPaths, menuPublicSource, questPublicDestination } from './sync-menu-assets.mjs';
 import { CHAPTERS, HOME_CONTENT, NAV_TABS, PLAY_CARDS, ARENAS } from '../shared/menu/content.ts';
 import { MENU_LAYOUT, MENU_THEME } from '../shared/menu/theme.ts';
@@ -44,6 +45,15 @@ try {
   };
   for (const path of sharedAssetPaths) await compare(path);
   console.log(`PASS shared desktop/Quest content, design tokens, ${verifiedFiles} byte-identical assets and ${resourcePaths.size} resolvable UI resources`);
+  // My Legacy panels are generated from shared Legacy content; stale copies or unresolvable resources fail here.
+  const legacyPanel = join(scratch, 'legacy.uikitml'), legacyDock = join(scratch, 'legacy-dock.uikitml');
+  const legacyReport = await generateQuestLegacyUI({ panel: legacyPanel, dock: legacyDock });
+  for (const [generated, committed] of [[legacyPanel, 'legacy.uikitml'], [legacyDock, 'legacy-dock.uikitml']]) {
+    const expectedLegacy = await readFile(generated, 'utf8');
+    assert.equal(await readFile(join(root, 'main-game-vr/public/ui', committed), 'utf8'), expectedLegacy, `Quest ${committed} is stale; rebuild the Quest experience`);
+    for (const match of expectedLegacy.matchAll(/url\(['"]?([^'"\)]+)['"]?\)/g)) await readFile(resolve(root, 'main-game-vr/public/ui', match[1]));
+  }
+  console.log(`PASS My Legacy Quest panels match shared Legacy content (${legacyReport.panelElements + legacyReport.dockElements} elements, ${legacyReport.hitTargets} controls of at least ${legacyReport.smallestHitTarget} units)`);
   // Optional check owned by the Legacy environment workflow (docs/legacy/WORKFLOWS.md).
   const environmentCheck = join(root, 'scripts/check-legacy-environment.ts');
   if (existsSync(environmentCheck)) await (await import(pathToFileURL(environmentCheck).href)).checkLegacyEnvironment();

@@ -7,6 +7,8 @@ import {
   normalizeQuestPreferences, reduceQuestState,
 } from "./quest-state";
 import type { QuestEvent, QuestState } from "./quest-state";
+// The My Legacy panel flow and view-model suite runs with the Quest state suite (npm run test:quest).
+import "./legacy/legacy-flow.test";
 
 const apply = (state: QuestState, ...events: QuestEvent[]) => events.reduce(reduceQuestState, state);
 const play = () => reduceQuestState(createQuestState(), { type: "nav", screen: "play" });
@@ -81,10 +83,13 @@ test("modal previews gate behind-menu actions without starting gameplay", () => 
 });
 
 test("all supplied Home destinations and modes keep truthful preview behavior", () => {
-  for (const panel of ["legacy", "chronicles", "herald"] as const) {
+  for (const panel of ["chronicles", "herald"] as const) {
     const state = reduceQuestState(createQuestState(), { type: "home", panel });
     assert.equal(state.modal, panel); assert.equal(reduceQuestState(state, { type: "confirm" }).screen, "home");
   }
+  const legacy = reduceQuestState(createQuestState(), { type: "home", panel: "legacy" });
+  assert.equal(legacy.screen, "legacy", "My Legacy opens its immersive destination");
+  assert.equal(legacy.modal, null, "My Legacy is not an information modal");
   for (const id of ["classic", "local-duel", "online-duel"] as const) {
     const state = reduceQuestState(play(), { type: "play", id });
     assert.equal(state.modal, id); assert.equal(reduceQuestState(state, { type: "confirm" }).screen, "play");
@@ -158,4 +163,34 @@ test("short visit requires three real steps and explicit Finish, with no timer o
   assert.equal(reduceQuestState(state, { type: "back" }).screen, "home");
   const restarted = reduceQuestState(state, { type: "start-visit" }); assert.equal(restarted.visitStep, 0); assert.equal(restarted.visitComplete, false);
   assert.equal(reduceQuestState(restarted, { type: "skip-visit" }).screen, "home");
+});
+
+test("My Legacy is a route: Back returns Home, pause/resume and exit/re-entry keep the Legacy place", () => {
+  const home = createQuestState();
+  let state = reduceQuestState({ ...home, entered: true, introduced: true }, { type: "home", panel: "legacy" });
+  assert.equal(state.screen, "legacy"); assert.equal(state.previousScreen, "legacy");
+  for (const event of [{ type: "confirm" }, { type: "cancel" }, { type: "start-visit" }, { type: "play", id: "classic" },
+    { type: "category", category: "video" }, { type: "home", panel: "chronicles" }] satisfies QuestEvent[]) {
+    assert.equal(reduceQuestState(state, event), state, `${event.type} cannot act behind My Legacy`);
+  }
+  assert.equal(reduceQuestState(state, { type: "back" }).screen, "home");
+  state = reduceQuestState(state, { type: "pause", reason: "Bring a hand into view" });
+  assert.equal(state.screen, "pause"); assert.equal(state.previousScreen, "legacy"); assert.equal(state.paused, true);
+  assert.equal(reduceQuestState(state, { type: "back" }), state, "Back is held while paused");
+  state = reduceQuestState(state, { type: "resume" });
+  assert.equal(state.screen, "legacy"); assert.equal(state.paused, false); assert.equal(state.pauseReason, "");
+  state = apply(state, { type: "exit" }, { type: "enter", firstVisit: true });
+  assert.equal(state.screen, "legacy", "re-entry keeps My Legacy even before the visit was completed");
+  assert.equal(state.entered, true);
+  const pausedHome = apply(state, { type: "pause", reason: "Break" }, { type: "pause-home" });
+  assert.equal(pausedHome.screen, "home"); assert.equal(pausedHome.paused, false);
+  assert.equal(reduceQuestState(apply(play(), { type: "nav", screen: "home" }), { type: "home", panel: "legacy" }).screen, "legacy");
+  assert.equal(reduceQuestState(play(), { type: "home", panel: "legacy" }).screen, "play", "the Home tile only acts on Home");
+});
+
+test("onboarding appears on the first immersive entry of a visit only", () => {
+  let state = reduceQuestState(createQuestState(), { type: "enter", firstVisit: true });
+  assert.equal(state.screen, "onboarding"); assert.equal(state.introduced, true);
+  state = apply(state, { type: "skip-visit" }, { type: "nav", screen: "settings" }, { type: "exit" }, { type: "enter", firstVisit: true });
+  assert.equal(state.screen, "settings", "a later entry returns to the same place");
 });

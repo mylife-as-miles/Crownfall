@@ -169,6 +169,13 @@ a {
 }
 .shoulder-next { position: absolute; left: 49.84375cqw; }
 .detail-screen-open .main-nav { opacity: 0; visibility: hidden; pointer-events: none; }
+/* My Legacy covers the stage: the top navigation fades and the ambient layers
+   pause and hide without unloading the decoded sorcerer or the particle renderer. */
+.legacy-open .main-nav { opacity: 0; visibility: hidden; pointer-events: none; }
+.creature-stage.is-suspended,
+.atmosphere.is-suspended { visibility: hidden; }
+.atmosphere.is-suspended,
+.atmosphere.is-suspended * { animation-play-state: paused !important; }
 .detail-screen-open .scene-wash,
 .detail-screen-open .creature-stage,
 .detail-screen-open .atmosphere {

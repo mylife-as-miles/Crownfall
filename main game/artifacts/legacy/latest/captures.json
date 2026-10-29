@@ -1,0 +1,521 @@
+{
+  "environment": "stand-in",
+  "rendering": "Chromium headless with software WebGL (SwiftShader), High quality preset, OS reduced motion. Captures show layout and state, not GPU image quality or frame timing.",
+  "disclosure": "The 3D scene is the gameplay workflow's labelled environment stand-in, not the Bannerhold environment.",
+  "previews": "Development previews are fixture match records run through the real Legacy rules (mode preview) and are labelled on screen. Founding captures use ?legacy=fresh guest sessions; nothing was saved.",
+  "captures": [
+    {
+      "path": "artifacts/legacy/latest/1280x720-founding-1-nation.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Founding: nation choice with identity copy and availability; the holding behind previews the draft"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-founding-2-name.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Founding: typed banner name with validation, Suggest and quick suggestions"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-founding-3-arms.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Founding: heraldry rows with the live 2D preview, blazon and herald's advice; the 3D banner updates live"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-founding-4-raise.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Founding: review with motto and the three sworn members"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-founding-5-confirm.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Founding: confirmation (guest wording)"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-founding-6-beat.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "The banner-raising beat (reduced-motion still), held on screen for this capture; it lasts 1.6 s with reduced motion and 2.6 s otherwise"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-overview-fresh.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Bannerhold overview straight after founding: landmark labels as DOM buttons over the scene"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-panel-banner-hall.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Inspection panel: banner-hall"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-panel-muster-grounds.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Inspection panel: muster-grounds"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-panel-war-record.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Inspection panel: war-record"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-panel-heralds-station.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Inspection panel: heralds-station"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-heralds-accept.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Accepting the formal challenge restates the wager"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-heralds-awaiting.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "After acceptance: the truthful Awaiting the board state"
+    },
+    {
+      "path": "artifacts/legacy/latest/844x390-founding-1-nation.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "note": "Founding: nation choice with identity copy and availability; the holding behind previews the draft"
+    },
+    {
+      "path": "artifacts/legacy/latest/844x390-founding-2-name.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "note": "Founding: typed banner name with validation, Suggest and quick suggestions"
+    },
+    {
+      "path": "artifacts/legacy/latest/844x390-founding-3-arms.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "note": "Founding: heraldry rows with the live 2D preview, blazon and herald's advice; the 3D banner updates live"
+    },
+    {
+      "path": "artifacts/legacy/latest/844x390-founding-4-raise.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "note": "Founding: review with motto and the three sworn members"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-founding-1-nation.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Founding: nation choice with identity copy and availability; the holding behind previews the draft"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-founding-2-name.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Founding: typed banner name with validation, Suggest and quick suggestions"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-founding-3-arms.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Founding: heraldry rows with the live 2D preview, blazon and herald's advice; the 3D banner updates live"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-founding-4-raise.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Founding: review with motto and the three sworn members"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-captive-aftermath.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"captive\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-captive-overview.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"captive\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-captive-muster-grounds.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"captive\": muster-grounds"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-captive-war-record.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"captive\": war-record"
+    },
+    {
+      "path": "artifacts/legacy/latest/844x390-preview-captive-aftermath.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "note": "Development preview \"captive\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/844x390-preview-captive-overview.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "note": "Development preview \"captive\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/844x390-preview-captive-muster-grounds.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "note": "Development preview \"captive\": muster-grounds"
+    },
+    {
+      "path": "artifacts/legacy/latest/844x390-preview-captive-war-record.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "note": "Development preview \"captive\": war-record"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-preview-captive-aftermath.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Development preview \"captive\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-preview-captive-overview.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Development preview \"captive\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-preview-captive-muster-grounds.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Development preview \"captive\": muster-grounds"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-preview-captive-war-record.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Development preview \"captive\": war-record"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-returned-aftermath.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"returned\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-returned-overview.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"returned\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-returned-muster-grounds.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"returned\": muster-grounds"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-injured-aftermath.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"injured\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-injured-overview.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"injured\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-injured-muster-grounds.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"injured\": muster-grounds"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-promoted-aftermath.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"promoted\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-promoted-overview.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"promoted\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-promoted-muster-grounds.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"promoted\": muster-grounds"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-allied-loss-aftermath.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"allied-loss\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-allied-loss-overview.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"allied-loss\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-allied-loss-heralds-station.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"allied-loss\": heralds-station"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-rival-grievance-aftermath.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"rival-grievance\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-rival-grievance-overview.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"rival-grievance\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-rival-grievance-heralds-station.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"rival-grievance\": heralds-station"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-classic-capture-aftermath.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"classic-capture\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-classic-capture-overview.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"classic-capture\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-classic-capture-war-record.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"classic-capture\": war-record"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-honoured-aftermath.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"honoured\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-honoured-overview.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"honoured\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-honoured-banner-hall.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"honoured\": banner-hall"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-honoured-war-record.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"honoured\": war-record"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-preview-honoured-aftermath.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Development preview \"honoured\": at most two aftermath messages"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-preview-honoured-overview.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Development preview \"honoured\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-preview-honoured-banner-hall.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Development preview \"honoured\": banner-hall"
+    },
+    {
+      "path": "artifacts/legacy/latest/1920x1080-preview-honoured-war-record.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "note": "Development preview \"honoured\": war-record"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-founded-kwind-09-overview.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"founded-kwind-09\": overview"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-founded-kwind-09-muster-grounds.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Development preview \"founded-kwind-09\": muster-grounds"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-recovery-corrupt.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Unreadable save: recovery panel; the stored record is left untouched"
+    },
+    {
+      "path": "artifacts/legacy/latest/844x390-recovery-future.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "note": "Save from a newer schema: refused and left untouched"
+    },
+    {
+      "path": "artifacts/legacy/latest/1280x720-preview-missing.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "note": "Unknown development preview id: the real previews are listed"
+    }
+  ],
+  "errors": []
+}

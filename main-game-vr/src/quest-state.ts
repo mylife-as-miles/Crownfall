@@ -45,7 +45,8 @@ export function normalizeQuestPreferences(value: unknown): QuestPreferences {
 }
 
 export type QuestNavigationScreen = "home" | "play" | "showcase" | "settings";
-export type QuestScreen = QuestNavigationScreen | "chapters" | "arenas" | "library" | "onboarding" | "visit" | "pause";
+/** "legacy" is the immersive My Legacy destination opened from the Home tile. */
+export type QuestScreen = QuestNavigationScreen | "chapters" | "arenas" | "library" | "onboarding" | "visit" | "pause" | "legacy";
 type ContentScreen = Exclude<QuestScreen, "pause">;
 type ShowcaseOrigin = "home" | "play" | "chapters" | "settings";
 
@@ -62,6 +63,8 @@ export interface QuestState {
   paused: boolean;
   pauseReason: string;
   entered: boolean;
+  /** Onboarding appears on the first immersive entry of a page visit only, so re-entry keeps the current place. */
+  introduced: boolean;
   /** Origins survive pause without overloading its previousScreen snapshot. */
   showcaseOrigin: ShowcaseOrigin;
   settingsOrigin: "home" | "play";
@@ -86,7 +89,7 @@ export function createQuestState(): QuestState {
   return {
     screen: "home", previousScreen: "home", modal: null,
     chapterIndex: 0, arenaIndex: 0, library: "battles", settingsCategory: null,
-    visitStep: 0, visitComplete: false, paused: false, pauseReason: "", entered: false,
+    visitStep: 0, visitComplete: false, paused: false, pauseReason: "", entered: false, introduced: false,
     showcaseOrigin: "home", settingsOrigin: "home",
   };
 }
@@ -117,9 +120,9 @@ export function reduceQuestState(state: QuestState, event: QuestEvent): QuestSta
 
   switch (event.type) {
     case "enter":
-      return event.firstVisit
-        ? { ...content(state, "onboarding"), entered: true, modal: null, paused: false, pauseReason: "" }
-        : { ...state, entered: true };
+      return event.firstVisit && !state.introduced
+        ? { ...content(state, "onboarding"), entered: true, introduced: true, modal: null, paused: false, pauseReason: "" }
+        : { ...state, entered: true, introduced: true };
     case "exit":
       return state.entered ? { ...state, entered: false } : state;
     case "pause":
@@ -139,9 +142,12 @@ export function reduceQuestState(state: QuestState, event: QuestEvent): QuestSta
       return state.modal ? { ...state, modal: null } : state;
     case "nav":
       return ["home", "play", "showcase", "settings"].includes(event.screen) ? nav(state, event.screen) : state;
-    case "home":
-      return state.screen === "home" && HOME_CONTENT.some(item => item.action === event.panel)
-        ? { ...state, modal: event.panel } : state;
+    case "home": {
+      const tile = state.screen === "home" ? HOME_CONTENT.find(item => item.action === event.panel) : undefined;
+      if (!tile) return state;
+      // A tile with a destination opens it as a screen; the others open their information panel.
+      return tile.destination === "legacy" ? { ...content(state, "legacy"), modal: null } : { ...state, modal: event.panel };
+    }
     case "play":
       if (state.screen !== "play" || !PLAY_CARDS.some(item => item.id === event.id)) return state;
       return event.id === "chapters" ? content(state, "chapters") : { ...state, modal: event.id };
@@ -186,7 +192,7 @@ export function reduceQuestState(state: QuestState, event: QuestEvent): QuestSta
         ? { ...state, settingsCategory: null } : nav(state, state.settingsOrigin);
       if (state.screen === "play") return { ...state, modal: "quit" };
       if (state.screen === "home") return content(state, "play");
-      if (state.screen === "onboarding") return content(state, "home");
+      if (state.screen === "onboarding" || state.screen === "legacy") return content(state, "home");
       if (state.screen === "visit") return state.visitComplete ? content(state, "home")
         : state.visitStep > 0 ? { ...state, visitStep: state.visitStep - 1 } : content(state, "onboarding");
       return state;

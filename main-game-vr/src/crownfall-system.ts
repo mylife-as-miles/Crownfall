@@ -1,6 +1,6 @@
 import {
   AnimationMixer, AssetManager, Box3, createSystem, Entity, LoopRepeat,
-  Object3D, Quaternion, UIKit, UIKitMLAsset, Vector3, VisibilityState,
+  Object3D, PokeInteractable, Quaternion, RayInteractable, UIKit, UIKitMLAsset, Vector3, VisibilityState,
 } from '@iwsdk/core';
 import { ARENAS, CHAPTERS, HOME_CONTENT, NAV_TABS, PLAY_CARDS, SETTINGS_CATEGORIES, SHOWCASE_CATEGORIES, getModalContent } from '../../shared/menu/content';
 import { MENU_THEME } from '../../shared/menu/theme';
@@ -13,6 +13,7 @@ import {
 import type { QuestEvent, QuestPreferences, QuestState } from './quest-state.js';
 import { QUEST_UI_LAYOUT, QUEST_VIEW_IDS, QUEST_SETTING_ROWS } from './ui-contract.js';
 import { CrownfallAtmosphere } from './atmosphere.js';
+import { QuestLegacyExperience } from './legacy/legacy-experience.js';
 
 const SELECTION_GROUPS = {
   home: HOME_CONTENT.map(item => `Home_${item.action}`),
@@ -39,6 +40,9 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   private heroAnchor!: Object3D;
   private atmosphere!: CrownfallAtmosphere;
   private atmosphereObject!: Object3D;
+  private legacy!: QuestLegacyExperience;
+  /** False while My Legacy replaces the menu views, sorcerer and atmosphere. */
+  private menuShown = true;
   private elements = new Map<string, UIKit.Text>();
   private state: QuestState = createQuestState();
   private preferences = readPreferences();
@@ -84,6 +88,13 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.heroAnchor = this.world.requireSceneEntity('sorcerer-anchor').object3D!;
     this.atmosphereObject = this.world.requireSceneObject<Object3D>('atmosphere-anchor');
     this.atmosphere = new CrownfallAtmosphere(this.atmosphereObject);
+    this.legacy = new QuestLegacyExperience(this.world, this.stateEntity, {
+      home: () => this.dispatch(this.state.paused ? { type: 'pause-home' } : { type: 'back' }),
+      pause: () => this.dispatch({ type: 'pause', reason: 'Take your time. Your place is kept.' }),
+      resume: () => { if (!this.state.entered || this.leftTracked || this.rightTracked) this.dispatch({ type: 'resume' }); },
+      exit: () => { void this.exit(); },
+      recenter: () => this.recenter(),
+    });
     const bind = (id: string, callback: () => void) => {
       const element = this.element(id);
       element.name = id;
@@ -123,12 +134,12 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     const onDocumentVisibility = () => { if (document.hidden) this.dispatch({ type: 'pause', reason: 'Your visit was paused while you were away.' }); };
     document.addEventListener('visibilitychange', onDocumentVisibility);
     this.cleanupFuncs.push(() => document.removeEventListener('visibilitychange', onDocumentVisibility));
-    const onMotion = () => this.render();
+    const onMotion = () => { this.applyComfort(); this.render(); };
     this.reducedMotion.addEventListener('change', onMotion);
     this.cleanupFuncs.push(() => this.reducedMotion.removeEventListener('change', onMotion));
     this.cleanupFuncs.push(this.world.visibilityState.subscribe(visibility => this.onVisibility(visibility)));
     this.cleanupFuncs.push(this.world.onXRFrame(frame => this.onHandsFrame(frame)));
-    this.cleanupFuncs.push(() => { this.alive = false; this.atmosphere.dispose(); this.mixer?.stopAllAction(); if (this.hero) this.hero.dispose(); });
+    this.cleanupFuncs.push(() => { this.alive = false; this.atmosphere.dispose(); this.legacy.dispose(); this.mixer?.stopAllAction(); if (this.hero) this.hero.dispose(); });
     if (navigator.xr) void navigator.xr.isSessionSupported('immersive-vr').then(supported => { this.canEnter = supported; this.render(); }).catch(() => this.browserStatus('VR availability could not be checked. Try opening this page in your headset browser.'));
     // Explicit development-only accommodation for software headset emulation.
     // Production headset rendering keeps the native framebuffer scale.
@@ -215,8 +226,9 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     const s = this.state;
     const view = s.paused ? 'View_Pause' : s.modal ? 'View_Modal'
       : s.screen === 'settings' && s.settingsCategory ? 'View_SettingsDetail'
-      : ({ home: 'View_Home', play: 'View_Play', showcase: 'View_Showcase', chapters: 'View_Chapters', settings: 'View_Settings', arenas: 'View_Arenas', library: 'View_Library', onboarding: 'View_Onboarding', visit: 'View_Visit', pause: 'View_Pause' } as const)[s.screen];
+      : ({ home: 'View_Home', play: 'View_Play', showcase: 'View_Showcase', chapters: 'View_Chapters', settings: 'View_Settings', arenas: 'View_Arenas', library: 'View_Library', onboarding: 'View_Onboarding', visit: 'View_Visit', pause: 'View_Pause', legacy: 'View_Home' } as const)[s.screen];
     this.showView(view);
+    this.syncLegacy();
     const detail = s.screen === 'chapters' || s.screen === 'settings' && !!s.settingsCategory;
     const navigationVisible = !s.modal && !s.paused && !detail && s.screen !== 'onboarding' && s.screen !== 'visit';
     for (const tab of NAV_TABS) {
@@ -286,6 +298,26 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.writeState();
   }
 
+  /** My Legacy replaces the menu panel, sorcerer and atmosphere while it is the current place, including when paused. */
+  private syncLegacy(): void {
+    const s = this.state;
+    const active = s.screen === 'legacy' || (s.paused && s.previousScreen === 'legacy');
+    if (active && this.menuShown) this.legacy.placeAnchor(this.anchor.position, this.anchor.rotation.y, false);
+    // Keep one poke target set registered at all times so fingertip touch never toggles off between them.
+    if (!active) this.setMenuShown(true);
+    this.legacy.sync({ active, paused: s.paused, pauseReason: s.pauseReason, entered: s.entered, handTracked: this.leftTracked || this.rightTracked });
+    if (active) this.setMenuShown(false);
+  }
+  private setMenuShown(shown: boolean): void {
+    if (this.menuShown === shown) return;
+    this.menuShown = shown;
+    this.menuObject.visible = shown;
+    this.heroAnchor.visible = shown;
+    this.atmosphereObject.visible = shown;
+    // The hidden menu also leaves the interactable lists, so it can hold no hover or press while My Legacy is shown.
+    if (shown) this.stateEntity.addComponent(RayInteractable).addComponent(PokeInteractable);
+    else this.stateEntity.removeComponent(RayInteractable).removeComponent(PokeInteractable);
+  }
   private trackingLabel(): string {
     return this.leftTracked && this.rightTracked ? 'Both hands ready' : this.leftTracked ? 'Left hand ready' : this.rightTracked ? 'Right hand ready' : 'Bring a hand into view';
   }
@@ -330,6 +362,10 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.atmosphereObject.position.set(0, this.preferences.posture === 'seated' ? -.12 : -.2, -this.preferences.panelDistance - .85);
     this.atmosphereObject.scale.setScalar(.22 * this.preferences.textScale / 100);
     this.world.renderer.xr.setFoveation({ low: 1, medium: .5, high: 0 }[this.preferences.quality]);
+    this.legacy.setComfort({
+      quality: this.preferences.quality, posture: this.preferences.posture, textScale: this.preferences.textScale,
+      reducedMotion: !this.preferences.motion || this.reducedMotion.matches,
+    });
     if (!this.world.renderer.xr.isPresenting) this.world.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5) * { low: .75, medium: 1, high: 1.15 }[this.preferences.quality]);
   }
   private recenter(): void {
@@ -340,6 +376,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     if (this.headDirection.x * this.headDirection.x + this.headDirection.z * this.headDirection.z < .001) return;
     this.anchor.position.copy(this.headPosition);
     this.anchor.rotation.set(0, Math.atan2(-this.headDirection.x, -this.headDirection.z), 0);
+    this.legacy.placeAnchor(this.anchor.position, this.anchor.rotation.y, true);
     this.applyComfort();
   }
   private writeState(): void {
@@ -440,7 +477,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
       this.display('Btn_RetryCreature', true);
     } finally { this.loadingHero = false; }
   }
-  update(delta: number): void {
+  update(delta: number, time: number): void {
     if (this.outgoingView) {
       this.transitionTime += delta;
       const frame = Math.min(60, Math.round(this.transitionTime / .24 * 60));
@@ -448,6 +485,8 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
       this.element(this.outgoingView).setProperties(this.fadeOut[frame]);
       if (frame === 60 || !this.preferences.motion || this.reducedMotion.matches) this.finishTransition();
     }
+    // One render loop at a time: the hidden sorcerer and atmosphere stop while My Legacy is shown.
+    if (!this.menuShown) { this.legacy.update(delta, time); return; }
     const motion = this.preferences.motion && !this.reducedMotion.matches;
     const paused = this.state.paused || document.hidden;
     if (motion && !paused) this.atmosphereTime += delta;

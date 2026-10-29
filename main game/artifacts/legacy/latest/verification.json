@@ -1,0 +1,485 @@
+{
+  "passed": true,
+  "environment": "stand-in",
+  "scope": "Playwright against the dev or preview server with model=none except the sorcerer round-trip check. Landmarks are driven through their DOM labels, so the suite runs against the stand-in or the environment workflow's renderer. Controller input is a mocked standard Gamepad API, not physical controller validation. WebGL is software-rendered (SwiftShader); no frame timing is implied.",
+  "checks": [
+    "Home → My Legacy by keyboard opens the 3D Legacy screen (no modal, environment: stand-in); Legacy code loads lazily on entry; top nav hidden; sorcerer and particles suspend; Escape returns Home with the My Legacy tile focused and the hidden screen goes dormant (content-visibility: hidden)",
+    "Home → My Legacy by mouse; the always-visible Return to Home control goes back with Home focus restored",
+    "Keyboard-only founding: arrows choose Solforiz, the typed name is validated (invalid name blocked), heraldry cycles live in 2D and 3D, the motto is typed, Raise asks for confirmation, the banner-raising beat plays and the found-banner event is saved",
+    "The banner, nation, heraldry and motto persist across a reload; re-entry opens the Bannerhold overview with four landmark labels",
+    "Overview: arrow keys select landmarks spatially, Q/E cycle them and Home/End jump to the first/last, with the selection and focus visible",
+    "Each landmark opens a contextual inspection panel (Banner Hall, Muster Grounds, War Record, Herald's Station); E cycles panels and Back returns focus to the landmark label",
+    "Banner Hall shows identity, heraldry and blazon, nation, Minor Banner rank, recognition, hall development and the honest empty honours state",
+    "Muster Grounds: claimed files carry their houses and refuse nomination, an available member and open file are nominated and saved, the representative card shows banner allegiance, file and status, Inspect frames the representative, and the 16-piece formation shows one piece of your banner",
+    "War Record: no fabricated conflicts (honest empty state), unresolved matters and the ledger come from saved data (founding and nomination entries)",
+    "Herald's Station: summons and the formal challenge with its national wager stated prominently; read marks are saved; accepting confirms the wager again and shows the truthful Awaiting the board state",
+    "Back unwinds dialog → inspection → overview → Home and restores Home focus",
+    "Abandon banner and found anew asks for confirmation (defaulting to Keep), then dissolves the saved banner and restarts the founding ceremony",
+    "?legacyPreview=captive shows the persistent preview label and title, at most two aftermath messages with the War Record note (Back sets them aside), the captive state, and makes no storage writes even after interaction",
+    "Acknowledge (Enter/A) dismisses the aftermath in the session state; preview acknowledgements are still never written",
+    "An unknown preview id explains itself, lists the real development previews and touches no storage",
+    "?legacy=fresh starts a labelled guest founding that ignores and never writes the stored banner",
+    "A corrupt save opens the recovery panel and stays untouched (guest or abandoned founding); Raise a new banner asks for confirmation and only the new banner's first save replaces it",
+    "A save from a newer schema is refused with its own explanation and left untouched",
+    "Controller-only founding: D-pad and A choose a nation, Suggest supplies the name, D-pad cycles the arms and A raises the banner",
+    "Controller in the Bannerhold: D-pad selects landmarks, RB cycles, A opens and RB switches panels, B closes, the right stick nudges the orbit (labels re-project), B returns Home with focus",
+    "Founding steps, overview and all four panels fit the stage at 844×390, 1280×720 and 1920×1080 with no horizontal overflow or clipped text",
+    "With the supplied sorcerer GLB, a Home ↔ Legacy round trip keeps the same decoded model and canvas (paused and hidden while covered) and never downloads it again",
+    "Remapped keyboard bindings (WASD, F, Backspace, Z/C, PageUp/PageDown) open My Legacy, move and cycle landmarks, open and cycle panels and unwind Back to Home",
+    "Adaptive quality (stand-in frame times, simulated 1.5 ms per draw call): sustained slow frames step High down to Medium once after the grace period, the player is told once, and the saved preset is untouched",
+    "No JavaScript or console errors"
+  ],
+  "layouts": [
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "founding:nation",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "founding:name",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "founding:heraldry",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "founding:confirm",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "aftermath",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "overview",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "panel:banner-hall",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "panel:muster-grounds",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "panel:war-record",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "panel:heralds-station",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "founding:nation",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "founding:name",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "founding:heraldry",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "founding:confirm",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "aftermath",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "overview",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "panel:banner-hall",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "panel:muster-grounds",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "panel:war-record",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "panel:heralds-station",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "founding:nation",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "founding:name",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "founding:heraldry",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "founding:confirm",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "aftermath",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "overview",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "panel:banner-hall",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "panel:muster-grounds",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "panel:war-record",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "panel:heralds-station",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  ],
+  "errors": []
+}

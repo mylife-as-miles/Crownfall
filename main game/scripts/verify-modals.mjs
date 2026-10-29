@@ -14,10 +14,12 @@ const record = (text) => { checks.push(text); console.log(`PASS ${text}`); };
 const defaults = { left: "ArrowLeft", right: "ArrowRight", up: "ArrowUp", down: "ArrowDown", select: "Enter", back: "Escape", previousTab: "KeyQ", nextTab: "KeyE", first: "Home", last: "End" };
 const states = [
   ...["Classic", "Local Duel", "Online Duel"].map((title) => ({ kind: "mode", title })),
-  ...["My Legacy", "Chronicles", "Herald Board"].map((title) => ({ kind: "home", title })),
+  // My Legacy opens its destination screen, not a dialog (checked below and in verify-legacy.mjs).
+  ...["Chronicles", "Herald Board"].map((title) => ({ kind: "home", title })),
   ...[1, 2].map((number) => ({ kind: "chapter", number, title: chapterName(number) })),
   { kind: "quit", title: "Return to Home?" },
 ];
+const quitState = states.find((state) => state.kind === "quit");
 let failure;
 try {
   const createPage = async ({ motion = false, reducedMotion = "reduce", bindings = {} } = {}) => {
@@ -103,7 +105,18 @@ try {
       assert.equal(await page.evaluate(() => localStorage.getItem("crownfall.main-game.save")), "existing-modal-verification-record"); assert.equal(page.url(), target.href);
     }
   }
-  record("All9 content states fit the same transparent borderless centered amber-heading shell across3 viewports; only Confirm/Cancel appear, descriptions resolve and both actions preserve honest destination/focus semantics");
+  record(`All ${states.length} content states fit the same transparent borderless centered amber-heading shell across 3 viewports; only Confirm/Cancel appear, descriptions resolve and both actions preserve honest destination/focus semantics`);
+
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await toPlay(page);
+  await page.getByRole("tab", { name: "Home", exact: true }).click(); await waitForMenuIdle(page);
+  await page.getByRole("button", { name: "My Legacy", exact: true }).click();
+  await page.locator('.legacy-layer[data-legacy-layer="active"]').waitFor();
+  assert.equal(await dialog(page).evaluate((node) => node.open), false, "My Legacy opens its screen, not the shared modal");
+  await page.keyboard.press("Escape");
+  await page.locator(".home-grid").waitFor();
+  await page.waitForFunction(() => document.activeElement?.getAttribute("aria-label") === "My Legacy");
+  record("My Legacy no longer opens a limited-state modal: it opens its destination screen and Back restores the Home tile");
 
   await page.setViewportSize({ width: 1280, height: 720 }); await open(page);
   for (const [key, name] of [["ArrowRight", "Cancel"], ["ArrowDown", "Cancel"], ["ArrowLeft", "Confirm"], ["ArrowUp", "Confirm"], ["End", "Cancel"], ["Home", "Confirm"], ["Tab", "Cancel"], ["Tab", "Confirm"], ["Shift+Tab", "Cancel"]]) { await page.keyboard.press(key); await focus(page, name); }
@@ -118,9 +131,9 @@ try {
   for (const [code, name] of [[15, "Cancel"], [13, "Cancel"], [14, "Confirm"], [12, "Confirm"]]) await pad(page, [code], () => focus(page, name));
   await pad(page, [], () => focus(page, "Cancel"), [1, 0]); await pad(page, [], () => focus(page, "Confirm"), [-1, 0]);
   await pad(page, [1], () => restored(page, "Classic"));
-  await open(page, states[8]); await pad(page, [15], () => focus(page, "Cancel"));
+  await open(page, quitState); await pad(page, [15], () => focus(page, "Cancel"));
   await pad(page, [0], async () => { await waitForDialogClosed(page); assert.equal(await page.getByRole("tab", { name: "Play", exact: true }).getAttribute("aria-selected"), "true"); });
-  await open(page, states[8]); await pad(page, [0], async () => { await waitForDialogClosed(page); await waitForMenuIdle(page); assert.equal(await page.getByRole("tab", { name: "Home", exact: true }).getAttribute("aria-selected"), "true"); });
+  await open(page, quitState); await pad(page, [0], async () => { await waitForDialogClosed(page); await waitForMenuIdle(page); assert.equal(await page.getByRole("tab", { name: "Home", exact: true }).getAttribute("aria-selected"), "true"); });
   record("Controller D-pad/axes move between actions; B cancels and A activates current focus, including distinct Quit Cancel/Confirm destinations");
 
   await toPlay(page); await page.getByRole("button", { name: "Classic", exact: true }).focus();
@@ -159,9 +172,9 @@ try {
   await custom.keyboard.press("d"); await focus(custom, "Cancel"); await custom.keyboard.press("f"); await restored(custom, "Classic");
   await open(custom); await custom.keyboard.press("f"); await restored(custom, "Classic");
   await open(custom); await custom.keyboard.press("x"); await restored(custom, "Classic");
-  await open(custom, states[8]); await custom.keyboard.press("d"); await custom.keyboard.press("Space"); await waitForDialogClosed(custom);
+  await open(custom, quitState); await custom.keyboard.press("d"); await custom.keyboard.press("Space"); await waitForDialogClosed(custom);
   assert.equal(await custom.getByRole("tab", { name: "Play", exact: true }).getAttribute("aria-selected"), "true");
-  await open(custom, states[8]); await custom.keyboard.press("Enter"); await waitForDialogClosed(custom); await waitForMenuIdle(custom);
+  await open(custom, quitState); await custom.keyboard.press("Enter"); await waitForDialogClosed(custom); await waitForMenuIdle(custom);
   assert.equal(await custom.getByRole("tab", { name: "Home", exact: true }).getAttribute("aria-selected"), "true"); await custom.close();
   record("Configured direction/Select/Back bindings drive the modal, while native Enter and Space still activate focused buttons");
 
@@ -184,7 +197,7 @@ try {
 } catch (error) { failure = error; }
 finally {
   await mkdir("artifacts/modals", { recursive: true });
-  await writeFile("artifacts/modals/verification.json", JSON.stringify({ passed: !failure, scope: "DOM-only model=none shared Confirm/Cancel modal across9 states and3 viewports; native focus/keyboard, configured bindings, simulated standard controller, backdrop behavior and reduced motion. Actual GLB captures are separate.", checks, layouts, errors, ...(failure ? { failure: String(failure.stack || failure) } : {}) }, null, 2) + "\n");
+  await writeFile("artifacts/modals/verification.json", JSON.stringify({ passed: !failure, scope: `DOM-only model=none shared Confirm/Cancel modal across ${states.length} states and 3 viewports (My Legacy opens its own screen, verified by verify-legacy.mjs); native focus/keyboard, configured bindings, simulated standard controller, backdrop behavior and reduced motion. Actual GLB captures are separate.`, checks, layouts, errors, ...(failure ? { failure: String(failure.stack || failure) } : {}) }, null, 2) + "\n");
   await browser.close();
 }
 if (failure) throw failure;

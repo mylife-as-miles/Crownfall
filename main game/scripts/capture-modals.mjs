@@ -22,8 +22,9 @@ try {
   await page.getByRole('button', { name: 'Classic', exact: true }).click();
   await shot('classic', { width: 1280, height: 720 }); await close();
   await page.getByRole('tab', { name: 'Home', exact: true }).click(); await waitForMenuIdle(page);
-  await page.getByRole('button', { name: 'My Legacy', exact: true }).click();
-  await shot('legacy', { width: 1280, height: 720 }); await close();
+  // My Legacy opens its own screen (captured by capture-legacy.mjs); Chronicles keeps a Home panel dialog.
+  await page.getByRole('button', { name: 'Chronicles', exact: true }).click();
+  await shot('chronicles', { width: 1280, height: 720 }); await close();
   await page.getByRole('tab', { name: 'Play', exact: true }).click(); await waitForMenuIdle(page);
   await page.getByRole('button', { name: 'Chapters', exact: true }).click(); await waitForMenuIdle(page);
   await page.getByRole('button', { name: 'Chapter 02', exact: true }).click();

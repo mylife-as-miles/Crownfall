@@ -182,13 +182,23 @@ try {
   await selected("Chronicles");
   for (const name of ["Chronicles", "My Legacy", "Herald Board"]) {
     await page.getByRole("button", { name, exact: true }).click();
-    await limitedDialog(name);
-    await page.getByRole("button", { name: "Cancel", exact: true }).click();
-    await closed();
+    if (name === "My Legacy") {
+      // My Legacy is a destination screen, not an information dialog (verify-legacy.mjs covers the screen itself).
+      await page.locator('.legacy-layer[data-legacy-layer="active"]').waitFor();
+      // Software WebGL creates the Legacy renderer slowly here; this check is about routing, so wait for it.
+      await page.locator('.legacy-screen[data-environment-ready="true"]').waitFor({ timeout: 60000 });
+      assert.equal(await page.locator("dialog.menu-dialog").evaluate((dialog) => dialog.open), false, "My Legacy opens no modal dialog");
+      await page.locator("[data-legacy-back]").click();
+      await page.locator(".home-grid").waitFor();
+    } else {
+      await limitedDialog(name);
+      await page.getByRole("button", { name: "Cancel", exact: true }).click();
+      await closed();
+    }
     await selected(name);
   }
   await page.mouse.move(0, 0);
-  record("Pointer hover→Enter and clicks open each truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news");
+  record("Pointer hover→Enter and clicks open the truthful Chronicles and Herald Board dialogs; My Legacy opens its dedicated screen without a dialog; close/back restore the selected Home tile without fabricated launch, stats or news");
 
   await page.getByRole("tab", { name: "Showcase", exact: true }).click();
   await showcaseScreen();

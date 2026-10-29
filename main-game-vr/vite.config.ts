@@ -10,6 +10,7 @@ import { defineConfig } from 'vite';
 import { existsSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { generateQuestUI } from '../scripts/generate-quest-ui';
+import { generateQuestLegacyUI } from '../scripts/generate-quest-legacy-ui';
 import { menuPublicSource, syncMenuAssets } from '../scripts/sync-menu-assets.mjs';
 
 // Optional hook owned by the Legacy environment workflow (docs/legacy/WORKFLOWS.md):
@@ -23,12 +24,15 @@ export default defineConfig({
       syncMenuAssets();
       if (existsSync(environmentAssets)) await (await import(pathToFileURL(environmentAssets).href)).syncLegacyEnvironmentAssets();
       await generateQuestUI(fileURLToPath(new URL('./public/ui/menu.uikitml', import.meta.url)));
+      await generateQuestLegacyUI();
     },
     configureServer(server) {
       const shared = fileURLToPath(new URL('../shared/menu/', import.meta.url));
-      server.watcher.add([shared, menuPublicSource]);
+      // Shared Legacy content and copy regenerate the My Legacy panels.
+      const legacyContent = fileURLToPath(new URL('../shared/legacy/content/', import.meta.url));
+      server.watcher.add([shared, legacyContent, menuPublicSource]);
       const update = (file: string) => {
-        if (file.startsWith(shared) || file.startsWith(menuPublicSource)) void server.restart();
+        if (file.startsWith(shared) || file.startsWith(legacyContent) || file.startsWith(menuPublicSource)) void server.restart();
       };
       server.watcher.on('change', update);
       server.httpServer?.once('close', () => server.watcher.off('change', update));

@@ -1,0 +1,754 @@
+{
+  "measuredAt": "2026-10-29T17:14:57.506Z",
+  "target": "http://127.0.0.1:5182",
+  "build": "production build (vite preview)",
+  "scenarioPreset": "Low (75 % render scale), 1280×720, reduced motion",
+  "scenarios": {
+    "entry": {
+      "wallMs": 13585,
+      "longTasks": {
+        "count": 3,
+        "maxMs": 1877,
+        "totalMs": 3468
+      },
+      "frames": 33,
+      "selfTimeMs": {
+        "legacyCode": 78.4,
+        "otherBundles": 3480.58,
+        "webglCalls": 0,
+        "gamepadPolling": 0.46,
+        "otherNative": 32.16,
+        "garbageCollector": 5.25,
+        "testHarness": 9.11,
+        "browserNative": 311.4,
+        "idle": 6287.3
+      },
+      "javascriptPerFrameMs": 109,
+      "legacyCodePerFrameMs": 2.38,
+      "scriptPerFrameMs": {
+        "mean": 108.03,
+        "p50": 0.24,
+        "p95": 1418.01,
+        "p99": 1878.88,
+        "max": 1878.88
+      },
+      "frameIntervalMs": {
+        "p50": 16.8,
+        "p95": 2398.64,
+        "p99": 2620.36
+      },
+      "traceTasksOver50Ms": {
+        "count": 3,
+        "maxMs": 1877.65
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 1877.65,
+          "scriptEventMs": 1877.64,
+          "top": [
+            "TimerBase::run 1877.64",
+            "TimerFire 1877.64",
+            "AsyncTask Run 1877.63",
+            "MinorGC 3.73",
+            "V8.GC_SCAVENGER 3.55",
+            "V8.GC_SCAVENGER_SCAVENGE 3.49"
+          ]
+        },
+        {
+          "ms": 1418.54,
+          "scriptEventMs": 1417.93,
+          "top": [
+            "ProxyMain::BeginMainFrame 1418.54",
+            "WebFrameWidgetImpl::BeginMainFrame 1418.1",
+            "Blink.Animate.UpdateTime 1417.98",
+            "PageAnimator::serviceScriptedAnimations 1417.97",
+            "FrameRequestCallbackCollection::ExecuteFrameCallbacks 1417.94",
+            "FireAnimationFrame 1417.93"
+          ]
+        },
+        {
+          "ms": 173.9,
+          "scriptEventMs": 165.49,
+          "top": [
+            "ProxyMain::BeginMainFrame 173.89",
+            "WebFrameWidgetImpl::BeginMainFrame 173.15",
+            "Blink.Animate.UpdateTime 165.32",
+            "PageAnimator::serviceScriptedAnimations 165.32",
+            "FrameRequestCallbackCollection::ExecuteFrameCallbacks 165.29",
+            "FireAnimationFrame 165.28"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 2,
+        "p50": 1.1,
+        "p95": 1.1,
+        "max": 1.1
+      },
+      "afterEntry": {
+        "jsHeapMB": 6.12,
+        "stats": {
+          "source": "stand-in",
+          "drawCalls": 32,
+          "triangles": 3266,
+          "geometries": 31,
+          "textures": 1,
+          "programs": 6
+        }
+      }
+    },
+    "idle10s": {
+      "wallMs": 11707,
+      "longTasks": {
+        "count": 1,
+        "maxMs": 84,
+        "totalMs": 84
+      },
+      "frames": 531,
+      "selfTimeMs": {
+        "legacyCode": 0,
+        "otherBundles": 1.07,
+        "webglCalls": 0,
+        "gamepadPolling": 0,
+        "otherNative": 2.63,
+        "garbageCollector": 0,
+        "testHarness": 0,
+        "browserNative": 3249.72,
+        "idle": 7686.65
+      },
+      "javascriptPerFrameMs": 0.01,
+      "legacyCodePerFrameMs": 0,
+      "scriptPerFrameMs": {
+        "mean": 0.33,
+        "p50": 0.14,
+        "p95": 0.3,
+        "p99": 1.13,
+        "max": 83.73
+      },
+      "frameIntervalMs": {
+        "p50": 16.67,
+        "p95": 36.66,
+        "p99": 86.17
+      },
+      "traceTasksOver50Ms": {
+        "count": 1,
+        "maxMs": 84.01
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 84.01,
+          "scriptEventMs": 83.69,
+          "top": [
+            "ProxyMain::BeginMainFrame 84",
+            "WebFrameWidgetImpl::BeginMainFrame 83.73",
+            "Blink.Animate.UpdateTime 83.73",
+            "PageAnimator::serviceScriptedAnimations 83.72",
+            "FrameRequestCallbackCollection::ExecuteFrameCallbacks 83.69",
+            "FireAnimationFrame 83.69"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 2,
+        "p50": 1.1,
+        "p95": 1.1,
+        "max": 1.1
+      }
+    },
+    "orbitDrag5s": {
+      "wallMs": 6597,
+      "longTasks": {
+        "count": 2,
+        "maxMs": 98,
+        "totalMs": 186
+      },
+      "frames": 121,
+      "selfTimeMs": {
+        "legacyCode": 1.48,
+        "otherBundles": 17.36,
+        "webglCalls": 18.83,
+        "gamepadPolling": 9.85,
+        "otherNative": 56.96,
+        "garbageCollector": 46.68,
+        "testHarness": 3.8,
+        "browserNative": 1106.67,
+        "idle": 3971.81
+      },
+      "javascriptPerFrameMs": 1.25,
+      "legacyCodePerFrameMs": 0.01,
+      "scriptPerFrameMs": {
+        "mean": 2.36,
+        "p50": 0.41,
+        "p95": 4.72,
+        "p99": 37.38,
+        "max": 67.2
+      },
+      "frameIntervalMs": {
+        "p50": 16.68,
+        "p95": 151.23,
+        "p99": 219.72
+      },
+      "traceTasksOver50Ms": {
+        "count": 2,
+        "maxMs": 98.14
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 98.14,
+          "scriptEventMs": 67.2,
+          "top": [
+            "ProxyMain::BeginMainFrame 98.14",
+            "EventHandler::handleMouseMoveEvent 65.27",
+            "EventDispatch 65.09",
+            "ProxyMain::BeginMainFrame::commit 28.96",
+            "FunctionCall 2.55",
+            "WebFrameWidgetImpl::BeginMainFrame 2.18"
+          ]
+        },
+        {
+          "ms": 88.57,
+          "scriptEventMs": 2.11,
+          "top": [
+            "ProxyMain::BeginMainFrame 88.56",
+            "ProxyMain::BeginMainFrame::commit 84.84",
+            "FunctionCall 1.51",
+            "WebFrameWidgetImpl::BeginMainFrame 1.28",
+            "Blink.Animate.UpdateTime 1.27",
+            "PageAnimator::serviceScriptedAnimations 1.26"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 39,
+        "p50": 1.1,
+        "p95": 3.2,
+        "max": 6
+      }
+    },
+    "landmarkCycling": {
+      "wallMs": 3692,
+      "longTasks": {
+        "count": 1,
+        "maxMs": 92,
+        "totalMs": 92
+      },
+      "frames": 43,
+      "selfTimeMs": {
+        "legacyCode": 24.36,
+        "otherBundles": 18.17,
+        "webglCalls": 0.82,
+        "gamepadPolling": 0,
+        "otherNative": 97.67,
+        "garbageCollector": 3.78,
+        "testHarness": 2.41,
+        "browserNative": 1229.66,
+        "idle": 2190.98
+      },
+      "javascriptPerFrameMs": 3.37,
+      "legacyCodePerFrameMs": 0.57,
+      "scriptPerFrameMs": {
+        "mean": 4.28,
+        "p50": 0.2,
+        "p95": 16.16,
+        "p99": 92.14,
+        "max": 92.14
+      },
+      "frameIntervalMs": {
+        "p50": 17.26,
+        "p95": 395.3,
+        "p99": 608.51
+      },
+      "traceTasksOver50Ms": {
+        "count": 1,
+        "maxMs": 92.78
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 92.78,
+          "scriptEventMs": 92.01,
+          "top": [
+            "EventDispatch 92.09",
+            "FunctionCall 91.9",
+            "Document::UpdateStyleAndLayout 53.19",
+            "Blink.ForcedStyleAndLayout.UpdateTime 53.14",
+            "LocalFrameView::UpdateStyleAndLayout 53.12",
+            "Blink.Layout.UpdateTime 43.24"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 45,
+        "p50": 1,
+        "p95": 2.2,
+        "max": 6
+      }
+    },
+    "nationSwitch": {
+      "wallMs": 4294,
+      "longTasks": {
+        "count": 2,
+        "maxMs": 151,
+        "totalMs": 201
+      },
+      "frames": 74,
+      "selfTimeMs": {
+        "legacyCode": 35.33,
+        "otherBundles": 16.33,
+        "webglCalls": 3.61,
+        "gamepadPolling": 0.6,
+        "otherNative": 34.85,
+        "garbageCollector": 0,
+        "testHarness": 1.49,
+        "browserNative": 1004.16,
+        "idle": 2605.66
+      },
+      "javascriptPerFrameMs": 1.23,
+      "legacyCodePerFrameMs": 0.48,
+      "scriptPerFrameMs": {
+        "mean": 1.6,
+        "p50": 0.13,
+        "p95": 10.04,
+        "p99": 41.31,
+        "max": 41.31
+      },
+      "frameIntervalMs": {
+        "p50": 16.65,
+        "p95": 227.62,
+        "p99": 509.39
+      },
+      "traceTasksOver50Ms": {
+        "count": 3,
+        "maxMs": 503.49
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 503.49,
+          "scriptEventMs": 0,
+          "top": [
+            "Receive mojo message 503.46",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.32",
+            "V8.GC_TIME_TO_SAFEPOINT 0.03"
+          ]
+        },
+        {
+          "ms": 151.65,
+          "scriptEventMs": 0.2,
+          "top": [
+            "ProxyMain::BeginMainFrame 151.59",
+            "WebFrameWidgetImpl::UpdateLifecycle 149.21",
+            "LocalFrameView::RunPaintLifecyclePhase 149.14",
+            "Blink.Paint.UpdateTime 149.08",
+            "WebFrameWidgetImpl::BeginMainFrame 0.49",
+            "Blink.Animate.UpdateTime 0.39"
+          ]
+        },
+        {
+          "ms": 50.56,
+          "scriptEventMs": 41.19,
+          "top": [
+            "EventDispatch 41.2",
+            "FunctionCall 40.75",
+            "EventHandler::handleMousePressEvent 21.77",
+            "EventHandler::handleMouseReleaseEvent 20.6",
+            "LayoutView::HitTest 16.21",
+            "HitTest 7.45"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 7,
+        "p50": 2.7,
+        "p95": 4.1,
+        "max": 4.1
+      }
+    },
+    "foundingTyping": {
+      "wallMs": 5403,
+      "longTasks": {
+        "count": 1,
+        "maxMs": 122,
+        "totalMs": 122
+      },
+      "frames": 33,
+      "selfTimeMs": {
+        "legacyCode": 8.02,
+        "otherBundles": 31.36,
+        "webglCalls": 5.06,
+        "gamepadPolling": 0,
+        "otherNative": 106.18,
+        "garbageCollector": 0.72,
+        "testHarness": 0,
+        "browserNative": 802.68,
+        "idle": 3688.98
+      },
+      "javascriptPerFrameMs": 4.59,
+      "legacyCodePerFrameMs": 0.24,
+      "scriptPerFrameMs": {
+        "mean": 8.45,
+        "p50": 4.13,
+        "p95": 16.22,
+        "p99": 130.13,
+        "max": 130.13
+      },
+      "frameIntervalMs": {
+        "p50": 128.54,
+        "p95": 395.87,
+        "p99": 495.43
+      },
+      "traceTasksOver50Ms": {
+        "count": 1,
+        "maxMs": 121.97
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 121.97,
+          "scriptEventMs": 121.48,
+          "top": [
+            "EventDispatch 347.06",
+            "Editor::HandleKeyboardEvent 121.17",
+            "TypingCommand::InsertText 120.92",
+            "FunctionCall 104.67",
+            "Document::UpdateStyleAndLayout 0.78",
+            "Blink.ForcedStyleAndLayout.UpdateTime 0.66"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 27,
+        "p50": 1.4,
+        "p95": 4.1,
+        "max": 7.2
+      }
+    }
+  },
+  "presets": {
+    "low": {
+      "jsHeapMB": 6.15,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 36,
+        "triangles": 4306,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      },
+      "effectivePreset": "low"
+    },
+    "medium": {
+      "jsHeapMB": 6.3,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 36,
+        "triangles": 4306,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      },
+      "effectivePreset": "medium"
+    },
+    "high": {
+      "jsHeapMB": 6.44,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 36,
+        "triangles": 4306,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      },
+      "effectivePreset": "high"
+    }
+  },
+  "roundTrips": {
+    "trips": 5,
+    "before": {
+      "jsHeapMB": 6.78,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 32,
+        "triangles": 3266,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      }
+    },
+    "after": {
+      "jsHeapMB": 7.05,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 32,
+        "triangles": 3266,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      }
+    }
+  },
+  "throttled4x": {
+    "entry": {
+      "wallMs": 14095,
+      "longTasks": {
+        "count": 7,
+        "maxMs": 4384,
+        "totalMs": 6755
+      },
+      "frames": 14,
+      "selfTimeMs": {
+        "legacyCode": 330.41,
+        "otherBundles": 6344.52,
+        "webglCalls": 0,
+        "gamepadPolling": 42.21,
+        "otherNative": 233.3,
+        "garbageCollector": 21.99,
+        "testHarness": 87.83,
+        "browserNative": 1486.51,
+        "idle": 4497.79
+      },
+      "javascriptPerFrameMs": 498.03,
+      "legacyCodePerFrameMs": 23.6,
+      "scriptPerFrameMs": {
+        "mean": 485.24,
+        "p50": 31.4,
+        "p95": 4387.93,
+        "p99": 4387.93,
+        "max": 4387.93
+      },
+      "frameIntervalMs": {
+        "p50": 353.15,
+        "p95": 4392.84,
+        "p99": 4392.84
+      },
+      "traceTasksOver50Ms": {
+        "count": 12,
+        "maxMs": 4384.4
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 4384.4,
+          "scriptEventMs": 4384.4,
+          "top": [
+            "TimerBase::run 4384.4",
+            "TimerFire 4384.4",
+            "AsyncTask Run 4384.38",
+            "MinorGC 20.46",
+            "V8.GC_SCAVENGER 19.7",
+            "V8.GC_SCAVENGER_SCAVENGE 19.62"
+          ]
+        },
+        {
+          "ms": 1912.33,
+          "scriptEventMs": 1908.64,
+          "top": [
+            "ProxyMain::BeginMainFrame 1912.33",
+            "WebFrameWidgetImpl::BeginMainFrame 1908.91",
+            "Blink.Animate.UpdateTime 1908.68",
+            "PageAnimator::serviceScriptedAnimations 1908.67",
+            "FrameRequestCallbackCollection::ExecuteFrameCallbacks 1908.65",
+            "FireAnimationFrame 1908.64"
+          ]
+        },
+        {
+          "ms": 520.18,
+          "scriptEventMs": 0,
+          "top": [
+            "Receive mojo message 520.13",
+            "V8.GC_TIME_TO_SAFEPOINT 0.93",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.59",
+            "V8.GC_SCAVENGER_COMPLETE_SWEEP_ARRAY_BUFFERS 0.01"
+          ]
+        },
+        {
+          "ms": 197.72,
+          "scriptEventMs": 0,
+          "top": [
+            "Receive mojo message 197.64"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 3,
+        "p50": 6.4,
+        "p95": 10.3,
+        "max": 10.3
+      }
+    },
+    "orbitDrag5s": {
+      "wallMs": 6542,
+      "longTasks": {
+        "count": 4,
+        "maxMs": 126,
+        "totalMs": 355
+      },
+      "frames": 168,
+      "selfTimeMs": {
+        "legacyCode": 65.65,
+        "otherBundles": 184.68,
+        "webglCalls": 47.59,
+        "gamepadPolling": 279.81,
+        "otherNative": 251.64,
+        "garbageCollector": 11.26,
+        "testHarness": 25.21,
+        "browserNative": 1871.71,
+        "idle": 2866.41
+      },
+      "javascriptPerFrameMs": 5,
+      "legacyCodePerFrameMs": 0.39,
+      "scriptPerFrameMs": {
+        "mean": 6.11,
+        "p50": 1.11,
+        "p95": 25.71,
+        "p99": 104.68,
+        "max": 117.21
+      },
+      "frameIntervalMs": {
+        "p50": 17.24,
+        "p95": 95.7,
+        "p99": 239.25
+      },
+      "traceTasksOver50Ms": {
+        "count": 7,
+        "maxMs": 152.57
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 152.57,
+          "scriptEventMs": 0,
+          "top": [
+            "Receive mojo message 152.54",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 1.03",
+            "V8.GC_TIME_TO_SAFEPOINT 0.06"
+          ]
+        },
+        {
+          "ms": 126.11,
+          "scriptEventMs": 117.17,
+          "top": [
+            "ProxyMain::BeginMainFrame 126.1",
+            "WebFrameWidgetImpl::BeginMainFrame 117.22",
+            "Blink.Animate.UpdateTime 117.21",
+            "PageAnimator::serviceScriptedAnimations 117.2",
+            "FrameRequestCallbackCollection::ExecuteFrameCallbacks 117.17",
+            "FireAnimationFrame 117.17"
+          ]
+        },
+        {
+          "ms": 106.47,
+          "scriptEventMs": 104.68,
+          "top": [
+            "ProxyMain::BeginMainFrame 106.46",
+            "WebFrameWidgetImpl::BeginMainFrame 104.73",
+            "Blink.Animate.UpdateTime 104.72",
+            "PageAnimator::serviceScriptedAnimations 104.72",
+            "FrameRequestCallbackCollection::ExecuteFrameCallbacks 104.68",
+            "FireAnimationFrame 104.68"
+          ]
+        },
+        {
+          "ms": 76.86,
+          "scriptEventMs": 0,
+          "top": [
+            "Receive mojo message 76.84",
+            "Receive mojo reply 0.08"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 33,
+        "p50": 5.9,
+        "p95": 17.5,
+        "max": 17.9
+      }
+    },
+    "landmarkCycling": {
+      "wallMs": 4117,
+      "longTasks": {
+        "count": 3,
+        "maxMs": 112,
+        "totalMs": 229
+      },
+      "frames": 71,
+      "selfTimeMs": {
+        "legacyCode": 27.02,
+        "otherBundles": 68,
+        "webglCalls": 2.76,
+        "gamepadPolling": 2.41,
+        "otherNative": 240.7,
+        "garbageCollector": 1.67,
+        "testHarness": 1.11,
+        "browserNative": 681.99,
+        "idle": 2261.66
+      },
+      "javascriptPerFrameMs": 4.82,
+      "legacyCodePerFrameMs": 0.38,
+      "scriptPerFrameMs": {
+        "mean": 5.96,
+        "p50": 0.26,
+        "p95": 36.35,
+        "p99": 115.02,
+        "max": 115.02
+      },
+      "frameIntervalMs": {
+        "p50": 16.73,
+        "p95": 276.65,
+        "p99": 512.91
+      },
+      "traceTasksOver50Ms": {
+        "count": 5,
+        "maxMs": 132.19
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 132.19,
+          "scriptEventMs": 0,
+          "top": [
+            "Receive mojo message 132.14"
+          ]
+        },
+        {
+          "ms": 111.87,
+          "scriptEventMs": 111.17,
+          "top": [
+            "EventHandler::handleMouseReleaseEvent 111.74",
+            "EventDispatch 111.3",
+            "FunctionCall 111.09",
+            "Document::UpdateStyleAndLayout 104.17",
+            "Blink.ForcedStyleAndLayout.UpdateTime 104.15",
+            "LocalFrameView::UpdateStyleAndLayout 104.14"
+          ]
+        },
+        {
+          "ms": 90.12,
+          "scriptEventMs": 0,
+          "top": [
+            "Receive mojo message 90.1",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.33",
+            "V8.GC_TIME_TO_SAFEPOINT 0.02"
+          ]
+        },
+        {
+          "ms": 62.48,
+          "scriptEventMs": 62.39,
+          "top": [
+            "EventDispatch 62.52",
+            "FunctionCall 62.35",
+            "Document::UpdateStyleAndLayout 26.48",
+            "Blink.ForcedStyleAndLayout.UpdateTime 26.45",
+            "LocalFrameView::UpdateStyleAndLayout 26.43",
+            "Blink.Layout.UpdateTime 26.3"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 39,
+        "p50": 5,
+        "p95": 17.5,
+        "max": 17.9
+      }
+    }
+  },
+  "caveat": "Software-rendered WebGL (SwiftShader) on a shared 4-CPU container with no GPU, under heavy load from other jobs. Frame intervals and absolute times understate real hardware and never prove smoothness. JavaScript self time by owner (CPU profile), render submission per frame, renderer counts and heap are the closest hardware-independent signals. Long tasks come from the page's longtask observer; selfTimeMs.browserNative is native browser work outside JavaScript (with software WebGL this includes waiting on the rasterizing GPU process), so a long task without matching JavaScript self time is not script work. scriptPerFrameMs buckets top-level script events between frame starts and overstates the tail when frames are sparse. Real-GPU and device smoothness must be confirmed by a person on that hardware.",
+  "notes": {
+    "programs": "Linked shader programs come from the stand-in's extra programs field; the contract's stats do not include programs yet.",
+    "renderSubmissionMs": "The environment's own frame times: the duration of each renderer.render call over the most recent rendered frames (up to 120)."
+  }
+}

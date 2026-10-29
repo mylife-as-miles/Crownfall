@@ -108,11 +108,14 @@ export default function Atmosphere({
   reducedMotion: requestedReducedMotion = false,
   renderScale = 100,
   frameLimit = 0,
+  suspended = false,
 }: {
   quality?: EffectsQuality;
   reducedMotion?: boolean;
   renderScale?: number;
   frameLimit?: FrameLimit;
+  /** Hidden and paused behind a full-stage destination (My Legacy), keeping the renderer. */
+  suspended?: boolean;
 }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [systemReducedMotion, setSystemReducedMotion] = useState(
@@ -122,6 +125,14 @@ export default function Atmosphere({
   const renderScaleRef = useRef(normalizeRenderScale(renderScale));
   const frameLimitRef = useRef(normalizeFrameLimit(frameLimit));
   const resizeControlRef = useRef<(() => void) | null>(null);
+  const suspendedRef = useRef(suspended);
+  const suspendControlRef = useRef<((value: boolean) => void) | null>(null);
+
+  useEffect(() => {
+    if (suspendedRef.current === suspended) return;
+    suspendedRef.current = suspended;
+    suspendControlRef.current?.(suspended);
+  }, [suspended]);
 
   useEffect(() => {
     const scale = normalizeRenderScale(renderScale);
@@ -212,7 +223,7 @@ export default function Atmosphere({
       renderer.setSize(width, height);
       material.uniforms.uScale.value =
         Math.max(0.55, height / 714) * renderer.getPixelRatio();
-      renderer.render(scene, camera);
+      if (!suspendedRef.current) renderer.render(scene, camera);
     };
     resizeControlRef.current = resize;
     const observer = new ResizeObserver(resize);
@@ -221,18 +232,36 @@ export default function Atmosphere({
     let frame = 0;
     const start = performance.now();
     let lastRendered = start;
+    // Time spent suspended is excluded, so the motes resume exactly where they paused.
+    let suspendedAt = suspendedRef.current ? start : 0;
+    let suspendedTotal = 0;
     const render = (now: number) => {
       frame = requestAnimationFrame(render);
       if (document.hidden) return;
       const timestamp = nextRenderTimestamp(now, lastRendered, frameLimitRef.current);
       if (timestamp === null) return;
       lastRendered = timestamp;
-      material.uniforms.uTime.value = (now - start) / 1000;
+      material.uniforms.uTime.value = (now - start - suspendedTotal) / 1000;
       renderer.render(scene, camera);
     };
-    if (!reducedMotion) frame = requestAnimationFrame(render);
+    const setSuspended = (value: boolean) => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      const now = performance.now();
+      if (value) {
+        suspendedAt = now;
+        return;
+      }
+      if (suspendedAt) suspendedTotal += now - suspendedAt;
+      suspendedAt = 0;
+      resize();
+      if (!reducedMotion) frame = requestAnimationFrame(render);
+    };
+    suspendControlRef.current = setSuspended;
+    if (!reducedMotion && !suspendedRef.current) frame = requestAnimationFrame(render);
     return () => {
       cancelAnimationFrame(frame);
+      if (suspendControlRef.current === setSuspended) suspendControlRef.current = null;
       if (resizeControlRef.current === resize) resizeControlRef.current = null;
       observer.disconnect();
       geometry.dispose();
@@ -244,7 +273,7 @@ export default function Atmosphere({
 
   return (
     <div
-      className={`atmosphere atmosphere--${quality}${reducedMotion ? " atmosphere--still" : ""}`}
+      className={`atmosphere atmosphere--${quality}${reducedMotion ? " atmosphere--still" : ""}${suspended ? " is-suspended" : ""}`}
       aria-hidden="true"
     >
       <div className="spirit-aura" />

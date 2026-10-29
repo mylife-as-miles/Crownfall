@@ -23,6 +23,8 @@ interface CreatureStageProps {
   frameLimit?: FrameLimit;
   onLoadState?: (state: CreatureLoadState) => void;
   loadAttempt?: number;
+  /** Hidden and paused behind a full-stage destination (My Legacy); the decoded model stays loaded. */
+  suspended?: boolean;
 }
 
 function disposeModel(root: THREE.Object3D | null | undefined) {
@@ -52,6 +54,7 @@ export default function CreatureStage({
   frameLimit = 0,
   onLoadState,
   loadAttempt = 0,
+  suspended = false,
 }: CreatureStageProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
@@ -61,6 +64,7 @@ export default function CreatureStage({
   );
   const motionDisabled = reducedMotion || systemReducedMotion;
   const motionDisabledRef = useRef(motionDisabled);
+  const suspendedRef = useRef(suspended);
   const motionControlRef = useRef<((paused: boolean) => void) | null>(null);
   const renderScaleRef = useRef(normalizeRenderScale(renderScale));
   const frameLimitRef = useRef(normalizeFrameLimit(frameLimit));
@@ -84,8 +88,16 @@ export default function CreatureStage({
 
   useEffect(() => {
     motionDisabledRef.current = motionDisabled;
-    motionControlRef.current?.(motionDisabled);
+    motionControlRef.current?.(motionDisabled || suspendedRef.current);
   }, [motionDisabled]);
+
+  useEffect(() => {
+    if (suspendedRef.current === suspended) return;
+    suspendedRef.current = suspended;
+    // Resuming redraws at the current size first, so the pose shown is never stale.
+    if (!suspended) resizeControlRef.current?.();
+    motionControlRef.current?.(motionDisabledRef.current || suspended);
+  }, [suspended]);
 
   useEffect(() => {
     const scale = normalizeRenderScale(renderScale);
@@ -235,7 +247,7 @@ export default function CreatureStage({
           camera.position.z *
           camera.aspect *
           0.47;
-        renderer.render(scene, camera);
+        if (!suspendedRef.current) renderer.render(scene, camera);
       };
       resizeControlRef.current = resize;
       disposers.push(() => {
@@ -248,7 +260,7 @@ export default function CreatureStage({
       resize();
       const render = (now: number) => {
         frame = 0;
-        if (!active || !model || motionDisabledRef.current || document.hidden)
+        if (!active || !model || motionDisabledRef.current || suspendedRef.current || document.hidden)
           return;
         frame = requestAnimationFrame(render);
         const timestamp = nextRenderTimestamp(
@@ -278,7 +290,7 @@ export default function CreatureStage({
           frame = requestAnimationFrame(render);
       };
       const onVisibilityChange = () =>
-        setMotionPaused(motionDisabledRef.current);
+        setMotionPaused(motionDisabledRef.current || suspendedRef.current);
       document.addEventListener("visibilitychange", onVisibilityChange);
       disposers.push(() =>
         document.removeEventListener("visibilitychange", onVisibilityChange),
@@ -359,7 +371,7 @@ export default function CreatureStage({
             }
             setLoaded(true);
             emit({ status: "ready", phase: "render", ...downloadBytes });
-            setMotionPaused(motionDisabledRef.current);
+            setMotionPaused(motionDisabledRef.current || suspendedRef.current);
           } catch {
             fallback(
               "The character could not be prepared or rendered. Using the illustrated character.",
@@ -402,9 +414,10 @@ export default function CreatureStage({
 
   return (
     <div
-      className="creature-stage"
+      className={`creature-stage${suspended ? " is-suspended" : ""}`}
       aria-hidden="true"
       data-active-animation={activeAnimation}
+      data-suspended={suspended || undefined}
     >
       <img
         className={`creature-illustration${loaded ? " creature-illustration--hidden" : ""}`}

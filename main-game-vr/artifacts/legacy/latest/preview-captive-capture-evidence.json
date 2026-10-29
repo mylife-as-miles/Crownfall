@@ -1,0 +1,473 @@
+{
+  "session": "preview:captive",
+  "startedAt": "2026-10-29T17:19:22.624Z",
+  "profile": {
+    "runtime": "IWER Meta Quest 3 browser emulation, managed headless Chromium",
+    "view": "mono, 60-degree field of view",
+    "input": "hand ray + pinch; both controllers disconnected",
+    "developmentFramebufferScale": 0.25,
+    "physicalHeadset": false,
+    "note": "Development captures from software-rendered (SwiftShader) emulation, including emulator hand and ray overlays; not a headset recording.",
+    "menuPinchView": "Menu pinches (reaching My Legacy) look almost straight down (88 degrees) so the hero and the menu atmosphere leave the view and software frames stay inside the 800 ms click window."
+  },
+  "captures": [
+    {
+      "name": "browser-entry",
+      "file": "artifacts/legacy/latest/preview-captive-browser-entry.png",
+      "note": "Browser entry panel before entering VR, showing the session label",
+      "metadata": {
+        "generation": 4,
+        "id": "tab-mvtst5rx-04f0fw",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/?legacyPreview=captive",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "overview",
+      "file": "artifacts/legacy/latest/preview-captive-overview.png",
+      "headPitchDegrees": 10,
+      "note": "Development preview: fixture data, at most two aftermath messages",
+      "legacyView": "overview",
+      "session": "preview",
+      "label": "Development preview · fixture data · not saved",
+      "metadata": {
+        "generation": 4,
+        "id": "tab-mvtst5rx-04f0fw",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/?legacyPreview=captive",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "landmark-muster-grounds",
+      "file": "artifacts/legacy/latest/preview-captive-landmark-muster-grounds.png",
+      "headPitchDegrees": 10,
+      "note": "Development preview of the Muster Grounds",
+      "legacyView": "muster-grounds",
+      "session": "preview",
+      "label": "Development preview · fixture data · not saved",
+      "metadata": {
+        "generation": 4,
+        "id": "tab-mvtst5rx-04f0fw",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/?legacyPreview=captive",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "pause",
+      "file": "artifacts/legacy/latest/preview-captive-pause.png",
+      "headPitchDegrees": 0,
+      "note": "Hand-tracking loss pauses My Legacy; Resume waits for a tracked hand",
+      "legacyView": "pause",
+      "session": "preview",
+      "label": "Development preview · fixture data · not saved",
+      "metadata": {
+        "generation": 4,
+        "id": "tab-mvtst5rx-04f0fw",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/?legacyPreview=captive",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "id": "Btn_Resume",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "loading"
+    },
+    {
+      "id": "Home_legacy",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview"
+    },
+    {
+      "id": "Legacy_Landmark_muster-grounds",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds"
+    },
+    {
+      "id": "Legacy_MusterBack",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview"
+    },
+    {
+      "id": "Legacy_Resume",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview"
+    }
+  ],
+  "emulationSetup": {
+    "applied": true,
+    "viewport": {
+      "width": 800,
+      "height": 560
+    },
+    "preferences": {
+      "quality": "low",
+      "motion": false
+    },
+    "visitCompleted": true
+  },
+  "navigation": {
+    "url": "https://localhost:8081/?legacyPreview=captive"
+  },
+  "final": {
+    "state": {
+      "screen": "legacy",
+      "legacyActive": true,
+      "legacyView": "overview",
+      "legacySession": "preview",
+      "legacyPersistent": false,
+      "legacySave": "none",
+      "legacyLabel": "Development preview · fixture data · not saved",
+      "legacyPreview": "captive",
+      "legacyFounded": true,
+      "legacyBanner": "House Vesperine",
+      "legacyNation": "korvenia",
+      "legacyDraftName": "",
+      "legacyHeraldry": "Sable, an eclipse or",
+      "legacyRepresentative": "Ambroise",
+      "legacyFile": "b",
+      "legacyMemberChoice": "member-1",
+      "legacyFileChoice": "b",
+      "legacyLandmark": "",
+      "legacyHover": "",
+      "legacySelectSource": "list",
+      "legacyNotice": "",
+      "legacyChallenge": "unread",
+      "legacyChronicle": 5,
+      "legacyUnread": 3,
+      "legacyAftermath": 2,
+      "legacyEnvironment": "standin",
+      "legacyEnvironmentReady": true,
+      "legacyRecenters": 1,
+      "legacyMessage": ""
+    },
+    "session": {
+      "deviceName": "Meta Quest 3",
+      "isRuntimeInstalled": true,
+      "sessionActive": true,
+      "sessionOffered": false,
+      "sessionMode": "immersive-vr",
+      "enabledFeatures": [
+        "hand-tracking",
+        "local-floor",
+        "bounded-floor",
+        "viewer",
+        "local"
+      ],
+      "visibilityState": "visible",
+      "runtimeKind": "emulated",
+      "browser": {
+        "lifecycle": {
+          "state": "running",
+          "policy": "eager",
+          "sessionId": "63246962-f0ee-4401-8ad9-157720fa23ff",
+          "browserEpoch": 7,
+          "revision": 110,
+          "stateEnteredAt": "2026-10-29T17:09:21.837Z",
+          "lastObservedAt": "2026-10-29T17:20:03.726Z",
+          "failures": 0,
+          "cleanupConfirmed": true,
+          "attemptLimit": 3,
+          "historyTruncated": false,
+          "retryEligible": false,
+          "nextAction": "Use runtime_list_targets to inspect endpoint readiness.",
+          "history": [
+            {
+              "revision": 1,
+              "state": "launching",
+              "at": "2026-10-29T16:42:59.585Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 2,
+              "state": "launching",
+              "at": "2026-10-29T16:42:59.585Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 3,
+              "state": "running",
+              "at": "2026-10-29T16:43:01.450Z",
+              "reason": "running"
+            },
+            {
+              "revision": 12,
+              "state": "closing",
+              "at": "2026-10-29T16:45:36.708Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 15,
+              "state": "failed",
+              "at": "2026-10-29T16:45:37.977Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 16,
+              "state": "launching",
+              "at": "2026-10-29T16:45:38.380Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 17,
+              "state": "launching",
+              "at": "2026-10-29T16:45:38.381Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 18,
+              "state": "running",
+              "at": "2026-10-29T16:45:40.169Z",
+              "reason": "running"
+            },
+            {
+              "revision": 23,
+              "state": "running",
+              "at": "2026-10-29T16:46:10.216Z",
+              "reason": "stable"
+            },
+            {
+              "revision": 28,
+              "state": "closing",
+              "at": "2026-10-29T16:47:40.500Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 31,
+              "state": "failed",
+              "at": "2026-10-29T16:47:42.461Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 32,
+              "state": "launching",
+              "at": "2026-10-29T16:47:42.970Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 33,
+              "state": "launching",
+              "at": "2026-10-29T16:47:42.971Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 34,
+              "state": "running",
+              "at": "2026-10-29T16:47:44.692Z",
+              "reason": "running"
+            },
+            {
+              "revision": 39,
+              "state": "running",
+              "at": "2026-10-29T16:48:14.694Z",
+              "reason": "stable"
+            },
+            {
+              "revision": 44,
+              "state": "closing",
+              "at": "2026-10-29T16:49:51.592Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 47,
+              "state": "failed",
+              "at": "2026-10-29T16:49:53.048Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 48,
+              "state": "launching",
+              "at": "2026-10-29T16:49:53.287Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 49,
+              "state": "launching",
+              "at": "2026-10-29T16:49:53.288Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 50,
+              "state": "running",
+              "at": "2026-10-29T16:49:54.307Z",
+              "reason": "running"
+            },
+            {
+              "revision": 56,
+              "state": "running",
+              "at": "2026-10-29T16:50:24.309Z",
+              "reason": "stable"
+            },
+            {
+              "revision": 63,
+              "state": "closing",
+              "at": "2026-10-29T17:03:48.321Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 66,
+              "state": "failed",
+              "at": "2026-10-29T17:03:49.696Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 67,
+              "state": "launching",
+              "at": "2026-10-29T17:03:49.988Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 68,
+              "state": "launching",
+              "at": "2026-10-29T17:03:49.989Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 69,
+              "state": "running",
+              "at": "2026-10-29T17:03:51.476Z",
+              "reason": "running"
+            },
+            {
+              "revision": 75,
+              "state": "running",
+              "at": "2026-10-29T17:04:21.478Z",
+              "reason": "stable"
+            },
+            {
+              "revision": 76,
+              "state": "closing",
+              "at": "2026-10-29T17:06:14.602Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 79,
+              "state": "failed",
+              "at": "2026-10-29T17:06:15.780Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 80,
+              "state": "launching",
+              "at": "2026-10-29T17:06:16.460Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 81,
+              "state": "launching",
+              "at": "2026-10-29T17:06:16.461Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 82,
+              "state": "running",
+              "at": "2026-10-29T17:06:17.670Z",
+              "reason": "running"
+            },
+            {
+              "revision": 87,
+              "state": "running",
+              "at": "2026-10-29T17:06:47.671Z",
+              "reason": "stable"
+            },
+            {
+              "revision": 89,
+              "state": "closing",
+              "at": "2026-10-29T17:09:17.891Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 92,
+              "state": "failed",
+              "at": "2026-10-29T17:09:19.590Z",
+              "reason": "Managed browser closed unexpectedly."
+            },
+            {
+              "revision": 93,
+              "state": "launching",
+              "at": "2026-10-29T17:09:19.981Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 94,
+              "state": "launching",
+              "at": "2026-10-29T17:09:19.982Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 95,
+              "state": "running",
+              "at": "2026-10-29T17:09:21.837Z",
+              "reason": "running"
+            },
+            {
+              "revision": 101,
+              "state": "running",
+              "at": "2026-10-29T17:09:51.850Z",
+              "reason": "stable"
+            }
+          ],
+          "attemptId": "8bcdd04c-69ca-48a4-91b8-44d02dda1ef4"
+        },
+        "status": "connected",
+        "clients": [
+          {
+            "commandReady": true,
+            "sessionId": "63246962-f0ee-4401-8ad9-157720fa23ff",
+            "browserEpoch": 7,
+            "deviceClass": "managed",
+            "pageId": "tab-mvtst5rx-04f0fw",
+            "role": "app",
+            "tabGeneration": 4
+          },
+          {
+            "commandReady": true,
+            "sessionId": "63246962-f0ee-4401-8ad9-157720fa23ff",
+            "browserEpoch": 7,
+            "deviceClass": "managed",
+            "pageId": "tab-mvtst03h-g2ffsr",
+            "role": "editor",
+            "sceneSessionId": "scene-oj5gqr2eejq",
+            "tabGeneration": 1
+          }
+        ],
+        "lastBridgeConnectedAt": "2026-10-29T17:20:01.433Z",
+        "lastCommandReadyAt": "2026-10-29T17:20:03.726Z",
+        "connected": true,
+        "commandReady": true,
+        "connectedClientCount": 2,
+        "lastTransitionAt": "2026-10-29T17:09:21.837Z",
+        "audioMuted": false
+      },
+      "browserConnected": true,
+      "browserCommandReady": true
+    }
+  },
+  "finishedAt": "2026-10-29T17:22:56.913Z"
+}

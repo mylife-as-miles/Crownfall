@@ -12,3 +12,5 @@ body[data-xr='presenting'] .quest-entry { display: none; }
 body[data-boot='loading'] .quest-entry { top: 0; right: 0; bottom: 0; left: 0; width: auto; display: flex; flex-direction: column; justify-content: center; align-items: center; background: #100d08; border: 0; }
 body[data-boot='loading'] .quest-entry h1 { font-size: clamp(28px, 6vw, 64px); font-weight: 400; letter-spacing: .15em; }
 body[data-boot='loading'] .quest-entry button { display: none; }
+.quest-entry .quest-legacy-session { font-size: 14px; line-height: 1.4; color: #f2c672; border-left: 3px solid #bf791a; padding: 6px 10px; margin: 0 0 14px; background: #2a1f0e; }
+body[data-boot='loading'] .quest-entry .quest-legacy-session { display: none; }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Atmosphere from "./Atmosphere";
 import CreatureStage from "./CreatureStage";
 import HomeGrid from "./HomeGrid";
@@ -15,10 +15,17 @@ import { INITIAL_PREFERENCES, normalizeBindings, type BindingAction, type Direct
 import { HOME_CONTENT, getNextHomeTile, type HomeDirection } from "./home-content";
 import { PLAY_CARDS as cards, NAV_TABS as tabs, getModalContent } from "../../shared/menu/content";
 import type { MenuPanel, MenuScreen } from "../../shared/menu/types";
+import { LegacyLayer } from "./legacy/LegacyLayer";
+import type { LegacyScreenHandle } from "./legacy/legacy-handle";
+import type { DesktopEnvironmentQuality } from "./legacy/environment-contract";
 import "./styles.css";
 
 type Panel = MenuPanel;
-type Screen = MenuScreen;
+/** My Legacy is a desktop destination screen opened from Home, outside the four top tabs. */
+type Screen = MenuScreen | "legacy";
+
+// The Legacy layer fades in over this long before the menu's ambient renderers pause beneath it.
+const LEGACY_COVER_MS = 340;
 
 const preferencesKey = "crownfall.main-game.preferences";
 const initialPreferences = INITIAL_PREFERENCES;
@@ -93,11 +100,20 @@ export default function App() {
   const gamepadInputAt = useRef(0);
   const gamepadConfirmHeld = useRef(false);
   const gamepadBackHeld = useRef(false);
+  const gamepadPolledAt = useRef(0);
+  const legacyRef = useRef<LegacyScreenHandle>(null);
+  const [legacyMounted, setLegacyMounted] = useState(false);
+  const [menuSuspended, setMenuSuspended] = useState(false);
+  const legacyQuality = useMemo((): DesktopEnvironmentQuality => ({
+    preset: preferences.quality,
+    renderScale: preferences.renderScale,
+    frameLimit: preferences.frameLimit,
+  }), [preferences.quality, preferences.renderScale, preferences.frameLimit]);
 
   const closePanel = useCallback(() => {
     restoreFocus.current = true;
     setPanel(null);
-    setActiveTab(screen === "home" ? 0 : screen === "settings" ? 3 : screen === "showcase" ? 2 : 1);
+    setActiveTab(screen === "home" || screen === "legacy" ? 0 : screen === "settings" ? 3 : screen === "showcase" ? 2 : 1);
   }, [screen]);
   const selectCard = useCallback((index: number) => {
     const next = ((index % cards.length) + cards.length) % cards.length;
@@ -140,7 +156,7 @@ export default function App() {
       setScreen(index === 0 ? "home" : "play");
       setSettingsCategory(null);
     } else if (index === 2) {
-      if (screen !== "showcase") showcaseOrigin.current = screen;
+      if (screen !== "showcase") showcaseOrigin.current = screen === "legacy" ? "home" : screen;
       setScreen("showcase");
       setShowcaseView("overview");
     } else if (index === 3) {
@@ -189,16 +205,33 @@ export default function App() {
     setChapterPreview(chapter);
     setPanel("chapter-preview");
   }, [boot.blocking]);
+  const openLegacy = useCallback(() => {
+    if (boot.blocking) return;
+    setLegacyMounted(true);
+    setTransitionDirection(1);
+    setPanel(null);
+    setScreen("legacy");
+    setActiveTab(0);
+  }, [boot.blocking]);
   const activateHome = useCallback((index: number) => {
     if (boot.blocking) return;
     const item = HOME_CONTENT[index];
     if (!item?.action || !item.title || !item.imageSrc) return;
     setHomeSelected(index);
-    setPanel(item.action);
-  }, [boot.blocking]);
+    if (item.destination === "legacy") openLegacy();
+    else setPanel(item.action);
+  }, [boot.blocking, openLegacy]);
   const back = useCallback(() => {
     if (boot.blocking) return;
     if (panel) { closePanel(); return; }
+    if (screen === "legacy") {
+      // Unwinds dialog → inspection → overview inside the Legacy screen before returning Home.
+      if (legacyRef.current?.cancel()) return;
+      setTransitionDirection(-1);
+      setScreen("home");
+      setActiveTab(0);
+      return;
+    }
     setTransitionDirection(-1);
     if (screen === "chapters") { openTab(1, -1); return; }
     if (screen === "showcase") {
@@ -220,6 +253,7 @@ export default function App() {
   const activateSelected = useCallback(() => {
     if (boot.blocking) return;
     if (screen === "home") activateHome(homeSelected);
+    else if (screen === "legacy") legacyRef.current?.activate();
     else if (screen === "showcase") showcaseRef.current?.activate();
     else if (screen === "chapters") chaptersRef.current?.activate();
     else if (screen === "settings") {
@@ -249,12 +283,25 @@ export default function App() {
     previousShowcaseView.current = showcaseView;
     restoreFocus.current = false;
     if (panel) return;
+    if (screen === "legacy") { legacyRef.current?.focus(); return; }
     if (screen === "showcase") { showcaseRef.current?.focus(); return; }
     if (screen === "chapters") { chaptersRef.current?.focus(); return; }
     if (screen === "settings" && settingsCategory) { detailRef.current?.focus(); return; }
     const target = screen === "home" ? homeRefs.current[homeSelected] : screen === "settings" ? settingsRefs.current[settingsSelected] : cardRefs.current[selected];
     target?.focus({ preventScroll: true });
   }, [screen, settingsCategory, showcaseView, panel, homeSelected, settingsSelected, selected, boot.blocking]);
+
+  // One render loop at a time: once the opaque Legacy layer has covered the stage,
+  // the sorcerer and particles pause and hide. Leaving restores them at once,
+  // before the layer fades out, so the menu looks exactly as it did.
+  useEffect(() => {
+    if (screen !== "legacy") {
+      setMenuSuspended(false);
+      return;
+    }
+    const timer = setTimeout(() => setMenuSuspended(true), reducedMotion ? 0 : LEGACY_COVER_MS);
+    return () => clearTimeout(timer);
+  }, [screen, reducedMotion]);
 
   useEffect(() => {
     try {
@@ -269,6 +316,9 @@ export default function App() {
       if (boot.blocking) { bootKeys.current.add(event.code); return; }
       if (bootKeys.current.has(event.code)) return;
       const action = (Object.entries(preferences.bindings) as [BindingAction, string][]).find(([, code]) => code === event.code)?.[0];
+      // Text fields (the Legacy banner name and motto) keep every key except Escape.
+      const typing = event.target instanceof HTMLTextAreaElement || (event.target instanceof HTMLInputElement && (event.target.type === "text" || event.target.type === "search"));
+      if (typing && event.code !== "Escape") return;
       if (event.repeat && (action === "select" || action === "back" || event.code === "Escape")) {
         event.preventDefault();
         return;
@@ -292,13 +342,15 @@ export default function App() {
       if (event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement || event.target instanceof HTMLTextAreaElement) return;
       if (action === "previousTab" || action === "nextTab") {
         event.preventDefault();
-        changeTab(action === "nextTab" ? 1 : -1);
+        if (screen === "legacy") legacyRef.current?.cycle(action === "nextTab" ? 1 : -1);
+        else changeTab(action === "nextTab" ? 1 : -1);
         return;
       }
       const direction = action && ["left", "right", "up", "down"].includes(action) ? action as Direction : undefined;
       if (direction) {
         event.preventDefault();
         if (screen === "home") moveHome(direction);
+        else if (screen === "legacy") legacyRef.current?.move(direction);
         else if (screen === "showcase") showcaseRef.current?.move(direction);
         else if (screen === "chapters") chaptersRef.current?.move(direction);
         else if (screen === "settings") {
@@ -311,6 +363,7 @@ export default function App() {
         event.preventDefault();
         const first = action === "first";
         if (screen === "home") selectHome(first ? 0 : HOME_CONTENT.length - 1);
+        else if (screen === "legacy") legacyRef.current?.edge?.(!first);
         else if (screen === "settings" && !settingsCategory) selectSettings(first ? 0 : 5);
         else if (screen === "settings") detailRef.current?.edge?.(!first);
         else if (screen === "showcase") showcaseRef.current?.edge?.(!first);
@@ -350,6 +403,17 @@ export default function App() {
       }
       if (!pad?.buttons[0]?.pressed) gamepadConfirmHeld.current = false;
       if (!pad?.buttons[1]?.pressed) gamepadBackHeld.current = false;
+      // Right stick orbits and the triggers zoom the Legacy camera every frame, scaled by frame time.
+      const polledAt = gamepadPolledAt.current;
+      gamepadPolledAt.current = time;
+      if (pad && !panel && screen === "legacy" && polledAt > 0) {
+        const delta = Math.min(0.1, Math.max(0, (time - polledAt) / 1000));
+        const yaw = Math.abs(pad.axes[2] ?? 0) > 0.18 ? pad.axes[2] : 0;
+        const pitch = Math.abs(pad.axes[3] ?? 0) > 0.18 ? -pad.axes[3] : 0;
+        const trigger = (pad.buttons[7]?.value ?? 0) - (pad.buttons[6]?.value ?? 0);
+        const zoom = Math.abs(trigger) > 0.08 ? trigger : 0;
+        if (yaw || pitch || zoom) legacyRef.current?.orbit(yaw * delta, pitch * delta, zoom * delta);
+      }
       if (pad && time > gamepadInputAt.current) {
         const left = pad.buttons[14]?.pressed || pad.axes[0] < -0.55;
         const right = pad.buttons[15]?.pressed || pad.axes[0] > 0.55;
@@ -371,6 +435,7 @@ export default function App() {
           }
         } else if (direction && (screen !== "play" || left || right)) {
           if (screen === "home") moveHome(direction);
+          else if (screen === "legacy") legacyRef.current?.move(direction);
           else if (screen === "showcase") showcaseRef.current?.move(direction);
           else if (screen === "chapters") chaptersRef.current?.move(direction);
           else if (screen === "settings") {
@@ -390,7 +455,8 @@ export default function App() {
           detailRef.current?.reset();
           gamepadInputAt.current = time + 350;
         } else if (pad.buttons[4]?.pressed || pad.buttons[5]?.pressed) {
-          changeTab(pad.buttons[5]?.pressed ? 1 : -1);
+          if (screen === "legacy") legacyRef.current?.cycle(pad.buttons[5]?.pressed ? 1 : -1);
+          else changeTab(pad.buttons[5]?.pressed ? 1 : -1);
           gamepadInputAt.current = time + 250;
         }
       }
@@ -401,12 +467,13 @@ export default function App() {
   }, [panel, screen, settingsCategory, selected, activateSelected, back, changeTab, moveHome, moveSettings, selectCard, moveDialogFocus, activateDialogSelection, closePanel, boot.blocking, boot.canContinue, boot.degraded, continueBoot, retryBoot]);
 
   const detailScreenOpen = screen === "chapters" || screen === "settings" && !!settingsCategory;
+  const legacyOpen = screen === "legacy";
   const displayedPanel = panel || lastPanel.current;
   const modalContent = getModalContent(displayedPanel, chapterPreview);
   const viewKey = screen === "settings" ? `settings:${settingsCategory || "grid"}` : screen === "showcase" ? `showcase:${showcaseView}` : screen;
 
   return (
-    <main data-boot-state={boot.visible ? boot.leaving ? "leaving" : boot.degraded ? "degraded" : "loading" : "ready"} className={`menu-shell ${preferences.motion ? "" : "reduce-motion"} ${screen === "settings" ? "is-settings" : ""} ${screen === "settings" && settingsCategory ? "settings-detail-open" : ""} ${detailScreenOpen ? "detail-screen-open" : ""} ${preferences.showHints ? "" : "hide-control-hints"}`}>
+    <main data-boot-state={boot.visible ? boot.leaving ? "leaving" : boot.degraded ? "degraded" : "loading" : "ready"} className={`menu-shell ${preferences.motion ? "" : "reduce-motion"} ${screen === "settings" ? "is-settings" : ""} ${screen === "settings" && settingsCategory ? "settings-detail-open" : ""} ${detailScreenOpen ? "detail-screen-open" : ""} ${legacyOpen ? "legacy-open" : ""} ${preferences.showHints ? "" : "hide-control-hints"}`}>
       <div className="menu-stage">
         <div className="scene-wash" aria-hidden="true" />
         <Atmosphere
@@ -414,10 +481,11 @@ export default function App() {
           reducedMotion={!preferences.motion}
           renderScale={preferences.renderScale}
           frameLimit={preferences.frameLimit}
+          suspended={menuSuspended}
         />
-        <CreatureStage reducedMotion={!preferences.motion} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} onLoadState={boot.onModelState} loadAttempt={boot.attempt} />
+        <CreatureStage reducedMotion={!preferences.motion} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} onLoadState={boot.onModelState} loadAttempt={boot.attempt} suspended={menuSuspended} />
         <div className="menu-content" inert={boot.blocking} aria-hidden={boot.blocking || undefined}>
-        <nav className={`main-nav${screen === "home" ? " main-nav--home" : ""}`} aria-label="Main menu" inert={detailScreenOpen}>
+        <nav className={`main-nav${screen === "home" ? " main-nav--home" : ""}`} aria-label="Main menu" inert={detailScreenOpen || legacyOpen}>
           <button
             className="shoulder-button"
             aria-label="Previous menu tab"
@@ -450,7 +518,7 @@ export default function App() {
         </nav>
 
         <MenuTransition viewKey={viewKey} reducedMotion={reducedMotion} direction={transitionDirection}>
-        {screen === "home" ? (
+        {screen === "legacy" ? null : screen === "home" ? (
           <HomeGrid
             selected={homeSelected}
             onSelect={selectHome}
@@ -510,7 +578,9 @@ export default function App() {
 
         </MenuTransition>
 
-        {screen !== "showcase" && screen !== "chapters" && !(screen === "settings" && settingsCategory) && <footer className="controller-hints" aria-label="Menu controls">
+        {legacyMounted && <LegacyLayer ref={legacyRef} active={legacyOpen} reducedMotion={reducedMotion} quality={legacyQuality} onBack={back} />}
+
+        {screen !== "showcase" && screen !== "chapters" && !legacyOpen && !(screen === "settings" && settingsCategory) && <footer className="controller-hints" aria-label="Menu controls">
           <button aria-label="Select" onClick={activateSelected}>
             <span className="controller-key" aria-hidden="true">
               A

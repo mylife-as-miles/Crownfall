@@ -1,0 +1,50 @@
+/* Gameplay stand-in environment. Plain on purpose; the caption discloses it. */
+.legacy-standin-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+/* Hidden until the first real frame, so the warm-up frame never shows. */
+.legacy-standin-canvas.is-ready { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .legacy-standin-canvas { transition: none; }
+}
+.legacy-standin-caption {
+  position: absolute;
+  z-index: 2;
+  right: max(12px, 1.6cqw);
+  bottom: max(10px, 2.2cqh);
+  margin: 0;
+  padding: 3px 8px;
+  border: 1px solid #c8bda244;
+  background: #100d08d9;
+  color: #c4bda9;
+  font-size: max(10px, .72cqw);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.legacy-standin-flat {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 48% at 50% 58%, #4a4236 0%, #2c271f 55%, #15120e 100%);
+}
+.legacy-standin-flat-marker {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 2px solid #8a8070;
+  border-radius: 50%;
+  background: #3a342b;
+  cursor: pointer;
+}
+.legacy-standin-flat-marker.is-highlighted { border-color: #d49130; }
+.legacy-standin-flat-marker.is-focused { border-color: #f39422; box-shadow: 0 0 0 4px #e08a2c44; }

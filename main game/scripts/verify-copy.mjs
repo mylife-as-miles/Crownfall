@@ -41,7 +41,7 @@ try {
       assert.equal(await page.locator("dialog button").count(), 2);
     }
     results.push({ viewport, state, ...result });
-    if (!domOnly && ((viewport.width === 1280 && ["legacy", "online"].includes(state)) || (viewport.width === 844 && state === "settings"))) {
+    if (!domOnly && ((viewport.width === 1280 && ["chronicles", "online"].includes(state)) || (viewport.width === 844 && state === "settings"))) {
       await page.locator("dialog").screenshot({ path: `artifacts/copy/${state}-${viewport.width}.png` });
     }
   };
@@ -54,7 +54,8 @@ try {
     await waitForBootReady(page);
     await page.evaluate(() => document.fonts.ready);
     await page.getByRole("tab", { name: "Home", exact: true }).click();
-    for (const [state, name] of [["legacy", "My Legacy"], ["chronicles", "Chronicles"], ["herald", "Herald Board"]]) {
+    // My Legacy opens its own screen rather than a dialog; its copy is checked by verify-legacy.mjs.
+    for (const [state, name] of [["chronicles", "Chronicles"], ["herald", "Herald Board"]]) {
       await page.getByRole("button", { name, exact: true }).click();
       await page.waitForFunction(() => document.querySelector("dialog").open);
       await inspect(state, viewport);
@@ -82,8 +83,8 @@ try {
     }
     await chaptersRegion(page).getByRole("button", { name: "Back", exact: true }).click();
   }
-  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, domOnly, scope: "Three mode previews, two chapter previews, three Home panels and Back at desktop and landscape. Settings, Showcase and Chapters have dedicated screen verification. DOM-only model=none probe; actual GLB menu renders verified separately.", results }, null, 2) + "\n");
-  console.log(`PASS ${results.length} modal copy states: no horizontal overflow or clipped text; truthful Home and mode-preview copy; desktop and landscape.`);
+  await writeFile("artifacts/copy-fit-verification.json", JSON.stringify({ passed: true, domOnly, scope: "Three mode previews, two chapter previews, the Chronicles and Herald Board panels and Back at desktop and landscape. My Legacy is a destination screen verified by verify-legacy.mjs. Settings, Showcase and Chapters have dedicated screen verification. DOM-only model=none probe; actual GLB menu renders verified separately.", results }, null, 2) + "\n");
+  console.log(`PASS ${results.length} modal copy states: no horizontal overflow or clipped text; truthful Home panel and mode-preview copy; desktop and landscape.`);
 } finally {
   await browser.close();
 }
