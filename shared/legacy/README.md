@@ -80,7 +80,7 @@ conflict against the nation holding a captive returns that member (`return` chro
 resolved, member available). Injured members whose recovery match is reached become available.
 
 **Stance thresholds.** disposition ≤ −60 hostile, ≤ −15 disdainful, < 15 wary, < 50 cordial, else
-loyal. The allied Great House starts at −25 (disdainful while depending on the patron's command);
+loyal. The allied Great House starts at −25 (disdainful of the banner it depends on);
 the rival at −10 (wary).
 
 **Hall tier** (visible development only): recognition ≥ 4 → 1, ≥ 10 → 2, ≥ 18 → 3. Rank stays

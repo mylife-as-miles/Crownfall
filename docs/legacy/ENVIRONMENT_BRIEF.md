@@ -7,24 +7,24 @@ design document, concept image or static substitute.
 
 ## World canon and confidentiality
 
-Crownfall's world canon is maintained privately by the creator. Before writing any name, nation or
-house copy, architecture style, figure equipment or lore, read the private canon brief at
-`/tmp/claude-0/-home-user-Three-Bedroom-/9b9949da-9afa-531c-ba01-6f0866c747db/scratchpad/private-canon/CANON_BRIEF.md` (outside version control; it may be absent in later sessions). Never copy its text, named
-institutions, languages or history into this repository. Committed work uses only public-safe setting
-detail — Crownfall as the world and the King's Gambit as its chess-derived conflict institution, Year
-33 of the Ash & Aether Interregnum, and the four nations Korvenia (occult Grand Duchy), Solforiz
-(sulfur-industrial Scorched Caliphate), Aethelgard (primordial Blood-Throne) and Kwind-09
-(industrial/cyberpunk Kwind Zaibatsu) — plus plain descriptive language. Every name, rule or lore
-element an agent invents is a working placeholder pending creator approval: keep it in replaceable
-content files and never present it as canon. Legacy prototype names from `web/` are not nation canon.
-Never explain or hint at what the unseen player ultimately is. Critics treat invented canon presented
-as established, lore leaks and contradictions of the canon brief as blockers.
+Crownfall's world canon is maintained privately by the creator and is never committed to this
+repository. Agents receive the private canon brief through their task instructions, outside version
+control; never copy its text, named institutions, languages or history into any committed file.
+Committed work uses only public-safe setting detail — Crownfall as the world and the King's Gambit as
+its chess-derived conflict institution, Year 33 of the Ash & Aether Interregnum, and the four nations
+Korvenia (occult Grand Duchy), Solforiz (sulfur-industrial Scorched Caliphate), Aethelgard (primordial
+Blood-Throne) and Kwind-09 (industrial/cyberpunk Kwind Zaibatsu) — plus plain descriptive language.
+Every name, rule or lore element an agent invents is a working placeholder pending creator approval:
+keep it in replaceable content files and never present it as canon. Legacy prototype names from
+`web/` are not nation canon. Player-facing copy says "the capital" rather than inventing capital
+names, and adds no lore about the player. Critics treat invented canon presented as established,
+lore leaks and contradictions of the canon brief as blockers.
 
 ## Vision
 
 Crownfall combines the political scale of *Game of Thrones*, the character attachment of
-*Baldur's Gate 3*, the ownership of settlement builders and the strategy of chess. The player is an
-unseen, godlike patron of a small Mortal banner in one of four nations (Korvenia, Solforiz,
+*Baldur's Gate 3*, the ownership of settlement builders and the strategy of chess. The player is
+unseen and guides a small banner in one of four nations (Korvenia, Solforiz,
 Aethelgard, Kwind-09), granted a minor holding inside an enormous established civilisation. Make the
 player feel small within the political world while their Bannerhold feels personally important. With
 no exposition they should understand: this land belongs to my banner; people live here; my nation is

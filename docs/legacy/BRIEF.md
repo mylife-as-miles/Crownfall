@@ -8,23 +8,23 @@ platforms are mandatory deliverables; neither is a preview of the other.
 
 ## World canon and confidentiality
 
-Crownfall's world canon is maintained privately by the creator. Before writing any name, nation or
-house copy, architecture style, figure equipment or lore, read the private canon brief at
-`/tmp/claude-0/-home-user-Three-Bedroom-/9b9949da-9afa-531c-ba01-6f0866c747db/scratchpad/private-canon/CANON_BRIEF.md` (outside version control; it may be absent in later sessions). Never copy its text, named
-institutions, languages or history into this repository. Committed work uses only public-safe setting
-detail — Crownfall as the world and the King's Gambit as its chess-derived conflict institution, Year
-33 of the Ash & Aether Interregnum, and the four nations Korvenia (occult Grand Duchy), Solforiz
-(sulfur-industrial Scorched Caliphate), Aethelgard (primordial Blood-Throne) and Kwind-09
-(industrial/cyberpunk Kwind Zaibatsu) — plus plain descriptive language. Every name, rule or lore
-element an agent invents is a working placeholder pending creator approval: keep it in replaceable
-content files and never present it as canon. Legacy prototype names from `web/` are not nation canon.
-Never explain or hint at what the unseen player ultimately is. Critics treat invented canon presented
-as established, lore leaks and contradictions of the canon brief as blockers.
+Crownfall's world canon is maintained privately by the creator and is never committed to this
+repository. Agents receive the private canon brief through their task instructions, outside version
+control; never copy its text, named institutions, languages or history into any committed file.
+Committed work uses only public-safe setting detail — Crownfall as the world and the King's Gambit as
+its chess-derived conflict institution, Year 33 of the Ash & Aether Interregnum, and the four nations
+Korvenia (occult Grand Duchy), Solforiz (sulfur-industrial Scorched Caliphate), Aethelgard (primordial
+Blood-Throne) and Kwind-09 (industrial/cyberpunk Kwind Zaibatsu) — plus plain descriptive language.
+Every name, rule or lore element an agent invents is a working placeholder pending creator approval:
+keep it in replaceable content files and never present it as canon. Legacy prototype names from
+`web/` are not nation canon. Player-facing copy says "the capital" rather than inventing capital
+names, and adds no lore about the player. Critics treat invented canon presented as established,
+lore leaks and contradictions of the canon brief as blockers.
 
 ## Vision
 
-- The player is an unseen, godlike **patron**, never an embodied Mortal. They patronise a Mortal
-  **banner** inside one of Crownfall's four nations.
+- The player is unseen and has no body, face or voice in the world. They guide a **banner** — a
+  small house inside one of Crownfall's four nations.
 - The house starts at the bottom of the political hierarchy: a modest holding, little recognition
   and a few people eligible for the **National Muster**.
 - The world must show that the house belongs to a civilisation far larger and older than itself:
@@ -92,8 +92,8 @@ benchmark, then extend the same architecture to the other nations.
 
 First entry starts a compact, elegant, ceremonial founding: nation, custom banner name, heraldic
 elements and colours. Desktop supports direct text entry. Quest uses a comfortable hand-operable
-interface with quick name suggestions and optional headset text entry where practical. No Mortal
-founder with a face, body or voice. The result persists. Not an over-long intro.
+interface with quick name suggestions and optional headset text entry where practical. No
+embodied founder with a face, body or voice. The result persists. Not an over-long intro.
 
 ## Environmental storytelling
 
@@ -122,7 +122,7 @@ constraints, quality presets with fallbacks, a clear route back to Home.
 
 ## Meta Quest
 
-The corresponding immersive scene on the repository's IWSDK architecture. Unseen godlike
+The corresponding immersive scene on the repository's IWSDK architecture. Unseen, elevated
 perspective; comfortable, primarily stationary inspection; look around and lean in; no artificial
 walking. A convincing miniature territory or spatially staged environment with real 3D presence.
 Hands-first (ray and direct touch), no controller requirement, either hand, seated/standing,

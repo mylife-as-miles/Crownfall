@@ -152,7 +152,7 @@ export interface LegacyMoveRecord {
 }
 
 export interface IdentityAllegiance {
-  /** "player" for the patron's banner, otherwise an external house id or "crown:<nation>". */
+  /** "player" for the player's banner, otherwise an external house id or "crown:<nation>". */
   houseId: string;
   side: ChessSide;
   label: string;
