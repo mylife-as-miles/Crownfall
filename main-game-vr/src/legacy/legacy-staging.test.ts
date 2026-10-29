@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { LEGACY_PANEL_METRES, LEGACY_STAGING_RULES, fallbackLegacyStaging, placeLegacyPanels, standInStaging } from './legacy-staging';
+import { LEGACY_PANEL_METRES, LEGACY_STAGING_RULES, fallbackLegacyStaging, placeLegacyPanels, standInStaging, trayTouchActive } from './legacy-staging';
 import type { LegacyStagingComfort } from './legacy-staging';
 
 const degrees = (y: number, horizontal: number): number => Math.atan2(y, horizontal) * 180 / Math.PI;
@@ -71,6 +71,37 @@ test('the touch tray is within arm\'s reach for either hand and never hides the 
       assert.ok(top <= front - LEGACY_STAGING_RULES.clearanceDegrees + 0.01, `${posture} ${textScale}%: the tray's top (${top.toFixed(1)}) stays below the holding's front edge (${front.toFixed(1)})`);
     }
   }
+});
+
+test('the tray takes fingertip presses only while the head looks down past the reading panel towards it', () => {
+  const comforts: LegacyStagingComfort[] = [];
+  for (const posture of ['seated', 'standing'] as const) {
+    for (const textScale of [100, 125, 150]) {
+      for (const panelHeight of [-0.1, 0, 0.1]) {
+        for (const panelDistance of [1.2, 1.5, 1.8]) comforts.push({ posture, textScale, panelHeight, panelDistance });
+      }
+    }
+  }
+  for (const comfort of comforts) {
+    const label = `${comfort.posture} ${comfort.textScale}% height ${comfort.panelHeight} distance ${comfort.panelDistance}`;
+    const placement = placeLegacyPanels(standInStaging(comfort.posture), comfort);
+    const gate = placement.trayTouchGateDegrees;
+    const [px, py, pz] = placement.panel.position;
+    const bottom = degrees(py - LEGACY_PANEL_METRES.panel[1] * comfort.textScale / 200, Math.hypot(px, pz));
+    const [tx, ty, tz] = placement.tray.position;
+    const trayCentre = degrees(ty, Math.hypot(tx, tz));
+    // Reading the panel's lowest row with the head level with it, or a little above, never enables the tray.
+    assert.equal(trayTouchActive(bottom, false, gate), false, `${label}: reading the panel bottom (${bottom.toFixed(1)}) leaves the tray off`);
+    assert.ok(gate <= bottom - 3, `${label}: the gate (${gate.toFixed(1)}) sits well below the panel's bottom edge`);
+    // Looking at the tray with the eyes turned 15 degrees further down than the head still enables it.
+    assert.equal(trayTouchActive(trayCentre + 15, false, gate), true, `${label}: a head pitched ${(trayCentre + 15).toFixed(1)} enables the tray at ${trayCentre.toFixed(1)}`);
+  }
+  // Hysteresis: once on, the tray stays on until the head rises past the gate by the hysteresis.
+  const gate = -25;
+  assert.equal(trayTouchActive(-24, false, gate), false);
+  assert.equal(trayTouchActive(-25, false, gate), true);
+  assert.equal(trayTouchActive(-22, true, gate), true);
+  assert.equal(trayTouchActive(-25 + LEGACY_STAGING_RULES.trayTouchGate.hysteresisDegrees, true, gate), false);
 });
 
 test('before an environment reports its staging, the fallback still clears the surface', () => {

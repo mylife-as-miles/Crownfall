@@ -143,7 +143,7 @@ async function main() {
       rendering: 'SwiftShader software WebGL on a shared 4-CPU host; frame timings are not representative of a Quest',
       menuPinchView: `While the menu is shown (Home, its pause view), the emulated head looks almost straight down (${HOME_HEAD_PITCH_DEGREES} degrees) during each pinch so the 80k-triangle hero and the menu atmosphere leave the view and software frames stay inside the 800 ms click window; the ray, hit test and pinch are unchanged. Legacy pinches use a level view; tray presses look down at the tray.`,
     },
-    checks: [], interactions: d.interactions, observations: {},
+    checks: [], interactions: d.interactions, cliRetries: d.cliRetries, observations: {},
     limitations: [
       'Browser emulation is not physical Quest validation: tracking quality, comfort, reach for a particular body, cold start and GPU frame pacing are unmeasured.',
       'The emulated fingertip press moves the hand to the control; reach is evidenced by the control\'s measured distance from the eye, not by a body model.',
@@ -390,7 +390,7 @@ async function main() {
     const place = { view: s.legacyView, banner: s.legacyBanner, representative: s.legacyRepresentative, file: s.legacyFile, challenge: s.legacyChallenge };
     const beforeExit = state();
     look(44);
-    cli('xr', 'set-transform', { device: 'hand-right', anchor: 'target-ray', position: { x: 0.25, y: 1.3, z: -0.35 } });
+    cli('xr', 'set-transform', { device: 'hand-right', anchor: 'target-ray', position: d.restingHand('hand-right', 'Legacy_DockExit') });
     cli('xr', 'look-at', { device: 'hand-right', target: target('Legacy_DockExit').position });
     assert.ok(inspect('Legacy_DockExit').state.hovered, 'The hand ray reaches Exit VR');
     let acknowledgement = 'Command completed normally';

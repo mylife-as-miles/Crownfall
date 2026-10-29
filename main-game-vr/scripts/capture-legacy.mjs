@@ -4,14 +4,15 @@
 //   production        founding (all four steps, the motto keyboard and the raising beat), overview,
 //                     every landmark, the War Record's three sections, the nomination, the Herald's list,
 //                     a notice with its wager, the acceptance, Awaiting the board, the dissolve
-//                     confirmation, the touch tray, pause from the tray, and the standing posture.
+//                     confirmation, the touch tray and pause from the tray.
 //   guest             ?legacy=fresh: the labelled browser entry and the guest founding.
 //   preview:<id>      ?legacyPreview=<id>: the aftermath, then the holding's responses to it.
 //   recovery:<kind>   an unreadable (corrupt) or newer (future) save left untouched, with its choices.
 //   comfort:<size>    Text Size 125 or 150 percent, with the stored banner's overview and a notice.
+//   standing          the standing posture: the overview, a level view and the touch tray.
 // The app frame is reopened with a session query through the IWSDK browser runner (start the runtime
 // with --allow-browser-automation).
-//   node scripts/capture-legacy.mjs [--out artifacts/legacy/latest] [--session production|guest|preview:<id>|recovery:corrupt|recovery:future|comfort:125|comfort:150]
+//   node scripts/capture-legacy.mjs [--out artifacts/legacy/latest] [--session production|guest|preview:<id>|recovery:corrupt|recovery:future|comfort:125|comfort:150|standing]
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
@@ -44,10 +45,10 @@ async function main() {
       runtime: 'IWER Meta Quest 3 browser emulation, managed headless Chromium', view: 'mono, 60-degree field of view',
       input: 'hand ray + pinch, and index-fingertip presses on the touch tray; both controllers disconnected',
       developmentFramebufferScale: d.emulatorScale, physicalHeadset: false,
-      note: 'Development captures from software-rendered (SwiftShader) emulation, including emulator hand and ray overlays; not a headset recording.',
+      note: 'Development captures from software-rendered (SwiftShader) emulation, including emulator hand and ray overlays and the IWSDK emulator\'s blue "Remote Control Active" automation pill at the bottom of the view (not app UI); not a headset recording.',
       menuPinchView: 'Menu pinches (reaching My Legacy) look almost straight down (88 degrees) so the hero and the menu atmosphere leave the view and software frames stay inside the 800 ms click window.',
     },
-    captures: [], interactions: d.interactions,
+    captures: [], interactions: d.interactions, cliRetries: d.cliRetries,
   };
   /** Captures the runtime view with the head pitched down by `pitch` degrees, recording the Legacy state shown. */
   const capture = (name, pitch, note, yaw = 0) => {
@@ -59,13 +60,14 @@ async function main() {
   };
   const preferences = (extra = {}) => ({ quality: 'low', motion: false, ...extra });
   const comfort = session.startsWith('comfort:') ? Number(session.slice('comfort:'.length)) : 100;
+  const posture = session === 'standing' ? 'standing' : 'seated';
   const setup = () => {
     evidence.emulationSetup = {
       applied: true,
       ...d.prepareEmulation({
         viewport: option('--viewport', '800x560'),
-        preferences: preferences(comfort !== 100 ? { textScale: comfort } : {}),
-        reloadIf: (current) => current.quality !== 'low' || current.motion !== false || !current.visitComplete || current.textScale !== comfort,
+        preferences: preferences({ ...(comfort !== 100 ? { textScale: comfort } : {}), posture }),
+        reloadIf: (current) => current.quality !== 'low' || current.motion !== false || !current.visitComplete || current.textScale !== comfort || current.posture !== posture,
       }),
       note: 'Software-emulation accommodation only: the capture viewport, Quest Render Quality Low and Ambient Motion Off, and the short visit marked complete so entry opens Home.',
     };
@@ -212,6 +214,14 @@ async function main() {
         s = back('Legacy_HeraldBack', 'overview');
       }
     },
+    standing() {
+      let s = enter();
+      assert.equal(s.posture, 'standing');
+      if (s.legacyView === 'aftermath') s = d.pinch('Legacy_AftermathLater', (v) => v.legacyView === 'overview');
+      capture('overview', 10, 'Standing posture: the holding sits lower and the panel stays clear of it');
+      capture('overview-level', 0, `Standing posture: level view, panel ${s.legacyPanelTopDegrees.toFixed(1)} to ${s.legacyPanelBottomDegrees.toFixed(1)} degrees`);
+      capture('touch-tray', 44, `Standing posture: the touch tray ${s.legacyTrayDistance.toFixed(2)} m from the eye at ${s.legacyTrayElevationDegrees.toFixed(1)} degrees`);
+    },
   };
 
   let failure;
@@ -224,6 +234,7 @@ async function main() {
         else if (session.startsWith('preview:')) flows.preview(session.slice('preview:'.length));
         else if (session.startsWith('recovery:')) flows.recovery(session.slice('recovery:'.length));
         else if (session.startsWith('comfort:')) flows.comfort();
+        else if (session === 'standing') flows.standing();
         else throw Error(`Unknown session ${session}`);
         break;
       } catch (error) {

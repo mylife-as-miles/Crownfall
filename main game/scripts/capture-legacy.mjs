@@ -98,36 +98,57 @@ try {
     await card.getByRole("button", { name: "Continue", exact: true }).click();
     await page.locator("#legacy-banner-motto").fill("Root and stone endure");
     await shot(page, "founding-4-raise", "Founding: review with motto and the three sworn members");
-    if (viewport.width === 1280) {
-      await card.getByRole("button", { name: "Raise the banner", exact: true }).click();
+    // The review step is the confirmation: Raise founds directly. The beat lasts 1.6 s with reduced motion, shorter than a
+    // software-rendered screenshot takes here, so its timer is lengthened for this capture only; it is then dismissed with a click.
+    await page.evaluate(() => {
+      const original = window.setTimeout;
+      window.__restoreTimeout = () => { window.setTimeout = original; };
+      window.setTimeout = (handler, delay, ...rest) => original(handler, delay === 1600 || delay === 2600 ? 60000 : delay, ...rest);
+    });
+    await card.getByRole("button", { name: "Raise the banner", exact: true }).click();
+    await page.locator(".legacy-beat").waitFor();
+    await page.evaluate(() => window.__restoreTimeout());
+    if (viewport.width === 1280) await shot(page, "founding-5-beat", "Raise founds directly from the review step (no second confirmation); the banner-raising beat (reduced-motion still), held on screen for this capture: it lasts 1.6 s with reduced motion and 2.6 s otherwise");
+    await page.locator(".legacy-beat").click();
+    await page.locator(".legacy-beat").waitFor({ state: "detached" });
+    await shot(page, "overview-fresh", "Bannerhold overview straight after founding: landmark labels as DOM buttons over the scene, and the Next step strip with a direct jump (name your Pawn); Play sits beside Back in the footer");
+    if (viewport.width !== 1280) {
+      // The formation-centred Muster Grounds at every size.
+      await panel(page, "muster-grounds");
+      await shot(page, "panel-muster-grounds", "Muster Grounds: the house's side of the formation leads the panel (pawn row = file choice, claimed files carry the holder's mark), members with their origins, Nominate");
+      await closePanel(page);
+    } else {
+      await panel(page, "banner-hall");
+      await shot(page, "panel-banner-hall", "Banner Hall: identity and arms, then its primary action, the next step toward a match; standing and honours below");
+      await page.locator("[data-manage-banner] summary").click();
+      await page.locator("[data-manage-banner] [data-dissolve]").scrollIntoViewIfNeeded();
+      await shot(page, "panel-banner-hall-manage", "Banner Hall: the dissolve control waits behind the Manage banner disclosure (shared Dissolve banner label)");
+      await closePanel(page);
+      await panel(page, "heralds-station");
+      await shot(page, "panel-heralds-station", "Herald's Station before a nomination: the next step (name your Pawn) carries the readiness reason; notices carry stance chips beside their seals; the wager reads as stated terms");
+      await page.locator("[data-accept]").click();
       await page.locator("dialog.legacy-dialog[open]").waitFor();
-      await shot(page, "founding-5-confirm", "Founding: confirmation (guest wording)");
-      // The beat lasts 1.6 s with reduced motion, shorter than a software-rendered screenshot takes here,
-      // so its timer is lengthened for this capture only; the beat is then dismissed with a click, as a player can.
-      await page.evaluate(() => {
-        const original = window.setTimeout;
-        window.__restoreTimeout = () => { window.setTimeout = original; };
-        window.setTimeout = (handler, delay, ...rest) => original(handler, delay === 1600 || delay === 2600 ? 60000 : delay, ...rest);
-      });
-      await page.locator("dialog.legacy-dialog[open]").getByRole("button", { name: /Raise the banner/ }).click();
-      await page.locator(".legacy-beat").waitFor();
-      await page.evaluate(() => window.__restoreTimeout());
-      await shot(page, "founding-6-beat", "The banner-raising beat (reduced-motion still), held on screen for this capture; it lasts 1.6 s with reduced motion and 2.6 s otherwise");
-      await page.locator(".legacy-beat").click();
-      await page.locator(".legacy-beat").waitFor({ state: "detached" });
-      await shot(page, "overview-fresh", "Bannerhold overview straight after founding: landmark labels as DOM buttons over the scene");
-      for (const id of ["banner-hall", "muster-grounds", "war-record", "heralds-station"]) {
-        await panel(page, id);
-        await shot(page, `panel-${id}`, `Inspection panel: ${id}`);
-        await closePanel(page);
-      }
+      await shot(page, "heralds-accept-unnamed", "Accepting before a Pawn is named: the dialog states the readiness gap and offers Name your Pawn at the Muster Grounds beside Accept");
+      await page.locator("[data-dialog-alternate]").click();
+      await page.locator('[data-landmark-panel="muster-grounds"]').waitFor();
+      await shot(page, "panel-muster-grounds", "Muster Grounds: the house's side of the formation leads the panel (pawn row = file choice, claimed files carry the holder's mark, your piece in your colours), members with their origins, Nominate above the fold");
+      await page.locator("[data-nominate]").click();
+      await page.locator('.legacy-panel [data-next-step="answer"]').waitFor();
+      await page.waitForTimeout(300);
+      await shot(page, "panel-muster-grounds-nominated", "Muster Grounds after nominating: the representative is named in the formation, and the primary action moves on to the next step (answer the challenge)");
+      await closePanel(page);
+      await panel(page, "war-record");
+      await shot(page, "panel-war-record", "War Record: opens on the next step; honest empty conflicts; unresolved matters without a repeated kind label; the ledger");
+      await closePanel(page);
       await panel(page, "heralds-station");
       await page.locator("[data-accept]").click();
       await page.locator("dialog.legacy-dialog[open]").waitFor();
-      await shot(page, "heralds-accept", "Accepting the formal challenge restates the wager");
+      await shot(page, "heralds-accept", "Accepting the formal challenge restates the wager as its stated terms, at body size");
       await page.locator("dialog.legacy-dialog[open]").getByRole("button", { name: /Accept the challenge/ }).click();
       await page.locator("[data-awaiting-board]").waitFor();
       await shot(page, "heralds-awaiting", "After acceptance: the truthful Awaiting the board state");
+      await closePanel(page);
+      await shot(page, "overview-ready", "Overview once ready: the Next step strip says the house is ready and the match awaits the board");
     }
     await context.close();
   }
@@ -173,6 +194,22 @@ try {
   {
     const { context, page } = await open({ width: 1280, height: 720 }, { legacyPreview: "unknown-preview" });
     await shot(page, "preview-missing", "Unknown development preview id: the real previews are listed");
+    await context.close();
+  }
+  {
+    // The Legacy screen chunk is blocked on purpose: My Legacy shows its failure state and the menu keeps working.
+    const context = await browser.newContext({ viewport: { width: 1280, height: 720 }, reducedMotion: "reduce" });
+    const page = await context.newPage();
+    page.setDefaultTimeout(60000);
+    await page.route((url) => /\/LegacyScreen(?:-[\w-]+)?\.(?:js|tsx)$/.test(url.pathname), (route) => route.abort("failed"));
+    await page.addInitScript(() => localStorage.setItem("crownfall.main-game.preferences", JSON.stringify({ quality: "high", motion: false, volume: 65 })));
+    await page.goto(address({ legacy: "fresh" }));
+    await waitForBootReady(page);
+    await page.getByRole("tab", { name: "Home", exact: true }).click();
+    await page.locator(".home-grid").waitFor();
+    await page.getByRole("button", { name: "My Legacy", exact: true }).click();
+    await page.locator("[data-legacy-failure]").waitFor();
+    await shot(page, "legacy-failure", "A failed Legacy chunk (blocked on purpose for this capture): the honest failure state with Retry and Return to Home; Home and Play keep working");
     await context.close();
   }
 } finally {

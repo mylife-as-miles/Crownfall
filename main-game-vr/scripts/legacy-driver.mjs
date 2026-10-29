@@ -21,14 +21,25 @@ export const sleep = (seconds) => { spawnSync('sleep', [String(seconds)]); };
 export function createLegacyDriver({ log = console.log } = {}) {
   const bin = existsSync('node_modules/.bin/iwsdk') ? ['node_modules/.bin/iwsdk'] : ['npx', '--no-install', '@iwsdk/cli'];
   const interactions = [];
+  /** CLI commands that were refused before reaching the app and sent again (recorded in the evidence). */
+  const cliRetries = [];
   const emulatorScale = (() => { try { return Number(/VITE_CROWNFALL_EMULATOR_SCALE=([\d.]+)/.exec(readFileSync('.env.local', 'utf8'))?.[1]) || 1; } catch { return 1; } })();
 
+  /**
+   * Runs one IWSDK CLI command. On a loaded host the CLI's own probe of the runtime owner can time out before the
+   * command is sent; only that refusal (nothing reached the app) is retried, after a short pause.
+   */
   function run(args, env = {}, timeout = 120000) {
     const [command, ...prefix] = bin;
-    const result = spawnSync(command, [...prefix, ...args], { encoding: 'utf8', timeout, maxBuffer: 20 * 1024 * 1024, env: { ...process.env, ...env } });
-    let response; try { response = JSON.parse(result.stdout || result.stderr); } catch { throw Error(result.stderr || result.stdout || `${args.join(' ')} returned no JSON`); }
-    if (!response.ok) throw Object.assign(Error(JSON.stringify(response.error)), { sdkError: response.error });
-    return response.data.result ?? response.data;
+    for (let attempt = 1; ; attempt++) {
+      const result = spawnSync(command, [...prefix, ...args], { encoding: 'utf8', timeout, maxBuffer: 20 * 1024 * 1024, env: { ...process.env, ...env } });
+      let response; try { response = JSON.parse(result.stdout || result.stderr); } catch { throw Error(result.stderr || result.stdout || `${args.join(' ')} returned no JSON`); }
+      if (response.ok) return response.data.result ?? response.data;
+      const ownerProbe = response.error?.code === 'cli_error' && /Owner probe timed out/.test(response.error?.message ?? '');
+      if (!ownerProbe || attempt >= 4) throw Object.assign(Error(JSON.stringify(response.error)), { sdkError: response.error });
+      cliRetries.push({ command: args.slice(0, 2).join(' '), attempt, reason: 'runtime owner probe timed out before the command was sent' });
+      spawnSync('sleep', ['5']);
+    }
   }
   const cli = (domain, action, input, extra = []) => run([domain, action, ...(input === undefined ? [] : ['--input-json', JSON.stringify(input)]), ...extra]);
   /** Runs a scripts/*.mjs browser-runner entry with the given environment (runtime started with --allow-browser-automation). */
@@ -67,13 +78,21 @@ export function createLegacyDriver({ log = console.log } = {}) {
     const [px, pw] = [Math.sin(pitch), Math.cos(pitch)], [yy, yw] = [Math.sin(yaw), Math.cos(yaw)];
     cli('xr', 'set-transform', { device: 'headset', position: { x: 0, y: 1.6, z: 0 }, orientation: { x: yw * px, y: yy * pw, z: -yy * px, w: yw * pw } });
   }
-  const restingHand = (device) => ({ x: device === 'hand-right' ? 0.25 : -0.25, y: 1.3, z: -0.35 });
+  /**
+   * Where a hand points from. Panel pinches start from a relaxed hand in front of the chest. The tray takes
+   * fingertip presses while the head looks down at it, and IWSDK then lets a fingertip within 15 cm of it take
+   * over the ray, so a pinch aimed at the tray starts from a hand raised well clear of it, as a person pointing
+   * down at it from a distance would hold it.
+   */
+  const restingHand = (device, id = '') => id.startsWith('Legacy_Dock')
+    ? { x: device === 'hand-right' ? 0.3 : -0.3, y: 1.48, z: -0.22 }
+    : { x: device === 'hand-right' ? 0.25 : -0.25, y: 1.3, z: -0.35 };
   const signature = (v) => `${v.screen}|${v.modal}|${v.paused}|${v.legacyView}|${v.legacyActive}`;
   /** Aims a hand ray at a control, proves the ray hovers it, pinches, and waits for the expected state. */
   function pinch(id, expected, { device = 'hand-right', pitch = 0, attempts = PINCH_HOLDS.length } = {}) {
     for (let attempt = 0; attempt < attempts; attempt++) {
       look(pitch);
-      cli('xr', 'set-transform', { device, anchor: 'target-ray', position: restingHand(device) });
+      cli('xr', 'set-transform', { device, anchor: 'target-ray', position: restingHand(device, id) });
       cli('xr', 'look-at', { device, target: target(id).position });
       const before = inspect(id);
       if (!before?.state.hovered || !before.state.displayed) { interactions.push({ id, device, kind: 'ray', attempt: attempt + 1, aim: before?.state ?? null }); continue; }
@@ -209,8 +228,8 @@ export function createLegacyDriver({ log = console.log } = {}) {
     throw Error('The managed browser did not come back after a relaunch');
   }
   return {
-    cli, run, browserRun, discover, state, fields, inspect, poll, target, look, pinch, menuPinch, poke, pinchLandmark,
+    cli, run, browserRun, discover, state, fields, inspect, poll, target, look, pinch, menuPinch, poke, pinchLandmark, restingHand,
     lowerHands, screenshot, enterXR, prepareHands, assertHandsOnly, reachLegacy, prepareEmulation, reload, waitForRuntime,
-    interactions, emulatorScale, log,
+    interactions, cliRetries, emulatorScale, log,
   };
 }

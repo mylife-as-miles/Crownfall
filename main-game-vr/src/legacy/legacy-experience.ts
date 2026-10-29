@@ -6,8 +6,8 @@
 // Legacy is shown, paused or left. The reading panel and the touch tray are
 // instantiated from their lazy UIKitML manifest entries on that first entry.
 
-import { PokeInteractable, RayInteractable } from '@iwsdk/core';
-import type { Entity, Object3D, UIKit, UIKitMLAsset, Vector3, World } from '@iwsdk/core';
+import { PokeInteractable, Quaternion, RayInteractable, Vector3 } from '@iwsdk/core';
+import type { Entity, Object3D, UIKit, UIKitMLAsset, World } from '@iwsdk/core';
 import { HERALDRY_PRESETS, describeHeraldry } from '../../../shared/legacy/content/heraldry';
 import { LEGACY_COPY } from '../../../shared/legacy/content/copy';
 import { FILES, eligibleMusterFiles } from '../../../shared/legacy/content/muster';
@@ -33,7 +33,7 @@ import {
 } from './legacy-flow.js';
 import type { LegacyFlowEvent, LegacyFlowState } from './legacy-flow.js';
 import { LegacySessionController } from './legacy-session.js';
-import { fallbackLegacyStaging, placeLegacyPanels } from './legacy-staging.js';
+import { fallbackLegacyStaging, placeLegacyPanels, trayTouchActive } from './legacy-staging.js';
 import type { LegacyPanelPlacements } from './legacy-staging.js';
 import { browserLegacyStorage } from './legacy-storage.js';
 import {
@@ -132,6 +132,10 @@ export class QuestLegacyExperience {
   private environmentFellBack = false;
   private environmentRequested = false;
   private interactive = false;
+  /** Whether the tray is pokeable now: only while the head looks down towards it (see trayTouchActive). */
+  private trayTouch = false;
+  private readonly headRotation = new Quaternion();
+  private readonly headForward = new Vector3();
   private status: LegacyHostStatus = { active: false, paused: false, pauseReason: '', entered: false, handTracked: false };
   private comfort: LegacyComfort = { quality: 'medium', posture: 'seated', textScale: 100, panelDistance: 1.5, panelHeight: 0, reducedMotion: false };
   private placement: LegacyPanelPlacements | null = null;
@@ -545,13 +549,36 @@ export class QuestLegacyExperience {
     this.dock.scale.setScalar(placement.tray.scale);
   }
 
+  /**
+   * Both panels take hand rays while My Legacy is shown. Only the tray, within reach, takes fingertip presses, and
+   * only while the head looks down towards it: IWSDK lets a fingertip near a pokeable surface take over that
+   * hand's ray, so a hand resting near the tray must not swallow pinches aimed at the reading panel.
+   */
   private setInteractive(interactive: boolean): void {
     if (this.interactive === interactive) return;
     this.interactive = interactive;
     for (const entity of [this.panelEntity, this.dockEntity]) {
-      if (interactive) entity.addComponent(RayInteractable).addComponent(PokeInteractable);
-      else entity.removeComponent(RayInteractable).removeComponent(PokeInteractable);
+      if (interactive) entity.addComponent(RayInteractable);
+      else entity.removeComponent(RayInteractable);
     }
+    if (!interactive) this.setTrayTouch(false);
+  }
+
+  private setTrayTouch(touch: boolean): void {
+    if (this.trayTouch === touch) return;
+    this.trayTouch = touch;
+    if (touch) this.dockEntity.addComponent(PokeInteractable);
+    else this.dockEntity.removeComponent(PokeInteractable);
+    this.writeInspection();
+  }
+
+  /** Follows the head's pitch each frame (no allocation) and turns the tray's fingertip presses on or off. */
+  private updateTrayTouch(): void {
+    if (!this.interactive || !this.placement) return;
+    this.world.player.head.getWorldQuaternion(this.headRotation);
+    this.headForward.set(0, 0, -1).applyQuaternion(this.headRotation);
+    const pitch = Math.asin(Math.max(-1, Math.min(1, this.headForward.y))) * 180 / Math.PI;
+    this.setTrayTouch(trayTouchActive(pitch, this.trayTouch, this.placement.trayTouchGateDegrees));
   }
 
   // ---------------------------------------------------------------- host interface
@@ -601,7 +628,9 @@ export class QuestLegacyExperience {
   }
 
   update(delta: number, time: number): void {
-    if (this.environment && this.status.active) this.environment.update(delta, time);
+    if (!this.status.active) return;
+    this.updateTrayTouch();
+    this.environment?.update(delta, time);
   }
 
   /** The environment's own resource and frame statistics, once it exists. */
@@ -782,7 +811,9 @@ export class QuestLegacyExperience {
       e.setValue(c, 'legacyPanelDistance', Math.hypot(px, py, pz));
       e.setValue(c, 'legacyTrayDistance', Math.hypot(tx, ty, tz));
       e.setValue(c, 'legacyTrayElevationDegrees', Math.atan2(ty, Math.hypot(tx, tz)) * 180 / Math.PI);
+      e.setValue(c, 'legacyTrayTouchGateDegrees', placement.trayTouchGateDegrees);
     }
+    e.setValue(c, 'legacyTrayTouch', this.trayTouch);
   }
 
   /** The browser entry panel names guest and preview sessions before anyone enters the headset. */

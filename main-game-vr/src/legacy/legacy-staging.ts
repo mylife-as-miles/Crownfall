@@ -98,6 +98,18 @@ export interface LegacyPanelPlacements {
   tray: LegacyPlacement;
   /** Lowest elevation, in degrees, the reading panel's bottom edge may take before it overlaps the holding. */
   panelFloorDegrees: number;
+  /** Head pitch, in degrees, at or below which the tray takes fingertip presses (see trayTouchActive). */
+  trayTouchGateDegrees: number;
+}
+
+/**
+ * Whether the tray should take fingertip presses for a head pitch (degrees, negative below the horizon):
+ * on once the head looks down past the gate, off again only once it has risen the hysteresis above it.
+ */
+export function trayTouchActive(headPitchDegrees: number, active: boolean, gateDegrees: number): boolean {
+  return active
+    ? headPitchDegrees < gateDegrees + LEGACY_STAGING_RULES.trayTouchGate.hysteresisDegrees
+    : headPitchDegrees <= gateDegrees;
 }
 
 export const LEGACY_STAGING_RULES = {
@@ -113,6 +125,13 @@ export const LEGACY_STAGING_RULES = {
   trayDistance: { seated: 0.6, standing: 0.6 } satisfies Record<QuestPosture, number>,
   /** The tray's elevation range, in degrees below the eye. */
   trayElevation: { highest: -36, lowest: -60 },
+  /**
+   * The tray takes fingertip presses only while the head looks down towards it. IWSDK gives a fingertip within
+   * 15 cm of a pokeable surface priority over that hand's ray, so a hand resting near an always-pokeable tray
+   * would swallow every pinch aimed at the reading panel. The gate sits this far below the panel's bottom edge
+   * (or midway to the tray when they are closer), with this much hysteresis on the way back up.
+   */
+  trayTouchGate: { belowPanelDegrees: 6, hysteresisDegrees: 4 },
 } as const;
 
 const degrees = (radians: number): number => radians * 180 / Math.PI;
@@ -178,6 +197,11 @@ export function placeLegacyPanels(staging: QuestStagingInfo, comfort: LegacyStag
   const rules = LEGACY_STAGING_RULES.trayElevation;
   const trayElevation = Math.max(rules.lowest, Math.min(rules.highest, holdingFrontDegrees(staging) - LEGACY_STAGING_RULES.clearanceDegrees - trayHalf));
   const trayAngle = radians(trayElevation);
+  const panelBottomDegrees = degrees(Math.atan2(y - halfHeight, horizontal));
+  const trayTouchGateDegrees = Math.max(
+    panelBottomDegrees - LEGACY_STAGING_RULES.trayTouchGate.belowPanelDegrees,
+    (panelBottomDegrees + trayElevation) / 2,
+  );
   return {
     panel: { position: [x, y, z], scale: LEGACY_UI_LAYOUT.authoredScale * textScale },
     tray: {
@@ -185,5 +209,6 @@ export function placeLegacyPanels(staging: QuestStagingInfo, comfort: LegacyStag
       scale: LEGACY_UI_LAYOUT.trayScale * textScale,
     },
     panelFloorDegrees,
+    trayTouchGateDegrees,
   };
 }

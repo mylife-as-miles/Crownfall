@@ -781,7 +781,7 @@ button.legacy-formation-cell:hover { filter: brightness(1.15); }
   border: 0;
   background: none;
   color: rgba(185, 179, 164, .72);
-  font-size: max(1.17cqw, 10px);
+  font-size: max(1.17cqw, 12px);
   font-weight: 300;
   white-space: nowrap;
   transition: color .14s ease, transform .1s ease;

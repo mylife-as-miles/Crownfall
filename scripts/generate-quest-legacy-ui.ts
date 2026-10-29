@@ -492,9 +492,13 @@ export async function generateQuestLegacyUI(destinations: { panel?: string; dock
     + fixed('Legacy_AcceptConfirm', footerRight, 'lg-btn-primary'));
 
   const awaitingView = view('LegacyView_Awaiting',
-    text(LEGACY_COPY.awaitingBoard.body, { x: 24, y: 96, width: W - 48, height: 84 }, 'lg-body-large', 'Legacy_Awaiting_Body')
-    + text(LEGACY_COPY.awaitingBoard.hint, { x: 24, y: 186, width: W - 48, height: 44 }, 'lg-body', 'Legacy_Awaiting_Hint')
-    + text('', { x: 24, y: 238, width: W - 48, height: 44 }, 'lg-heading', 'Legacy_Awaiting_Readiness')
+    text(LEGACY_COPY.awaitingBoard.body, { x: 24, y: 96, width: W - 48, height: 100 }, 'lg-body-large', 'Legacy_Awaiting_Body')
+    + text(LEGACY_COPY.awaitingBoard.hint, { x: 24, y: 204, width: W - 48, height: 22 }, 'lg-body', 'Legacy_Awaiting_Hint')
+    + text('', { x: 24, y: 234, width: W - 48, height: 44 }, 'lg-heading', 'Legacy_Awaiting_Readiness')
+    // What the open challenge would put at stake, in the shared wording used wherever a match is framed.
+    + text(LEGACY_COPY.stakesHeading, { x: 24, y: 288, width: W - 48, height: 22 }, 'lg-heading', 'Legacy_Awaiting_StakesHeading')
+    + text(`${LEGACY_COPY.stakes.classic.label}: ${LEGACY_COPY.stakes.classic.description}`, { x: 24, y: 314, width: W - 48, height: 44 }, 'lg-body', 'Legacy_Awaiting_Classic')
+    + text(`${LEGACY_COPY.stakes.muster.label}: ${LEGACY_COPY.stakes.muster.description}`, { x: 24, y: 362, width: W - 48, height: 64 }, 'lg-body', 'Legacy_Awaiting_Muster')
     + fixed('Legacy_AwaitingBack', footerLeft));
 
   const resetView = view('LegacyView_Reset',

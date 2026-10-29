@@ -33,13 +33,14 @@ const CAMERA_FOV = 38;
 const TWEEN_MS = 950;
 const FRAME_SAMPLES = 120;
 /**
- * Frame pacing is sampled only inside runs of continuous rendering (a drag, a
- * camera move, a highlight fade): frames further apart than this are a pause
- * of the on-demand renderer, not a slow frame, and the first two frames of a
- * run are skipped.
+ * Frame pacing is sampled only between frames rendered back to back: a camera
+ * move, a highlight fade, or a drag, wheel or stick motion, during which the
+ * loop keeps rendering until the motion has been still for MOTION_HOLD_MS. A
+ * frame that follows a pause of the on-demand renderer is never a sample;
+ * intervals over FRAME_STALL_MS (a hidden tab, a debugger) are dropped.
  */
-const FRAME_GAP_MS = 500;
-const RUN_WARMUP_FRAMES = 2;
+const MOTION_HOLD_MS = 120;
+const FRAME_STALL_MS = 1500;
 const DRAG_THRESHOLD_PX = 5;
 const NEUTRAL_DARK = new THREE.Color("#15120e");
 const NEUTRAL_GROUND = new THREE.Color("#4d463a");
@@ -166,7 +167,10 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
   private submissionCount = 0;
   private submissionCursor = 0;
   private lastRenderedAt = 0;
-  private runLength = 0;
+  /** True when the previous rendered frame asked for this one, so their interval is the renderer's own pace. */
+  private continuing = false;
+  /** Last drag, wheel or stick motion; the loop keeps running while it is recent. */
+  private lastMotionAt = -Infinity;
 
   private nationId: NationId | null = null;
   private bannerKey = "\u0000";
@@ -411,6 +415,7 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
     this.userPitch = clamp(this.userPitch + pitch * 0.6, -ORBIT_LIMITS.pitchDown, ORBIT_LIMITS.pitchUp);
     this.userZoom = clamp(this.userZoom * Math.exp(-zoom * 0.8), ORBIT_LIMITS.zoomIn, ORBIT_LIMITS.zoomOut);
     this.cameraDirty = true;
+    this.lastMotionAt = performance.now();
     this.invalidate();
   }
 
@@ -508,6 +513,7 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
     this.lastRendered = timestamp;
     const cameraMoving = this.poseCamera(now);
     const glowing = this.stepGlow(delta);
+    const inMotion = now - this.lastMotionAt < MOTION_HOLD_MS;
     if (!this.contextLost) {
       const start = performance.now();
       this.renderer.render(this.scene, this.camera);
@@ -521,7 +527,8 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
         ready?.();
       }
     }
-    this.idle = !(cameraMoving || glowing);
+    this.idle = !(cameraMoving || glowing || inMotion);
+    this.continuing = !this.idle;
     if (!this.idle) this.frameHandle = requestAnimationFrame(this.frame);
   };
 
@@ -552,13 +559,9 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
 
   private recordFrameInterval(now: number): void {
     const interval = now - this.lastRenderedAt;
+    const sample = this.continuing && this.lastRenderedAt > 0 && interval > 0 && interval < FRAME_STALL_MS;
     this.lastRenderedAt = now;
-    if (interval <= 0 || interval > FRAME_GAP_MS) {
-      this.runLength = 0;
-      return;
-    }
-    this.runLength++;
-    if (this.runLength <= RUN_WARMUP_FRAMES) return;
+    if (!sample) return;
     this.frameIntervals[this.frameIntervalCursor] = interval;
     this.frameIntervalCursor = (this.frameIntervalCursor + 1) % FRAME_SAMPLES;
     if (this.frameIntervalCount < FRAME_SAMPLES) this.frameIntervalCount++;
@@ -617,6 +620,7 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
         this.userYaw = clamp(this.userYaw - dx * 0.0042, -ORBIT_LIMITS.yaw, ORBIT_LIMITS.yaw);
         this.userPitch = clamp(this.userPitch + dy * 0.0032, -ORBIT_LIMITS.pitchDown, ORBIT_LIMITS.pitchUp);
         this.cameraDirty = true;
+        this.lastMotionAt = performance.now();
         this.invalidate();
       }
       this.lastX = event.clientX;
@@ -656,6 +660,7 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
     const scale = event.deltaMode === 1 ? 32 : event.deltaMode === 2 ? 320 : 1;
     this.userZoom = clamp(this.userZoom * Math.exp(event.deltaY * scale * 0.0011), ORBIT_LIMITS.zoomIn, ORBIT_LIMITS.zoomOut);
     this.cameraDirty = true;
+    this.lastMotionAt = performance.now();
     this.invalidate();
   };
 
@@ -691,6 +696,7 @@ class StandInEnvironment implements DesktopLegacyEnvironment {
   setPaused(paused: boolean): void {
     if (this.paused === paused) return;
     this.paused = paused;
+    this.continuing = false;
     if (paused) {
       if (this.frameHandle !== 0) cancelAnimationFrame(this.frameHandle);
       if (this.hoverHandle !== 0) cancelAnimationFrame(this.hoverHandle);

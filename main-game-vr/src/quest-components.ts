@@ -64,4 +64,7 @@ export const CrownfallQuestState = createComponent('CrownfallQuestState', {
   legacyPanelDistance: { type: Types.Float32, default: 0 },
   legacyTrayDistance: { type: Types.Float32, default: 0 },
   legacyTrayElevationDegrees: { type: Types.Float32, default: 0 },
+  /** Whether the tray takes fingertip presses now (only while the head looks down towards it), and the gate pitch. */
+  legacyTrayTouch: { type: Types.Boolean, default: false },
+  legacyTrayTouchGateDegrees: { type: Types.Float32, default: 0 },
 });
