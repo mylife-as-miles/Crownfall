@@ -238,6 +238,7 @@ try {
   check('The room becomes ready and the panel takes the control surface, with the load reported to the shared state', ready.load === 'ready' && ready.panelPose === 'control-surface' && !ready.loading && ready.placements >= 1, { archive: pick(ready) });
   evidence.measurements.atlasSeated = stats();
   await capture('archive-seated', 'Archive, seated (browser preview framing)', 'Browser preview');
+  evidence.measurements.previewBreakdown = step({ CROWNFALL_STEP: 'breakdown' });
   for (const id of hotspots) {
     // A marker outside the browser window's view is reached through its panel button; XR pinches the markers themselves.
     const marker = targets().find((item) => item.name === `Marker_${id}`), bounds = canvas();
@@ -350,15 +351,20 @@ try {
   check('XR is active with hands tracked and controllers disconnected', xrActive() && state().entered && state().handsTracked && device.inputMode === 'hand' && !device.controllers.left.connected && !device.controllers.right.connected, { xr: cli('xr', 'status').sessionActive, device: evidence.measurements.xrDevice });
   look(0, -8);
   await capture('xr-home', 'XR: Home, hands only', 'Emulated XR');
+  evidence.measurements.xrHomeBreakdown = step({ CROWNFALL_STEP: 'breakdown' });
   pinch('Home_chronicles', (q) => q.screen === 'chronicles');
   const xrReady = waitForArchive();
   check('A hand pinch on the Home tile opens the archive in XR', xrReady.presented && state().entered, { archive: pick(xrReady) });
+  evidence.measurements.xrBreakdown = {};
   for (const [slug, title, yaw, pitch] of [['xr-forward', 'XR look-around: forward, the monument below', 0, -28], ['xr-up', 'XR look-around: up toward where the rings hang', 0, 40], ['xr-left', 'XR look-around: left', 60, -10], ['xr-right', 'XR look-around: right, the control surface', -40, -6]]) {
     look(yaw, pitch);
     await capture(slug, title, 'Emulated XR');
+    // What each view draws, by subtree, to explain its render stats.
+    if (slug === 'xr-forward' || slug === 'xr-up') evidence.measurements.xrBreakdown[slug] = step({ CROWNFALL_STEP: 'breakdown' });
   }
   look(0, -30);
-  pinch('Marker_kwind-09', (q, a) => q.selectedControl === 'Hotspot_kwind-09' && a.entry === 'kwind-09');
+  const markerPinch = pinch('Marker_kwind-09', (q, a) => q.selectedControl === 'Hotspot_kwind-09' && a.entry === 'kwind-09');
+  check('XR: a pinch on the Kwind-09 marker opens its record, and the room lights that marker', markerPinch.archive.entry === 'kwind-09' && markerPinch.archive.selection === 'kwind-09' && markerPinch.quest.selectedControl === 'Hotspot_kwind-09', { archive: pick(markerPinch.archive) });
   look(-28, -12);
   await capture('xr-record', 'XR: pinch on the Kwind-09 marker opens its record', 'Emulated XR');
   // Bare ground under the hand ray takes it and selects nothing.
@@ -370,11 +376,13 @@ try {
   cli('xr', 'select', { device: 'hand-right', duration: 0.05 });
   const xrAfter = poll(both, () => false, 3);
   check('XR: bare ground takes the hand ray and selects nothing', xrGroundHover && xrAfter.archive.entry === xrBefore.archive.entry && xrAfter.quest.selectedControl === xrBefore.quest.selectedControl, { target: xrCentre, hovered: xrGroundHover, entry: xrAfter.archive.entry });
-  pinch('Exhibit_laws', (q, a) => q.selectedControl === 'Exhibit_laws' && a.collection === 'laws' && a.emphasis === 'laws');
+  const tabPinch = pinch('Exhibit_laws', (q, a) => q.selectedControl === 'Exhibit_laws' && a.collection === 'laws' && a.emphasis === 'laws');
+  check('XR: a pinch on the Laws tab switches the collection and the room emphasises it', tabPinch.archive.collection === 'laws' && tabPinch.archive.emphasis === 'laws' && tabPinch.archive.entry === '', { archive: pick(tabPinch.archive) });
   look(-30, -8);
   await capture('xr-collection', 'XR: pinch on the Laws tab emphasises its collection', 'Emulated XR');
   pinch('Btn_Back', (q) => q.screen === 'home');
-  poll(archive, (a) => !a.open, 10);
+  const xrClosed = poll(archive, (a) => !a.open, 10);
+  check('XR: Back by hand returns Home and closes the room', state().screen === 'home' && !xrClosed.open && xrClosed.panelPose === 'menu', { archive: pick(xrClosed) });
   look(0, -8);
   await capture('xr-home-again', 'XR: Back returns Home', 'Emulated XR');
 
@@ -403,14 +411,16 @@ try {
   look(-40, -4);
   const before = poseCheck('after the 40 degree turn, before Recenter');
   const placementsBefore = archive().placements;
-  // The head stays turned 40 degrees right while the hand pinches Recenter.
+  // The head stays turned 40 degrees right while the hand pinches Recenter, then takes the same pose again.
   pinch('Btn_Recenter', (q, a) => a.placements > placementsBefore && a.fade === 0, 'hand-right', -40);
-  const recentred = archive(), after = poseCheck('after Recenter');
+  look(-40, -4);
+  const recentred = archive(), after = poseCheck('after Recenter, the head in the same pose');
   evidence.measurements.recenter = { before, after, archive: pick(recentred) };
   check('Recenter re-places the room toward the head yaw under the fade, and never moves the XR origin', Math.abs(recentred.roomYaw + 40 * Math.PI / 180) < 0.05
     && before.positionError < 0.005 && after.positionError < 0.005 && before.orientationError < 1e-4 && after.orientationError < 1e-4
     && JSON.stringify(before.rig) === JSON.stringify(after.rig), { roomYaw: recentred.roomYaw, before: { p: before.positionError, q: before.orientationError }, after: { p: after.positionError, q: after.orientationError } });
-  await capture('xr-recentred', 'XR: after Recenter with the head turned 40 degrees right', 'Emulated XR');
+  look(-40, -28);
+  await capture('xr-recentred', 'XR: after Recenter with the head turned 40 degrees right, the monument stands ahead again', 'Emulated XR');
 
   // Hand tracking lost and recovered: the visit pauses, Resume needs a hand, then pinching works again.
   for (const device of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device, connected: false });
@@ -419,15 +429,23 @@ try {
   for (const device of ['hand-left', 'hand-right']) cli('xr', 'set-connected', { device, connected: true });
   poll(state, (q) => q.handsTracked, 10);
   pinch('Btn_Resume', (q) => !q.paused && q.screen === 'chronicles');
-  pinch('Marker_solforiz', (q, a) => q.selectedControl === 'Hotspot_solforiz' && a.entry === 'solforiz');
-  await capture('xr-after-tracking-loss', 'XR: hands recovered, a marker pinch works again', 'Emulated XR');
+  const recovered = pinch('Marker_solforiz', (q, a) => q.selectedControl === 'Hotspot_solforiz' && a.entry === 'solforiz');
+  check('After hand tracking returns, Resume and a marker pinch work again', recovered.archive.entry === 'solforiz' && !recovered.quest.paused && recovered.quest.handsTracked, { archive: pick(recovered.archive) });
+  // The room now faces the recentred direction, so the record view turns with it.
+  look(-68, -12);
+  await capture('xr-after-tracking-loss', 'XR: hands recovered, a marker pinch opens Solforiz (room and panel recentred 40 degrees right)', 'Emulated XR');
 
-  // One stereo sample of the render cost, then Exit VR by hand.
-  cli('xr', 'set-device-state', { state: { stereoEnabled: true } });
-  evidence.measurements.xrStereo = poll(stats, (s) => s.calls > 0, 3);
-  cli('xr', 'set-device-state', { state: { stereoEnabled: false, fov: 90 } });
-  evidence.measurements.xrMono = stats();
-  pinch('Btn_Exit', () => true);
+  // The render cost of one XR frame looking at the monument with a record open, then Exit VR by hand.
+  // The emulator renders both eye views even with its stereo display off, so renderer.info is a two-eye total.
+  look(-40, -28);
+  const frame = poll(stats, (s) => s.calls > 0, 3), frameBreakdown = step({ CROWNFALL_STEP: 'breakdown' });
+  evidence.measurements.xrFrame = { view: 'recentred forward view of the monument, a record open on the control surface', renderStats: frame, eyeViews: frameBreakdown.views, breakdown: frameBreakdown };
+  check('XR frame within the Quest budget: at most 120 draw calls and 250k triangles for both eye views together', frame.calls <= 120 && frame.triangles <= 250000, { renderStats: frame, eyeViews: frameBreakdown.views }, false);
+  // Exit VR ends the session inside the pinch, so the select reports the ended session: the state below is the proof.
+  try { pinch('Btn_Exit', () => true); } catch (error) {
+    if (!/The XR session ended/u.test(String(error.message))) throw error;
+    evidence.interactions.push({ input: 'hand ray pinch', id: 'Btn_Exit', device: 'hand-right', hoveredBeforePinch: true, note: 'the session ended during the select, as Exit VR does' });
+  }
   const exited = poll(() => ({ xr: xrActive(), quest: state() }), (value) => !value.xr && !value.quest.entered, 10);
   check('Exit VR ends the session by hand and keeps the visit in the browser', !exited.xr && !exited.quest.entered && exited.quest.screen === 'chronicles', { screen: exited.quest.screen });
   }

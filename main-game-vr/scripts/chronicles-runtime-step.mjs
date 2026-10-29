@@ -36,16 +36,29 @@ export default async function run({ page, frame }) {
   }
   if (step === 'shot') {
     // A frame at the managed window's own size, for XR: resizing would change the emulator's canvas.
+    // The emulator's own DOM overlays (its toolbar, hand panels and remote-control border, in
+    // shadow-root containers on the page body or, during a session, beside the app canvas in the
+    // emulator's canvas container) are hidden for the frame and restored after it.
     const switcher = await page.$('.workspace-view-switcher');
     await switcher?.evaluate((element) => { element.style.visibility = 'hidden'; });
+    const overlays = (visibility) => app.evaluate((value) => {
+      let count = 0;
+      for (const element of document.querySelectorAll('body > *, [data-webxr_runtime] > *')) if (element.shadowRoot) { element.style.visibility = value; count++; }
+      return count;
+    }, visibility).catch(() => 0);
+    const hidden = await overlays('hidden');
     try {
       const iframe = await page.$('iframe'), box = await iframe.boundingBox(), started = Date.now();
       await iframe.screenshot({ path: process.env.CROWNFALL_FRAME, timeout: 90000 });
-      return { path: process.env.CROWNFALL_FRAME, width: Math.round(box.width), height: Math.round(box.height), ms: Date.now() - started };
-    } finally { await switcher?.evaluate((element) => { element.style.visibility = ''; }); }
+      return { path: process.env.CROWNFALL_FRAME, width: Math.round(box.width), height: Math.round(box.height), ms: Date.now() - started, emulatorOverlaysHidden: hidden };
+    } finally {
+      await overlays('');
+      await switcher?.evaluate((element) => { element.style.visibility = ''; });
+    }
   }
   if (step === 'probe') return probe(page, app);
   if (step === 'click-frame') return clickFrame(page);
+  if (step === 'breakdown') return breakdown(app);
   const resize = (width, height) => page.evaluate(([w, h]) => {
     const switcher = document.querySelector('.workspace-view-switcher');
     if (switcher) switcher.style.visibility = w ? 'hidden' : '';
@@ -91,6 +104,61 @@ async function clickFrame(page) {
     if (cdp) { await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 }); await cdp.detach(); }
     await switcher?.evaluate((element) => { element.style.visibility = ''; });
   }
+}
+
+// Which visible meshes the current view draws, by subtree, with a frustum test like the
+// renderer's (bounding spheres against each view's frustum), beside renderer.info for the
+// last frame. Subtrees are labelled by object name, except under the SDK's XR rig, which is
+// labelled structurally ("xr-rig", "camera", object types) so SDK names stay out of the evidence.
+async function breakdown(app) {
+  return app.evaluate(() => {
+    const world = window.FRAMEWORK_MCP_RUNTIME?.world;
+    if (!world) return { available: false };
+    const renderer = world.renderer, scene = world.scene, presenting = renderer.xr.isPresenting;
+    const camera = presenting ? renderer.xr.getCamera() : world.camera;
+    const views = camera.isArrayCamera && camera.cameras.length ? camera.cameras : [camera];
+    const planesFor = (view) => {
+      const p = view.projectionMatrix.elements, v = view.matrixWorldInverse.elements, m = new Array(16);
+      for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) { let s = 0; for (let k = 0; k < 4; k++) s += p[k * 4 + r] * v[c * 4 + k]; m[c * 4 + r] = s; }
+      return [[m[3] - m[0], m[7] - m[4], m[11] - m[8], m[15] - m[12]], [m[3] + m[0], m[7] + m[4], m[11] + m[8], m[15] + m[12]], [m[3] + m[1], m[7] + m[5], m[11] + m[9], m[15] + m[13]],
+        [m[3] - m[1], m[7] - m[5], m[11] - m[9], m[15] - m[13]], [m[3] - m[2], m[7] - m[6], m[11] - m[10], m[15] - m[14]], [m[3] + m[2], m[7] + m[6], m[11] + m[10], m[15] + m[14]]]
+        .map(([a, b, c, d]) => { const l = Math.hypot(a, b, c); return [a / l, b / l, c / l, d / l]; });
+    };
+    const frusta = views.map(planesFor);
+    const shown = (object) => { for (let o = object; o; o = o.parent) if (!o.visible) return false; return true; };
+    let rigTop = world.camera;
+    while (rigTop.parent && rigTop.parent !== scene) rigTop = rigTop.parent;
+    const ours = (object) => /^(Chronicles|Atlas)/u.test(object.name || '');
+    const groups = {}, total = { meshes: 0, triangles: 0, culledMeshes: 0, culledTriangles: 0 };
+    scene.traverse((object) => {
+      if (!object.isMesh || !object.geometry || !shown(object)) return;
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      if (!materials.some((material) => material && material.visible)) return;
+      const geometry = object.geometry, count = geometry.index ? geometry.index.count : (geometry.attributes.position?.count ?? 0);
+      const instances = object.isInstancedMesh ? object.count : 1;
+      const triangles = Math.floor(Math.min(count, geometry.drawRange?.count ?? Infinity) / 3) * instances;
+      let inside = true;
+      if (object.frustumCulled !== false) {
+        if (!geometry.boundingSphere) geometry.computeBoundingSphere();
+        const s = geometry.boundingSphere, e = object.matrixWorld.elements;
+        const cx = e[0] * s.center.x + e[4] * s.center.y + e[8] * s.center.z + e[12];
+        const cy = e[1] * s.center.x + e[5] * s.center.y + e[9] * s.center.z + e[13];
+        const cz = e[2] * s.center.x + e[6] * s.center.y + e[10] * s.center.z + e[14];
+        const radius = s.radius * Math.max(Math.hypot(e[0], e[1], e[2]), Math.hypot(e[4], e[5], e[6]), Math.hypot(e[8], e[9], e[10]));
+        inside = frusta.some((planes) => planes.every(([a, b, c, d]) => a * cx + b * cy + c * cz + d >= -radius));
+      }
+      const chain = [];
+      for (let o = object; o && o !== scene; o = o.parent) chain.unshift(o);
+      const underRig = chain[0] === rigTop;
+      const key = chain.slice(0, 3).map((o, i) => (!underRig || ours(o) ? (o.name || o.type) : i === 0 ? 'xr-rig' : o === world.camera ? 'camera' : o.type)).join(' / ');
+      const group = groups[key] ??= { meshes: 0, triangles: 0, culledMeshes: 0, culledTriangles: 0, neverCulled: 0 };
+      if (object.frustumCulled === false) group.neverCulled++;
+      if (inside) { group.meshes++; group.triangles += triangles; total.meshes++; total.triangles += triangles; }
+      else { group.culledMeshes++; group.culledTriangles += triangles; total.culledMeshes++; total.culledTriangles += triangles; }
+    });
+    const top = Object.entries(groups).sort((a, b) => b[1].triangles - a[1].triangles).slice(0, 30).map(([subtree, value]) => ({ subtree, ...value }));
+    return { available: true, presenting, views: views.length, lastFrame: { calls: renderer.info.render.calls, triangles: renderer.info.render.triangles }, inAnyView: total, subtrees: top };
+  });
 }
 
 // Idle frames with the archive open: sample allocations (including those the

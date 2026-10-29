@@ -26,7 +26,8 @@ try {
     viewport: { width: 1280, height: 720 },
     reducedMotion: "reduce",
   });
-  page.setDefaultTimeout(10000);
+  // A loaded software-rendering host can need longer for each action; CROWNFALL_TEST_TIMEOUT raises the limit.
+  page.setDefaultTimeout(Number(process.env.CROWNFALL_TEST_TIMEOUT) || 10000);
   await page.addInitScript(() => {
     localStorage.setItem("crownfall.main-game.preferences", JSON.stringify({ quality: "low", motion: false, volume: 65 }));
     window.__homePadButtons = [];
@@ -59,7 +60,8 @@ try {
     assert.equal(await button.getAttribute("aria-pressed"), "true");
     if (focus) await page.waitForFunction((label) => document.activeElement?.getAttribute("aria-label") === label, name);
   };
-  const activeTab = async (name) => assert.equal(await page.locator(`.main-nav [role="tab"][aria-label="${name}"]`).getAttribute("aria-selected"), "true");
+  // Waits for the tab to become selected, so a slow host's pending render is not read as a failure.
+  const activeTab = (name) => page.waitForFunction((label) => document.querySelector(`.main-nav [role="tab"][aria-label="${label}"]`)?.getAttribute("aria-selected") === "true", name);
   const closed = async () => page.waitForFunction(() => !document.querySelector("dialog").open);
   const inspectPlay = async () => {
     const play = await page.locator(".game-cards").evaluate((row) => ({

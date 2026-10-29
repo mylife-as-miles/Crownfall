@@ -1,5 +1,5 @@
 import { Group, Mesh } from '@iwsdk/core';
-import type { Entity, World } from '@iwsdk/core';
+import type { Entity, Object3D, World } from '@iwsdk/core';
 import { CHRONICLES_MAP } from '../../../shared/chronicles/content';
 import type { ChronicleCollectionId } from '../../../shared/chronicles/types';
 import type { ArchiveQualityPreset, ArchiveRoom, ArchiveRoomEvents, ArchiveRoomPose } from './archive-controller.js';
@@ -47,16 +47,26 @@ export class MonumentRoom implements ArchiveRoom {
   setQuality(_quality: ArchiveQualityPreset): void { /* The diorama has one Quest tessellation. */ }
   update(delta: number, motion: boolean): void { this.diorama.update(delta, motion); }
 
-  /** Visible triangles and the painting's estimated GPU bytes (4 per texel, mipmaps counted). Not for per-frame use. */
+  /**
+   * Drawn triangles once shown, and the painting's estimated GPU bytes (4 per texel, mipmaps
+   * counted). The room and diorama roots may be hidden while the room is held or not yet
+   * presented, so their own visibility is ignored; hidden parts inside them are not counted.
+   * Not for per-frame use.
+   */
   stats(): { triangles: number; textureBytes: number } {
     let triangles = 0;
-    this.root.object3D!.traverseVisible((child) => {
-      if (!(child instanceof Mesh) || !child.geometry) return;
-      const material = child.material;
-      if (!Array.isArray(material) && material && material.visible === false) return;
-      const index = child.geometry.index, position = child.geometry.getAttribute('position');
-      triangles += Math.floor((index ? index.count : position ? position.count : 0) / 3);
-    });
+    const count = (object: Object3D, depth: number): void => {
+      if (depth > 1 && !object.visible) return;
+      if (object instanceof Mesh && object.geometry) {
+        const material = object.material;
+        if (Array.isArray(material) || !material || material.visible !== false) {
+          const index = object.geometry.index, position = object.geometry.getAttribute('position');
+          triangles += Math.floor((index ? index.count : position ? position.count : 0) / 3);
+        }
+      }
+      for (const child of object.children) count(child, depth + 1);
+    };
+    count(this.root.object3D!, 0);
     return { triangles, textureBytes: this.diorama.ready ? Math.round(CHRONICLES_MAP.width * CHRONICLES_MAP.height * 4 * 4 / 3) : 0 };
   }
 

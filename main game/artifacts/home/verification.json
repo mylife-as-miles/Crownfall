@@ -6,7 +6,7 @@
     "All three final Home titles and exact supplied-image delivery hashes load; Chronicles preserves its map with contain",
     "Restored 600×434 Home grid matches 298×434 + stacked 298×215 tiles with 4px gaps; equal outer heights, fitting titles and no overflow across three viewports",
     "Keyboard spatial movement, remembered right row, clamped outer edges and Home/End retain one selected tab stop and actual focus",
-    "Pointer hover→Enter and clicks open each truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news",
+    "Pointer hover→Enter and clicks open Chronicles' own screen and each other tile's truthful limited-state dialog; close/back restore the selected Home tile without fabricated launch, stats or news",
     "Showcase is a dedicated three-destination screen and Back returns to its originating Home selection",
     "Home→Settings returns to Home selection; Home Back returns to preserved Play selection/geometry; Play confirmation returns to Home with focus",
     "Simulated standard controller supports all four D-pad directions, remembered-row/clamp behavior, A/B dialogs, Home Back and four-tab bumper transitions through Showcase with preserved Home/Play selections",
@@ -343,14 +343,6 @@
     }
   ],
   "dialogs": [
-    {
-      "title": "Chronicles",
-      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel"
-    },
-    {
-      "title": "Chronicles",
-      "text": "CHRONICLES\n\nChronicles are unavailable in this build.\n\nA\nConfirm\nB\nCancel"
-    },
     {
       "title": "My Legacy",
       "text": "MY LEGACY\n\nLegacy profiles are unavailable in this build.\n\nA\nConfirm\nB\nCancel"

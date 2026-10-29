@@ -4,7 +4,7 @@
   "scope": "Desktop Chronicles on a production build: entry and loading, navigation by mouse, keyboard and a mocked standard controller, Back, the parity fixture replayed through the UI, motion and reduced motion, the flat fallback (WebGL disabled), layouts at 1280×720, 1920×1080 and 844×390, CDP measurements (long tasks with attribution, script time per frame, heap and canvases over round trips, the atmosphere rebuild, stage cost per preset) and one 4× CPU-throttled run.",
   "emulation": "Headless Chromium with SwiftShader software WebGL; controller input is a mocked standard Gamepad API device. Nothing here is GPU, desktop-hardware or headset evidence.",
   "checks": [
-    "Home → Chronicles shows the loading state named by the approved title from the click, then the stage (ready in 6796 ms at medium on this host): a full-stage layer with the main navigation hidden and inert, the approved collection tabs only (no Contested Record) and one hidden button per nation",
+    "Home → Chronicles shows the loading state named by the approved title from the click, then the stage (ready in 4510 ms at medium on this host): a full-stage layer with the main navigation hidden and inert, the approved collection tabs only (no Contested Record) and one hidden button per nation",
     "Mouse: clicking each nation's marker on the stage opens exactly that nation's entry (title, body, label name and meaning) with its focus; Back closes the entry and keeps the nation, and Back again returns to the overview",
     "Clicks on bare ground, the painted map's centre included, change nothing",
     "Mouse: a drag orbits the view within its limits and the wheel zooms; neither opens an entry",
@@ -16,22 +16,20 @@
     "Mocked standard controller: the D-pad and left stick move between nations and stops, A opens, B unwinds, the right stick orbits and the right trigger zooms the view, LB/RB cycle the collections",
     "Back (Escape, Backspace, B and the Back button) closes the entry, then the nation focus, then returns Home with the Chronicles tile selected and focused",
     "The shared parity fixture's 25 steps replay through the screen's own inputs (marker and ground clicks, arrows, Enter, Q/E, LB/RB, tab clicks, Escape, Backspace, B and the Back button) and every resulting state matches; the last Back returns Home",
+    "Without WebGL the flat painting offers the same entries: four rings on their painted places (each at least 6% of the image width), the same records by pointer and keyboard, the Interregnum and the Laws, and Back returns Home",
+    "A WebGL context lost after the stage is ready falls back to the flat painting with the same entries; the stage canvas is removed and Back still returns Home",
     "At 1920×1080, 1280×720 and 844×390 the Atlas, an open record, the Interregnum and the Laws fit without page overflow, clipped text, scrolling or overlapping panels, between the header and the footer, with Back reachable; hero frames at 1920×1080 (PNG)",
-    "One render loop at a time with the real sorcerer: on Home the sorcerer drew 40 and the motes 40 calls in 40 frames; with Chronicles open only the stage drew and the menu's stage layers stopped compositing; on exit both menu loops resumed (first mote frame 6569 ms after Back)",
-    "After interactive at medium: 0 long task(s) over 50 ms in a 15329 ms traced window, none attributable to Chronicles (none); script per frame p50/p95/p99 1.89/3.93/3.93 ms",
-    "Five Home ↔ Chronicles round trips: canvases back to 2 (stage 0); heap after GC 6.43 → 8.46 MB (2.03 MB; 0.68 MB since the first visit)",
+    "One render loop at a time with the real sorcerer: on Home the sorcerer drew 40 and the motes 40 calls in 40 frames; with Chronicles open only the stage drew and the menu's stage layers stopped compositing; on exit Home showed 12207 ms after Back, both menu loops resumed (first mote frame after 12258 ms) and the stage's canvas and context were released (12269 ms); exit long tasks, attributed: 11106.7 ms the stage's disposal (Chronicles); 59.6 ms garbage collection; 79.5 ms garbage collection",
+    "After interactive at medium: 0 long task(s) over 50 ms in a 19134 ms traced window, none attributable to Chronicles (none); script per frame p50/p95/p99 1.44/4.13/4.13 ms",
+    "Five Home ↔ Chronicles round trips: canvases back to 2 (stage 0); heap after GC 6.47 → 8.49 MB (2.02 MB; 0.7 MB since the first visit)",
     "Stage cost per preset (renderer.info) within budget at the overview and every nation framing: low overview 15 calls/57812 tris, heaviest overview 15/57812; medium overview 17 calls/226738 tris, heaviest overview 17/226738; high overview 17 calls/306474 tris, heaviest overview 17/306474",
-    "Under 4× CPU throttling the screen appeared 117 ms after the click, the stage was ready after 18814 ms, and the collection switch took 102 ms; long tasks after interactive: []",
+    "Under 4× CPU throttling the screen appeared 94 ms after the click, the stage was ready after 14766 ms, and the collection switch took 154 ms; long tasks after interactive: [93]",
     "No JavaScript or console errors in any phase"
   ],
   "failures": [
     {
       "phase": "motion: loading animation, entrance settle and flights",
-      "failure": "AssertionError [ERR_ASSERTION]: [\"chronicles-turn\",\"chronicles-turn\"]\n    at file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:753:12\n    at async phase (file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:329:5)\n    at async file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:717:1"
-    },
-    {
-      "phase": "flat fallback (WebGL disabled)",
-      "failure": "locator.click: Timeout 180000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.chronicles-item').first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" tabindex=\"-1\" data-record=\"year-0\" aria-pressed=\"false\" aria-expanded=\"false\" aria-label=\"Year 0 — The Crownfall\" class=\"chronicles-item chronicles-item--interregnum\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    320 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m        - element is not visible\u001b[22m\n\u001b[2m      - retrying click action\u001b[22m\n\u001b[2m        - waiting 500ms\u001b[22m\n\n    at /home/user/crownfall-chronicles/main game/scripts/verify-chronicles.mjs:801:51\n    at async phase (/home/user/crownfall-chronicles/main game/scripts/verify-chronicles.mjs:329:5)\n    at async file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:769:1"
+      "failure": "AssertionError [ERR_ASSERTION]: the camera flies to the nation []\n    at file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:755:12\n    at async phase (file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:329:5)\n    at async file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:718:1"
     }
   ],
   "metrics": {
@@ -39,53 +37,53 @@
       "cpus": 4,
       "rendering": "SwiftShader (software WebGL) in headless Chromium: absolute timings are not GPU, desktop-hardware or headset evidence",
       "loadAverageAtStart": [
-        15.5,
-        17.5,
-        18.9
+        11.4,
+        17.2,
+        20.1
       ],
       "note": "Two other workflows share this host. Times are reported for comparison within this run only.",
       "loadAverageAtEnd": [
-        27.9,
-        25.2,
-        22.9
+        30.9,
+        28,
+        24.8
       ]
     },
     "stage": "The relief renderer (scene/AtlasScene) behind the stage adapter: the archive renderer (scene/ArchiveScene, task B4) has not landed, so archive-specific framings and stats are not measured here.",
     "entry": {
       "quality": "medium",
-      "readyMs": 6796
+      "readyMs": 4510
     },
     "phases": {
       "entry, navigation and Back (medium, reduced motion)": {
-        "seconds": 201,
+        "seconds": 197,
         "passed": true
       },
       "parity fixture replayed through the UI": {
-        "seconds": 57,
+        "seconds": 56,
         "passed": true
       },
       "motion: loading animation, entrance settle and flights": {
-        "seconds": 121,
+        "seconds": 119,
         "passed": false
       },
       "flat fallback (WebGL disabled)": {
-        "seconds": 198,
-        "passed": false
+        "seconds": 39,
+        "passed": true
       },
       "layouts and hero frames": {
-        "seconds": 168,
+        "seconds": 180,
         "passed": true
       },
       "performance (medium): loops, long tasks, frame script time, round trips, atmosphere rebuild": {
-        "seconds": 1101,
+        "seconds": 1014,
         "passed": true
       },
       "stage cost per preset": {
-        "seconds": 173,
+        "seconds": 225,
         "passed": true
       },
       "4x CPU throttle: entry and one collection switch": {
-        "seconds": 35,
+        "seconds": 47,
         "passed": true
       },
       "no page errors": {
@@ -95,17 +93,17 @@
     },
     "entrance": {
       "quality": "medium",
-      "readyToSettledMs": 259,
-      "note": "The relief renderer's entrance flight is 2.2 s by design; the archive renderer's blueprint settle is at most 1.5 s (task B4)."
+      "readyToSettledMs": 8945,
+      "note": "The relief renderer's entrance is a time-based 2.2 s flight; frames here are GPU-bound (SwiftShader), so few frames fall inside it and this number is not its duration. The archive renderer's blueprint settle is at most 1.5 s (task B4)."
     },
     "afterInteractive": {
       "quality": "medium",
-      "windowMs": 15329,
-      "frames": 7,
+      "windowMs": 19134,
+      "frames": 8,
       "scriptPerFrameMs": {
-        "p50": 1.89,
-        "p95": 3.93,
-        "p99": 3.93
+        "p50": 1.44,
+        "p95": 4.13,
+        "p99": 4.13
       },
       "longTasksObservedByPage": [],
       "longTasks": [],
@@ -115,88 +113,110 @@
     "roundTrips": {
       "count": 5,
       "baseline": {
-        "heapMB": 6.43,
+        "heapMB": 6.47,
         "canvases": {
           "total": 2,
           "stage": 0
         }
       },
       "afterFirstVisit": {
-        "heapMB": 7.78,
+        "heapMB": 7.79,
         "canvases": {
           "total": 2,
           "stage": 0
         }
       },
       "afterFive": {
-        "heapMB": 8.46,
+        "heapMB": 8.49,
         "canvases": {
           "total": 2,
           "stage": 0
         }
       },
-      "heapGrowthMB": 2.03,
-      "heapGrowthSinceFirstVisitMB": 0.68,
+      "heapGrowthMB": 2.02,
+      "heapGrowthSinceFirstVisitMB": 0.7,
       "note": "The relief renderer keeps the last built relief mesh (typed arrays) for the session by design; the growth since the first visit isolates leaks."
     },
-    "atmosphereRebuildOnExit": {
+    "exit": {
       "quality": "medium",
-      "exitToFirstMoteDrawMs": 6569,
+      "backToHomeTileMs": 12207,
+      "backToFirstMoteFrameMs": 12258,
+      "backToStageContextReleasedMs": 12269,
       "longTasks": [
         {
-          "durationMs": 6233.9,
+          "durationMs": 11106.7,
+          "owner": "the stage's disposal (Chronicles)",
           "groupsMs": {
-            "gpu-wait": 3916.2,
-            "script": 2308.6,
-            "other": 7.7,
-            "untraced": 0.9,
-            "style": 0.4,
+            "gpu-wait": 6622.2,
+            "script": 4475.2,
+            "other": 8.2,
+            "untraced": 0.8,
+            "style": 0.2,
             "layout": 0.1,
-            "composite": 0.1
+            "composite": 0
           },
           "scriptInclusiveByFilePercent": {
             "(native (root))": 100,
             "react-dom": 100,
-            "three": 99.7,
-            "src/Chronicles.tsx": 99.4,
-            "src/chronicles/stage.ts": 99.4,
-            "src/chronicles/scene/AtlasScene.ts": 99.4,
-            "(native loseContext)": 99.3,
-            "src/Atmosphere.tsx": 0.4,
-            "(native getContext)": 0.2,
-            "src/MenuTransition.tsx": 0.1,
-            "(native removeChild)": 0,
-            "(native getExtension)": 0
+            "three": 100,
+            "src/chronicles/scene/AtlasScene.ts": 99.9,
+            "src/chronicles/stage.ts": 99.9,
+            "src/Chronicles.tsx": 99.9,
+            "(native loseContext)": 99.9,
+            "(native getContext)": 0.1,
+            "src/Atmosphere.tsx": 0.1,
+            "(native (program))": 0,
+            "src/chronicles/scene/atlas-set.ts": 0,
+            "src/MenuTransition.tsx": 0
+          },
+          "topSelfFunctionsPercent": {
+            "loseContext @ (native loseContext)": 99.9,
+            "getContext @ (native getContext)": 0.1,
+            "(program) @ (native (program))": 0,
+            "(anonymous) @ src/MenuTransition.tsx": 0,
+            "deleteProgram @ (native deleteProgram)": 0,
+            "deallocateTexture @ three": 0,
+            "deleteVertexArray @ (native deleteVertexArray)": 0,
+            "onMaterialDispose @ three": 0,
+            "close @ (native close)": 0
           }
         },
         {
-          "durationMs": 65.6,
+          "durationMs": 59.6,
+          "owner": "garbage collection",
           "groupsMs": {
-            "script": 65.5,
+            "gc": 59.5,
             "other": 0.1,
             "untraced": 0
           },
           "scriptInclusiveByFilePercent": {
-            "(native (root))": 100,
-            "(native (program))": 50,
-            "(native cancel)": 50,
-            "src/MenuTransition.tsx": 50
+            "(native (garbage collector))": 100,
+            "(native (root))": 100
+          },
+          "topSelfFunctionsPercent": {
+            "(garbage collector) @ (native (garbage collector))": 100
           }
         },
         {
-          "durationMs": 182.3,
+          "durationMs": 79.5,
+          "owner": "garbage collection",
           "groupsMs": {
-            "gc": 182.2,
-            "untraced": 0.1,
-            "other": 0
+            "gc": 79.4,
+            "other": 0,
+            "untraced": 0
           },
           "scriptInclusiveByFilePercent": {
-            "(native (program))": 100,
+            "(native (garbage collector))": 100,
             "(native (root))": 100
+          },
+          "topSelfFunctionsPercent": {
+            "(garbage collector) @ (native (garbage collector))": 100
           }
         }
       ],
-      "note": "D7 keeps App.tsx's overrides: the atmosphere drops to low while Chronicles is open and is rebuilt on exit; the sorcerer pauses through reduced motion."
+      "note": "D7 keeps App.tsx's overrides: the atmosphere drops to low while Chronicles is open and is rebuilt on exit (a new WebGL context), and the sorcerer pauses through reduced motion. The stage disposes everything on exit; the relief renderer ends its disposal by forcing a WebGL context loss, which waits for the GPU process. Both waits are synchronous GPU calls, measured here on SwiftShader with a saturated GPU process.",
+      "atmosphereRebuildMs": 0,
+      "stageDisposalMs": 11106.7
     },
     "loops": {
       "home": {
@@ -382,24 +402,85 @@
       }
     },
     "throttled": {
+      "loadingLongTasksAttributed": [
+        {
+          "durationMs": 10361.3,
+          "groupsMs": {
+            "gpu-wait": 9963.6,
+            "script": 334.1,
+            "gc": 49.3,
+            "other": 12.7,
+            "untraced": 1.5
+          },
+          "topSelfFunctionsPercent": {
+            "getContext @ (native getContext)": 99.1,
+            "(anonymous) @ AtlasScene-Bo2rCqj_.js": 0.1,
+            "getExtension @ (native getExtension)": 0.1,
+            "wobbled @ shared/chronicles/archive/relief.ts": 0.1,
+            "elevate @ shared/chronicles/archive/relief.ts": 0.1
+          },
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "src/chronicles/stage.ts": 99.5,
+            "src/chronicles/scene/AtlasScene.ts": 99.4,
+            "three": 99.2,
+            "(native getContext)": 99.1,
+            "AtlasScene-Bo2rCqj_.js": 0.3,
+            "shared/chronicles/archive/relief.ts": 0.3,
+            "(native getExtension)": 0.1
+          }
+        },
+        {
+          "durationMs": 1024.7,
+          "groupsMs": {
+            "gpu-wait": 432.7,
+            "other": 346.9,
+            "script": 245,
+            "untraced": 0.1
+          },
+          "topSelfFunctionsPercent": {
+            "getProgramInfoLog @ (native getProgramInfoLog)": 43.4,
+            "getShaderInfoLog @ (native getShaderInfoLog)": 17.2,
+            "getProgramParameter @ (native getProgramParameter)": 4.1,
+            "setProgram @ three": 2.9,
+            "(program) @ (native (program))": 2.5
+          },
+          "scriptInclusiveByFilePercent": {
+            "(native (root))": 100,
+            "src/chronicles/scene/AtlasScene.ts": 97.5,
+            "three": 96.3,
+            "(native getProgramInfoLog)": 43.4,
+            "(native getShaderInfoLog)": 17.2,
+            "(native getProgramParameter)": 4.1,
+            "(native (program))": 2.5,
+            "(native getActiveUniform)": 2.5
+          }
+        }
+      ],
       "rate": 4,
       "quality": "medium",
-      "clickToScreenMs": 117,
-      "clickToReadyMs": 18814,
-      "readyToSettledMs": 53,
-      "collectionSwitchMs": 102,
+      "clickToScreenMs": 94,
+      "clickToReadyMs": 14766,
+      "readyToSettledMs": 23,
+      "collectionSwitchMs": 154,
       "longTasksDuringLoadingMs": [
-        75,
-        16205,
-        164,
-        300,
-        63,
-        73,
+        71,
+        10359,
+        51,
+        242,
+        105,
         55,
-        184,
-        56
+        81,
+        363,
+        68,
+        449,
+        610,
+        1024,
+        176
       ],
-      "longTasksAfterInteractiveMs": [],
+      "longTasksAfterInteractiveMs": [
+        93
+      ],
       "note": "Loading-phase tasks are the stage build behind the visible loading state; the 50 ms rule applies once the screen is interactive."
     }
   },
@@ -584,7 +665,7 @@
         "collection": "atlas",
         "focus": "overview",
         "entryId": null,
-        "load": "ready"
+        "load": "loading"
       }
     },
     {
@@ -623,6 +704,45 @@
         "collection": "atlas",
         "focus": "nation:korvenia",
         "entryId": null,
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/record-solforiz-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:solforiz",
+        "entryId": "solforiz",
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/record-aethelgard-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:aethelgard",
+        "entryId": "aethelgard",
+        "load": "ready"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/record-kwind-09-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:kwind-09",
+        "entryId": "kwind-09",
         "load": "ready"
       }
     },
@@ -718,7 +838,7 @@
       }
     },
     {
-      "path": "artifacts/chronicles/m1/loading-motion-1280x720.jpg",
+      "path": "artifacts/chronicles/m1/entrance-motion-1280x720.jpg",
       "viewport": {
         "width": 1280,
         "height": 720
@@ -766,6 +886,19 @@
         "collection": "interregnum",
         "focus": "overview",
         "entryId": "year-33",
+        "load": "flat"
+      }
+    },
+    {
+      "path": "artifacts/chronicles/m1/context-lost-flat-record-1280x720.jpg",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": {
+        "collection": "atlas",
+        "focus": "nation:kwind-09",
+        "entryId": "kwind-09",
         "load": "flat"
       }
     },
