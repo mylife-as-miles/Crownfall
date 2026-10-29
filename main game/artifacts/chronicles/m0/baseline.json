@@ -1,0 +1,181 @@
+{
+  "base": "http://127.0.0.1:5192/",
+  "host": {
+    "cpus": 4,
+    "loadAverage": [
+      16.9,
+      17.7,
+      19.1
+    ],
+    "rendering": "SwiftShader (software); timings are not GPU or headset evidence"
+  },
+  "runs": [
+    {
+      "quality": "high",
+      "model": true,
+      "bootMs": 26267,
+      "atlasReadyMs": 32430,
+      "overview": {
+        "drawCalls": 19,
+        "triangles": 306474,
+        "camera": "overview",
+        "canvases": 2,
+        "heapMB": 24.6
+      },
+      "record": {
+        "drawCalls": 14,
+        "triangles": 306446,
+        "camera": "korvenia",
+        "canvases": 2,
+        "heapMB": 24
+      },
+      "longTasksAfterInteractive": [
+        {
+          "start": 92365,
+          "duration": 396
+        },
+        {
+          "start": 96526,
+          "duration": 585
+        }
+      ],
+      "longTasksAll": [
+        {
+          "start": 447,
+          "duration": 768
+        },
+        {
+          "start": 2353,
+          "duration": 1777
+        },
+        {
+          "start": 4156,
+          "duration": 487
+        },
+        {
+          "start": 5062,
+          "duration": 113
+        },
+        {
+          "start": 5246,
+          "duration": 159
+        },
+        {
+          "start": 5406,
+          "duration": 20348
+        },
+        {
+          "start": 27046,
+          "duration": 141
+        },
+        {
+          "start": 46385,
+          "duration": 12110
+        },
+        {
+          "start": 58497,
+          "duration": 118
+        },
+        {
+          "start": 60830,
+          "duration": 1214
+        },
+        {
+          "start": 62133,
+          "duration": 196
+        },
+        {
+          "start": 92365,
+          "duration": 396
+        },
+        {
+          "start": 96526,
+          "duration": 585
+        }
+      ],
+      "afterExit": {
+        "chroniclesCanvas": 0,
+        "canvases": 2,
+        "selectedTile": "Chronicles"
+      }
+    },
+    {
+      "quality": "medium",
+      "model": false,
+      "bootMs": 5451,
+      "atlasReadyMs": 16297,
+      "overview": {
+        "drawCalls": 19,
+        "triangles": 226738,
+        "camera": "overview",
+        "canvases": 1,
+        "heapMB": 16.1
+      },
+      "record": {
+        "drawCalls": 14,
+        "triangles": 226710,
+        "camera": "korvenia",
+        "canvases": 1,
+        "heapMB": 16.5
+      },
+      "longTasksAfterInteractive": [
+        {
+          "start": 36074,
+          "duration": 76
+        }
+      ],
+      "longTasksAll": [
+        {
+          "start": 115,
+          "duration": 205
+        },
+        {
+          "start": 335,
+          "duration": 382
+        },
+        {
+          "start": 767,
+          "duration": 3711
+        },
+        {
+          "start": 14528,
+          "duration": 5742
+        },
+        {
+          "start": 20271,
+          "duration": 358
+        },
+        {
+          "start": 21124,
+          "duration": 5577
+        },
+        {
+          "start": 26785,
+          "duration": 76
+        },
+        {
+          "start": 36074,
+          "duration": 76
+        }
+      ],
+      "afterExit": {
+        "chroniclesCanvas": 0,
+        "canvases": 1,
+        "selectedTile": "Chronicles"
+      }
+    }
+  ],
+  "errors": [],
+  "scope": "M0 baseline of the current desktop Chronicles screen (Brief E relief Atlas) from a production build served by vite preview on port 5192: Home -> Chronicles at high quality with motion on and the real sorcerer, then medium quality without the model for budget numbers.",
+  "captures": [
+    "atlas-overview-high-1280x720.png",
+    "atlas-record-korvenia-high-1280x720.png",
+    "interregnum-high-1280x720.png",
+    "laws-high-1280x720.png"
+  ],
+  "notes": [
+    "interregnum-high-1280x720.png was re-taken by a second run that waits for the tab, panel and six animation frames: the first run screenshot 1.5 s after the click still showed the Atlas because a 396 ms main-thread long task delayed the exhibit switch on this loaded host.",
+    "drawCalls and triangles are renderer.info of the Atlas renderer only (the stage dataset); the paused menu sorcerer canvas stays alive while Chronicles is open (2 canvases at high with the model).",
+    "Long tasks are main-thread PerformanceObserver entries under SwiftShader with a host load average near 20; they show where work is concentrated, not real-hardware durations."
+  ]
+}

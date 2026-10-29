@@ -1,3 +1,5 @@
+import { CHRONICLE_EXHIBITS, getChronicleRecord, hotspotAt } from "../../shared/chronicles/content";
+import type { ChronicleExhibitId } from "../../shared/chronicles/types";
 import { ARENAS, CHAPTERS, HOME_CONTENT, PLAY_CARDS, SETTINGS_CATEGORIES } from "../../shared/menu/content";
 import type { HomeTileAction, MenuPanel, PlayCardId, SettingsCategory, ShowcaseView } from "../../shared/menu/types";
 
@@ -45,7 +47,7 @@ export function normalizeQuestPreferences(value: unknown): QuestPreferences {
 }
 
 export type QuestNavigationScreen = "home" | "play" | "showcase" | "settings";
-export type QuestScreen = QuestNavigationScreen | "chapters" | "arenas" | "library" | "onboarding" | "visit" | "pause";
+export type QuestScreen = QuestNavigationScreen | "chapters" | "arenas" | "library" | "chronicles" | "onboarding" | "visit" | "pause";
 type ContentScreen = Exclude<QuestScreen, "pause">;
 type ShowcaseOrigin = "home" | "play" | "chapters" | "settings";
 
@@ -65,6 +67,9 @@ export interface QuestState {
   /** Origins survive pause without overloading its previousScreen snapshot. */
   showcaseOrigin: ShowcaseOrigin;
   settingsOrigin: "home" | "play";
+  /** Chronicles keeps its exhibit and open record through pause; the Home tile reopens the Atlas. */
+  exhibit: ChronicleExhibitId;
+  record: string | null;
 }
 
 export type QuestEvent =
@@ -75,9 +80,12 @@ export type QuestEvent =
   | { type: "showcase"; view: ShowcaseView }
   | { type: "arena"; index: number }
   | { type: "category"; category: SettingsCategory }
+  | { type: "exhibit"; exhibit: ChronicleExhibitId }
+  | { type: "record"; id: string }
+  | { type: "map"; x: number; y: number }
   | { type: "enter"; firstVisit: boolean }
   | { type: "pause"; reason: string }
-  | { type: "back" | "confirm" | "cancel" | "exit" | "start-visit" | "skip-visit" | "visit-next" | "visit-back" | "visit-finish" | "resume" | "pause-home" };
+  | { type: "back" | "confirm" | "cancel" | "exit" | "start-visit" | "skip-visit" | "visit-next" | "visit-back" | "visit-finish" | "resume" | "pause-home" | "close-record" };
 
 export const QUEST_VISIT_ARENAS = ARENAS.slice(0, 3);
 export const QUEST_VISIT_STEPS = QUEST_VISIT_ARENAS.length;
@@ -87,7 +95,7 @@ export function createQuestState(): QuestState {
     screen: "home", previousScreen: "home", modal: null,
     chapterIndex: 0, arenaIndex: 0, library: "battles", settingsCategory: null,
     visitStep: 0, visitComplete: false, paused: false, pauseReason: "", entered: false,
-    showcaseOrigin: "home", settingsOrigin: "home",
+    showcaseOrigin: "home", settingsOrigin: "home", exhibit: CHRONICLE_EXHIBITS[0].id, record: null,
   };
 }
 
@@ -139,9 +147,12 @@ export function reduceQuestState(state: QuestState, event: QuestEvent): QuestSta
       return state.modal ? { ...state, modal: null } : state;
     case "nav":
       return ["home", "play", "showcase", "settings"].includes(event.screen) ? nav(state, event.screen) : state;
-    case "home":
-      return state.screen === "home" && HOME_CONTENT.some(item => item.action === event.panel)
-        ? { ...state, modal: event.panel } : state;
+    case "home": {
+      const tile = state.screen === "home" ? HOME_CONTENT.find(item => item.action === event.panel) : undefined;
+      if (!tile) return state;
+      return tile.destination === "chronicles"
+        ? { ...content(state, "chronicles"), exhibit: CHRONICLE_EXHIBITS[0].id, record: null } : { ...state, modal: event.panel };
+    }
     case "play":
       if (state.screen !== "play" || !PLAY_CARDS.some(item => item.id === event.id)) return state;
       return event.id === "chapters" ? content(state, "chapters") : { ...state, modal: event.id };
@@ -163,6 +174,22 @@ export function reduceQuestState(state: QuestState, event: QuestEvent): QuestSta
     case "category":
       return state.screen === "settings" && SETTINGS_CATEGORIES.includes(event.category)
         ? { ...state, settingsCategory: event.category } : state;
+    case "exhibit":
+      return state.screen === "chronicles" && state.exhibit !== event.exhibit && CHRONICLE_EXHIBITS.some(item => item.id === event.exhibit)
+        ? { ...state, exhibit: event.exhibit, record: null } : state;
+    case "record": {
+      // A record opens from its own exhibit; Atlas records open from their map hotspot.
+      const record = state.screen === "chronicles" ? getChronicleRecord(event.id) : undefined;
+      return record && record.id !== state.record && record.exhibit === state.exhibit && (record.exhibit !== "atlas" || !!record.hotspot)
+        ? { ...state, record: record.id } : state;
+    }
+    case "map": {
+      // Hit-tests the bare map image; empty ground and the centre do nothing.
+      const record = state.screen === "chronicles" && state.exhibit === "atlas" ? hotspotAt(event.x, event.y) : null;
+      return record && record.id !== state.record ? { ...state, record: record.id } : state;
+    }
+    case "close-record":
+      return state.screen === "chronicles" && state.record ? { ...state, record: null } : state;
     case "start-visit":
       return ["home", "onboarding", "visit"].includes(state.screen)
         ? { ...content(state, "visit"), visitStep: 0, visitComplete: false } : state;
@@ -180,6 +207,7 @@ export function reduceQuestState(state: QuestState, event: QuestEvent): QuestSta
     case "back":
       if (state.modal) return { ...state, modal: null };
       if (state.screen === "chapters") return content(state, "play");
+      if (state.screen === "chronicles") return state.record ? { ...state, record: null } : content(state, "home");
       if (state.screen === "arenas" || state.screen === "library") return content(state, "showcase");
       if (state.screen === "showcase") return content(state, state.showcaseOrigin);
       if (state.screen === "settings") return state.settingsCategory

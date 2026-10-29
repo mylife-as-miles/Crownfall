@@ -7,7 +7,7 @@ const artwork = [
   ["/assets/environments/card-load.webp", "Chapters artwork"],
   ["/assets/environments/card-browse.webp", "Arena artwork"],
   ["/assets/home/my-legacy.webp", "My Legacy artwork"],
-  ["/assets/home/chronicles.webp", "Chronicles artwork"],
+  ["/assets/chronicles/chronicles-map.webp", "Chronicles artwork"],
   ["/assets/home/herald-board.webp", "Herald Board artwork"],
   ["/assets/creature.webp", "Illustrated sorcerer"],
 ] as const;

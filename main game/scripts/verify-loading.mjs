@@ -67,7 +67,7 @@ try {
     const page = await createPage({ reducedMotion: "no-preference" });
     const imageGate = deferred(), fontGate = deferred(), imageStarted = deferred(), fontStarted = deferred();
     const images = new Set();
-    page.on("response", (response) => { const path = new URL(response.url()).pathname; if (/\/assets\/(home|environments)\//.test(path) && response.ok()) images.add(path); });
+    page.on("response", (response) => { const path = new URL(response.url()).pathname; if (/\/assets\/(home|environments|chronicles)\//.test(path) && response.ok()) images.add(path); });
     await page.route((address) => address.pathname === "/assets/home/my-legacy.webp", async (route) => { imageStarted.resolve(); await imageGate.promise; await route.continue(); });
     await page.route((address) => /\/fonts\/.*\.ttf$/.test(address.pathname), async (route) => { fontStarted.resolve(); await fontGate.promise; await route.continue(); });
     await page.goto(url("none"), { waitUntil: "domcontentloaded" });
@@ -104,7 +104,7 @@ try {
     const exits = await page.evaluate(() => window.__loadingExitStates);
     assert.ok(exits.some((state) => state.state === "leaving" && state.menuInert), "normal completion must coordinate its visual exit while retaining the interaction gate");
     states.push({ label: "normal coordinated loading exit", exits });
-    assert.deepEqual([...images].filter((path) => !path.includes("card-host")).sort(), ["/assets/environments/card-new.webp", "/assets/environments/card-resume.webp", "/assets/environments/card-load.webp", "/assets/environments/card-browse.webp", "/assets/home/my-legacy.webp", "/assets/home/chronicles.webp", "/assets/home/herald-board.webp"].sort());
+    assert.deepEqual([...images].filter((path) => !path.includes("card-host")).sort(), ["/assets/environments/card-new.webp", "/assets/environments/card-resume.webp", "/assets/environments/card-load.webp", "/assets/environments/card-browse.webp", "/assets/home/my-legacy.webp", "/assets/chronicles/chronicles-map.webp", "/assets/home/herald-board.webp"].sort());
     assert.equal(await page.getByRole("tab", { name: "Play", exact: true }).getAttribute("aria-selected"), "true");
     await page.keyboard.press("ArrowRight");
     assert.equal(await page.getByRole("button", { name: "Chapters", exact: true }).getAttribute("aria-pressed"), "true");
@@ -226,7 +226,7 @@ try {
   for (const kind of ["image", "font"]) {
     const page = await createPage({ expectedFailure: true });
     const attempted = deferred();
-    await page.route((address) => kind === "image" ? address.pathname === "/assets/home/chronicles.webp" : /\/fonts\/.*\.ttf$/.test(address.pathname), async (route) => { attempted.resolve(); await route.abort("failed"); });
+    await page.route((address) => kind === "image" ? address.pathname === "/assets/chronicles/chronicles-map.webp" : /\/fonts\/.*\.ttf$/.test(address.pathname), async (route) => { attempted.resolve(); await route.abort("failed"); });
     await page.goto(url("none"), { waitUntil: "domcontentloaded" });
     await bounded(attempted.promise, `failed ${kind}`);
     await waitForBootReady(page, { continueOnFailure: true, timeout: 30000 });

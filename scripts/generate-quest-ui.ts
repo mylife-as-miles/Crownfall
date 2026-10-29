@@ -8,13 +8,17 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  CHRONICLE_EXHIBITS, CHRONICLE_LABELS, CHRONICLE_RECORDS, CHRONICLES_TITLE,
+  getChronicleRecords, getChronicleShortTitle, getHotspotRecords,
+} from '../shared/chronicles/content.ts';
+import {
   ARENAS, CHAPTERS, HOME_CONTENT, NAV_TABS, PLAY_CARDS,
   SETTINGS_CATEGORIES, SHOWCASE_CATEGORIES, getModalContent,
 } from '../shared/menu/content.ts';
 import { CARD_ART_POSITIONS, MENU_LAYOUT, MENU_THEME } from '../shared/menu/theme.ts';
 import {
-  QUEST_FIXED_ACTION_IDS, QUEST_FIXED_TEXT_IDS, QUEST_SETTING_ROWS,
-  QUEST_UI_LAYOUT, QUEST_VIEW_IDS,
+  QUEST_CHRONICLE_CONTROLS, QUEST_CHRONICLE_IDS, QUEST_CHRONICLE_LAYOUT, QUEST_FIXED_ACTION_IDS, QUEST_FIXED_TEXT_IDS,
+  QUEST_SETTING_ROWS, QUEST_UI_LAYOUT, QUEST_VIEW_IDS, questText,
 } from '../main-game-vr/src/ui-contract.ts';
 
 export async function generateQuestUI(destination?: string): Promise<void> {
@@ -22,8 +26,7 @@ export async function generateQuestUI(destination?: string): Promise<void> {
   const ids = new Set<string>();
   const c = MENU_THEME.colors;
   const geometry = MENU_LAYOUT;
-  const ascii = (value: string): string => value.replace(/[‘’]/gu, "'").replace(/[“”]/gu, '"').replace(/[–—]/gu, '-').replace(/·/gu, '/');
-  const escape = (value: string): string => ascii(value).replace(/&/gu, '&amp;').replace(/</gu, '&lt;').replace(/>/gu, '&gt;').replace(/"/gu, '&quot;');
+  const escape = (value: string): string => questText(value).replace(/&/gu, '&amp;').replace(/</gu, '&lt;').replace(/>/gu, '&gt;').replace(/"/gu, '&quot;');
   const id = (value: string): string => {
     if (ids.has(value)) throw new Error(`Duplicate Quest UI ID: ${value}`);
     ids.add(value);
@@ -100,6 +103,21 @@ export async function generateQuestUI(destination?: string): Promise<void> {
     .info-title { font-size: 16; font-weight: 600; color: #ccc9bf; line-height: 1.35; }
     .arena-label { font-size: 10.88; font-weight: 600; color: #b5b2ac; }
     .archive-body { font-size: 12.16; color: #999d88; line-height: 1.45; }
+    .chronicles-title { font-size: 20; font-weight: 600; color: ${c.modalHeading}; line-height: 1.2; }
+    .hotspot-mark { background-color: ${c.activeTab}; z-index-offset: 2; pointer-events: none; }
+    .nation-ring { display: flex; align-items: center; justify-content: center; border-radius: 10; border-width: 2; border-color: ${c.accent}; z-index-offset: 2; pointer-events: none; }
+    .nation-title { font-size: 22; font-weight: 600; color: ${c.inactiveHeading}; line-height: 1.2; }
+    .chronicle-option { padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-width: 1; border-color: #39352a; background-color: #1b1914; cursor: pointer; }
+    .chronicle-option:hover { border-color: ${c.accent}; }
+    .option-title { font-size: 24; font-weight: 600; color: ${c.inactiveHeading}; line-height: 1.2; }
+    .option-subtitle { font-size: 16; font-weight: 400; color: #a19d91; line-height: 1.3; text-align: center; }
+    .record-panel { display: flex; flex-direction: column; gap: 16; padding-top: 28; padding-right: 28; padding-bottom: 30; padding-left: 28; border-width: 1; border-color: #39352a; background-color: #1b1914; }
+    .record-meta { display: flex; flex-direction: row; align-items: center; gap: 14; }
+    .record-chip { display: flex; justify-content: center; padding-top: 5; padding-bottom: 5; border-width: 1; border-color: #867650; background-color: #17140e; }
+    .record-label { font-size: 16; font-weight: 600; color: ${c.modalHeading}; line-height: 1.2; }
+    .record-meaning { font-size: 16; font-weight: 400; color: ${c.modalText}; line-height: 1.35; }
+    .record-title { font-size: 26; font-weight: 600; color: #dfd2b6; line-height: 1.25; }
+    .record-body { font-size: 18; font-weight: 400; color: ${c.text}; line-height: 1.55; }
   `;
 
   const home = view('View_Home', HOME_CONTENT.map((tile, index) => {
@@ -207,6 +225,75 @@ export async function generateQuestUI(destination?: string): Promise<void> {
     + text('Take your time. Resume the menu, recenter the panel, or return Home.', 260, 226, 760, 76, 'modal-body', 'Pause_Body')
     + modalAction('Btn_Resume', 'Resume', 480, 348) + modalAction('Btn_PauseHome', 'Home', 672, 348));
 
+  // Chronicles: the Atlas map is the relief diorama on the table below this
+  // panel, so the panel keeps to the band above it. Exhibit tabs take the
+  // navigation row. On the Atlas a button per nation stands in its quadrant of
+  // the map either side of the record panel; the timeline and the articles sit
+  // above the record panel on their own exhibits. The runtime sets the open
+  // record's copy and moves the record panel to its exhibit's place.
+  const copy = (value: string, className: string, elementId?: string, style = ''): string => node('span', elementId, className, escape(value), `${style} pointer-events: none; z-index-offset: 3;`);
+  const chronicleLayout = QUEST_CHRONICLE_LAYOUT;
+  const chronicleTitleWidth = 150;
+  const band = { x: 105, width: 1280 - 210 };
+  let tabLeft = 128 + chronicleTitleWidth;
+  const exhibitTabs = CHRONICLE_EXHIBITS.map((exhibit, index) => {
+    const tabId = QUEST_CHRONICLE_IDS.tab(exhibit.id);
+    // Sized like the navigation tabs: label width plus the same side padding.
+    const width = Math.round(exhibit.title.length * 10 + 48);
+    const x = tabLeft;
+    tabLeft += width + geometry.navigation.gap;
+    return button(tabId, x, 68.616, width, 50, hitSurface(width, 50) + node('div', `${tabId}_Plate`, 'nav-plate', '', `${rect(0, 9, width, 32.256)} opacity: ${index === 0 ? 1 : 0}; pointer-events: none;`)
+      + text(exhibit.title, 0, 13.128, width, 24, 'nav-label', `${tabId}_Title`, index === 0 ? `color: #19120a;` : 'color: #c1bbac; opacity: 0.54;'), 'nav');
+  }).join('');
+  const option = (elementId: string, width: number, height: number, contents: string): string => hitSurface(width, height)
+    + node('div', `${elementId}_Plate`, '', '', `${rect(0, 0, width, height)} background-color: #c5bca9; opacity: 0; pointer-events: none;`) + contents;
+  const nation = { width: chronicleLayout.record.x - 24 - band.x, height: 64, gap: 20 };
+  const atlas = node('div', QUEST_CHRONICLE_IDS.pane('atlas'), '', getHotspotRecords().map((item) => {
+    const nationId = QUEST_CHRONICLE_IDS.control(item);
+    const x = item.hotspot.x < 0.5 ? band.x : band.x + band.width - nation.width;
+    const y = chronicleLayout.recordTop.atlas + (item.hotspot.y < 0.5 ? 0 : nation.height + nation.gap);
+    // The ring echoes the brass ring of its marker on the table.
+    return button(nationId, x, y, nation.width, nation.height, option(nationId, nation.width, nation.height,
+      node('div', undefined, 'nation-ring', node('div', `${nationId}_Mark`, 'hotspot-mark', '', 'width: 8; height: 8; border-radius: 4; opacity: 0;'), rect(22, nation.height / 2 - 10, 20, 20))
+      + text(getChronicleShortTitle(item), 58, nation.height / 2 - 13, nation.width - 74, 26, 'nation-title', `${nationId}_Title`)), 'chronicle-option');
+  }).join(''), rect(0, 0, 1280, 720));
+  const stops = getChronicleRecords('interregnum');
+  const stop = { gap: 16, height: 140 };
+  const stopWidth = (band.width - stop.gap * (stops.length - 1)) / stops.length;
+  const interregnum = node('div', QUEST_CHRONICLE_IDS.pane('interregnum'), '',
+    node('div', undefined, '', '', `${rect(band.x + stopWidth / 2, chronicleLayout.recordTop.atlas + 33, band.width - stopWidth, 2)} background-color: ${c.accent}; opacity: 0.55; pointer-events: none;`)
+    + stops.map((item, index) => {
+      const stopId = QUEST_CHRONICLE_IDS.control(item);
+      const years = getChronicleShortTitle(item);
+      return button(stopId, band.x + index * (stopWidth + stop.gap), chronicleLayout.recordTop.atlas, stopWidth, stop.height, option(stopId, stopWidth, stop.height,
+        node('div', undefined, '', '', `${rect(stopWidth / 2 - 13, 20, 26, 26)} border-radius: 13; border-width: 2.5; border-color: ${c.accent}; background-color: #1b1914; pointer-events: none;`)
+        + node('div', `${stopId}_Mark`, 'hotspot-mark', '', `${rect(stopWidth / 2 - 6, 27, 12, 12)} border-radius: 6; opacity: 0;`)
+        + text(years, 0, 60, stopWidth, 30, 'option-title', `${stopId}_Title`, 'text-align: center;')
+        + text(item.title.slice(years.length + 3), 10, 94, stopWidth - 20, 40, 'option-subtitle')), 'chronicle-option');
+    }).join(''), rect(0, 0, 1280, 720));
+  const articles = getChronicleRecords('laws');
+  const article = { gap: 16, height: 96 };
+  const articleWidth = (band.width - article.gap * (articles.length - 1)) / articles.length;
+  const laws = node('div', QUEST_CHRONICLE_IDS.pane('laws'), '', articles.map((item, index) => {
+    const articleId = QUEST_CHRONICLE_IDS.control(item);
+    return button(articleId, band.x + index * (articleWidth + article.gap), chronicleLayout.recordTop.atlas, articleWidth, article.height, option(articleId, articleWidth, article.height,
+      node('div', `${articleId}_Mark`, 'hotspot-mark', '', `${rect(0, article.height - 4, articleWidth, 4)} opacity: 0;`)
+      + text(item.title, 16, article.height / 2 - 15, articleWidth - 32, 30, 'option-title', `${articleId}_Title`, 'text-align: center;')), 'chronicle-option');
+  }).join(''), rect(0, 0, 1280, 720));
+  // Generated with the first record; the runtime sets the open record's copy.
+  const firstRecord = CHRONICLE_RECORDS[0];
+  const recordInner = chronicleLayout.record.width - 56;
+  const record = node('div', QUEST_CHRONICLE_IDS.record, 'record-panel',
+    node('div', undefined, 'record-meta', node('div', undefined, 'record-chip', copy(CHRONICLE_LABELS[firstRecord.label].name, 'record-label', 'Record_Label'), 'width: 116;')
+      + copy(CHRONICLE_LABELS[firstRecord.label].meaning, 'record-meaning', 'Record_Meaning', `width: ${recordInner - 130};`))
+    + copy(firstRecord.title, 'record-title', 'Record_Title', `width: ${recordInner};`)
+    + node('div', undefined, '', '', `width: ${recordInner}; height: 1; background-color: #39352a;`)
+    + copy(firstRecord.body, 'record-body', 'Record_Body', `width: ${recordInner};`),
+    `position-type: absolute; position-left: ${chronicleLayout.record.x}; position-top: ${chronicleLayout.recordTop.atlas}; width: ${chronicleLayout.record.width}; display: none;`);
+  const chronicles = view('View_Chronicles', text(CHRONICLES_TITLE, 128, 81.744, chronicleTitleWidth - 24, 24, 'chronicles-title', 'Chronicles_Title')
+    + node('div', undefined, '', '', `${rect(128 + chronicleTitleWidth - 13, 82, 1, 24)} background-color: #39352a; pointer-events: none;`)
+    + exhibitTabs + atlas + interregnum + laws + record);
+
   let navLeft = 128;
   const nav = NAV_TABS.map((tab, index) => {
     const navId = `Nav_${tab.aria}`;
@@ -226,13 +313,16 @@ export async function generateQuestUI(destination?: string): Promise<void> {
     + text('Pinch or touch to select.', 105, 680, 640, 24, 'card-description', 'Status_Hint', 'display: none;')
     + text('Hands-first preview', 105, 680, 640, 24, 'card-description', 'Status_Tracking', 'display: none;')
     + text('Menu preview / gameplay unavailable', 105, 680, 1000, 24, 'card-description', 'Status_Boot', 'display: none;');
-  const source = `<!-- Generated by scripts/generate-quest-ui.ts. Native live controls, supplied artwork and desktop reference geometry. -->\n<style>${styles}</style>\n<div${id('Crownfall_UI')} class="root">${node('div', 'Scene_Scrim', '', '', `${rect(0, 0, 1280, 720)} background-color: #0a0805; opacity: 0; pointer-events: none;`)}${nav}${[home, play, showcase, chapters, settings, arenas, library, modal, onboarding, visit, pause, details].join('\n')}${footer}</div>\n`;
+  const source = `<!-- Generated by scripts/generate-quest-ui.ts. Native live controls, supplied artwork and desktop reference geometry. -->\n<style>${styles}</style>\n<div${id('Crownfall_UI')} class="root">${node('div', 'Scene_Scrim', '', '', `${rect(0, 0, 1280, 720)} background-color: #0a0805; opacity: 0; pointer-events: none;`)}${nav}${[home, play, showcase, chapters, settings, arenas, library, chronicles, modal, onboarding, visit, pause, details].join('\n')}${footer}</div>\n`;
   const required = [
     ...QUEST_VIEW_IDS, ...QUEST_FIXED_ACTION_IDS, ...QUEST_FIXED_TEXT_IDS, 'Visit_Image', 'Arena_Image', 'Btn_ExploreArenas', 'Settings_Category', 'Scene_Scrim', 'Visit_Scrim', 'Library_Archive', 'Library_Battles_Emblem', 'Library_Replays_Emblem',
     ...HOME_CONTENT.map((item) => `Home_${item.action}`), ...PLAY_CARDS.map((item) => `Play_${item.id}`),
     ...CHAPTERS.map((item) => `Chapter_${item.id}`), ...SHOWCASE_CATEGORIES.map((item) => `Showcase_${item.id}`),
     ...ARENAS.map((_, index) => `Arena_${index}`), ...SETTINGS_CATEGORIES.map((item) => `Settings_${item}`),
     ...Array.from({ length: QUEST_SETTING_ROWS }, (_, index) => [`Setting_${index}`, `Setting_Label_${index}`, `Setting_Value_${index}`]).flat(),
+    QUEST_CHRONICLE_IDS.record,
+    ...CHRONICLE_EXHIBITS.flatMap((item) => [QUEST_CHRONICLE_IDS.tab(item.id), QUEST_CHRONICLE_IDS.pane(item.id)]),
+    ...QUEST_CHRONICLE_CONTROLS.flatMap((item) => [QUEST_CHRONICLE_IDS.control(item), `${QUEST_CHRONICLE_IDS.control(item)}_Mark`]),
   ];
   for (const elementId of required) if (!ids.has(elementId)) throw new Error(`Missing required Quest UI ID: ${elementId}`);
   const output = destination ? resolve(destination) : resolve(projectRoot, 'main-game-vr/public/ui/menu.uikitml');

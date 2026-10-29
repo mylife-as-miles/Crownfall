@@ -1,0 +1,518 @@
+.chronicles-screen {
+  --chronicles-accent: var(--menu-accent, #bf791a);
+  --chronicles-left: 8.229167cqw;
+  --chronicles-width: 65.130208cqw;
+  --chronicles-top: 26.666667cqh;
+  --chronicles-height: 55.833333cqh;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  color: #b5b2ac;
+  /* The archive room before the relief appears, and behind the flat painting. */
+  background: radial-gradient(ellipse 72% 64% at 52% 56%, #2a2116 0%, #16110b 58%, #0b0806 100%);
+}
+
+/* The relief fills the stage and fades in on its first frame. Behind the
+   Interregnum and the Laws its last frame rests as a soft, dim backdrop. */
+.chronicles-stage {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: auto;
+  transition: opacity 900ms cubic-bezier(.2, .65, .35, 1), filter 320ms ease;
+}
+.chronicles-screen[data-atlas="ready"] .chronicles-stage { opacity: 1; }
+.chronicles-screen[data-atlas="flat"] .chronicles-stage { display: none; }
+.chronicles-screen:not([data-chronicles-exhibit="atlas"]) .chronicles-stage {
+  pointer-events: none;
+  filter: blur(max(6px, .6cqw)) brightness(.62) saturate(.9);
+}
+.chronicles-stage-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+.chronicles-stage-canvas[data-over="marker"] { cursor: pointer; }
+.chronicles-stage-canvas[data-dragging] { cursor: grabbing; }
+/* Lamplight falls off toward the room's edges; the top stays dark under the menu. */
+.chronicles-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, #0b0806f2 0%, #0b0806e0 20%, #0b0806b3 26%, #0b080600 34%),
+    linear-gradient(0deg, #0b0806cc 0%, #0b080600 16%),
+    radial-gradient(ellipse 78% 72% at 50% 56%, #07050300 52%, #070503a6 100%);
+}
+
+.chronicles-header {
+  position: absolute;
+  z-index: 2;
+  left: var(--chronicles-left);
+  top: 20.555556cqh;
+  width: var(--chronicles-width);
+  height: 4.444444cqh;
+  display: flex;
+  align-items: center;
+  gap: 1.25cqw;
+  border-bottom: 1px solid #9d78333d;
+  pointer-events: auto;
+}
+.chronicles-title {
+  margin: 0;
+  font-family: var(--menu-font-primary, "Barlow"), Arial, sans-serif;
+  font-size: max(var(--menu-card-heading-size, 1.458333cqw), 11px);
+  font-weight: var(--menu-heading-weight, 600);
+  line-height: 1.1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #dfd2b6;
+  text-shadow: 0 1px 2px #000, 0 0 6px #0009;
+}
+.chronicles-header-rule { flex: 0 0 1px; height: 44%; background: #9d78336b; }
+.chronicles-tabs { display: flex; align-items: stretch; gap: 1.875cqw; height: 100%; min-width: 0; }
+.chronicles-tab {
+  position: relative;
+  height: 100%;
+  padding: 0 .1cqw;
+  border: 0;
+  background: transparent;
+  font-size: max(1.015625cqw, 10px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .06cqw;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(193, 187, 172, .58);
+  text-shadow: 0 1px 2px #000b;
+  transition: color 140ms ease;
+}
+.chronicles-tab:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--chronicles-accent);
+  box-shadow: 0 0 .5cqw #dc8d2055;
+  transform: scaleX(0);
+  transition: transform 220ms cubic-bezier(.22, 1, .36, 1);
+}
+.chronicles-tab:hover { color: #e6dacc; }
+.chronicles-tab.is-active { color: var(--menu-modal-heading, #d49130); }
+.chronicles-tab.is-active:after { transform: scaleX(1); }
+.chronicles-tab:focus-visible { outline: 1px solid #ce9849; outline-offset: 3px; }
+
+.chronicles-exhibit {
+  position: absolute;
+  z-index: 1;
+  left: var(--chronicles-left);
+  top: var(--chronicles-top);
+  width: var(--chronicles-width);
+  height: var(--chronicles-height);
+  pointer-events: auto;
+  animation: chronicles-exhibit-enter 240ms cubic-bezier(.16, 1, .3, 1);
+}
+.chronicles-exhibit[hidden] { display: none; }
+/* The Atlas exhibit is the whole stage: the relief takes the pointer and
+   only the record and the flat painting sit above it. */
+.chronicles-exhibit--atlas { inset: 0; width: auto; height: auto; pointer-events: none; animation: none; }
+
+/* Each nation's place on the relief. The buttons stay in the focus order for
+   the keyboard and screen readers while the rings are drawn in 3D; the scene
+   moves each marker over its ring and sets the pin height and ring size. */
+.chronicles-hotspots { position: absolute; inset: 0; pointer-events: none; }
+.chronicles-hotspots:not(.chronicles-hotspots--flat) .chronicles-hotspot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.chronicles-marker {
+  --chronicles-pin: -2.5cqh;
+  --chronicles-ring: 2cqw;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.chronicles-marker-caption {
+  position: absolute;
+  top: calc(var(--chronicles-pin) * .55);
+  padding: .4cqh .6cqw;
+  border: 1px solid #91714366;
+  background: linear-gradient(120deg, #1a1a12f0, #10120ef0);
+  box-shadow: 0 .4cqh 1.2cqh #0007;
+  color: #e3b76a;
+  font-size: max(.78125cqw, 8px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: .06cqw;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(var(--chronicles-caption-shift, 0), -50%);
+  transition: opacity 160ms ease, transform 160ms cubic-bezier(.2, .65, .35, 1);
+}
+.chronicles-marker[data-caption="east"] .chronicles-marker-caption { left: calc(var(--chronicles-ring) + max(.7cqw, 6px)); --chronicles-caption-shift: -4px; }
+.chronicles-marker[data-caption="west"] .chronicles-marker-caption { right: calc(var(--chronicles-ring) + max(.7cqw, 6px)); --chronicles-caption-shift: 4px; }
+.chronicles-marker.is-selected .chronicles-marker-caption { opacity: 1; transform: translate(0, -50%); }
+.chronicles-hotspot:focus-visible + .chronicles-marker .chronicles-marker-caption {
+  opacity: 1;
+  transform: translate(0, -50%);
+  outline: 2px solid var(--menu-focus, #df8a26);
+  outline-offset: 3px;
+}
+
+/* Without WebGL: the painting itself, framed like the Showcase gallery, with
+   rings placed by fraction so they stay on the artwork at every size. */
+.chronicles-flat {
+  position: absolute;
+  left: var(--chronicles-left);
+  top: var(--chronicles-top);
+  height: var(--chronicles-height);
+  aspect-ratio: 2048 / 1529;
+  background: #10120e;
+  box-shadow: 0 0 0 1px #91714366, 0 1.5cqh 4cqh #0004;
+  pointer-events: auto;
+}
+.chronicles-flat-image { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; user-select: none; pointer-events: none; }
+.chronicles-hotspots--flat .chronicles-hotspot {
+  position: absolute;
+  z-index: 1;
+  width: 6%;
+  min-width: 24px;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #dcab5f;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  transition: color 160ms cubic-bezier(.2, .65, .35, 1);
+}
+.chronicles-hotspots--flat .chronicles-hotspot:before {
+  content: "";
+  position: absolute;
+  inset: 9%;
+  border: max(2px, .17cqw) solid currentColor;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 44%, #0b0a0773 100%);
+  box-shadow: 0 0 0 1px #0b0a07a6, inset 0 0 0 1px #0b0a07a6, 0 0 .5cqw #000b;
+  opacity: .84;
+  transition: transform 160ms cubic-bezier(.2, .65, .35, 1), opacity 160ms ease, box-shadow 160ms ease;
+}
+.chronicles-hotspots--flat .chronicles-hotspot:hover,
+.chronicles-hotspots--flat .chronicles-hotspot.is-selected,
+.chronicles-hotspots--flat .chronicles-hotspot.is-open { z-index: 2; color: #ffc366; }
+.chronicles-hotspots--flat .chronicles-hotspot:hover:before,
+.chronicles-hotspots--flat .chronicles-hotspot.is-selected:before,
+.chronicles-hotspots--flat .chronicles-hotspot.is-open:before {
+  opacity: 1;
+  transform: scale(1.14);
+  box-shadow: 0 0 0 1px #0b0a07b3, inset 0 0 0 1px #0b0a07b3, 0 0 .9cqw #f39422b8;
+}
+.chronicles-hotspots--flat .chronicles-hotspot:focus-visible { outline-offset: 3px; }
+.chronicles-hotspots--flat .chronicles-marker { --chronicles-pin: 0px; --chronicles-ring: max(1.4cqw, 12px); }
+.chronicles-screen[data-atlas="flat"] .chronicles-record-slot { left: calc(var(--chronicles-left) + var(--chronicles-height) * 2048 / 1529 + .625cqw); }
+
+/* The record: the Showcase library panel, set beside the focused nation. */
+.chronicles-record-slot {
+  position: absolute;
+  left: 66.40625cqw;
+  top: var(--chronicles-top);
+  width: 27.34375cqw;
+  height: var(--chronicles-height);
+  pointer-events: none;
+}
+.chronicles-record {
+  position: relative;
+  max-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 3cqh 1.7cqw 3.3cqh;
+  border: 1px solid #9d783359;
+  background: linear-gradient(165deg, #1d1e16f5, #121410f0 70%);
+  box-shadow: 0 1.5cqh 4cqh #0007, inset 0 1px 0 #e0bd7a14;
+  pointer-events: auto;
+  animation: chronicles-record-enter 360ms cubic-bezier(.16, 1, .3, 1);
+}
+.chronicles-record:before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: -1px;
+  width: 3.2cqw;
+  height: 2px;
+  background: var(--chronicles-accent);
+  box-shadow: 0 0 .6cqw #dc8d2066;
+}
+.chronicles-record h2,
+.chronicles-entry h2 {
+  margin: 1.2cqh 0 1.4cqh;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: .025cqw;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: #dfd2b6;
+}
+.chronicles-record h2 { font-size: max(1.5625cqw, 13px); }
+.chronicles-record-rule { display: block; height: 1px; margin-bottom: 1.7cqh; background: linear-gradient(90deg, #9d824b99, #9d824b00 85%); }
+.chronicles-body { margin: 0; font-size: max(1.05cqw, 10px); line-height: 1.6; color: var(--menu-modal-text, #aaa79d); }
+.chronicles-record .chronicles-body { color: #b7b3a6; }
+.chronicles-accounts { margin-top: 2.4cqh; display: grid; gap: 2cqh; }
+.chronicles-account { padding-top: 2cqh; border-top: 1px solid #9d78333d; }
+.chronicles-account h3 { margin: 1cqh 0; font-size: max(1.17cqw, 11px); font-weight: 600; line-height: 1.2; text-transform: uppercase; color: #ccc9bf; }
+
+/* Trust labels share the Showcase status idiom; each label keeps its own mark. */
+.chronicles-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35cqh .65cqw;
+  margin: 0;
+  font-size: max(.8125cqw, 9px);
+  line-height: 1.3;
+}
+.chronicles-label-mark { flex: 0 0 auto; width: .38cqw; height: .38cqw; min-width: 4px; min-height: 4px; background: #b48a3d; transform: rotate(45deg); }
+.chronicles-label-name { font-weight: 600; letter-spacing: .07cqw; text-transform: uppercase; color: #c09a59; }
+.chronicles-label-meaning { letter-spacing: .015cqw; color: #a09c8c; }
+.chronicles-label--disputed .chronicles-label-mark { background: linear-gradient(135deg, #d49130 50%, transparent 50%); box-shadow: inset 0 0 0 1px #d49130; }
+.chronicles-label--disputed .chronicles-label-name { color: var(--menu-modal-heading, #d49130); }
+.chronicles-label--testimony .chronicles-label-mark { background: transparent; box-shadow: inset 0 0 0 1px #63edceb3; }
+.chronicles-label--testimony .chronicles-label-name { color: #8fcfbe; }
+.chronicles-label--rumor .chronicles-label-mark { background: transparent; outline: 1px dashed #98958e; outline-offset: -1px; }
+.chronicles-label--rumor .chronicles-label-name { color: #98958e; }
+
+/* The Interregnum and the Laws use the Showcase library panel, glazed over
+   the resting relief. */
+.chronicles-panel {
+  position: relative;
+  isolation: isolate;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid #9d783359;
+  background: #151711d9;
+  box-shadow: 0 1.5cqh 4cqh #0006;
+}
+.chronicles-panel:before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #11140df2, #181c12d1 55%, #15190fa6); }
+.chronicles-interregnum { display: flex; flex-direction: column; }
+.chronicles-timeline {
+  --chronicles-node: max(1.015625cqw, 9px);
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 5cqh 1.6cqw 0;
+}
+.chronicles-stop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5cqh;
+  min-width: 0;
+  padding: 1cqh 0 1.2cqh;
+  border: 0;
+  background: transparent;
+  color: #a6a18e;
+  transition: color 140ms ease;
+}
+.chronicles-stop:focus-visible { outline: none; }
+.chronicles-stop-label {
+  font-size: max(1.015625cqw, 10px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: .06cqw;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px #000b;
+}
+.chronicles-stop-rail { position: relative; align-self: stretch; display: grid; place-items: center; height: calc(var(--chronicles-node) * 1.6); }
+.chronicles-stop-rail:before,
+.chronicles-stop-rail:after { content: ""; position: absolute; top: 50%; height: 1px; background: #b8995a; }
+.chronicles-stop-rail:before { left: 0; right: 50%; }
+.chronicles-stop-rail:after { left: 50%; right: 0; }
+.chronicles-stop:first-child .chronicles-stop-rail:before { background: linear-gradient(90deg, transparent, #9d824b80); }
+.chronicles-stop:last-child .chronicles-stop-rail:after { background: linear-gradient(90deg, #9d824b80, transparent); }
+.chronicles-stop-node {
+  position: relative;
+  z-index: 1;
+  width: var(--chronicles-node);
+  height: var(--chronicles-node);
+  border: 1px solid #b48a3d;
+  background: #171a12;
+  transform: rotate(45deg);
+  transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms cubic-bezier(.2, .65, .35, 1);
+}
+.chronicles-stop-era {
+  max-width: 100%;
+  padding: 0 .4cqw;
+  overflow: hidden;
+  font-size: max(.9375cqw, 9px);
+  line-height: 1.25;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #8f9380;
+  transition: color 140ms ease;
+}
+.chronicles-stop:hover { color: #e6dacc; }
+.chronicles-stop:hover .chronicles-stop-node { border-color: #f39422; }
+.chronicles-stop:hover .chronicles-stop-era { color: #b5b2ac; }
+.chronicles-stop.is-selected { color: #e3b76a; }
+.chronicles-stop.is-selected .chronicles-stop-era { color: #c9b48a; }
+.chronicles-stop.is-selected .chronicles-stop-node {
+  border-color: #f0b25a;
+  background: var(--menu-modal-heading, #d49130);
+  box-shadow: 0 0 .9cqw #f39422aa;
+  transform: rotate(45deg) scale(1.3);
+}
+.chronicles-stop:focus-visible .chronicles-stop-node { box-shadow: 0 0 0 max(2px, .16cqw) #12140f, 0 0 0 calc(max(2px, .16cqw) + 2px) var(--menu-focus, #df8a26), 0 0 .9cqw #f39422aa; }
+.chronicles-stop:focus-visible .chronicles-stop-label { text-decoration: underline; text-decoration-color: #df8a2699; text-decoration-thickness: 1px; text-underline-offset: .45cqh; }
+.chronicles-interregnum-body { flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: space-between; gap: 3cqw; padding: 0 2.6cqw 3.2cqh 3.1cqw; }
+.chronicles-stop-detail { flex: 0 1 44cqw; min-width: 0; }
+.chronicles-entry { animation: chronicles-entry-enter 180ms cubic-bezier(.2, .65, .35, 1); }
+.chronicles-entry h2 { margin: 1.3cqh 0 1.7cqh; font-size: max(2.34375cqw, 17px); line-height: 1.1; }
+.chronicles-interregnum .chronicles-body { font-size: max(1.40625cqw, 12px); line-height: 1.5; color: #c1bea9; }
+.chronicles-articles {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 48cqw;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 1.9cqh 1cqw 1.9cqh 1.25cqw;
+  display: flex;
+  flex-direction: column;
+  gap: .55cqh;
+}
+.chronicles-article {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 1.5cqh 1.4cqw 1.7cqh 1.5cqw;
+  border-left: 2px solid transparent;
+  background: rgba(27, 24, 19, .42);
+  outline-offset: -1px;
+  transition: background-color 140ms cubic-bezier(.2, .65, .35, 1), border-color 140ms cubic-bezier(.2, .65, .35, 1);
+}
+.chronicles-article.is-selected { border-left-color: var(--chronicles-accent); background: rgba(144, 133, 110, .17); }
+.chronicles-article:focus-visible { outline: 1px solid #b68230; }
+.chronicles-article h2 {
+  margin: .9cqh 0 .8cqh;
+  font-size: max(1.25cqw, 12px);
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #ccc9bf;
+  transition: color 140ms ease;
+}
+.chronicles-article.is-selected h2 { color: #d4973e; }
+.chronicles-article .chronicles-body { font-size: max(1cqw, 10px); line-height: 1.55; color: #a19d91; }
+.chronicles-emblem {
+  position: absolute;
+  right: 2.4cqw;
+  bottom: 5cqh;
+  width: 12cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2cqh;
+  color: #a58b50;
+  opacity: .5;
+  pointer-events: none;
+}
+.chronicles-emblem-icon { width: 8.5cqw; height: 8.5cqw; stroke: currentColor; stroke-width: .8; stroke-linecap: round; stroke-linejoin: round; }
+.chronicles-emblem-accent { stroke: #b8914f; }
+.chronicles-emblem-rule { height: 1px; width: 6cqw; background: linear-gradient(90deg, transparent, #9d824b, transparent); }
+.chronicles-interregnum .chronicles-emblem { position: static; flex: 0 0 auto; }
+.chronicles-laws .chronicles-emblem { top: 50%; bottom: auto; transform: translateY(-50%); }
+
+/* Recessed bronze rails and amber thumbs, as in the Settings lists. */
+.chronicles-record,
+.chronicles-articles { scrollbar-width: thin; scrollbar-color: #bb8944 #211a11; }
+:is(.chronicles-record, .chronicles-articles)::-webkit-scrollbar { width: clamp(9px, .78125cqw, 14px); }
+:is(.chronicles-record, .chronicles-articles)::-webkit-scrollbar-track {
+  margin-block: .625cqh;
+  border: 1px solid #ad80372e;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #14110c, #2c2215, #14110c);
+  box-shadow: inset 0 0 3px #0009;
+}
+:is(.chronicles-record, .chronicles-articles)::-webkit-scrollbar-thumb {
+  min-height: 36px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #d5ad69, #b78035 45%, #795221);
+  background-clip: padding-box;
+  box-shadow: inset 0 0 0 1px #e3b86455;
+}
+@supports selector(::-webkit-scrollbar) {
+  .chronicles-record,
+  .chronicles-articles { scrollbar-width: auto; scrollbar-color: auto; }
+  :is(.chronicles-record, .chronicles-articles)::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+}
+
+.chronicles-footer { position: absolute; z-index: 2; left: 8.2cqw; top: 87.55cqh; display: flex; align-items: center; gap: 1.95cqw; pointer-events: auto; }
+.chronicles-footer-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  gap: .65cqw;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(185, 179, 164, .7);
+  font-size: max(1.17cqw, 10px);
+  text-shadow: 0 1px 2px #000b;
+  transition: color 140ms ease, transform 100ms ease;
+}
+.chronicles-footer-button:hover { color: #e5d7bd; }
+.chronicles-footer-button:active { transform: scale(.98); }
+@keyframes chronicles-exhibit-enter {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes chronicles-record-enter {
+  from { opacity: 0; transform: translate3d(1.2cqw, 0, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes chronicles-entry-enter {
+  from { opacity: .35; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-height: 450px) and (orientation: landscape) {
+  .chronicles-screen { --chronicles-width: 75cqw; }
+  .chronicles-record-slot { left: 63.5cqw; width: 32cqw; }
+  .chronicles-record { padding: 2.2cqh 1.4cqw 2.4cqh; }
+  .chronicles-record h2 { margin: .8cqh 0 1cqh; }
+  .chronicles-record-rule { margin-bottom: 1cqh; }
+  .chronicles-body { line-height: 1.45; }
+  .chronicles-timeline { margin-top: 3cqh; }
+  .chronicles-interregnum-body { padding-bottom: 2cqh; }
+  .chronicles-stop-detail { flex-basis: 54cqw; }
+  .chronicles-articles { width: 60cqw; gap: .3cqh; padding-block: .6cqh; }
+  .chronicles-article { padding-block: .8cqh 1cqh; }
+  .chronicles-article h2 { margin: .5cqh 0 .4cqh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chronicles-screen *, .chronicles-screen *:before, .chronicles-screen *:after { transition: none !important; animation: none !important; }
+  .chronicles-footer-button:active { transform: none; }
+}
+.chronicles-screen--still *, .chronicles-screen--still *:before, .chronicles-screen--still *:after { transition: none !important; animation: none !important; }
+.chronicles-screen--still .chronicles-footer-button:active { transform: none; }

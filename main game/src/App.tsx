@@ -9,6 +9,7 @@ import useBootLoading from "./useBootLoading";
 import MenuTransition from "./MenuTransition";
 import MenuDialog from "./MenuDialog";
 import Showcase, { type ShowcaseView } from "./Showcase";
+import Chronicles from "./Chronicles";
 import { SettingsGrid, SETTINGS_CATEGORIES } from "./SettingsGrid";
 import SettingsDetail from "./SettingsDetail";
 import { INITIAL_PREFERENCES, normalizeBindings, type BindingAction, type Direction, type FrameLimit, type Preferences, type Quality, type SettingsCategory, type SettingsPageHandle } from "./settings-types";
@@ -79,6 +80,7 @@ export default function App() {
   const lastPanel = useRef<Panel>(null);
   const showcaseRef = useRef<SettingsPageHandle>(null);
   const chaptersRef = useRef<SettingsPageHandle>(null);
+  const chroniclesRef = useRef<SettingsPageHandle>(null);
   const showcaseOrigin = useRef<"home" | "play" | "settings" | "chapters">("play");
   const previousShowcaseView = useRef<ShowcaseView>(showcaseView);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -140,11 +142,12 @@ export default function App() {
       setScreen(index === 0 ? "home" : "play");
       setSettingsCategory(null);
     } else if (index === 2) {
-      if (screen !== "showcase") showcaseOrigin.current = screen;
+      if (screen !== "showcase") showcaseOrigin.current = screen === "chronicles" ? "home" : screen;
       setScreen("showcase");
       setShowcaseView("overview");
     } else if (index === 3) {
       if (screen === "home" || screen === "play") settingsOrigin.current = screen;
+      else if (screen === "chronicles") settingsOrigin.current = "home";
       else if (screen === "chapters") settingsOrigin.current = "play";
       else if (screen === "showcase" && showcaseOrigin.current !== "settings") settingsOrigin.current = showcaseOrigin.current === "chapters" ? "play" : showcaseOrigin.current;
       setScreen("settings");
@@ -194,13 +197,20 @@ export default function App() {
     const item = HOME_CONTENT[index];
     if (!item?.action || !item.title || !item.imageSrc) return;
     setHomeSelected(index);
-    setPanel(item.action);
+    if (item.destination) {
+      setTransitionDirection(1);
+      setScreen(item.destination);
+    } else setPanel(item.action);
   }, [boot.blocking]);
   const back = useCallback(() => {
     if (boot.blocking) return;
     if (panel) { closePanel(); return; }
     setTransitionDirection(-1);
     if (screen === "chapters") { openTab(1, -1); return; }
+    if (screen === "chronicles") {
+      if (!chroniclesRef.current?.cancel()) openTab(0, -1);
+      return;
+    }
     if (screen === "showcase") {
       if (showcaseRef.current?.cancel()) return;
       if (showcaseView !== "overview") setShowcaseView("overview");
@@ -221,6 +231,7 @@ export default function App() {
     if (boot.blocking) return;
     if (screen === "home") activateHome(homeSelected);
     else if (screen === "showcase") showcaseRef.current?.activate();
+    else if (screen === "chronicles") chroniclesRef.current?.activate();
     else if (screen === "chapters") chaptersRef.current?.activate();
     else if (screen === "settings") {
       if (settingsCategory) detailRef.current?.activate();
@@ -250,6 +261,7 @@ export default function App() {
     restoreFocus.current = false;
     if (panel) return;
     if (screen === "showcase") { showcaseRef.current?.focus(); return; }
+    if (screen === "chronicles") { chroniclesRef.current?.focus(); return; }
     if (screen === "chapters") { chaptersRef.current?.focus(); return; }
     if (screen === "settings" && settingsCategory) { detailRef.current?.focus(); return; }
     const target = screen === "home" ? homeRefs.current[homeSelected] : screen === "settings" ? settingsRefs.current[settingsSelected] : cardRefs.current[selected];
@@ -300,6 +312,7 @@ export default function App() {
         event.preventDefault();
         if (screen === "home") moveHome(direction);
         else if (screen === "showcase") showcaseRef.current?.move(direction);
+        else if (screen === "chronicles") chroniclesRef.current?.move(direction);
         else if (screen === "chapters") chaptersRef.current?.move(direction);
         else if (screen === "settings") {
           if (settingsCategory) detailRef.current?.move(direction);
@@ -314,6 +327,7 @@ export default function App() {
         else if (screen === "settings" && !settingsCategory) selectSettings(first ? 0 : 5);
         else if (screen === "settings") detailRef.current?.edge?.(!first);
         else if (screen === "showcase") showcaseRef.current?.edge?.(!first);
+        else if (screen === "chronicles") chroniclesRef.current?.edge?.(!first);
         else if (screen === "chapters") chaptersRef.current?.edge?.(!first);
         else if (screen === "play") selectCard(first ? 0 : cards.length - 1);
       }
@@ -372,6 +386,7 @@ export default function App() {
         } else if (direction && (screen !== "play" || left || right)) {
           if (screen === "home") moveHome(direction);
           else if (screen === "showcase") showcaseRef.current?.move(direction);
+          else if (screen === "chronicles") chroniclesRef.current?.move(direction);
           else if (screen === "chapters") chaptersRef.current?.move(direction);
           else if (screen === "settings") {
             if (settingsCategory) detailRef.current?.move(direction);
@@ -404,18 +419,21 @@ export default function App() {
   const displayedPanel = panel || lastPanel.current;
   const modalContent = getModalContent(displayedPanel, chapterPreview);
   const viewKey = screen === "settings" ? `settings:${settingsCategory || "grid"}` : screen === "showcase" ? `showcase:${showcaseView}` : screen;
+  // Chronicles draws its own full-stage relief: the motes stand down (low draws
+  // none) and the sorcerer holds its pose until it closes.
+  const stageResting = screen === "chronicles";
 
   return (
     <main data-boot-state={boot.visible ? boot.leaving ? "leaving" : boot.degraded ? "degraded" : "loading" : "ready"} className={`menu-shell ${preferences.motion ? "" : "reduce-motion"} ${screen === "settings" ? "is-settings" : ""} ${screen === "settings" && settingsCategory ? "settings-detail-open" : ""} ${detailScreenOpen ? "detail-screen-open" : ""} ${preferences.showHints ? "" : "hide-control-hints"}`}>
       <div className="menu-stage">
         <div className="scene-wash" aria-hidden="true" />
         <Atmosphere
-          quality={preferences.quality}
+          quality={stageResting ? "low" : preferences.quality}
           reducedMotion={!preferences.motion}
           renderScale={preferences.renderScale}
           frameLimit={preferences.frameLimit}
         />
-        <CreatureStage reducedMotion={!preferences.motion} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} onLoadState={boot.onModelState} loadAttempt={boot.attempt} />
+        <CreatureStage reducedMotion={!preferences.motion || stageResting} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} onLoadState={boot.onModelState} loadAttempt={boot.attempt} />
         <div className="menu-content" inert={boot.blocking} aria-hidden={boot.blocking || undefined}>
         <nav className={`main-nav${screen === "home" ? " main-nav--home" : ""}`} aria-label="Main menu" inert={detailScreenOpen}>
           <button
@@ -461,6 +479,8 @@ export default function App() {
           <Chapters ref={chaptersRef} selected={chapterSelected} onSelect={setChapterSelected} onPreview={previewChapter} onBack={back} reducedMotion={reducedMotion} />
         ) : screen === "showcase" ? (
           <Showcase ref={showcaseRef} view={showcaseView} onViewChange={changeShowcaseView} onBackRoot={back} reducedMotion={reducedMotion} />
+        ) : screen === "chronicles" ? (
+          <Chronicles ref={chroniclesRef} onBack={back} reducedMotion={reducedMotion} quality={preferences.quality} renderScale={preferences.renderScale} frameLimit={preferences.frameLimit} />
         ) : screen === "settings" ? (
           settingsCategory ? <SettingsDetail
             ref={detailRef}
@@ -510,7 +530,7 @@ export default function App() {
 
         </MenuTransition>
 
-        {screen !== "showcase" && screen !== "chapters" && !(screen === "settings" && settingsCategory) && <footer className="controller-hints" aria-label="Menu controls">
+        {screen !== "showcase" && screen !== "chapters" && screen !== "chronicles" && !(screen === "settings" && settingsCategory) && <footer className="controller-hints" aria-label="Menu controls">
           <button aria-label="Select" onClick={activateSelected}>
             <span className="controller-key" aria-hidden="true">
               A

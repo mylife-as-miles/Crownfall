@@ -7,8 +7,8 @@ export const menuPublicSource = resolve(repository, 'main game/public');
 export const questPublicDestination = resolve(repository, 'main-game-vr/public');
 export const sharedAssetPaths = [
   ...['new', 'resume', 'load', 'browse'].map(name => `assets/environments/card-${name}.webp`),
-  ...['my-legacy', 'chronicles', 'herald-board'].map(name => `assets/home/${name}.webp`),
-  'models/crownfall-sorcerer.glb', 'decoders/draco', 'fonts',
+  ...['my-legacy', 'herald-board'].map(name => `assets/home/${name}.webp`),
+  'assets/chronicles', 'models/crownfall-sorcerer.glb', 'decoders/draco', 'fonts',
 ];
 export function syncMenuAssets() {
   const copyChanged = path => {

@@ -2,6 +2,7 @@ import {
   AnimationMixer, AssetManager, Box3, createSystem, Entity, LoopRepeat,
   Object3D, Quaternion, UIKit, UIKitMLAsset, Vector3, VisibilityState,
 } from '@iwsdk/core';
+import { CHRONICLE_EXHIBITS, CHRONICLE_LABELS, getChronicleRecord } from '../../shared/chronicles/content';
 import { ARENAS, CHAPTERS, HOME_CONTENT, NAV_TABS, PLAY_CARDS, SETTINGS_CATEGORIES, SHOWCASE_CATEGORIES, getModalContent } from '../../shared/menu/content';
 import { MENU_THEME } from '../../shared/menu/theme';
 import type { HomeTileAction, SettingsCategory } from '../../shared/menu/types';
@@ -11,8 +12,9 @@ import {
   QUEST_PREFERENCES_KEY, QUEST_VISIT_ARENAS, QUEST_VISIT_STEPS, reduceQuestState,
 } from './quest-state.js';
 import type { QuestEvent, QuestPreferences, QuestState } from './quest-state.js';
-import { QUEST_UI_LAYOUT, QUEST_VIEW_IDS, QUEST_SETTING_ROWS } from './ui-contract.js';
+import { QUEST_CHRONICLE_CONTROLS, QUEST_CHRONICLE_IDS, QUEST_CHRONICLE_LAYOUT, QUEST_UI_LAYOUT, QUEST_VIEW_IDS, QUEST_SETTING_ROWS, questText } from './ui-contract.js';
 import { CrownfallAtmosphere } from './atmosphere.js';
+import { AtlasDiorama } from './chronicles/scene/atlas-diorama.js';
 
 const SELECTION_GROUPS = {
   home: HOME_CONTENT.map(item => `Home_${item.action}`),
@@ -23,8 +25,10 @@ const SELECTION_GROUPS = {
 } as const;
 
 const VISIT_KEY = 'crownfall.quest.visit-complete';
+// Browser preview framing for Chronicles: a wider view tilted down to the table.
+const PREVIEW_FRAMING = { fov: 70, tilt: -.295, seconds: .6 } as const;
+const PREVIEW_AXIS = new Vector3(1, 0, 0);
 const publicUrl = (path: string) => new URL(`${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`, document.baseURI).href;
-const ascii = (text: string) => text.replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/[–—]/g, '-').replace(/·/g, '/');
 function readPreferences(): QuestPreferences {
   try { return normalizeQuestPreferences(JSON.parse(localStorage.getItem(QUEST_PREFERENCES_KEY) || '{}')); }
   catch { return normalizeQuestPreferences(null); }
@@ -39,6 +43,8 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   private heroAnchor!: Object3D;
   private atmosphere!: CrownfallAtmosphere;
   private atmosphereObject!: Object3D;
+  private atlas!: AtlasDiorama;
+  private chroniclesOpen = false;
   private elements = new Map<string, UIKit.Text>();
   private state: QuestState = createQuestState();
   private preferences = readPreferences();
@@ -74,6 +80,9 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   private headPosition = new Vector3();
   private headDirection = new Vector3();
   private headRotation = new Quaternion();
+  private previewView = 0;
+  private previewBase: { fov: number; quaternion: Quaternion } | null = null;
+  private previewTilt = new Quaternion();
   private reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   init(): void {
@@ -84,6 +93,10 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.heroAnchor = this.world.requireSceneEntity('sorcerer-anchor').object3D!;
     this.atmosphereObject = this.world.requireSceneObject<Object3D>('atmosphere-anchor');
     this.atmosphere = new CrownfallAtmosphere(this.atmosphereObject);
+    this.atlas = new AtlasDiorama(this.world, this.world.requireSceneEntity('experience-anchor'), {
+      select: id => this.dispatch({ type: 'record', id }),
+      ground: (x, y) => this.dispatch({ type: 'map', x, y }),
+    });
     const bind = (id: string, callback: () => void) => {
       const element = this.element(id);
       element.name = id;
@@ -104,6 +117,8 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     ARENAS.forEach((_, index) => bind(`Arena_${index}`, () => this.dispatch({ type: 'arena', index })));
     for (const category of SETTINGS_CATEGORIES) bind(`Settings_${category}`, () => { this.settingsIndex = 0; this.dispatch({ type: 'category', category }); });
     for (let index = 0; index < QUEST_SETTING_ROWS; index++) bind(`Setting_${index}`, () => this.adjustSetting(index));
+    for (const exhibit of CHRONICLE_EXHIBITS) bind(QUEST_CHRONICLE_IDS.tab(exhibit.id), () => this.dispatch({ type: 'exhibit', exhibit: exhibit.id }));
+    for (const record of QUEST_CHRONICLE_CONTROLS) bind(QUEST_CHRONICLE_IDS.control(record), () => this.dispatch({ type: 'record', id: record.id }));
     const actions: Record<string, QuestEvent> = {
       Btn_Back: { type: 'back' }, Btn_Confirm: { type: 'confirm' }, Btn_Cancel: { type: 'cancel' },
       Btn_StartVisit: { type: 'start-visit' }, Btn_VisitReplay: { type: 'start-visit' }, Btn_SkipVisit: { type: 'skip-visit' },
@@ -128,7 +143,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.cleanupFuncs.push(() => this.reducedMotion.removeEventListener('change', onMotion));
     this.cleanupFuncs.push(this.world.visibilityState.subscribe(visibility => this.onVisibility(visibility)));
     this.cleanupFuncs.push(this.world.onXRFrame(frame => this.onHandsFrame(frame)));
-    this.cleanupFuncs.push(() => { this.alive = false; this.atmosphere.dispose(); this.mixer?.stopAllAction(); if (this.hero) this.hero.dispose(); });
+    this.cleanupFuncs.push(() => { this.alive = false; this.atmosphere.dispose(); this.atlas.dispose(); this.mixer?.stopAllAction(); if (this.hero) this.hero.dispose(); });
     if (navigator.xr) void navigator.xr.isSessionSupported('immersive-vr').then(supported => { this.canEnter = supported; this.render(); }).catch(() => this.browserStatus('VR availability could not be checked. Try opening this page in your headset browser.'));
     // Explicit development-only accommodation for software headset emulation.
     // Production headset rendering keeps the native framebuffer scale.
@@ -146,7 +161,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     if (!result) { result = this.panel.requireElementById<UIKit.Text>(id); result.name = id; this.elements.set(id, result); }
     return result;
   }
-  private text(id: string, value: string): void { this.element(id).setProperties({ text: ascii(value) }); }
+  private text(id: string, value: string): void { this.element(id).setProperties({ text: questText(value) }); }
   private display(id: string, visible: boolean): void { this.element(id).setProperties({ display: visible ? 'flex' : 'none' }); }
   private finishTransition(): void {
     if (this.outgoingView) {
@@ -215,9 +230,9 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     const s = this.state;
     const view = s.paused ? 'View_Pause' : s.modal ? 'View_Modal'
       : s.screen === 'settings' && s.settingsCategory ? 'View_SettingsDetail'
-      : ({ home: 'View_Home', play: 'View_Play', showcase: 'View_Showcase', chapters: 'View_Chapters', settings: 'View_Settings', arenas: 'View_Arenas', library: 'View_Library', onboarding: 'View_Onboarding', visit: 'View_Visit', pause: 'View_Pause' } as const)[s.screen];
+      : ({ home: 'View_Home', play: 'View_Play', showcase: 'View_Showcase', chapters: 'View_Chapters', settings: 'View_Settings', arenas: 'View_Arenas', library: 'View_Library', chronicles: 'View_Chronicles', onboarding: 'View_Onboarding', visit: 'View_Visit', pause: 'View_Pause' } as const)[s.screen];
     this.showView(view);
-    const detail = s.screen === 'chapters' || s.screen === 'settings' && !!s.settingsCategory;
+    const detail = s.screen === 'chapters' || s.screen === 'chronicles' || s.screen === 'settings' && !!s.settingsCategory;
     const navigationVisible = !s.modal && !s.paused && !detail && s.screen !== 'onboarding' && s.screen !== 'visit';
     for (const tab of NAV_TABS) {
       const id = `Nav_${tab.aria}`;
@@ -245,6 +260,13 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
       this.text('Modal_Note', copy.note || ''); this.display('Modal_Note', !!copy.note);
     }
     if (s.screen === 'settings' && s.settingsCategory) this.renderSettings(s.settingsCategory);
+    // The diorama lives while Chronicles is open, pause included, and shows only on its screen.
+    this.chroniclesOpen = s.screen === 'chronicles' || s.paused && s.previousScreen === 'chronicles';
+    if (this.chroniclesOpen) this.atlas.open(); else this.atlas.close();
+    this.atlas.setVisible(s.screen === 'chronicles');
+    this.atlas.setSelection(s.record, s.exhibit === 'atlas');
+    if (this.hero?.object3D) this.hero.object3D.visible = !this.chroniclesOpen;
+    if (s.screen === 'chronicles') this.renderChronicles();
     if (s.screen === 'library') {
       this.display('Library_Art', s.library === 'battles');
       this.display('Library_Archive', s.library === 'replays');
@@ -307,6 +329,28 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
       this.element(`Setting_Value_${index}`).setProperties({ color: selected ? MENU_THEME.colors.accent : '#aaa79d' });
     }
   }
+  private renderChronicles(): void {
+    const s = this.state;
+    for (const exhibit of CHRONICLE_EXHIBITS) {
+      const tab = QUEST_CHRONICLE_IDS.tab(exhibit.id), selected = exhibit.id === s.exhibit;
+      this.display(QUEST_CHRONICLE_IDS.pane(exhibit.id), selected);
+      this.element(`${tab}_Plate`).setProperties({ opacity: selected ? 1 : 0 });
+      this.element(`${tab}_Title`).setProperties({ color: selected ? '#19120a' : '#c1bbac', opacity: selected ? 1 : .54 });
+    }
+    for (const item of QUEST_CHRONICLE_CONTROLS) {
+      const control = QUEST_CHRONICLE_IDS.control(item), selected = item.id === s.record;
+      this.element(`${control}_Mark`).setProperties({ opacity: selected ? 1 : 0 });
+      this.panel.getElementById<UIKit.Text>(`${control}_Plate`)?.setProperties({ opacity: selected ? .1 : 0 });
+      this.panel.getElementById<UIKit.Text>(`${control}_Title`)?.setProperties({ color: selected ? MENU_THEME.colors.modalHeading : MENU_THEME.colors.inactiveHeading });
+    }
+    const record = s.record ? getChronicleRecord(s.record) : undefined;
+    this.display(QUEST_CHRONICLE_IDS.record, !!record);
+    if (!record) return;
+    this.element(QUEST_CHRONICLE_IDS.record).setProperties({ positionTop: QUEST_CHRONICLE_LAYOUT.recordTop[s.exhibit] });
+    const label = CHRONICLE_LABELS[record.label];
+    this.text('Record_Label', label.name); this.text('Record_Meaning', label.meaning);
+    this.text('Record_Title', record.title); this.text('Record_Body', record.body);
+  }
   private adjustSetting(index: number): void {
     if (this.state.modal || this.state.paused || !this.state.settingsCategory) return;
     const row = getQuestSettingsRows(this.state.settingsCategory, this.preferences, this.trackingLabel())[index];
@@ -329,6 +373,8 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.heroAnchor.position.z = -this.preferences.panelDistance - .85;
     this.atmosphereObject.position.set(0, this.preferences.posture === 'seated' ? -.12 : -.2, -this.preferences.panelDistance - .85);
     this.atmosphereObject.scale.setScalar(.22 * this.preferences.textScale / 100);
+    // The footer's lower edge is 300 units below the panel's centre at one centimetre per unit.
+    this.atlas.place(this.preferences.posture, this.menuObject.position.y - (QUEST_CHRONICLE_LAYOUT.footer - QUEST_UI_LAYOUT.height / 2) * .01 * this.menuObject.scale.y, this.preferences.panelDistance);
     this.world.renderer.xr.setFoveation({ low: 1, medium: .5, high: 0 }[this.preferences.quality]);
     if (!this.world.renderer.xr.isPresenting) this.world.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5) * { low: .75, medium: 1, high: 1.15 }[this.preferences.quality]);
   }
@@ -356,7 +402,27 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     e.setValue(c, 'leftTracked', this.leftTracked); e.setValue(c, 'rightTracked', this.rightTracked);
     e.setValue(c, 'modelReady', !!this.hero);
     const group = s.screen === 'settings' ? 'settings' : s.screen === 'chapters' ? 'chapters' : s.screen === 'showcase' || s.screen === 'arenas' || s.screen === 'library' ? 'showcase' : s.screen === 'play' ? 'play' : 'home';
-    e.setValue(c, 'selectedControl', s.screen === 'settings' && s.settingsCategory ? `Setting_${this.settingsIndex}` : this.selected[group]);
+    // Chronicles reports its open record's control, or its exhibit tab while none is open.
+    const record = s.screen === 'chronicles' && s.record ? getChronicleRecord(s.record) : undefined;
+    e.setValue(c, 'selectedControl', s.screen === 'chronicles' ? record ? QUEST_CHRONICLE_IDS.control(record) : QUEST_CHRONICLE_IDS.tab(s.exhibit)
+      : s.screen === 'settings' && s.settingsCategory ? `Setting_${this.settingsIndex}` : this.selected[group]);
+  }
+
+  // Browser preview only: a desktop window cannot look down at the table, so
+  // while the Atlas diorama is up the camera tilts down and widens to hold the
+  // panel and the table together. In XR the head is the camera and nothing moves.
+  private framePreview(delta: number, motion: boolean): void {
+    if (this.state.entered) { this.previewView = 0; this.previewBase = null; return; }
+    const target = this.state.screen === 'chronicles' && this.atlas.ready ? 1 : 0;
+    if (target === this.previewView) return;
+    const camera = this.world.camera;
+    this.previewBase ??= { fov: camera.fov, quaternion: camera.quaternion.clone() };
+    this.previewView = motion ? Math.max(0, Math.min(1, this.previewView + Math.sign(target - this.previewView) * delta / PREVIEW_FRAMING.seconds)) : target;
+    const t = this.previewView * this.previewView * (3 - 2 * this.previewView);
+    camera.fov = this.previewBase.fov + (PREVIEW_FRAMING.fov - this.previewBase.fov) * t;
+    camera.quaternion.copy(this.previewBase.quaternion).multiply(this.previewTilt.setFromAxisAngle(PREVIEW_AXIS, PREVIEW_FRAMING.tilt * t));
+    camera.updateProjectionMatrix();
+    if (this.previewView === 0) this.previewBase = null;
   }
 
   private onVisibility(visibility: VisibilityState): void {
@@ -429,6 +495,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
       if (!idle) throw new Error('Sorcerer Idle is missing');
       this.hero = this.world.createTransformEntity(model, { parent: this.world.requireSceneEntity('sorcerer-anchor') });
       model.name = 'Crownfall Sorcerer';
+      model.visible = !this.chroniclesOpen;
       this.mixer = new AnimationMixer(model);
       this.mixer.clipAction(idle).setLoop(LoopRepeat, Infinity).setEffectiveTimeScale(1).play();
       this.text('Status_Boot', 'Crownfall / menu and arena preview');
@@ -450,9 +517,14 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     }
     const motion = this.preferences.motion && !this.reducedMotion.matches;
     const paused = this.state.paused || document.hidden;
-    if (motion && !paused) this.atmosphereTime += delta;
-    this.atmosphere.update(this.atmosphereTime, motion, paused, this.preferences.quality, this.sceneDim, this.sceneTint);
-    if (!this.mixer || paused || !motion) return;
+    // While Chronicles is open the diorama is the only moving thing: the
+    // atmosphere holds still and the hidden sorcerer stops animating.
+    const held = paused || this.chroniclesOpen;
+    if (motion && !held) this.atmosphereTime += delta;
+    this.atmosphere.update(this.atmosphereTime, motion, held, this.preferences.quality, this.sceneDim, this.sceneTint);
+    if (this.chroniclesOpen) this.atlas.update(delta, motion && !paused);
+    this.framePreview(delta, motion);
+    if (!this.mixer || held || !motion) return;
     this.activeTime += delta;
     this.mixer.update(delta);
     this.heroAnchor.rotation.y = -.47 + Math.sin(this.activeTime * .22) * .018;

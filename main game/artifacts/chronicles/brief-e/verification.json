@@ -1,0 +1,311 @@
+{
+  "passed": false,
+  "scope": "Chronicles screen with the real-time relief Atlas: DOM and raycast checks at medium quality with model=none and reduced motion, a mocked standard controller, a motion-enabled pass, a loop pass with the real sorcerer GLB at high quality, a WebGL outage pass, and captures at the default high quality with motion on.",
+  "checks": [
+    "Home → Chronicles opens a full screen under the Home tab with no dialog: the title, three exhibit tabs from CHRONICLE_EXHIBITS, the real-time relief (one canvas named by the map's alt text) and one hidden button per nation named from its record title",
+    "Medium quality draws 17 calls and 226738 triangles per frame by renderer.info (issued for one redrawn frame: 17 calls, 226738 triangles), within 200 calls and 800k triangles",
+    "Clicking each nation's ring on the relief raycasts to exactly that nation's record (title, body, label name and meaning, no added accounts while none are approved) and the camera settles on its focus view; Escape closes it and the camera returns to the overview",
+    "Clicks on empty ground of the relief, the painted map's centre included, open nothing and keep the selection, the focus and the camera",
+    "Mouse: dragging the relief turns and tilts it within its limits and the wheel zooms about the pointer; neither opens a record",
+    "At 1280×720, 1920×1080 and 844×390 every ring is raycast to its own record, and every exhibit and open record stacks below the nav and above the footer, fits without clipping or scrolling and keeps Back reachable",
+    "All eleven records render verbatim with their label name and meaning: four nation records, four timeline stops in order and three articles",
+    "Behind the Interregnum and the Laws the relief rests on its last frame and issues no draw calls",
+    "Keyboard: arrows move spatially between the rings, along the timeline and through the articles with the shared helpers; Home/End reach the ends; up reaches the exhibit tabs, left/right switch them and down or Enter returns; Shift+arrows turn and tilt and plus/minus zoom; the focused ring shows a visible focus caption; Enter opens and Escape closes a record, then Escape returns Home with the Chronicles tile selected and focused",
+    "Q/E keep their top-level tab behaviour from Chronicles, and Settings and Showcase both return to Home with the Chronicles tile selected"
+  ],
+  "metrics": {
+    "host": {
+      "cpus": "4, software rendering (SwiftShader): timings here are not headset or GPU evidence",
+      "loadAverage": [
+        14.4,
+        16.8,
+        19.3
+      ]
+    },
+    "renderer": {
+      "quality": "medium",
+      "info": {
+        "drawCalls": 17,
+        "triangles": 226738
+      },
+      "issuedForOneFrame": {
+        "drawCalls": 17,
+        "triangles": 226738
+      },
+      "budget": {
+        "drawCalls": 200,
+        "triangles": 800000
+      }
+    },
+    "longTasks": {
+      "open": {
+        "durations": [
+          4274,
+          195,
+          126,
+          259,
+          495
+        ],
+        "milliseconds": 9471
+      },
+      "switch": {
+        "durations": [],
+        "milliseconds": 4138
+      }
+    }
+  },
+  "layouts": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "exhibit": "atlas",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "backReachable": true,
+      "ringsOnScreen": false,
+      "scrollers": [
+        {
+          "name": "chronicles-record",
+          "fits": true
+        }
+      ],
+      "panel": {
+        "top": 192,
+        "bottom": 458,
+        "left": 850,
+        "right": 1200
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "exhibit": "interregnum",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "backReachable": true,
+      "ringsOnScreen": true,
+      "scrollers": [],
+      "panel": {
+        "top": 192,
+        "bottom": 594,
+        "left": 105,
+        "right": 939
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "exhibit": "laws",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "backReachable": true,
+      "ringsOnScreen": true,
+      "scrollers": [
+        {
+          "name": "chronicles-articles",
+          "fits": true
+        }
+      ],
+      "panel": {
+        "top": 192,
+        "bottom": 594,
+        "left": 105,
+        "right": 939
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "exhibit": "atlas",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "backReachable": true,
+      "ringsOnScreen": false,
+      "scrollers": [
+        {
+          "name": "chronicles-record",
+          "fits": true
+        }
+      ],
+      "panel": {
+        "top": 288,
+        "bottom": 686,
+        "left": 1275,
+        "right": 1800
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "exhibit": "interregnum",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "backReachable": true,
+      "ringsOnScreen": true,
+      "scrollers": [],
+      "panel": {
+        "top": 288,
+        "bottom": 891,
+        "left": 158,
+        "right": 1409
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "exhibit": "laws",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "backReachable": true,
+      "ringsOnScreen": true,
+      "scrollers": [
+        {
+          "name": "chronicles-articles",
+          "fits": true
+        }
+      ],
+      "panel": {
+        "top": 288,
+        "bottom": 891,
+        "left": 158,
+        "right": 1409
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "exhibit": "atlas",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "backReachable": true,
+      "ringsOnScreen": false,
+      "scrollers": [
+        {
+          "name": "chronicles-record",
+          "fits": true
+        }
+      ],
+      "panel": {
+        "top": 104,
+        "bottom": 264,
+        "left": 516,
+        "right": 740
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "exhibit": "interregnum",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "backReachable": true,
+      "ringsOnScreen": true,
+      "scrollers": [],
+      "panel": {
+        "top": 104,
+        "bottom": 322,
+        "left": 130,
+        "right": 654
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "exhibit": "laws",
+      "overflow": false,
+      "clipped": [],
+      "stacked": true,
+      "backReachable": true,
+      "ringsOnScreen": true,
+      "scrollers": [
+        {
+          "name": "chronicles-articles",
+          "fits": true
+        }
+      ],
+      "panel": {
+        "top": 104,
+        "bottom": 322,
+        "left": 130,
+        "right": 654
+      }
+    }
+  ],
+  "captures": [],
+  "visibleText": [
+    "A",
+    "A duchy of masks and bells beneath a violet eclipse. Its ruler is the Veiled Archduke, a title passed by inheritance. True names are guarded; ward-bells ring against what the eclipse lets in. Its court speaks High Korvenic; its streets, Vesper-Cant. Its Gambit is called Le Jeu des Rois Morts, the Game of Dead Kings.",
+    "A nation's sixteen are drawn from its banners. Great houses send their champions; minor houses send their levies, and levies stand in the front rank.",
+    "A pawn may become anything but a king.",
+    "A sulfur desert where an inland sea once boiled. Its Ignition Imams keep the faith and the engines alike. Its navigators see four seconds ahead; anything further is Mirage. Its tongue is Kharzani. Its Gambit is the Qimar al-Malik.",
+    "A vertical city governed by the Board. Wealth lives Cloud-side; labor lives Sump-side, where workers are entries in a ledger. The \"09\" is Foundry Sector 09, now sealed behind Aether fog. Its people speak Kwind-Pidgin. Its Gambit runs as Protocol K-GAMBIT.09.",
+    "Accepted by all four nations",
+    "Aethelgard",
+    "Aethelgard — The Blood-Throne",
+    "An uneasy armistice signed at Vane, a spire on the borders where the four powers meet.",
+    "B",
+    "Back",
+    "Chronicles",
+    "Korvenia",
+    "Korvenia — The Grand Duchy",
+    "Kwind-09",
+    "Kwind-09 — The Kwind Zaibatsu",
+    "Menu controls",
+    "Now",
+    "Painted map of Korvenia, Aethelgard, Kwind-09 and Solforiz",
+    "Recorded",
+    "Select",
+    "Seven Great Houses share a Blood-Throne, and their riders are bound to the First-Born, beasts as old as the mountains. Its people speak Old Aethel; its riders command in High Drakonic. Its Gambit is the Cyning-Slieht.",
+    "Solforiz",
+    "Solforiz — The Scorched Caliphate",
+    "The Atlas",
+    "The Concord of Cinders",
+    "The Crownfall",
+    "The High Sovereign's Sovereign Crown, an astral engine, tore itself apart. The calendar begins with the fall.",
+    "The Interregnum",
+    "The Laws of the Gambit",
+    "The Scavenger Wars",
+    "The four powers fought over the Crown-Shards the blast left behind.",
+    "The law of the pawn",
+    "The muster",
+    "The shards grow unstable, the truce is failing, and a generation has grown up with no memory of the old order.",
+    "When a claim cannot be settled, nations do not march armies. Each sends sixteen living representatives to the board, and the outcome decides the claim: land, passage, custody, even sovereignty. What follows the judgment is politics.",
+    "Why representatives",
+    "Year 0",
+    "Year 0 — The Crownfall",
+    "Year 19",
+    "Year 19 — The Concord of Cinders",
+    "Year 33",
+    "Year 33 — Now",
+    "Years 1–12",
+    "Years 1–12 — The Scavenger Wars"
+  ],
+  "errors": [],
+  "failure": "AssertionError [ERR_ASSERTION]: another ring is in view beside the open record {\"korvenia\":{\"x\":411.1000061035156,\"y\":360.29998779296875},\"solforiz\":{\"x\":1071.4000244140625,\"y\":840.5},\"aethelgard\":{\"x\":1021.5,\"y\":463.1000061035156},\"kwind-09\":{\"x\":348.79998779296875,\"y\":645.2000122070312}}\n    at file:///home/user/crownfall-chronicles/main%20game/scripts/verify-chronicles.mjs:523:10"
+}

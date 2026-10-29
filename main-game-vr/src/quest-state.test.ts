@@ -1,15 +1,19 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { ARENAS, CHAPTERS, SETTINGS_CATEGORIES } from "../../shared/menu/content";
+import { CHRONICLE_EXHIBITS, CHRONICLE_LABELS, CHRONICLE_RECORDS, CHRONICLES_TITLE, getChronicleRecords, getHotspotRecords } from "../../shared/chronicles/content";
+import { RELIEF_SEGMENTS, buildReliefMesh, imageToRelief, intersectRelief, reliefHeightAt, reliefToImage } from "../../shared/chronicles/archive/relief";
+import { ARENAS, CHAPTERS, SETTINGS_CATEGORIES, getModalContent } from "../../shared/menu/content";
 import {
   DEFAULT_QUEST_PREFERENCES, QUEST_PREFERENCES_KEY, QUEST_VISIT_STEPS,
   adjustQuestPreference, createQuestState, getQuestSettingsRows,
   normalizeQuestPreferences, reduceQuestState,
 } from "./quest-state";
 import type { QuestEvent, QuestState } from "./quest-state";
+import { questText } from "./ui-contract";
 
 const apply = (state: QuestState, ...events: QuestEvent[]) => events.reduce(reduceQuestState, state);
 const play = () => reduceQuestState(createQuestState(), { type: "nav", screen: "play" });
+const chronicles = () => reduceQuestState(createQuestState(), { type: "home", panel: "chronicles" });
 
 test("Quest preferences validate independently of unsafe desktop render controls", () => {
   assert.deepEqual(normalizeQuestPreferences(undefined), DEFAULT_QUEST_PREFERENCES);
@@ -81,9 +85,10 @@ test("modal previews gate behind-menu actions without starting gameplay", () => 
 });
 
 test("all supplied Home destinations and modes keep truthful preview behavior", () => {
-  for (const panel of ["legacy", "chronicles", "herald"] as const) {
+  for (const panel of ["legacy", "herald"] as const) {
     const state = reduceQuestState(createQuestState(), { type: "home", panel });
-    assert.equal(state.modal, panel); assert.equal(reduceQuestState(state, { type: "confirm" }).screen, "home");
+    assert.equal(state.modal, panel); assert.match(getModalContent(panel).description, /unavailable in this build/);
+    assert.equal(reduceQuestState(state, { type: "confirm" }).screen, "home");
   }
   for (const id of ["classic", "local-duel", "online-duel"] as const) {
     const state = reduceQuestState(play(), { type: "play", id });
@@ -158,4 +163,95 @@ test("short visit requires three real steps and explicit Finish, with no timer o
   assert.equal(reduceQuestState(state, { type: "back" }).screen, "home");
   const restarted = reduceQuestState(state, { type: "start-visit" }); assert.equal(restarted.visitStep, 0); assert.equal(restarted.visitComplete, false);
   assert.equal(reduceQuestState(restarted, { type: "skip-visit" }).screen, "home");
+});
+
+test("the Chronicles Home tile opens the archive at the Atlas, not a dialog", () => {
+  const state = chronicles();
+  assert.equal(state.screen, "chronicles"); assert.equal(state.modal, null);
+  assert.equal(state.exhibit, "atlas"); assert.equal(state.record, null);
+  assert.equal(reduceQuestState(play(), { type: "home", panel: "chronicles" }).screen, "play", "only Home opens Chronicles");
+  for (const event of [{ type: "exhibit", exhibit: "laws" }, { type: "record", id: "korvenia" }, { type: "map", x: 0.15, y: 0.17 }, { type: "close-record" }] satisfies QuestEvent[]) {
+    assert.equal(reduceQuestState(createQuestState(), event).screen, "home", `${event.type} is ignored outside Chronicles`);
+  }
+});
+
+test("exhibits switch, each kind of record opens, and records stay within their exhibit", () => {
+  let state = chronicles();
+  for (const exhibit of CHRONICLE_EXHIBITS) {
+    state = reduceQuestState(state, { type: "exhibit", exhibit: exhibit.id });
+    assert.equal(state.exhibit, exhibit.id); assert.equal(state.record, null);
+    for (const record of getChronicleRecords(exhibit.id)) {
+      state = reduceQuestState(state, { type: "record", id: record.id });
+      assert.equal(state.record, record.id); assert.equal(state.screen, "chronicles");
+    }
+    const other = CHRONICLE_EXHIBITS.find(item => item.id !== exhibit.id)!;
+    assert.equal(reduceQuestState(state, { type: "record", id: getChronicleRecords(other.id)[0].id }), state, "another exhibit's record is rejected");
+    assert.equal(reduceQuestState(state, { type: "record", id: "unknown" }), state);
+    const switched = reduceQuestState(state, { type: "exhibit", exhibit: other.id });
+    assert.equal(switched.exhibit, other.id); assert.equal(switched.record, null, "switching exhibits closes the record");
+  }
+  assert.equal(reduceQuestState(state, { type: "exhibit", exhibit: "unknown" as "atlas" }), state);
+  state = reduceQuestState(state, { type: "record", id: "the-muster" });
+  assert.equal(reduceQuestState(state, { type: "close-record" }).record, null);
+});
+
+test("each map hotspot opens its nation while empty ground and the centre do nothing", () => {
+  const atlas = chronicles();
+  for (const record of getHotspotRecords()) {
+    assert.equal(reduceQuestState(atlas, { type: "map", x: record.hotspot.x, y: record.hotspot.y }).record, record.id);
+    assert.equal(reduceQuestState(atlas, { type: "record", id: record.id }).record, record.id);
+  }
+  for (const [x, y] of [[0.5, 0.5], [0.45, 0.4], [0.02, 0.95], [NaN, 0.2], [-1, -1]]) {
+    assert.equal(reduceQuestState(atlas, { type: "map", x, y }), atlas, `empty ground at ${x}, ${y}`);
+  }
+  const laws = reduceQuestState(atlas, { type: "exhibit", exhibit: "laws" });
+  assert.equal(reduceQuestState(laws, { type: "map", x: 0.15, y: 0.17 }), laws, "the map only answers on the Atlas");
+});
+
+test("a ray onto the Atlas diorama's bare ground selects only where a hotspot is", () => {
+  // The diorama refines a ray on its ground stand-in against the drawn surface,
+  // then dispatches the hit as map fractions; a seated eye looks down from the south.
+  const width = 0.95, mesh = buildReliefMesh(width, RELIEF_SEGMENTS.quest), eye = [0, 0.5, mesh.depth / 2 + 0.36] as const;
+  const pick = (x: number, y: number) => {
+    const [tx, tz] = imageToRelief(x, y, width), ty = reliefHeightAt(x, y) * width;
+    const t = intersectRelief(mesh, eye[0], eye[1], eye[2], tx - eye[0], ty - eye[1], tz - eye[2]);
+    assert.ok(t > 0, `the ray reaches the relief at ${x}, ${y}`);
+    const [hx, hy] = reliefToImage(eye[0] + (tx - eye[0]) * t, eye[2] + (tz - eye[2]) * t, width);
+    return reduceQuestState(chronicles(), { type: "map", x: hx, y: hy });
+  };
+  for (const [x, y] of [[0.5, 0.5], [0.4, 0.35], [0.62, 0.86]]) assert.equal(pick(x, y).record, null, `bare ground at ${x}, ${y}`);
+  for (const record of getHotspotRecords()) assert.equal(pick(record.hotspot.x, record.hotspot.y).record, record.id);
+});
+
+test("Back closes an open record first, then returns Home", () => {
+  let state = reduceQuestState(chronicles(), { type: "record", id: "aethelgard" });
+  state = reduceQuestState(state, { type: "back" });
+  assert.equal(state.screen, "chronicles"); assert.equal(state.record, null);
+  state = reduceQuestState(state, { type: "back" });
+  assert.equal(state.screen, "home"); assert.equal(state.modal, null);
+  const reopened = reduceQuestState(apply(chronicles(), { type: "exhibit", exhibit: "laws" }, { type: "back" }), { type: "home", panel: "chronicles" });
+  assert.equal(reopened.exhibit, "atlas", "the Home tile reopens the Atlas");
+});
+
+test("pause and resume keep the Chronicles exhibit and open record", () => {
+  const original = apply(chronicles(), { type: "exhibit", exhibit: "interregnum" }, { type: "record", id: "year-19" });
+  let state = reduceQuestState({ ...original, entered: true }, { type: "pause", reason: "Hands out of view" });
+  assert.equal(state.screen, "pause"); assert.equal(state.previousScreen, "chronicles");
+  for (const event of [{ type: "back" }, { type: "exhibit", exhibit: "laws" }, { type: "record", id: "year-0" }, { type: "close-record" }] satisfies QuestEvent[]) {
+    assert.equal(reduceQuestState(state, event), state, `${event.type} waits for Resume`);
+  }
+  state = reduceQuestState(state, { type: "resume" });
+  assert.equal(state.screen, "chronicles"); assert.equal(state.exhibit, "interregnum"); assert.equal(state.record, "year-19");
+  const home = apply(state, { type: "pause", reason: "Break" }, { type: "pause-home" });
+  assert.equal(home.screen, "home");
+});
+
+test("Chronicles copy renders exactly on Quest except its dashes, which the shared adaptation maps", () => {
+  // UIKitML builds each @font-face Barlow atlas with UIKit's default TTF charset.
+  const atlas = new Set(" \tABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!?.,;:'\"()-[]{}@#$%&*+=/\\<>");
+  const copy = [CHRONICLES_TITLE, ...CHRONICLE_EXHIBITS.map(item => item.title), ...Object.values(CHRONICLE_LABELS).flatMap(item => [item.name, item.meaning]), ...CHRONICLE_RECORDS.flatMap(item => [item.title, item.body])];
+  for (const value of copy) {
+    for (const glyph of questText(value)) assert.ok(atlas.has(glyph), `${JSON.stringify(glyph)} in ${value}`);
+    assert.equal(questText(value), value.replace(/[–—]/gu, "-"), "only dashes change; quotes and apostrophes stay exact");
+  }
 });

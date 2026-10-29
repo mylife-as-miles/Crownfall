@@ -1,3 +1,4 @@
+import { CHRONICLES_MAP } from "../chronicles/content";
 import type {
   ChapterItem, Direction, HomeContent, HomeDirection, MenuPanel,
   ModalContent, PlayCard, SettingsCategory,
@@ -65,7 +66,8 @@ export function getNextHomeTile(
 }
 
 // Titles and images are supplied content. Actions open the matching Home
-// information panel; they do not claim a completed progression or news system.
+// information panel, or the tile's destination when it names one; they do not
+// claim a completed progression or news system.
 export const HOME_CONTENT: HomeContent = [
   {
     id: "feature",
@@ -76,9 +78,10 @@ export const HOME_CONTENT: HomeContent = [
   {
     id: "upper",
     title: "Chronicles",
-    imageSrc: "/assets/home/chronicles.webp",
+    imageSrc: CHRONICLES_MAP.src,
     imageFit: "contain",
     action: "chronicles",
+    destination: "chronicles",
   },
   {
     id: "lower",
@@ -147,6 +150,6 @@ export function getModalContent(
   const home = HOME_CONTENT.find((item) => item.action === panel);
   return {
     title: home?.title || "Crownfall",
-    description: panel === "legacy" ? "Legacy profiles are unavailable in this build." : panel === "chronicles" ? "Chronicles are unavailable in this build." : "The herald board is unavailable in this build.",
+    description: home?.destination ? "" : panel === "legacy" ? "Legacy profiles are unavailable in this build." : "The herald board is unavailable in this build.",
   };
 }

@@ -44,11 +44,12 @@ function components(text, names, React, ts) {
   return Function('React', `${output.outputText}\nreturn { ${names.join(', ')} };`)(React);
 }
 
-function sharedModule(name, ts) {
-  const input = readFileSync(resolve(repository, 'shared/menu', name), 'utf8');
-  const output = ts.transpileModule(input, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS } });
+function sharedModule(name, ts, directory = resolve(repository, 'shared/menu')) {
+  const file = resolve(directory, name.endsWith('.ts') ? name : `${name}.ts`);
+  const output = ts.transpileModule(readFileSync(file, 'utf8'), { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS } });
   const exports = {};
-  Function('exports', output.outputText)(exports);
+  // Shared modules import only one another, so their relative requires load the same way.
+  Function('exports', 'require', output.outputText)(exports, (specifier) => sharedModule(specifier, ts, dirname(file)));
   return exports;
 }
 

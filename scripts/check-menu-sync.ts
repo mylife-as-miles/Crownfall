@@ -9,6 +9,7 @@ import { sharedAssetPaths, menuPublicSource, questPublicDestination } from './sy
 import { CHAPTERS, HOME_CONTENT, NAV_TABS, PLAY_CARDS, ARENAS } from '../shared/menu/content.ts';
 import { MENU_LAYOUT, MENU_THEME } from '../shared/menu/theme.ts';
 import { applyMenuTheme } from '../main game/src/theme.ts';
+import { checkChroniclesSync } from './check-chronicles-sync.ts';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const scratch = await mkdtemp(join(tmpdir(), 'crownfall-sync-'));
 try {
@@ -26,6 +27,8 @@ try {
   for (const item of HOME_CONTENT) assert.ok(expected.includes(`id="Home_${item.action}"`));
   for (const item of CHAPTERS) assert.ok(expected.includes(`id="Chapter_${item.id}"`));
   ARENAS.forEach((_, index) => assert.ok(expected.includes(`id="Arena_${index}"`)));
+  // Chronicles parity lives with the Chronicles workflow (docs/chronicles/ARCHITECTURE.md).
+  await checkChroniclesSync(expected, root);
   const variables = new Map<string, string>();
   applyMenuTheme({ style: { setProperty: (name: string, value: string) => variables.set(name, value) } } as unknown as HTMLElement);
   assert.equal(variables.get('--menu-accent'), MENU_THEME.colors.accent);

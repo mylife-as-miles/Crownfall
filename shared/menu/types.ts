@@ -1,6 +1,6 @@
 // Shared menu contracts contain no browser, renderer, or framework dependencies.
 export type Direction = "left" | "right" | "up" | "down";
-export type MenuScreen = "home" | "play" | "showcase" | "settings" | "chapters";
+export type MenuScreen = "home" | "play" | "showcase" | "settings" | "chapters" | "chronicles";
 export type PlayCardId = "classic" | "local-duel" | "chapters" | "online-duel";
 export type HomeTileId = "feature" | "upper" | "lower";
 export type HomeTileAction = "legacy" | "chronicles" | "herald";
@@ -28,6 +28,8 @@ export interface HomeTileContent {
   imageFit?: "cover" | "contain";
   imagePosition?: string;
   action?: HomeTileAction;
+  /** Opens a dedicated destination on both platforms instead of an information panel. */
+  destination?: "chronicles";
 }
 
 export type HomeContent = readonly [

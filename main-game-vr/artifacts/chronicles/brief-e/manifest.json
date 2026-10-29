@@ -1,0 +1,243 @@
+{
+  "complete": false,
+  "profile": {
+    "runtime": "IWSDK-managed IWER Meta Quest 3",
+    "physicalHeadset": false,
+    "rendering": "software (SwiftShader); not headset GPU or frame-time evidence",
+    "browserInputs": "canvas clicks",
+    "xrInputs": "hand ray + pinch, controllers disconnected"
+  },
+  "captures": [
+    {
+      "filename": "01-home.png",
+      "title": "Home",
+      "group": "Browser preview",
+      "xr": false,
+      "state": {
+        "screen": "home",
+        "selectedControl": "Home_legacy",
+        "posture": "seated",
+        "entered": false,
+        "paused": false
+      },
+      "renderStats": {
+        "calls": 14,
+        "triangles": 81992,
+        "points": 98,
+        "geometries": 21,
+        "textures": 15,
+        "programs": 11
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "02-atlas-seated.png",
+      "title": "Atlas - seated",
+      "group": "Browser preview",
+      "xr": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Exhibit_atlas",
+        "posture": "seated",
+        "entered": false,
+        "paused": false
+      },
+      "renderStats": {
+        "calls": 19,
+        "triangles": 50902,
+        "points": 98,
+        "geometries": 30,
+        "textures": 16,
+        "programs": 18
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "03-record-korvenia.png",
+      "title": "Atlas record - korvenia",
+      "group": "Browser preview",
+      "xr": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_korvenia",
+        "posture": "seated",
+        "entered": false,
+        "paused": false
+      },
+      "renderStats": {
+        "calls": 21,
+        "triangles": 51778,
+        "points": 98,
+        "geometries": 32,
+        "textures": 17,
+        "programs": 19
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "04-record-solforiz.png",
+      "title": "Atlas record - solforiz",
+      "group": "Browser preview",
+      "xr": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_solforiz",
+        "posture": "seated",
+        "entered": false,
+        "paused": false
+      },
+      "renderStats": {
+        "calls": 21,
+        "triangles": 51792,
+        "points": 98,
+        "geometries": 32,
+        "textures": 17,
+        "programs": 19
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "05-record-aethelgard.png",
+      "title": "Atlas record - aethelgard",
+      "group": "Browser preview",
+      "xr": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_aethelgard",
+        "posture": "seated",
+        "entered": false,
+        "paused": false
+      },
+      "renderStats": {
+        "calls": 21,
+        "triangles": 51790,
+        "points": 98,
+        "geometries": 32,
+        "textures": 17,
+        "programs": 19
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "filename": "06-record-kwind-09.png",
+      "title": "Atlas record - kwind-09",
+      "group": "Browser preview",
+      "xr": false,
+      "state": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_kwind-09",
+        "posture": "seated",
+        "entered": false,
+        "paused": false
+      },
+      "renderStats": {
+        "calls": 21,
+        "triangles": 51790,
+        "points": 98,
+        "geometries": 32,
+        "textures": 17,
+        "programs": 19
+      },
+      "metadata": {
+        "width": 1280,
+        "height": 720
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "input": "canvas click",
+      "id": "Home_chronicles",
+      "point": {
+        "x": 336,
+        "y": 187
+      },
+      "selectedControl": "Exhibit_atlas",
+      "screen": "chronicles",
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Marker_korvenia",
+      "point": {
+        "x": 278,
+        "y": 269
+      },
+      "selectedControl": "Hotspot_korvenia",
+      "screen": "chronicles",
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Marker_solforiz",
+      "point": {
+        "x": 520,
+        "y": 359
+      },
+      "selectedControl": "Hotspot_solforiz",
+      "screen": "chronicles",
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Marker_aethelgard",
+      "point": {
+        "x": 497,
+        "y": 274
+      },
+      "selectedControl": "Hotspot_aethelgard",
+      "screen": "chronicles",
+      "passed": true
+    },
+    {
+      "input": "canvas click",
+      "id": "Hotspot_kwind-09",
+      "point": {
+        "x": 231,
+        "y": 102
+      },
+      "selectedControl": "Hotspot_kwind-09",
+      "screen": "chronicles",
+      "passed": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "Home opens Chronicles at the Atlas",
+      "passed": true
+    },
+    {
+      "name": "Bare ground at the map centre takes the pointer and selects nothing",
+      "passed": false,
+      "point": {
+        "x": 390,
+        "y": 347
+      },
+      "groundHovered": false
+    }
+  ],
+  "atlasStats": {
+    "calls": 19,
+    "triangles": 50908,
+    "points": 98,
+    "geometries": 30,
+    "textures": 16,
+    "programs": 18
+  },
+  "error": "AssertionError [ERR_ASSERTION]: Bare ground at the map centre takes the pointer and selects nothing\n    at check (file:///home/user/crownfall-chronicles/main-game-vr/scripts/capture-chronicles.mjs:39:158)\n    at file:///home/user/crownfall-chronicles/main-game-vr/scripts/capture-chronicles.mjs:142:3"
+}
