@@ -165,6 +165,31 @@ development adds architecture, activity and decoration. Never hardcode victories
 production scenes; provide a harness with clearly labelled development fixtures. Gameplay supplies the
 authoritative events.
 
+## Regional map of the player's nation (later increment)
+
+My Legacy gets a surveyed map of the region around the player's holding: the holding itself,
+neighbouring estates and villages, roads, rivers, the allied and rival houses' seats, and the capital
+in the distance. Chronicles keeps the world-scale atlas; this map answers "where does my house
+stand in my nation?"
+
+- **Style.** A surveyed cartographic relief: coherent hillshaded terrain, rivers that drain
+  downhill to water, gradual biome transitions, roads and tracks, settlement symbols, a compass, a
+  scale bar and a legend. Each nation draws it in its own cartographic dialect — a Korvenian
+  ecclesiastical chart, a Solforizi navigator's chart, an Aethelgard rune-carved survey, a Kwind-09
+  ledger-grid survey — so the information is shared but the culture differs.
+- **One source of truth.** Generate it from the blueprint's outer-territory data (the same
+  bearings, distances, elevations and places the 3D scene uses), so the map can never disagree with
+  the Bannerhold. No hand-drawn duplicate geography.
+- **Where it lives.** A war table in the War Record landmark: a carved 3D relief of the region with
+  the player's banner pinned on the holding, legible from the War Record framing on desktop and
+  from the Quest vantage. It can later show where Herald summons and rival houses come from.
+- **Canon.** The capital is always "the capital". Every other place name is a working placeholder
+  kept in replaceable data and flagged for creator approval. Geography stays representational and
+  must not settle the four nations' borders.
+- **Order.** Reserve the war-table position and framing in the War Record now. Build the map once
+  the core Bannerhold has passed critique. Critics track it as a planned increment, not as a blocker
+  for the core acceptance.
+
 ## Pipeline and performance
 
 Reusable building kits and prefabs, optimised GLB where appropriate, material and texture reuse,
