@@ -91,3 +91,17 @@ every evidence round. Critics treat violations as blockers.
   so always read the URL from `npx @iwsdk/cli dev status`. Bring runtimes down when finished.
 - The host has 4 CPUs and no GPU (software WebGL). Frame timings measured here are not
   representative and never stand in for physical Quest validation.
+
+## Cross-workflow notes (relayed by the orchestrator)
+
+- **Gameplay → environment (shared domain, commit eba8820):** consume only `presentBannerhold` and
+  `presentFoundingDraft`. For standards and shields use `rasterizeHeraldry`, or one
+  `HeraldryRasterizer` per renderer so buffers are reused. Output is straight-alpha sRGB, row 0 at
+  the top, and transparent pixels carry the field colour. Alternatively build meshes from the
+  `heraldryShapes` rings (nonzero fill). The eclipse, sun, sword, key and tree charges were redrawn on
+  29 October, so rebuild any cached heraldry textures. Merge `feat/my-legacy` into the environment
+  branch to pick these modules up.
+- **Capitals are unnamed.** Every nation's capital reads "the capital"; never render an invented
+  capital or ruler name.
+- **Capture presentation.** Never reuse `web/`'s dissolve-and-death-cry capture for Classic Legacy
+  matches; captured representatives are not shown dying.
