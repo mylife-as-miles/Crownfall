@@ -1,0 +1,2065 @@
+{
+  "measuredAt": "2026-10-30T07:33:13.019Z",
+  "target": "http://localhost:5180",
+  "build": "production build (vite preview)",
+  "scenarioPreset": "Low (75 % render scale), 1280×720, reduced motion",
+  "scenarios": {
+    "landmarkCyclingCold": {
+      "wallMs": 4070,
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0,
+        "totalMs": 0
+      },
+      "longTaskCauses": {
+        "renderer main-thread work": 1
+      },
+      "frames": 12,
+      "selfTimeMs": {
+        "legacyCode": 6.98,
+        "otherBundles": 27.17,
+        "webglCalls": 0,
+        "gamepadPolling": 0,
+        "otherNative": 25.09,
+        "garbageCollector": 1.16,
+        "testHarness": 3.64,
+        "browserNative": 286.41,
+        "idle": 2933.57
+      },
+      "cpuHotspots": [
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 8.59
+        },
+        {
+          "function": "focus",
+          "url": "",
+          "line": 0,
+          "selfMs": 4.51
+        },
+        {
+          "function": "q",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 3.89
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 2.6
+        },
+        {
+          "function": "requestAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 2.09
+        },
+        {
+          "function": "q",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 1.9
+        },
+        {
+          "function": "rn",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 1.85
+        },
+        {
+          "function": "Go",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 1.59
+        },
+        {
+          "function": "np",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 10,
+          "selfMs": 1.31
+        },
+        {
+          "function": "evaluate",
+          "url": "",
+          "line": 296,
+          "selfMs": 1.21
+        },
+        {
+          "function": "createElement",
+          "url": "",
+          "line": 0,
+          "selfMs": 1.16
+        },
+        {
+          "function": "(garbage collector)",
+          "url": "",
+          "line": 0,
+          "selfMs": 1.16
+        }
+      ],
+      "scriptWorkOver8Ms": [
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 16.23,
+          "threadMs": 16.19,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 15.24,
+              "threadMs": 15.21
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.41,
+              "threadMs": 0.41
+            },
+            {
+              "function": "MutationObserver.observe.subtree",
+              "url": "",
+              "line": 10,
+              "ms": 0.24,
+              "threadMs": 0.24
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.2,
+              "threadMs": 0.19
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 4.07
+            }
+          ]
+        }
+      ],
+      "javascriptPerFrameMs": 5.03,
+      "legacyCodePerFrameMs": 0.58,
+      "scriptPerFrameMs": {
+        "mean": 6.63,
+        "p50": 2.88,
+        "p95": 29.57,
+        "p99": 29.57,
+        "max": 29.57
+      },
+      "frameIntervalMs": {
+        "p50": 173.91,
+        "p95": 634.39,
+        "p99": 634.39
+      },
+      "traceTasksOver50Ms": {
+        "count": 1,
+        "maxMs": 117.13
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 117.13,
+          "threadMs": 104.33,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 104.94,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 117.08",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.07",
+            "V8.GC_TIME_TO_SAFEPOINT 0.02",
+            "V8.GC_SCAVENGER_COMPLETE_SWEEP_ARRAY_BUFFERS 0.01"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 104.84",
+            "GpuChannel::ExecuteDeferredRequest 16.39",
+            "CommandBuffer::Flush 16.1",
+            "CommandBufferStub::OnAsyncFlush 16.08"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 7,
+        "p50": 1.1,
+        "p95": 2.1,
+        "max": 2.1
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    },
+    "landmarkCyclingRepeat": {
+      "wallMs": 10882,
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0,
+        "totalMs": 0
+      },
+      "longTaskCauses": {
+        "renderer thread off-CPU (host contention)": 1
+      },
+      "frames": 34,
+      "selfTimeMs": {
+        "legacyCode": 5.91,
+        "otherBundles": 71.28,
+        "webglCalls": 2.98,
+        "gamepadPolling": 0,
+        "otherNative": 66.97,
+        "garbageCollector": 7.44,
+        "testHarness": 3.94,
+        "browserNative": 550.86,
+        "idle": 9053.56
+      },
+      "cpuHotspots": [
+        {
+          "function": "rf",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 28.4
+        },
+        {
+          "function": "requestAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 17.07
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 13.55
+        },
+        {
+          "function": "Gd",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 9.56
+        },
+        {
+          "function": "r",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 4117,
+          "selfMs": 7.92
+        },
+        {
+          "function": "(garbage collector)",
+          "url": "",
+          "line": 0,
+          "selfMs": 7.44
+        },
+        {
+          "function": "requestAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 5.61
+        },
+        {
+          "function": "setAttribute",
+          "url": "",
+          "line": 0,
+          "selfMs": 5.2
+        },
+        {
+          "function": "setAttribute",
+          "url": "",
+          "line": 0,
+          "selfMs": 5.01
+        },
+        {
+          "function": "focus",
+          "url": "",
+          "line": 0,
+          "selfMs": 4.62
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 3.96
+        },
+        {
+          "function": "Vu.renderBufferDirect",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 4117,
+          "selfMs": 3.82
+        }
+      ],
+      "scriptWorkOver8Ms": [
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 35.67,
+          "threadMs": 11.23,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 35.34,
+              "threadMs": 10.9
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.11,
+              "threadMs": 0.11
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.06,
+              "threadMs": 0.06
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.05,
+              "threadMs": 0.05
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 46,
+              "inclusiveMs": 27.84
+            },
+            {
+              "event": "Layout",
+              "count": 1,
+              "inclusiveMs": 25.5
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 3,
+              "inclusiveMs": 0.84
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 16.29,
+          "threadMs": 12.8,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 15.98,
+              "threadMs": 12.5
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.08,
+              "threadMs": 0.08
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.07,
+              "threadMs": 0.07
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.06,
+              "threadMs": 0.06
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 1.13
+            }
+          ]
+        },
+        {
+          "event": "FireAnimationFrame",
+          "eventType": null,
+          "ms": 15.5,
+          "threadMs": 0.77,
+          "calls": [
+            {
+              "function": "frame",
+              "url": "/assets/createStandInEnvironment-CbUtYVW_.js",
+              "line": 1,
+              "ms": 0.74,
+              "threadMs": 0.73
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 9.68,
+          "threadMs": 3.98,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 9.3,
+              "threadMs": 3.61
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.13,
+              "threadMs": 0.13
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.07,
+              "threadMs": 0.07
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.07,
+              "threadMs": 0.07
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 0.97
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 8.27,
+          "threadMs": 3.86,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 7.74,
+              "threadMs": 3.34
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.2,
+              "threadMs": 0.2
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.12,
+              "threadMs": 0.12
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.1,
+              "threadMs": 0.1
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 0.88
+            }
+          ]
+        }
+      ],
+      "javascriptPerFrameMs": 4.55,
+      "legacyCodePerFrameMs": 0.17,
+      "scriptPerFrameMs": {
+        "mean": 6.08,
+        "p50": 4.04,
+        "p95": 23.85,
+        "p99": 43.1,
+        "max": 43.1
+      },
+      "frameIntervalMs": {
+        "p50": 411.89,
+        "p95": 578.29,
+        "p99": 809.64
+      },
+      "traceTasksOver50Ms": {
+        "count": 1,
+        "maxMs": 55.56
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 55.56,
+          "threadMs": 27.77,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 0,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "Receive mojo message 55.53",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 5.23",
+            "V8.GC_TIME_TO_SAFEPOINT 3.18"
+          ],
+          "gpuProcessTop": []
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 24,
+        "p50": 1,
+        "p95": 2.8,
+        "max": 5.3
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    }
+  },
+  "presets": {},
+  "roundTrips": null,
+  "throttled4x": {
+    "landmarkCyclingCold": {
+      "wallMs": 4456,
+      "longTasks": {
+        "count": 7,
+        "maxMs": 148,
+        "totalMs": 711
+      },
+      "longTaskCauses": {
+        "renderer main-thread work": 2,
+        "renderer thread off-CPU (host contention)": 4
+      },
+      "frames": 14,
+      "selfTimeMs": {
+        "legacyCode": 49.66,
+        "otherBundles": 142.63,
+        "webglCalls": 13.29,
+        "gamepadPolling": 0,
+        "otherNative": 261.12,
+        "garbageCollector": 4.14,
+        "testHarness": 6.67,
+        "browserNative": 1286.07,
+        "idle": 2165.83
+      },
+      "cpuHotspots": [
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 87.88
+        },
+        {
+          "function": "requestAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 39.39
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 33.38
+        },
+        {
+          "function": "observe",
+          "url": "",
+          "line": 0,
+          "selfMs": 21.19
+        },
+        {
+          "function": "Go",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 12.44
+        },
+        {
+          "function": "Sl",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 9.2
+        },
+        {
+          "function": "postMessage",
+          "url": "",
+          "line": 0,
+          "selfMs": 8.9
+        },
+        {
+          "function": "bindVertexArray",
+          "url": "",
+          "line": 0,
+          "selfMs": 8.46
+        },
+        {
+          "function": "(anonymous)",
+          "url": "",
+          "line": 0,
+          "selfMs": 7.99
+        },
+        {
+          "function": "requestAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 7.72
+        },
+        {
+          "function": "createElement",
+          "url": "",
+          "line": 0,
+          "selfMs": 7.45
+        },
+        {
+          "function": "_h",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 10,
+          "selfMs": 7.35
+        }
+      ],
+      "scriptWorkOver8Ms": [
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 109.33,
+          "threadMs": 45.75,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 108.54,
+              "threadMs": 45.01
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.39,
+              "threadMs": 0.39
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.13,
+              "threadMs": 0.13
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.08,
+              "threadMs": 0.08
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.02
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 38.02
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 108.65,
+          "threadMs": 49.11,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 85.06,
+              "threadMs": 38.26
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 8.1,
+              "threadMs": 3.16
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.99,
+              "threadMs": 0.99
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.47,
+              "threadMs": 0.47
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.02
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 13.34
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 76.41,
+          "threadMs": 39.66,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 75.15,
+              "threadMs": 38.45
+            },
+            {
+              "function": "MutationObserver.observe.subtree",
+              "url": "",
+              "line": 10,
+              "ms": 0.87,
+              "threadMs": 0.87
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.14,
+              "threadMs": 0.14
+            },
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 0.04,
+              "threadMs": 0.04
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 46.46,
+          "threadMs": 47.43,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 42.19,
+              "threadMs": 43.17
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 1.6,
+              "threadMs": 1.6
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 1.18,
+              "threadMs": 1.18
+            },
+            {
+              "function": "MutationObserver.observe.subtree",
+              "url": "",
+              "line": 10,
+              "ms": 0.36,
+              "threadMs": 0.36
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.02
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 4.64
+            }
+          ]
+        },
+        {
+          "event": "FireAnimationFrame",
+          "eventType": null,
+          "ms": 35.41,
+          "threadMs": 20.22,
+          "calls": [
+            {
+              "function": "frame",
+              "url": "/assets/createStandInEnvironment-CbUtYVW_.js",
+              "line": 1,
+              "ms": 19.15,
+              "threadMs": 14.14
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 33.22,
+          "threadMs": 24.98,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 28.56,
+              "threadMs": 20.79
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.72,
+              "threadMs": 0.72
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.72,
+              "threadMs": 0.72
+            },
+            {
+              "function": "MutationObserver.observe.subtree",
+              "url": "",
+              "line": 10,
+              "ms": 0.14,
+              "threadMs": 0.13
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 7.03
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "click",
+          "ms": 17.1,
+          "threadMs": 17.08,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 16.16,
+              "threadMs": 16.14
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.83,
+              "threadMs": 0.83
+            },
+            {
+              "function": "MutationObserver.observe.subtree",
+              "url": "",
+              "line": 10,
+              "ms": 0.01,
+              "threadMs": 0.01
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.01,
+              "threadMs": 0.01
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "FireAnimationFrame",
+          "eventType": null,
+          "ms": 14.96,
+          "threadMs": 6.26,
+          "calls": [
+            {
+              "function": "frame",
+              "url": "/assets/createStandInEnvironment-CbUtYVW_.js",
+              "line": 1,
+              "ms": 10.2,
+              "threadMs": 6.2
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "FireAnimationFrame",
+          "eventType": null,
+          "ms": 13.71,
+          "threadMs": 8.92,
+          "calls": [
+            {
+              "function": "frame",
+              "url": "/assets/createStandInEnvironment-CbUtYVW_.js",
+              "line": 1,
+              "ms": 13.05,
+              "threadMs": 8.26
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "FunctionCall",
+          "eventType": null,
+          "ms": 13.27,
+          "threadMs": 10.39,
+          "calls": [
+            {
+              "function": "D",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 2,
+              "ms": 13.27,
+              "threadMs": 10.39
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        }
+      ],
+      "javascriptPerFrameMs": 33.63,
+      "legacyCodePerFrameMs": 3.55,
+      "scriptPerFrameMs": {
+        "mean": 39.79,
+        "p50": 29.63,
+        "p95": 116.57,
+        "p99": 116.57,
+        "max": 116.57
+      },
+      "frameIntervalMs": {
+        "p50": 218.34,
+        "p95": 487.5,
+        "p99": 487.5
+      },
+      "traceTasksOver50Ms": {
+        "count": 8,
+        "maxMs": 379.65
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 379.65,
+          "threadMs": 349.28,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 222.3,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 379.62",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.13",
+            "V8.GC_TIME_TO_SAFEPOINT 0.02"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 222.1",
+            "GpuChannel::ExecuteDeferredRequest 11.06",
+            "CommandBuffer::Flush 9.79",
+            "CommandBufferStub::OnAsyncFlush 9.78"
+          ]
+        },
+        {
+          "ms": 148.13,
+          "threadMs": 69.27,
+          "scriptEventMs": 49.51,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 1.55,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "ProxyMain::BeginMainFrame 130.96",
+            "WebFrameWidgetImpl::UpdateLifecycle 73.83",
+            "LocalFrameView::RunPaintLifecyclePhase 65.85",
+            "WebFrameWidgetImpl::BeginMainFrame 55.1",
+            "Paint 54.4",
+            "Blink.Paint.UpdateTime 52.61"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 1.51",
+            "GpuChannel::ExecuteDeferredRequest 1.51",
+            "CommandBuffer::Flush 1.49",
+            "CommandBufferStub::OnAsyncFlush 1.49"
+          ]
+        },
+        {
+          "ms": 109.5,
+          "threadMs": 45.92,
+          "scriptEventMs": 109.33,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 109.5,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "EventDispatch 122.74",
+            "FunctionCall 109.21",
+            "Blink.Style.UpdateTime 59.24",
+            "UpdateLayoutTree 38.02",
+            "Document::updateStyle 8.03",
+            "Document::updateActiveStyle 7.98"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 109.5"
+          ]
+        },
+        {
+          "ms": 109.29,
+          "threadMs": 49.75,
+          "scriptEventMs": 108.65,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 109.18,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "EventDispatch 108.71",
+            "FunctionCall 94.66",
+            "Blink.Style.UpdateTime 13.36",
+            "UpdateLayoutTree 13.34",
+            "Document::updateStyle 13.22",
+            "Document::recalcStyle 13.2"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 108.81",
+            "GpuChannel::ExecuteDeferredRequest 5.34",
+            "CommandBuffer::Flush 5.2",
+            "CommandBufferStub::OnAsyncFlush 5.19"
+          ]
+        },
+        {
+          "ms": 108.38,
+          "threadMs": 52.25,
+          "scriptEventMs": 15.09,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 108.38,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "ProxyMain::BeginMainFrame 108.37",
+            "WebFrameWidgetImpl::UpdateLifecycle 70.92",
+            "LocalFrameView::RunPaintLifecyclePhase 70.59",
+            "Blink.Paint.UpdateTime 54.71",
+            "WebFrameWidgetImpl::BeginMainFrame 34.7",
+            "Paint 29.25"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 108.38"
+          ]
+        },
+        {
+          "ms": 87.3,
+          "threadMs": 46.63,
+          "scriptEventMs": 0.1,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 87.26,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Document::UpdateStyleAndLayout 86.14",
+            "Blink.ForcedStyleAndLayout.UpdateTime 86.14",
+            "LocalFrameView::UpdateStyleAndLayout 86.13",
+            "Blink.Layout.UpdateTime 86",
+            "LocalFrameView::layout 85.98",
+            "Layout 85.97"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 87.18",
+            "GpuChannel::ExecuteDeferredRequest 18.38",
+            "RendererRasterWorker 18.23",
+            "CommandBuffer::Flush 18.22"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 8,
+        "p50": 7.3,
+        "p95": 16.5,
+        "max": 16.5
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    },
+    "landmarkCyclingRepeat": {
+      "wallMs": 11800,
+      "longTasks": {
+        "count": 12,
+        "maxMs": 112,
+        "totalMs": 905
+      },
+      "longTaskCauses": {
+        "renderer main-thread work": 3,
+        "renderer thread off-CPU (host contention)": 3
+      },
+      "frames": 40,
+      "selfTimeMs": {
+        "legacyCode": 97.98,
+        "otherBundles": 293.77,
+        "webglCalls": 12.48,
+        "gamepadPolling": 0,
+        "otherNative": 342.58,
+        "garbageCollector": 98.84,
+        "testHarness": 58.99,
+        "browserNative": 2412.04,
+        "idle": 7465.75
+      },
+      "cpuHotspots": [
+        {
+          "function": "(garbage collector)",
+          "url": "",
+          "line": 0,
+          "selfMs": 98.84
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 88.75
+        },
+        {
+          "function": "rf",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 64.61
+        },
+        {
+          "function": "focus",
+          "url": "",
+          "line": 0,
+          "selfMs": 46.76
+        },
+        {
+          "function": "(anonymous)",
+          "url": "",
+          "line": 0,
+          "selfMs": 26.98
+        },
+        {
+          "function": "animateTo",
+          "url": "/assets/createStandInEnvironment-CbUtYVW_.js",
+          "line": 1,
+          "selfMs": 26.41
+        },
+        {
+          "function": "postMessage",
+          "url": "",
+          "line": 0,
+          "selfMs": 24.77
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 24.71
+        },
+        {
+          "function": "gt",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 4117,
+          "selfMs": 21.15
+        },
+        {
+          "function": "i",
+          "url": "/assets/LegacyScreen-DfD2gx5B.js",
+          "line": 2,
+          "selfMs": 16.76
+        },
+        {
+          "function": "q",
+          "url": "/assets/index-V8c5O4qi.js",
+          "line": 9,
+          "selfMs": 15.8
+        },
+        {
+          "function": "requestAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 14.94
+        }
+      ],
+      "scriptWorkOver8Ms": [
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 88.7,
+          "threadMs": 61.07,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 87.45,
+              "threadMs": 59.93
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.95,
+              "threadMs": 0.89
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.06,
+              "threadMs": 0.06
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.06,
+              "threadMs": 0.05
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 46,
+              "inclusiveMs": 62.38
+            },
+            {
+              "event": "Layout",
+              "count": 1,
+              "inclusiveMs": 60.55
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 3,
+              "inclusiveMs": 3.96
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 71.54,
+          "threadMs": 27.53,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 71.21,
+              "threadMs": 27.21
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.2,
+              "threadMs": 0.2
+            },
+            {
+              "function": "MutationObserver.observe.subtree",
+              "url": "",
+              "line": 10,
+              "ms": 0.02,
+              "threadMs": 0.02
+            },
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 0.01,
+              "threadMs": 0.01
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 62.41,
+          "threadMs": 20.16,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 60.97,
+              "threadMs": 18.73
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.81,
+              "threadMs": 0.81
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.39,
+              "threadMs": 0.39
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.1,
+              "threadMs": 0.1
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 11.53
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 36.54,
+          "threadMs": 19.31,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 35.89,
+              "threadMs": 18.67
+            },
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 0.11,
+              "threadMs": 0.11
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.09,
+              "threadMs": 0.09
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.08,
+              "threadMs": 0.08
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.04
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 23.59
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 32.99,
+          "threadMs": 32.74,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 30.98,
+              "threadMs": 30.74
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.61,
+              "threadMs": 0.61
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.48,
+              "threadMs": 0.48
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.3,
+              "threadMs": 0.3
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 4.6
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 32.78,
+          "threadMs": 20.43,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 17.7,
+              "threadMs": 13.16
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 8.13,
+              "threadMs": 3.19
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.81,
+              "threadMs": 0.81
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.1,
+              "threadMs": 0.1
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.02
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 2.1
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 32.53,
+          "threadMs": 17.24,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 31.93,
+              "threadMs": 16.65
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.08,
+              "threadMs": 0.08
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.05,
+              "threadMs": 0.05
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.04,
+              "threadMs": 0.04
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 7.62
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 29.67,
+          "threadMs": 17.24,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 28.44,
+              "threadMs": 16.01
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 1.09,
+              "threadMs": 1.08
+            },
+            {
+              "function": "MutationObserver.observe.subtree",
+              "url": "",
+              "line": 10,
+              "ms": 0.03,
+              "threadMs": 0.03
+            },
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 0.01,
+              "threadMs": 0.01
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "eventType": "keydown",
+          "ms": 27.42,
+          "threadMs": 16.69,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 9,
+              "ms": 19.72,
+              "threadMs": 13.98
+            },
+            {
+              "function": "t",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 4156,
+              "ms": 0.79,
+              "threadMs": 0.79
+            },
+            {
+              "function": "_h",
+              "url": "/assets/index-V8c5O4qi.js",
+              "line": 10,
+              "ms": 0.48,
+              "threadMs": 0.48
+            },
+            {
+              "function": "MutationObserver.observe.subtree",
+              "url": "",
+              "line": 10,
+              "ms": 0.35,
+              "threadMs": 0.35
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.02
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 1.1
+            }
+          ]
+        },
+        {
+          "event": "FireAnimationFrame",
+          "eventType": null,
+          "ms": 25.41,
+          "threadMs": 8.33,
+          "calls": [
+            {
+              "function": "",
+              "url": "/assets/LegacyScreen-DfD2gx5B.js",
+              "line": 2,
+              "ms": 25.36,
+              "threadMs": 8.28
+            }
+          ],
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 9,
+              "inclusiveMs": 0.96
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 20.63
+            }
+          ]
+        }
+      ],
+      "javascriptPerFrameMs": 21.14,
+      "legacyCodePerFrameMs": 2.45,
+      "scriptPerFrameMs": {
+        "mean": 23.05,
+        "p50": 16.7,
+        "p95": 86.19,
+        "p99": 128.2,
+        "max": 128.2
+      },
+      "frameIntervalMs": {
+        "p50": 380.57,
+        "p95": 511.89,
+        "p99": 562.17
+      },
+      "traceTasksOver50Ms": {
+        "count": 14,
+        "maxMs": 200.7
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 200.7,
+          "threadMs": 152.13,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 91.85,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 200.67",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.1",
+            "V8.GC_TIME_TO_SAFEPOINT 0.01"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 91.7",
+            "GpuChannel::ExecuteDeferredRequest 11.62",
+            "CommandBuffer::Flush 10.74",
+            "CommandBufferStub::OnAsyncFlush 10.74"
+          ]
+        },
+        {
+          "ms": 111.94,
+          "threadMs": 52.2,
+          "scriptEventMs": 17,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 111.94,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "ProxyMain::BeginMainFrame 111.78",
+            "WebFrameWidgetImpl::UpdateLifecycle 94.32",
+            "LocalFrameView::RunStyleAndLayoutLifecyclePhases 92.93",
+            "LocalFrameView::UpdateStyleAndLayout 90.77",
+            "Blink.Style.UpdateTime 61.81",
+            "UpdateLayoutTree 48.94"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 111.94"
+          ]
+        },
+        {
+          "ms": 94.55,
+          "threadMs": 63.38,
+          "scriptEventMs": 7.49,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 72.31,
+          "cause": "renderer main-thread work",
+          "top": [
+            "ProxyMain::BeginMainFrame 86.35",
+            "LocalFrameView::UpdateStyleAndLayout 60.27",
+            "Document::UpdateStyleAndLayout 60.26",
+            "Blink.ForcedStyleAndLayout.UpdateTime 60.26",
+            "Blink.Layout.UpdateTime 35.84",
+            "LocalFrameView::layout 35.82"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 72.21",
+            "GpuChannel::ExecuteDeferredRequest 0.65",
+            "CommandBuffer::Flush 0.39",
+            "CommandBufferStub::OnAsyncFlush 0.38"
+          ]
+        },
+        {
+          "ms": 91.17,
+          "threadMs": 41.36,
+          "scriptEventMs": 0.45,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 91.17,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "Document::UpdateStyleAndLayout 90.38",
+            "Blink.ForcedStyleAndLayout.UpdateTime 90.37",
+            "LocalFrameView::UpdateStyleAndLayout 90.37",
+            "Blink.Layout.UpdateTime 82.92",
+            "LocalFrameView::layout 82.89",
+            "Layout 82.88"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 91.17"
+          ]
+        },
+        {
+          "ms": 90.16,
+          "threadMs": 62.44,
+          "scriptEventMs": 88.7,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 90.16,
+          "cause": "renderer main-thread work",
+          "top": [
+            "EventDispatch 88.74",
+            "FunctionCall 88.55",
+            "Document::UpdateStyleAndLayout 62.39",
+            "Blink.ForcedStyleAndLayout.UpdateTime 62.32",
+            "LocalFrameView::UpdateStyleAndLayout 61.41",
+            "Blink.Layout.UpdateTime 61.2"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 90.16"
+          ]
+        },
+        {
+          "ms": 88.91,
+          "threadMs": 38.75,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 88.91,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "MinorGC 88.87",
+            "V8.GC_SCAVENGER 88.07",
+            "V8.GC_SCAVENGER_SCAVENGE 66.06",
+            "V8.GC_SCAVENGER_SCAVENGE_PARALLEL_PHASE 29.34",
+            "V8.GC_HEAP_PROLOGUE_SAFEPOINT 17.92",
+            "V8.GC_SCAVENGER_SCAVENGE_WEAK_GLOBAL_HANDLES_IDENTIFY 11.94"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 88.91"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 25,
+        "p50": 4.5,
+        "p95": 17.2,
+        "max": 22.1
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    }
+  },
+  "caveat": "Focused transition recheck only, with software WebGL (SwiftShader). Both cold and repeated panel cycles are retained; 4× CPU throttling is a stress proxy, not physical hardware evidence. This does not replace the full performance protocol."
+}

@@ -1,0 +1,47 @@
+{
+  "compression": "gzip; verified decompression matches original bytes before plaintext removal",
+  "files": [
+    {
+      "original": "baseline-b/inspector-geometry.json",
+      "archive": "baseline-b/inspector-geometry.json.gz",
+      "originalBytes": 278901,
+      "sha256": "8165fb7841e05e9022b9990d0bfdb3336f7930983a73d107f35d910ad6a96b83"
+    },
+    {
+      "original": "containment/inspector-geometry.json",
+      "archive": "containment/inspector-geometry.json.gz",
+      "originalBytes": 278901,
+      "sha256": "8165fb7841e05e9022b9990d0bfdb3336f7930983a73d107f35d910ad6a96b83"
+    },
+    {
+      "original": "final/inspector-geometry.json",
+      "archive": "final/inspector-geometry.json.gz",
+      "originalBytes": 278901,
+      "sha256": "8165fb7841e05e9022b9990d0bfdb3336f7930983a73d107f35d910ad6a96b83"
+    },
+    {
+      "original": "final/performance.json",
+      "archive": "final/performance.json.gz",
+      "originalBytes": 160862,
+      "sha256": "244f23576852fde2bc62d5b92765b019ac62312e25abb938974ca124e32599a0"
+    },
+    {
+      "original": "focus-probe/performance-focus.json",
+      "archive": "focus-probe/performance-focus.json.gz",
+      "originalBytes": 391518,
+      "sha256": "050b18b9210cc2afa12518d9877cdd2e30d3f7256e459f1a578285343ad3a8e1"
+    },
+    {
+      "original": "focus-release-a/inspector-geometry.json",
+      "archive": "focus-release-a/inspector-geometry.json.gz",
+      "originalBytes": 278901,
+      "sha256": "8165fb7841e05e9022b9990d0bfdb3336f7930983a73d107f35d910ad6a96b83"
+    },
+    {
+      "original": "retention/retention.json",
+      "archive": "retention/retention.json.gz",
+      "originalBytes": 638253,
+      "sha256": "65990f4085a7214450389ed0cd532bc8a76374dd44e5299713d777cd2677faaa"
+    }
+  ]
+}

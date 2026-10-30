@@ -1,0 +1,591 @@
+{
+  "passed": true,
+  "environment": "stand-in",
+  "scope": "Playwright against the dev or preview server with model=none except the sorcerer round-trip check. Landmarks are driven through their DOM labels, so the suite runs against the stand-in or the environment workflow's renderer. Controller input is a mocked standard Gamepad API, not physical controller validation. WebGL is software-rendered (SwiftShader); no frame timing is implied.",
+  "checks": [
+    "Controller-only founding: D-pad and A choose a nation, Suggest supplies the name, D-pad cycles the arms and A raises the banner",
+    "Controller in the Bannerhold: D-pad selects landmarks, RB cycles, A opens and RB switches panels, B closes, the right stick nudges the orbit (labels re-project), B returns Home with focus",
+    "Founding steps, overview (with the next-step strip clear of every landmark label) and all four panels fit the stage at 844×390, 1280×720 and 1920×1080 with no horizontal overflow or clipped text, no Legacy text below 11 px, and an opaque founding actions bar",
+    "Scroll edge cues initialize after layout, follow actual wheel scrolling to both endpoints, and reinitialize on a fresh inspector at 844×390",
+    "Cycling retains inspector frame/header/footer identity, resets the keyed body and uncommitted nomination, restores body focus, restarts the entry animation and preserves reduced motion",
+    "Recorded all four inspector geometries at three viewports; every descendant box and scroll extent matches the baseline exactly",
+    "Keyboard and pointer entry release the visible overview label before hiding it, focus the primary action without an extra stop, and rapid cycling/Back/re-entry/Tab retain the latest visible focus scope",
+    "With motion enabled, retained inspector frames replay the same 280 ms native CSS animation and identical keyframes on a landmark change",
+    "Remapped keyboard bindings (WASD, F, Backspace, Z/C, PageUp/PageDown) open My Legacy, move and cycle landmarks, open and cycle panels and unwind Back to Home",
+    "Focused landmark transition performance recorded in artifacts/legacy/codex-round-3/focus-release-a/performance-focus.json",
+    "No JavaScript or console errors"
+  ],
+  "layouts": [
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "founding:nation",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "founding:name",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "founding:heraldry",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "founding:confirm",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "aftermath",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "overview",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "panel:banner-hall",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "panel:muster-grounds",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "panel:war-record",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "state": "panel:heralds-station",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 699,
+        "height": 390
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "founding:nation",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "founding:name",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "founding:heraldry",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "founding:confirm",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "aftermath",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "overview",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "panel:banner-hall",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "panel:muster-grounds",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "panel:war-record",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "state": "panel:heralds-station",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 11,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "founding:nation",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "founding:name",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "founding:heraldry",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "founding:confirm",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "Your Banner. Your People. Your Place in ",
+      "actionsBackground": "rgb(15, 13, 9)",
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "aftermath",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "overview",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "panel:banner-hall",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "panel:muster-grounds",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "panel:war-record",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "state": "panel:heralds-station",
+      "overflow": false,
+      "outside": [],
+      "clipped": [],
+      "badgeCovered": false,
+      "stripCovers": [],
+      "smallestFontPx": 14.592,
+      "smallestText": "My Legacy",
+      "actionsBackground": null,
+      "stage": {
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  ],
+  "errors": []
+}

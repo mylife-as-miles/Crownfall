@@ -128,6 +128,12 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, ResolvedLegacyScreenP
 
   const openLandmark = useCallback((id: LandmarkId) => {
     if (mode !== "bannerhold" || dialog || beat) return;
+    // Labels stay mounted while their overview layer hides. Release overview
+    // focus before that mutation: React must not restore a now-hidden label
+    // and all of its ancestor scroll positions while the inspector lays out.
+    // The existing focus request still lands on the inspector's primary action.
+    const focused = document.activeElement;
+    if (focused instanceof HTMLElement && overviewRef.current?.contains(focused)) focused.blur();
     setSelected(id);
     setHovered(null);
     setCloseUp(false);

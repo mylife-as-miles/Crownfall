@@ -8,6 +8,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { access } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { gzipSync } from "node:zlib";
 import { chromium } from "playwright";
 import { waitForBootReady } from "./boot-helpers.mjs";
 
@@ -49,7 +50,40 @@ async function createPage({ viewport = { width: 1280, height: 720 }, params = {}
   page.on("console", (message) => { if (message.type() === "error") errors.push(`console: ${message.text()}`); });
   const requests = [];
   page.on("request", (request) => requests.push(new URL(request.url()).pathname));
-  await page.addInitScript(({ storage, gamepad, key, preferences, observeLongTasks }) => {
+  await page.addInitScript(({ storage, gamepad, key, preferences, observeLongTasks, probeFocus }) => {
+    if (probeFocus) {
+      // Diagnostic only: observe native focus/selection restoration without
+      // changing the app's event targets or dispatching synthetic actions.
+      window.__focusProbe = [];
+      let sequence = -1;
+      const describe = (element) => element instanceof Element ? {
+        tag: element.tagName, class: element.getAttribute("class"),
+        landmark: element.getAttribute("data-landmark"), connected: element.isConnected,
+        panel: element.closest("[data-landmark-panel]")?.getAttribute("data-landmark-panel") ?? null,
+      } : null;
+      const log = (kind, element, extra = {}) => window.__focusProbe.push({ sequence, kind, target: describe(element), ...extra });
+      window.addEventListener("keydown", (event) => {
+        sequence++;
+        log("keydown", event.target, { key: event.key, active: describe(document.activeElement) });
+      }, true);
+      for (const name of ["focusin", "focusout"]) window.addEventListener(name, (event) => log(name, event.target), true);
+      for (const name of ["focus", "blur"]) {
+        const original = HTMLElement.prototype[name];
+        HTMLElement.prototype[name] = function (...args) {
+          log(name, this, { stack: new Error().stack });
+          return original.apply(this, args);
+        };
+      }
+      for (const name of ["scrollLeft", "scrollTop"]) {
+        const descriptor = Object.getOwnPropertyDescriptor(Element.prototype, name);
+        if (!descriptor?.get || !descriptor?.set) throw new Error(`Missing ${name} diagnostic descriptor`);
+        Object.defineProperty(Element.prototype, name, {
+          ...descriptor,
+          get() { log(`${name}:get`, this, { stack: new Error().stack }); return descriptor.get.call(this); },
+          set(value) { log(`${name}:set`, this, { value, stack: new Error().stack }); descriptor.set.call(this, value); },
+        });
+      }
+    }
     if (observeLongTasks) {
       // The standard's long-task signal: every main-thread task over 50 ms, as the page itself sees it.
       window.__longTasks = [];
@@ -92,7 +126,7 @@ async function createPage({ viewport = { width: 1280, height: 720 }, params = {}
       },
     });
     window.addEventListener("load", () => window.dispatchEvent(new Event("gamepadconnected")));
-  }, { storage, gamepad, key: SAVE_KEY, preferences, observeLongTasks });
+  }, { storage, gamepad, key: SAVE_KEY, preferences, observeLongTasks, probeFocus: process.env.CROWNFALL_LEGACY_FOCUS_PROBE === "1" });
   await page.goto(address(params, model));
   await waitForBootReady(page);
   await page.evaluate(() => document.fonts.ready);
@@ -248,7 +282,7 @@ function attribute(profile) {
  * Records a Chromium trace and a CPU profile around `action`: frame count and intervals,
  * script events bucketed per frame, and JavaScript self time by owner.
  */
-async function traceFrames(cdp, action) {
+async function traceFrames(cdp, action, name) {
   const events = [];
   const collect = ({ value }) => { for (const event of value) events.push(event); };
   cdp.on("Tracing.dataCollected", collect);
@@ -263,6 +297,14 @@ async function traceFrames(cdp, action) {
   await cdp.send("Tracing.end");
   await complete;
   cdp.off("Tracing.dataCollected", collect);
+  // Optional reproducible source evidence. Compression happens after the
+  // measured action and trace have stopped, so it cannot affect its timings.
+  let rawTrace = null;
+  if (process.env.CROWNFALL_LEGACY_RAW_TRACE === "1") {
+    await mkdir(`${directory}/traces`, { recursive: true });
+    rawTrace = `traces/${name}.json.gz`;
+    await writeFile(`${directory}/${rawTrace}`, gzipSync(JSON.stringify({ traceEvents: events, profile })));
+  }
   const selfTimeMs = attribute(profile);
   const samplesByNode = new Map();
   for (let sample = 0; sample < profile.samples.length; sample++) {
@@ -356,8 +398,29 @@ async function traceFrames(cdp, action) {
         return { event: name, count: slices.length, inclusiveMs: round(slices.reduce((sum, event) => sum + (event.dur ?? 0) / 1000, 0)) };
       }),
     }));
+  const inputEvents = topLevel.filter((event) => event.name === "EventDispatch" && ["click", "keydown"].includes(event.args?.data?.type))
+    .map((event, sequence) => ({
+      sequence,
+      eventType: event.args.data.type,
+      startMs: round((event.ts - (frameStarts[0] ?? event.ts)) / 1000),
+      wallMs: round((event.dur ?? 0) / 1000),
+      threadMs: typeof event.tdur === "number" ? round(event.tdur / 1000) : null,
+      layout: ["Document::UpdateStyleAndLayout", "Layout", "UpdateLayoutTree"].map((name) => {
+        const slices = events.filter((slice) => onMain(slice) && slice.ph === "X" && slice.name === name && contains(event, slice));
+        return {
+          event: name, count: slices.length,
+          wallMs: round(slices.reduce((sum, slice) => sum + (slice.dur ?? 0) / 1000, 0)),
+          threadMs: slices.every((slice) => typeof slice.tdur === "number") ? round(slices.reduce((sum, slice) => sum + slice.tdur / 1000, 0)) : null,
+        };
+      }),
+    }));
+  const preFrameScripts = topLevel.filter((event) => frameStarts.length === 0 || event.ts < frameStarts[0]);
   return {
     frames: frameStarts.length,
+    rawTrace,
+    frameBuckets: { startOffsetsMs: frameStarts.map((start) => round((start - frameStarts[0]) / 1000)), scriptMs: perFrame.map(round) },
+    scriptBeforeFirstFrame: { count: preFrameScripts.length, ms: round(preFrameScripts.reduce((sum, event) => sum + (event.dur ?? 0) / 1000, 0)) },
+    inputEvents,
     selfTimeMs,
     cpuHotspots,
     scriptWorkOver8Ms,
@@ -391,7 +454,13 @@ async function heapAndStats(page, cdp) {
   const heap = metrics.find((metric) => metric.name === "JSHeapUsedSize")?.value ?? 0;
   const stats = await page.evaluate(() => window.__legacyStats?.() ?? null);
   // programs is not in the contract's stats; the stand-in adds it, so it reads null for a renderer that does not.
-  return { jsHeapMB: round(heap / 1048576), stats: stats ? { source: stats.source, drawCalls: stats.drawCalls, triangles: stats.triangles, geometries: stats.geometries, textures: stats.textures, programs: stats.programs ?? null } : null };
+  return {
+    jsHeapMB: round(heap / 1048576), jsHeapBytes: heap,
+    documents: metrics.find((metric) => metric.name === "Documents")?.value ?? null,
+    nodes: metrics.find((metric) => metric.name === "Nodes")?.value ?? null,
+    eventListeners: metrics.find((metric) => metric.name === "JSEventListeners")?.value ?? null,
+    stats: stats ? { source: stats.source, drawCalls: stats.drawCalls, triangles: stats.triangles, geometries: stats.geometries, textures: stats.textures, programs: stats.programs ?? null } : null,
+  };
 }
 
 async function orbitDrag(page, milliseconds) {
@@ -428,9 +497,9 @@ async function measurePerformance() {
   const development = await fetch(new URL("/@vite/client", origin)).then((response) => response.ok && /javascript/.test(response.headers.get("content-type") ?? "")).catch(() => false);
   const report = { measuredAt: new Date().toISOString(), target: origin, build: development ? "development (Vite dev server)" : "production build (vite preview)", scenarioPreset: "Low (75 % render scale), 1280×720, reduced motion", scenarios: {}, presets: {}, roundTrips: null, throttled4x: {} };
   const scenario = async (bucket, name, page, cdp, action) => {
-    await page.evaluate(() => { window.__longTasks.length = 0; window.__longTaskStarts.length = 0; });
+    await page.evaluate(() => { window.__longTasks.length = 0; window.__longTaskStarts.length = 0; if (window.__focusProbe) window.__focusProbe.length = 0; });
     const started = Date.now();
-    const traced = await traceFrames(cdp, action);
+    const traced = await traceFrames(cdp, action, `${bucket === report.throttled4x ? "4x" : "1x"}-${name}`);
     const wallMs = Date.now() - started;
     const tasks = await page.evaluate(() => window.__longTasks.slice());
     const stats = await page.evaluate(() => window.__legacyStats?.() ?? null);
@@ -441,6 +510,7 @@ async function measurePerformance() {
       // Long tasks by cause, from the trace (the CPU profiler's own start-up task is excluded).
       longTaskCauses: attributed.reduce((causes, task) => ({ ...causes, [task.cause]: (causes[task.cause] ?? 0) + 1 }), {}),
       ...traced,
+      focusProbe: await page.evaluate(() => window.__focusProbe ?? null),
       renderSubmissionMs: submission(stats),
       framePacingMs: pacing(stats),
     };
@@ -485,13 +555,23 @@ async function measurePerformance() {
     await scenario(report.scenarios, "orbitDrag5s", page, cdp, () => orbitDrag(page, 5000));
     await scenario(report.scenarios, "landmarkCycling", page, cdp, () => cycleLandmarks(page));
     const before = await heapAndStats(page, cdp);
-    for (let trip = 0; trip < 5; trip++) {
+    const leakSlope = process.env.CROWNFALL_LEGACY_LEAK_SLOPE === "1";
+    const trips = leakSlope ? 15 : 5;
+    const checkpoints = [{ trips: 0, ...before }];
+    for (let trip = 0; trip < trips; trip++) {
       await escapeToHome(page);
       await openLegacyByKeyboard(page);
       await page.waitForTimeout(300);
+      if (leakSlope) {
+        // Repeat the same warmed UI lifecycle and end in the same overview.
+        // Retain the intermediate post-GC samples rather than treating a
+        // single before/after pair as proof that retained memory is flat.
+        await cycleLandmarks(page);
+        if ((trip + 1) % 5 === 0) checkpoints.push({ trips: trip + 1, ...(await heapAndStats(page, cdp)) });
+      }
     }
-    const after = await heapAndStats(page, cdp);
-    report.roundTrips = { trips: 5, before, after };
+    const after = leakSlope ? checkpoints[checkpoints.length - 1] : await heapAndStats(page, cdp);
+    report.roundTrips = { trips, before, after, ...(leakSlope ? { checkpoints, scenario: "Same saved-preview state, every inspector opened/closed on every Home round trip, post-GC samples at 0/5/10/15. Does not prove universal leak freedom." } : {}) };
     console.log(`PERF roundTrips: ${JSON.stringify(report.roundTrips)}`);
     await context.close();
   }
@@ -1308,6 +1388,89 @@ try {
     assert.equal(await page.locator('.legacy-member[aria-checked="true"]').getAttribute("data-member"), selectedMember, "re-entering the Muster Grounds resets uncommitted choices just as before");
     await context.close();
     record("Cycling retains inspector frame/header/footer identity, resets the keyed body and uncommitted nomination, restores body focus, restarts the entry animation and preserves reduced motion");
+  }
+
+  if (only.has("inspectorgeometry")) {
+    // Opt-in before/after evidence for layout-only experiments. Every box and
+    // scroll extent is compared, including SVG descendants and offscreen rows.
+    const geometry = [];
+    await mkdir(directory, { recursive: true });
+    for (const viewport of [{ width: 1280, height: 720 }, { width: 1920, height: 1080 }, { width: 844, height: 390 }]) {
+      const { context, page } = await createPage({ viewport, params: { legacyPreview: "founded" } });
+      await openLegacyByMouse(page);
+      for (const landmark of ["banner-hall", "muster-grounds", "war-record", "heralds-station"]) {
+        await page.locator(`.legacy-label[data-landmark="${landmark}"]`).click();
+        await page.locator(`[data-landmark-panel="${landmark}"]`).waitFor();
+        await focusIs(page, () => document.activeElement?.closest(".legacy-panel-body") !== null);
+        const boxes = await page.locator(".legacy-panel").evaluate((panel) => [panel, ...panel.querySelectorAll("*")].map((element) => {
+          const rect = element.getBoundingClientRect();
+          return {
+            tag: element.tagName, class: element.getAttribute("class"),
+            rect: [rect.x, rect.y, rect.width, rect.height],
+            scroll: element instanceof HTMLElement ? [element.scrollWidth, element.scrollHeight, element.scrollTop] : null,
+          };
+        }));
+        geometry.push({ viewport, landmark, boxes });
+        if (process.env.CROWNFALL_LEGACY_CAPTURE_INSPECTORS === "1" && landmark === "muster-grounds" && viewport.width !== 1920) {
+          await page.screenshot({ path: `${directory}/${viewport.width}x${viewport.height}-muster-grounds.png` });
+        }
+        await page.keyboard.press("Escape");
+        await page.locator("[data-landmark-panel]").waitFor({ state: "detached" });
+      }
+      await context.close();
+    }
+    await mkdir(directory, { recursive: true });
+    await writeFile(`${directory}/inspector-geometry.json`, JSON.stringify(geometry, null, 2) + "\n");
+    const baseline = process.env.CROWNFALL_LEGACY_GEOMETRY_BASELINE;
+    if (baseline) assert.deepEqual(geometry, JSON.parse(await readFile(baseline, "utf8")), "all inspector descendants retain exact before/after boxes and scroll extents");
+    record(`Recorded all four inspector geometries at three viewports${baseline ? "; every descendant box and scroll extent matches the baseline exactly" : ""}`);
+  }
+
+  if (section("panelfocus")) {
+    const { context, page } = await createPage({ params: { legacyPreview: "founded" } });
+    await openLegacyByKeyboard(page);
+    await focusIs(page, () => document.activeElement?.getAttribute("data-landmark") === "banner-hall");
+    await page.evaluate(() => {
+      window.__overviewDepartures = [];
+      document.addEventListener("focusout", (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement) || !target.matches(".legacy-label")) return;
+        window.__overviewDepartures.push({
+          landmark: target.getAttribute("data-landmark"),
+          hidden: target.closest(".legacy-labels").classList.contains("is-hidden"),
+          panel: document.querySelector("[data-landmark-panel]")?.getAttribute("data-landmark-panel") ?? null,
+        });
+      }, true);
+    });
+    await page.keyboard.press("Enter");
+    await page.locator('[data-landmark-panel="banner-hall"]').waitFor();
+    assert.deepEqual(await page.evaluate(() => window.__overviewDepartures), [{ landmark: "banner-hall", hidden: false, panel: null }], "keyboard entry releases the still-visible overview label before mutation");
+    await focusIs(page, () => document.activeElement?.closest(".legacy-panel-body") !== null);
+    await page.keyboard.press("Escape");
+    await focusIs(page, () => document.activeElement?.getAttribute("data-landmark") === "banner-hall");
+    await page.evaluate(() => { window.__overviewDepartures.length = 0; });
+    await page.locator('.legacy-label[data-landmark="banner-hall"]').click();
+    await page.locator('[data-landmark-panel="banner-hall"]').waitFor();
+    assert.deepEqual(await page.evaluate(() => window.__overviewDepartures), [{ landmark: "banner-hall", hidden: false, panel: null }], "pointer entry releases overview focus before hiding, with no intermediate focus stop");
+    // Real rapid inputs must supersede any pending double-rAF focus request.
+    await page.keyboard.press("e");
+    await page.keyboard.press("e");
+    await page.keyboard.press("Escape");
+    await page.locator("[data-landmark-panel]").waitFor({ state: "detached" });
+    await focusIs(page, () => document.activeElement?.getAttribute("data-landmark") === "war-record");
+    await page.keyboard.press("Enter");
+    await page.locator('[data-landmark-panel="war-record"]').waitFor();
+    await focusIs(page, () => document.activeElement?.closest("[data-landmark-panel]")?.getAttribute("data-landmark-panel") === "war-record");
+    await page.keyboard.press("Tab");
+    await page.waitForTimeout(100);
+    assert.equal(await page.evaluate(() => {
+      const focused = document.activeElement;
+      return focused instanceof HTMLElement && focused.isConnected && focused !== document.body
+        && focused.tabIndex >= 0 && focused.closest(".legacy-screen") !== null
+        && !focused.closest(".legacy-labels.is-hidden");
+    }), true, "native Tab keeps a connected, focusable target inside the visible Legacy screen");
+    await context.close();
+    record("Keyboard and pointer entry release the visible overview label before hiding it, focus the primary action without an extra stop, and rapid cycling/Back/re-entry/Tab retain the latest visible focus scope");
   }
 
   if (section("panelmotion")) {

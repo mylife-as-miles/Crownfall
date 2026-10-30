@@ -1,0 +1,62 @@
+{
+  "recordedAt": "2026-10-30T08:07:07.011627+00:00",
+  "runtimeSourceChange": [
+    "main game/src/legacy/LegacyScreen.tsx"
+  ],
+  "checks": [
+    {
+      "command": "npm run build",
+      "exitCode": 0,
+      "scope": "Desktop and Quest production builds, including TypeScript"
+    },
+    {
+      "command": "npm run test:legacy:desktop",
+      "exitCode": 0,
+      "testsPassed": 2
+    },
+    {
+      "command": "npm run check:sync",
+      "exitCode": 0,
+      "legacyElements": 499,
+      "legacyControls": 133
+    },
+    {
+      "command": "npm run check:legacy:lazy",
+      "exitCode": 0,
+      "appsPassed": [
+        "main game",
+        "main-game-vr"
+      ]
+    },
+    {
+      "command": "node --check main game/scripts/verify-legacy.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node --check main game/scripts/verify-legacy-retention.mjs",
+      "exitCode": 0
+    }
+  ],
+  "browserEvidence": {
+    "focus-release-a": {
+      "file": "focus-release-a/verification.json",
+      "passedGroups": 11,
+      "errors": [],
+      "failure": null
+    },
+    "final": {
+      "file": "final/verification.json",
+      "passedGroups": 4,
+      "errors": [],
+      "failure": null
+    },
+    "tab-regression": {
+      "file": "tab-regression/verification.json",
+      "passedGroups": 2,
+      "errors": [],
+      "failure": null
+    }
+  },
+  "scope": "Protected Play/web/chess, Quest runtime and shared domain source unchanged from 1a4d8db. Existing build advisories remain. No physical Quest validation, merge, deployment or new PR.",
+  "performanceAccepted": false
+}
