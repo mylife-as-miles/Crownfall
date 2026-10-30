@@ -45,8 +45,34 @@ export default async ({ frame, page, cdp }) => {
   }
   if (probe === 'marks') {
     // Launch marks and every resource this page has requested so far, to show what loaded before My Legacy was opened.
-    return app.evaluate(() => ({
+    return app.evaluate(() => {
+      performance.setResourceTimingBufferSize(5000);
+      return ({
       marks: performance.getEntriesByType('mark').map((mark) => ({ name: mark.name, at: Math.round(mark.startTime) })),
+      resources: performance.getEntriesByType('resource').map((entry) => entry.name.replace(location.origin, '')),
+      });
+    });
+  }
+  if (probe === 'launch') {
+    // Cold page navigation, with only the save varied. Observe storage reads
+    // before entry without importing the Legacy domain into the test page.
+    await app.evaluate(([key, raw]) => { if (raw) localStorage.setItem(key, raw); else localStorage.removeItem(key); }, [SAVE_KEY, process.env.CROWNFALL_LEGACY_SAVE ?? '']);
+    await page.addInitScript((key) => {
+      performance.setResourceTimingBufferSize(5000);
+      window.__legacyLaunchReads = 0;
+      const getItem = Storage.prototype.getItem;
+      Storage.prototype.getItem = function (name) {
+        if (name === key) window.__legacyLaunchReads++;
+        return getItem.call(this, name);
+      };
+    }, SAVE_KEY);
+    const url = new URL(app.url());
+    url.search = '';
+    await app.goto(url.href, { waitUntil: 'load' });
+    await app.waitForFunction(() => performance.getEntriesByName('crownfall:menu-ready').length > 0);
+    return app.evaluate(() => ({
+      menuReadyMs: performance.getEntriesByName('crownfall:menu-ready')[0].startTime,
+      saveReads: window.__legacyLaunchReads,
       resources: performance.getEntriesByType('resource').map((entry) => entry.name.replace(location.origin, '')),
     }));
   }
@@ -150,6 +176,13 @@ async function main() {
     ],
   };
   const record = (check) => { evidence.checks.push(check); console.log(`PASS ${check}`); };
+  const capture = (name, pitch = 0) => {
+    if (!process.argv.includes('--capture')) return;
+    const file = `${directory}/${prefix}${name}.png`;
+    const metadata = d.screenshot(file, pitch);
+    (evidence.captures ??= []).push({ name, file, state: fields(state()), metadata });
+    console.log(`CAPTURE ${file}`);
+  };
   const probe = (name, env = {}, timeout = 90000) => d.browserRun('scripts/verify-legacy.mjs', { CROWNFALL_LEGACY_PROBE: name, ...env }, timeout);
   function anchorYaw() {
     const [x, y, z, w] = cli('scene', 'transform', { nodeId: 'legacy-anchor' }).globalQuaternion;
@@ -185,8 +218,46 @@ async function main() {
     look(0);
     return { level, headDown, headDownPitchDegrees: HOME_HEAD_PITCH_DEGREES };
   }
-  const legacyResources = (resources) => resources.filter((name) => /legacy-experience|legacy\.uikitml|legacy-dock\.uikitml|\/legacy\/(?!environment-contract)/.test(name));
+  // Manifest identities are tiny startup metadata, not the lazy experience.
+  const legacyResources = (resources) => resources.filter((name) => /legacy-experience|legacy\.uikitml|legacy-dock\.uikitml|\/legacy\/(?!legacy-manifest\.(?:js|ts)|environment-contract)/.test(name));
   const openLandmark = (landmark, device = 'hand-left') => pinch(`Legacy_Landmark_${landmark}`, (v) => v.legacyView === landmark && v.legacySelectSource === 'list', { device });
+
+  function checkPlayReturn(label) {
+    const before = state();
+    const reached = pinch('Legacy_DockPlay', (v) => v.screen === 'play' && !v.legacyActive, { pitch: 44 });
+    (evidence.observations.actionsToPlay ??= []).push({ from: label, actions: 1, reachedPlay: reached.screen === 'play' });
+    menuPinch('Nav_Home', (v) => v.screen === 'home');
+    const restored = d.reachLegacy();
+    assert.equal(restored.legacyView, before.legacyView, 'Returning from Play keeps the Legacy place');
+    assert.equal(restored.legacyBanner, before.legacyBanner);
+  }
+
+  function chessFirst() {
+    const saved = probe('storage');
+    assert.ok(saved && JSON.parse(saved).banner, 'Run production verification first to provide a real saved banner');
+    evidence.observations.launch = [];
+    evidence.observations.launchToFirstMove = { measured: false, reason: 'Chess is not connected to this menu. These measurements stop at the working Play menu; no legal move can be timed until the creator ports gameplay.' };
+    try {
+      for (const withSave of [false, true]) {
+        if (cli('xr', 'status').sessionActive) { try { cli('xr', 'exit', {}); } catch { /* Check inactive below, not an ended-session acknowledgement. */ } }
+        assert.equal(cli('xr', 'status').sessionActive, false);
+        const launch = probe('launch', { CROWNFALL_LEGACY_SAVE: withSave ? saved : '' });
+        assert.deepEqual(legacyResources(launch.resources), [], 'Home requests no Legacy code or panel');
+        assert.equal(launch.saveReads, 0, 'Home does not read the Legacy save');
+        d.discover();
+        enterLegacy();
+        menuPinch('Nav_Play', (v) => v.screen === 'play');
+        assert.equal(state().legacyLoad, '', 'Play never starts loading Legacy');
+        evidence.observations.launch.push({ withSave, ...launch, reachedPlayByHands: true });
+        menuPinch('Nav_Home', (v) => v.screen === 'home');
+        d.reachLegacy();
+        checkPlayReturn(withSave ? 'saved banner' : 'founding nation');
+      }
+    } finally {
+      probe('set-save', { CROWNFALL_LEGACY_SAVE: saved });
+    }
+    record('Launch with and without a saved banner requests no Legacy resources or save reads; hands reach Play without Legacy, and the reachable tray returns from both founding and a saved banner to Play in one action');
+  }
 
   /** Enters the session, proves hands only, and opens My Legacy lazily from Home. */
   function enterLegacy() {
@@ -195,6 +266,11 @@ async function main() {
     d.prepareHands();
     const status = cli('xr', 'status');
     assert.equal(status.sessionActive, true); assert.ok(status.enabledFeatures.includes('hand-tracking'));
+    if (state().paused) {
+      const id = state().legacyActive ? 'Legacy_Resume' : 'Btn_Resume';
+      if (id === 'Legacy_Resume') pinch(id, (v) => !v.paused);
+      else menuPinch(id, (v) => !v.paused);
+    }
     const device = d.assertHandsOnly();
     evidence.observations.session = { active: status.sessionActive, features: status.enabledFeatures, inputMode: device.inputMode, controllers: device.controllers };
     record('Active immersive session with required hand tracking, both controllers disconnected');
@@ -239,6 +315,7 @@ async function main() {
     assert.equal(s.legacyView, 'nation');
     assert.equal(s.legacySaved, false, 'nothing is claimed as saved during founding');
     assert.notEqual(inspect('Legacy_DockLabel').text, 'Saved on this device');
+    checkPlayReturn('founding nation');
     s = pinch('Legacy_Nation_aethelgard', (v) => v.legacyNation === 'aethelgard');
     s = pinch('Legacy_Nation_korvenia', (v) => v.legacyNation === 'korvenia', { device: 'hand-left' });
     assert.equal(s.legacyMirrorPrimary, 'Legacy_NationNext');
@@ -271,6 +348,7 @@ async function main() {
     s = pinch('Legacy_KeyboardDone', (v) => v.legacyView === 'confirm' && v.legacyMotto === 'We hold');
     assert.equal(inspect('Legacy_Confirm_Name').text, suggestion);
     assert.equal(inspect('Legacy_Confirm_Motto').text, '"We hold"');
+    capture('founding-confirm');
     s = pinch('Legacy_ConfirmRaise', (v) => v.legacyFounded && v.legacyView === 'raised');
     assert.equal(inspect('Legacy_Raised_Heading').text, 'A banner is raised');
     assert.equal(inspect('Legacy_Raised_Name').text, suggestion);
@@ -278,6 +356,7 @@ async function main() {
     assert.equal(s.legacyBanner, suggestion); assert.equal(s.legacyNation, 'korvenia'); assert.equal(s.legacyHeraldry, presetArms); assert.equal(s.legacyMotto, 'We hold');
     if (s.legacyPersistent) { assert.equal(s.legacySave, 'saved'); assert.equal(s.legacySaved, true); assert.equal(inspect('Legacy_DockLabel').text, 'Saved on this device'); }
     evidence.observations.founded = fields(s);
+    capture('overview');
     measurePerformance('My Legacy overview with the stand-in environment (menu, sorcerer and atmosphere hidden)');
     record(`Founding with pinches from either hand: nation, Other names, the keyboard typed then cancelled, suggested name "${suggestion}", preset and per-element arms, motto "We hold" typed, raised; the raising beat continued by a fingertip press; save: ${s.legacySave}`);
 
@@ -300,6 +379,7 @@ async function main() {
         assert.ok(inspect('Legacy_Record_Entry_0_Title').text.length > 0, 'the ledger lists the founding');
         s = pinch('Legacy_RecordTab_conflicts', (v) => v.legacyRecordTab === 'conflicts', { device: 'hand-left' });
         assert.equal(inspect('Legacy_Record_Empty').text, 'No conflicts recorded yet.');
+        capture('war-record-conflicts');
       }
       if (landmark === 'banner-hall') {
         assert.equal(inspect('Legacy_Hall_Name').text, suggestion);
@@ -329,15 +409,19 @@ async function main() {
 
     s = pinch('Legacy_MusterBack', (v) => v.legacyView === 'overview');
     s = openLandmark('heralds-station', 'hand-right');
+    capture('herald-list');
     s = pinch('Legacy_Notice_0', (v) => v.legacyView === 'notice' && v.legacyNotice !== '');
     const terms = [0, 1, 2, 3].map((index) => ({ when: inspect(`Legacy_NoticeView_Term_${index}_When`).text, then: inspect(`Legacy_NoticeView_Term_${index}_Then`).text }));
     assert.match(inspect('Legacy_NoticeView_WagerIntro').text, /^These are the terms of this Muster conflict against /, 'the wager is stated before any match');
     assert.match(terms[0].then, /held captive until your house wins a later Muster/);
     assert.match(terms[1].then, /wounded and recover after one further recorded match/);
     s = pinch('Legacy_NoticeAccept', (v) => v.legacyView === 'accept');
+    capture('accept-confirmation');
     assert.equal(inspect('Legacy_Accept_Term_0_Then').text, terms[0].then, 'the acceptance repeats the same terms');
     s = pinch('Legacy_AcceptConfirm', (v) => v.legacyView === 'awaiting' && v.legacyChallenge === 'accepted');
     assert.equal(inspect('Legacy_Title').text, 'Awaiting the board');
+    capture('awaiting-board');
+    checkPlayReturn('awaiting board');
     evidence.observations.challenge = { ...fields(s), terms };
     record('The rival challenge states its wager as four terms, repeated on Accept; confirming shows "Awaiting the board", with no match played or recorded');
     assert.equal(s.legacyMirrorBack, 'Legacy_AwaitingBack');
@@ -501,6 +585,7 @@ async function main() {
     for (let attempt = 1; ; attempt++) {
       try {
         if (session === 'production') production();
+        else if (session === 'chessfirst') chessFirst();
         else if (session === 'guest' || session.startsWith('preview:')) sessionWithoutStorage(session);
         else throw Error(`Unknown session ${session}`);
         break;

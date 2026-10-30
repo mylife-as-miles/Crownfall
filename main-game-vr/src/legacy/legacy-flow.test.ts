@@ -414,6 +414,27 @@ test('pause replaces the panel until a tracked hand can resume, and keeps the Le
   assert.equal(buildLegacyPanelModel(input(state, flow)).view, 'LegacyView_Overview', 'resuming restores the same view');
 });
 
+test('every Legacy view keeps a Play exit, and Awaiting the board makes it the primary action', () => {
+  const state = foundedState();
+  const cases = [
+    ...viewsOf(state).map((flow) => input(state, flow)),
+    input(createLegacyState(), founding(), { session: NEW }),
+    input(createLegacyState(), flowOf(founding(), { type: 'founding-step', view: 'name' }), { session: NEW }),
+    input(state, overviewFlow(), { pause: { paused: true, reason: 'Bring a hand into view', canResume: false } }),
+  ];
+  for (const candidate of cases) {
+    const dock = buildLegacyDockModel(candidate);
+    assert.equal(dock.controls.Legacy_DockPlay.visible, true, candidate.flow.view);
+    assert.equal(dock.controls.Legacy_DockPlay.enabled, true, candidate.flow.view);
+  }
+  const awaiting = input(state, flowOf(open(state, 'heralds-station'),
+    { type: 'open-notice', noticeId: state.notices[0].id }, { type: 'show-awaiting' }));
+  const panel = buildLegacyPanelModel(awaiting);
+  assert.equal(panel.controls.Legacy_AwaitingPlay.visible, true);
+  assert.equal(LEGACY_ACTION_LABELS.Legacy_AwaitingPlay, LEGACY_COPY.navigation.play);
+  assert.equal(buildLegacyDockModel(awaiting, panel).mirror.primary, 'Legacy_AwaitingPlay');
+});
+
 test('every panel and tray string renders from the spatial font atlas without substitution marks', () => {
   assert.equal(spatialText('Development preview · fixture data · not saved'), 'Development preview / fixture data / not saved');
   assert.equal(spatialText('Guest session — not saved'), 'Guest session - not saved');

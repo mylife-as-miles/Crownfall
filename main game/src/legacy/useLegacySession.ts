@@ -6,8 +6,9 @@
 
 import { useCallback, useRef, useState } from "react";
 import { LEGACY_COPY } from "../../../shared/legacy/content/copy";
-import { clearLegacy, resolveLegacySession, saveLegacy } from "../../../shared/legacy/domain/persistence";
+import { clearLegacy, saveLegacy } from "../../../shared/legacy/domain/persistence";
 import type { LegacySession, LegacyStorageLike } from "../../../shared/legacy/domain/persistence";
+import { resolveLegacySessionLazily } from "../../../shared/legacy/domain/preview-loader";
 import { reduceLegacy } from "../../../shared/legacy/domain/reducer";
 import { createLegacyState } from "../../../shared/legacy/domain/state";
 import type { LegacyEvent, LegacyState } from "../../../shared/legacy/types";
@@ -35,14 +36,19 @@ export interface LegacySessionModel {
   dissolve(): string | null;
 }
 
-function initialSession(): { session: LegacySession; storage: LegacyStorageLike | null } {
+export interface InitialLegacySession {
+  session: LegacySession;
+  storage: LegacyStorageLike | null;
+}
+
+/** Called by the lazy screen loader, so preview downloads stay inside its Suspense/error boundary. */
+export async function loadInitialLegacySession(): Promise<InitialLegacySession> {
   const storage = getLegacyStorage();
-  const session = resolveLegacySession(window.location.search, storage, { at: legacyTimestamp() });
+  const session = await resolveLegacySessionLazily(window.location.search, storage, { at: legacyTimestamp() });
   return { session, storage };
 }
 
-export function useLegacySession(): LegacySessionModel {
-  const [initial] = useState(initialSession);
+export function useLegacySession(initial: InitialLegacySession): LegacySessionModel {
   const storage = initial.storage;
   const [kind, setKind] = useState<LegacySessionKind>(initial.session.kind);
   const [state, setState] = useState<LegacyState>(initial.session.state);

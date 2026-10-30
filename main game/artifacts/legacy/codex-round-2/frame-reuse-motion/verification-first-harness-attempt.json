@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "environment": "stand-in",
+  "scope": "Playwright against the dev or preview server with model=none except the sorcerer round-trip check. Landmarks are driven through their DOM labels, so the suite runs against the stand-in or the environment workflow's renderer. Controller input is a mocked standard Gamepad API, not physical controller validation. WebGL is software-rendered (SwiftShader); no frame timing is implied.",
+  "checks": [],
+  "layouts": [],
+  "errors": [],
+  "failure": "Error: ENOENT: no such file or directory, open 'artifacts/legacy/codex-round-2/frame-reuse-motion/panel-motion.json'\n    at async open (node:internal/fs/promises:697:25)\n    at async writeFile (node:internal/fs/promises:1317:14)\n    at async file:///workspace/Crownfall/main%20game/scripts/verify-legacy.mjs:1332:5"
+}

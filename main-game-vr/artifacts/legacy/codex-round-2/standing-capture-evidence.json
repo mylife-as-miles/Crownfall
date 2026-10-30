@@ -1,0 +1,275 @@
+{
+  "session": "standing",
+  "startedAt": "2026-10-30T00:11:46.662Z",
+  "profile": {
+    "runtime": "IWER Meta Quest 3 browser emulation, managed headless Chromium",
+    "view": "mono, 60-degree field of view",
+    "input": "hand ray + pinch, and index-fingertip presses on the touch tray; both controllers disconnected",
+    "developmentFramebufferScale": 0.25,
+    "physicalHeadset": false,
+    "note": "Development captures from software-rendered (SwiftShader) emulation, including emulator hand and ray overlays and the IWSDK emulator's blue \"Remote Control Active\" automation pill at the bottom of the view (not app UI); not a headset recording.",
+    "menuPinchView": "Menu pinches (reaching My Legacy) look almost straight down (88 degrees) so the hero and the menu atmosphere leave the view and software frames stay inside the 800 ms click window."
+  },
+  "captures": [
+    {
+      "name": "overview",
+      "file": "artifacts/legacy/codex-round-2/standing-overview.png",
+      "headPitchDegrees": 10,
+      "headYawDegrees": 0,
+      "note": "Standing posture: the holding sits lower and the panel stays clear of it",
+      "legacyView": "overview",
+      "session": "stored",
+      "label": "",
+      "recordTab": "conflicts",
+      "comfort": {
+        "textScale": 100,
+        "posture": "standing",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 12,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "overview-level",
+      "file": "artifacts/legacy/codex-round-2/standing-overview-level.png",
+      "headPitchDegrees": 0,
+      "headYawDegrees": 0,
+      "note": "Standing posture: level view, panel 11.7 to -19.3 degrees",
+      "legacyView": "overview",
+      "session": "stored",
+      "label": "",
+      "recordTab": "conflicts",
+      "comfort": {
+        "textScale": 100,
+        "posture": "standing",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 12,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "touch-tray",
+      "file": "artifacts/legacy/codex-round-2/standing-touch-tray.png",
+      "headPitchDegrees": 44,
+      "headYawDegrees": 0,
+      "note": "Standing posture: the touch tray 0.60 m from the eye at -49.9 degrees",
+      "legacyView": "overview",
+      "session": "stored",
+      "label": "",
+      "recordTab": "conflicts",
+      "comfort": {
+        "textScale": 100,
+        "posture": "standing",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 12,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "id": "Btn_Resume",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "legacy"
+    }
+  ],
+  "cliRetries": [],
+  "emulationSetup": {
+    "applied": true,
+    "viewport": {
+      "width": 800,
+      "height": 560
+    },
+    "preferences": {
+      "quality": "low",
+      "motion": false,
+      "posture": "standing"
+    },
+    "visitCompleted": true,
+    "note": "Software-emulation accommodation only: the capture viewport, Quest Render Quality Low and Ambient Motion Off, and the short visit marked complete so entry opens Home."
+  },
+  "final": {
+    "state": {
+      "screen": "legacy",
+      "entered": true,
+      "paused": false,
+      "pauseReason": "",
+      "textScale": 100,
+      "panelDistance": 1.5,
+      "panelHeight": "middle",
+      "posture": "standing",
+      "leftTracked": true,
+      "rightTracked": true,
+      "legacyLoad": "ready",
+      "legacyActive": true,
+      "legacyView": "overview",
+      "legacySession": "stored",
+      "legacyPersistent": true,
+      "legacySaved": true,
+      "legacySave": "none",
+      "legacyLabel": "",
+      "legacyPreview": "",
+      "legacyFounded": true,
+      "legacyBanner": "Keepers of the Umbra",
+      "legacyNation": "korvenia",
+      "legacyDraftName": "",
+      "legacyMotto": "We hold",
+      "legacyHeraldry": "Purpure, a chief argent, a tower or",
+      "legacyRepresentative": "Lucien",
+      "legacyFile": "a",
+      "legacyMemberChoice": "",
+      "legacyFileChoice": "",
+      "legacyLandmark": "",
+      "legacyHover": "",
+      "legacySelectSource": "",
+      "legacyNotice": "",
+      "legacyChallenge": "accepted",
+      "legacyRecordTab": "conflicts",
+      "legacyChronicle": 3,
+      "legacyUnread": 1,
+      "legacyAftermath": 0,
+      "legacyMirrorBack": "",
+      "legacyMirrorPrimary": "",
+      "legacyEnvironment": "standin",
+      "legacyEnvironmentReady": true,
+      "legacyRecenters": 0,
+      "legacyMessage": "",
+      "legacyPanelTopDegrees": 11.702901840209961,
+      "legacyPanelBottomDegrees": -19.29004669189453,
+      "legacyPanelDistance": 1.403566837310791,
+      "legacyTrayDistance": 0.6000000238418579,
+      "legacyTrayElevationDegrees": -49.909423828125,
+      "legacyTrayTouch": false,
+      "legacyTrayTouchGateDegrees": -25.29004669189453
+    },
+    "session": {
+      "deviceName": "Meta Quest 3",
+      "isRuntimeInstalled": true,
+      "sessionActive": true,
+      "sessionOffered": false,
+      "sessionMode": "immersive-vr",
+      "enabledFeatures": [
+        "hand-tracking",
+        "local-floor",
+        "bounded-floor",
+        "viewer",
+        "local"
+      ],
+      "visibilityState": "visible",
+      "runtimeKind": "emulated",
+      "browser": {
+        "lifecycle": {
+          "state": "running",
+          "policy": "eager",
+          "sessionId": "d2b08423-63f9-404b-9612-ed4b4ac5dac8",
+          "browserEpoch": 1,
+          "revision": 41,
+          "stateEnteredAt": "2026-10-29T23:49:59.951Z",
+          "lastObservedAt": "2026-10-30T00:11:51.982Z",
+          "failures": 0,
+          "cleanupConfirmed": true,
+          "attemptLimit": 3,
+          "historyTruncated": false,
+          "retryEligible": false,
+          "nextAction": "Use runtime_list_targets to inspect endpoint readiness.",
+          "history": [
+            {
+              "revision": 1,
+              "state": "launching",
+              "at": "2026-10-29T23:49:59.306Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 2,
+              "state": "launching",
+              "at": "2026-10-29T23:49:59.306Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 3,
+              "state": "running",
+              "at": "2026-10-29T23:49:59.951Z",
+              "reason": "running"
+            }
+          ],
+          "attemptId": "79e55164-46f5-456f-bc16-c9325b2c2d80"
+        },
+        "status": "connected",
+        "clients": [
+          {
+            "commandReady": true,
+            "sessionId": "d2b08423-63f9-404b-9612-ed4b4ac5dac8",
+            "browserEpoch": 1,
+            "deviceClass": "managed",
+            "pageId": "tab-mvu748en-q38605",
+            "role": "app",
+            "tabGeneration": 12
+          },
+          {
+            "commandReady": true,
+            "sessionId": "d2b08423-63f9-404b-9612-ed4b4ac5dac8",
+            "browserEpoch": 1,
+            "deviceClass": "managed",
+            "pageId": "tab-mvu746un-ila0an",
+            "role": "editor",
+            "sceneSessionId": "scene-2lkxyalgu8c",
+            "tabGeneration": 1
+          }
+        ],
+        "lastBridgeConnectedAt": "2026-10-30T00:11:51.296Z",
+        "lastCommandReadyAt": "2026-10-30T00:11:51.982Z",
+        "connected": true,
+        "commandReady": true,
+        "connectedClientCount": 2,
+        "lastTransitionAt": "2026-10-29T23:49:59.951Z",
+        "audioMuted": false
+      },
+      "browserConnected": true,
+      "browserCommandReady": true
+    }
+  },
+  "finishedAt": "2026-10-30T00:13:00.836Z"
+}

@@ -1,0 +1,1354 @@
+{
+  "measuredAt": "2026-10-29T23:47:29.989Z",
+  "target": "http://127.0.0.1:5181",
+  "build": "production build (vite preview)",
+  "scenarioPreset": "Low (75 % render scale), 1280×720, reduced motion",
+  "scenarios": {
+    "landmarkCyclingCold": {
+      "wallMs": 3158,
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0,
+        "totalMs": 0
+      },
+      "longTaskCauses": {
+        "renderer main-thread work": 1
+      },
+      "frames": 15,
+      "selfTimeMs": {
+        "legacyCode": 12.06,
+        "otherBundles": 23.44,
+        "webglCalls": 0.18,
+        "gamepadPolling": 0,
+        "otherNative": 15.97,
+        "garbageCollector": 7.74,
+        "testHarness": 1.56,
+        "browserNative": 271.3,
+        "idle": 2404.43
+      },
+      "cpuHotspots": [
+        {
+          "function": "(garbage collector)",
+          "url": "",
+          "line": 0,
+          "selfMs": 7.74
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 7.64
+        },
+        {
+          "function": "Go",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 9,
+          "selfMs": 5.1
+        },
+        {
+          "function": "af",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 9,
+          "selfMs": 3.29
+        },
+        {
+          "function": "setAttribute",
+          "url": "",
+          "line": 0,
+          "selfMs": 2.85
+        },
+        {
+          "function": "Gt",
+          "url": "/assets/LegacyScreen-CGPMMa0e.js",
+          "line": 2,
+          "selfMs": 2.72
+        },
+        {
+          "function": "Dn",
+          "url": "/assets/LegacyScreen-CGPMMa0e.js",
+          "line": 2,
+          "selfMs": 2.37
+        },
+        {
+          "function": "np",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 10,
+          "selfMs": 1.79
+        },
+        {
+          "function": "gt",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 4117,
+          "selfMs": 1.4
+        },
+        {
+          "function": "dl",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 9,
+          "selfMs": 1.29
+        },
+        {
+          "function": "appendChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 1.13
+        },
+        {
+          "function": "le",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 4093,
+          "selfMs": 1
+        }
+      ],
+      "scriptWorkOver8Ms": [
+        {
+          "event": "EventDispatch",
+          "ms": 20.5,
+          "threadMs": 8.92,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 11.41,
+          "threadMs": 8.83,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 1.1
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 9.34,
+          "threadMs": 4.97,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 5.18
+            }
+          ]
+        }
+      ],
+      "javascriptPerFrameMs": 3.96,
+      "legacyCodePerFrameMs": 0.8,
+      "scriptPerFrameMs": {
+        "mean": 5.89,
+        "p50": 2.14,
+        "p95": 29.28,
+        "p99": 29.28,
+        "max": 29.28
+      },
+      "frameIntervalMs": {
+        "p50": 91.36,
+        "p95": 495.65,
+        "p99": 495.65
+      },
+      "traceTasksOver50Ms": {
+        "count": 1,
+        "maxMs": 88.45
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 88.45,
+          "threadMs": 81.37,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 0.05,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 88.42",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.06",
+            "V8.GC_TIME_TO_SAFEPOINT 0.01"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 0.03",
+            "Scheduler::FinishTask 0"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 8,
+        "p50": 1.1,
+        "p95": 1.9,
+        "max": 1.9
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    },
+    "landmarkCyclingRepeat": {
+      "wallMs": 9245,
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0,
+        "totalMs": 0
+      },
+      "longTaskCauses": {
+        "renderer main-thread work": 1
+      },
+      "frames": 43,
+      "selfTimeMs": {
+        "legacyCode": 14.29,
+        "otherBundles": 33.41,
+        "webglCalls": 0.82,
+        "gamepadPolling": 0,
+        "otherNative": 40.61,
+        "garbageCollector": 7.47,
+        "testHarness": 2.33,
+        "browserNative": 545.72,
+        "idle": 8022.09
+      },
+      "cpuHotspots": [
+        {
+          "function": "rf",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 9,
+          "selfMs": 15.52
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 14.16
+        },
+        {
+          "function": "setAttribute",
+          "url": "",
+          "line": 0,
+          "selfMs": 11.48
+        },
+        {
+          "function": "(garbage collector)",
+          "url": "",
+          "line": 0,
+          "selfMs": 7.47
+        },
+        {
+          "function": "(anonymous)",
+          "url": "/assets/LegacyScreen-CGPMMa0e.js",
+          "line": 2,
+          "selfMs": 4.2
+        },
+        {
+          "function": "(anonymous)",
+          "url": "",
+          "line": 0,
+          "selfMs": 3.02
+        },
+        {
+          "function": "I",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 4093,
+          "selfMs": 2.79
+        },
+        {
+          "function": "Dn",
+          "url": "/assets/LegacyScreen-CGPMMa0e.js",
+          "line": 2,
+          "selfMs": 2.3
+        },
+        {
+          "function": "postMessage",
+          "url": "",
+          "line": 0,
+          "selfMs": 2.1
+        },
+        {
+          "function": "(anonymous)",
+          "url": "/assets/LegacyScreen-CGPMMa0e.js",
+          "line": 2,
+          "selfMs": 2.08
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 1.85
+        },
+        {
+          "function": "Vu.renderBufferDirect",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 4117,
+          "selfMs": 1.78
+        }
+      ],
+      "scriptWorkOver8Ms": [
+        {
+          "event": "EventDispatch",
+          "ms": 12.57,
+          "threadMs": 8.24,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 46,
+              "inclusiveMs": 9.15
+            },
+            {
+              "event": "Layout",
+              "count": 1,
+              "inclusiveMs": 8.63
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 3,
+              "inclusiveMs": 0.85
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 11.45,
+          "threadMs": 6.38,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 0.87
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 10.7,
+          "threadMs": 8.86,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 46,
+              "inclusiveMs": 5.6
+            },
+            {
+              "event": "Layout",
+              "count": 1,
+              "inclusiveMs": 4.42
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 3,
+              "inclusiveMs": 0.65
+            }
+          ]
+        }
+      ],
+      "javascriptPerFrameMs": 2.25,
+      "legacyCodePerFrameMs": 0.33,
+      "scriptPerFrameMs": {
+        "mean": 3.64,
+        "p50": 2.28,
+        "p95": 12.17,
+        "p99": 21.92,
+        "max": 21.92
+      },
+      "frameIntervalMs": {
+        "p50": 125.55,
+        "p95": 454.07,
+        "p99": 763.72
+      },
+      "traceTasksOver50Ms": {
+        "count": 1,
+        "maxMs": 53.23
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 53.23,
+          "threadMs": 27.07,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 0,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 53.21",
+            "V8.GC_TIME_TO_SAFEPOINT 4.84",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 4.44"
+          ],
+          "gpuProcessTop": []
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 24,
+        "p50": 0.9,
+        "p95": 1.9,
+        "max": 2.4
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    }
+  },
+  "presets": {},
+  "roundTrips": null,
+  "throttled4x": {
+    "landmarkCyclingCold": {
+      "wallMs": 4231,
+      "longTasks": {
+        "count": 4,
+        "maxMs": 81,
+        "totalMs": 272
+      },
+      "longTaskCauses": {
+        "renderer main-thread work": 4,
+        "renderer thread off-CPU (host contention)": 1
+      },
+      "frames": 13,
+      "selfTimeMs": {
+        "legacyCode": 77.93,
+        "otherBundles": 86.8,
+        "webglCalls": 2.89,
+        "gamepadPolling": 0,
+        "otherNative": 77.63,
+        "garbageCollector": 4.16,
+        "testHarness": 11.85,
+        "browserNative": 1082.05,
+        "idle": 2306.42
+      },
+      "cpuHotspots": [
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 29.13
+        },
+        {
+          "function": "postMessage",
+          "url": "",
+          "line": 0,
+          "selfMs": 12.41
+        },
+        {
+          "function": "Ut",
+          "url": "/assets/LegacyScreen-CGPMMa0e.js",
+          "line": 2,
+          "selfMs": 11.55
+        },
+        {
+          "function": "Go",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 9,
+          "selfMs": 9.59
+        },
+        {
+          "function": "(anonymous)",
+          "url": "/assets/LegacyScreen-CGPMMa0e.js",
+          "line": 2,
+          "selfMs": 8.72
+        },
+        {
+          "function": "Gt",
+          "url": "/assets/LegacyScreen-CGPMMa0e.js",
+          "line": 2,
+          "selfMs": 8.38
+        },
+        {
+          "function": "_u",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 9,
+          "selfMs": 8
+        },
+        {
+          "function": "Pr",
+          "url": "/assets/LegacyScreen-CGPMMa0e.js",
+          "line": 2,
+          "selfMs": 6.72
+        },
+        {
+          "function": "focus",
+          "url": "",
+          "line": 0,
+          "selfMs": 5.96
+        },
+        {
+          "function": "dl",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 9,
+          "selfMs": 4.62
+        },
+        {
+          "function": "(garbage collector)",
+          "url": "",
+          "line": 0,
+          "selfMs": 4.16
+        },
+        {
+          "function": "np",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 10,
+          "selfMs": 4
+        }
+      ],
+      "scriptWorkOver8Ms": [
+        {
+          "event": "EventDispatch",
+          "ms": 53.63,
+          "threadMs": 39.61,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.21
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 4.48
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 51.16,
+          "threadMs": 35.18,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 42.27,
+          "threadMs": 42.01,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.02
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 5.68
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 21.41,
+          "threadMs": 21.37,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 14.75,
+          "threadMs": 13.49,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 2.72
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 13.44,
+          "threadMs": 11.72,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "FireAnimationFrame",
+          "ms": 9.28,
+          "threadMs": 3.74,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 8.86,
+          "threadMs": 8.76,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 2,
+              "inclusiveMs": 1.79
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 1.76
+            }
+          ]
+        },
+        {
+          "event": "FireAnimationFrame",
+          "ms": 8.81,
+          "threadMs": 7.91,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "FireAnimationFrame",
+          "ms": 8.68,
+          "threadMs": 8.57,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        }
+      ],
+      "javascriptPerFrameMs": 19.19,
+      "legacyCodePerFrameMs": 5.99,
+      "scriptPerFrameMs": {
+        "mean": 23.48,
+        "p50": 13.76,
+        "p95": 63.02,
+        "p99": 63.02,
+        "max": 63.02
+      },
+      "frameIntervalMs": {
+        "p50": 200.52,
+        "p95": 566.39,
+        "p99": 566.39
+      },
+      "traceTasksOver50Ms": {
+        "count": 5,
+        "maxMs": 426.46
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 426.46,
+          "threadMs": 395.83,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 249.87,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 426.41",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.06",
+            "V8.GC_TIME_TO_SAFEPOINT 0.02"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 249.6",
+            "GpuChannel::ExecuteDeferredRequest 12.59",
+            "CommandBuffer::Flush 12.2",
+            "CommandBufferStub::OnAsyncFlush 12.19"
+          ]
+        },
+        {
+          "ms": 81,
+          "threadMs": 40.45,
+          "scriptEventMs": 1.15,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 81,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "Document::UpdateStyleAndLayout 79.72",
+            "Blink.ForcedStyleAndLayout.UpdateTime 79.72",
+            "LocalFrameView::UpdateStyleAndLayout 79.71",
+            "Blink.Layout.UpdateTime 78.78",
+            "LocalFrameView::layout 78.76",
+            "Layout 78.75"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 81"
+          ]
+        },
+        {
+          "ms": 77.17,
+          "threadMs": 76.36,
+          "scriptEventMs": 36.6,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 3.07,
+          "cause": "renderer main-thread work",
+          "top": [
+            "EventHandler::handleMouseReleaseEvent 55.41",
+            "EventDispatch 36.6",
+            "LocalFrameView::UpdateStyleAndLayout 35.01",
+            "FunctionCall 34.38",
+            "LocalFrameView::RunStyleAndLayoutLifecyclePhases 33.25",
+            "Blink.Style.UpdateTime 22.6"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 3.04",
+            "CommandBufferStub::PerformWork 0.02",
+            "Scheduler::FinishTask 0",
+            "GPUTracer::ProcessTraces 0"
+          ]
+        },
+        {
+          "ms": 54.77,
+          "threadMs": 40.64,
+          "scriptEventMs": 53.63,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 54.77,
+          "cause": "renderer main-thread work",
+          "top": [
+            "EventDispatch 53.67",
+            "FunctionCall 53.54",
+            "Blink.Style.UpdateTime 4.49",
+            "UpdateLayoutTree 4.48",
+            "Document::updateStyle 4.45",
+            "Document::recalcStyle 3.67"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 54.77"
+          ]
+        },
+        {
+          "ms": 52.69,
+          "threadMs": 36.71,
+          "scriptEventMs": 51.16,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 52.69,
+          "cause": "renderer main-thread work",
+          "top": [
+            "EventDispatch 51.16",
+            "FunctionCall 51.05",
+            "SerializedScriptValueFactory::create 4.99",
+            "AsyncTask Scheduled 4.06",
+            "LocalFrameView::ScheduleAnimation 0.05",
+            "Document::UpdateStyleAndLayout 0.03"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 52.69"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 8,
+        "p50": 1.2,
+        "p95": 8,
+        "max": 8
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    },
+    "landmarkCyclingRepeat": {
+      "wallMs": 11605,
+      "longTasks": {
+        "count": 16,
+        "maxMs": 92,
+        "totalMs": 1112
+      },
+      "longTaskCauses": {
+        "renderer main-thread work": 2,
+        "renderer thread off-CPU (host contention)": 4
+      },
+      "frames": 44,
+      "selfTimeMs": {
+        "legacyCode": 114.75,
+        "otherBundles": 199.87,
+        "webglCalls": 23.28,
+        "gamepadPolling": 0,
+        "otherNative": 634.5,
+        "garbageCollector": 14.54,
+        "testHarness": 27.73,
+        "browserNative": 2302.86,
+        "idle": 7377.58
+      },
+      "cpuHotspots": [
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 119.09
+        },
+        {
+          "function": "postMessage",
+          "url": "",
+          "line": 0,
+          "selfMs": 79.69
+        },
+        {
+          "function": "requestAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 74.8
+        },
+        {
+          "function": "focus",
+          "url": "",
+          "line": 0,
+          "selfMs": 64.44
+        },
+        {
+          "function": "requestAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 30.22
+        },
+        {
+          "function": "postMessage",
+          "url": "",
+          "line": 0,
+          "selfMs": 28.29
+        },
+        {
+          "function": "cancelAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 28.14
+        },
+        {
+          "function": "requestAnimationFrame",
+          "url": "",
+          "line": 0,
+          "selfMs": 27.91
+        },
+        {
+          "function": "focus",
+          "url": "",
+          "line": 0,
+          "selfMs": 26.94
+        },
+        {
+          "function": "createElementNS",
+          "url": "",
+          "line": 0,
+          "selfMs": 24.9
+        },
+        {
+          "function": "removeChild",
+          "url": "",
+          "line": 0,
+          "selfMs": 19.49
+        },
+        {
+          "function": "ep",
+          "url": "/assets/index-5NiGM6UI.js",
+          "line": 10,
+          "selfMs": 14.97
+        }
+      ],
+      "scriptWorkOver8Ms": [
+        {
+          "event": "EventDispatch",
+          "ms": 89.44,
+          "threadMs": 41.66,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.02
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 13.04
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 80.17,
+          "threadMs": 36.78,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 78.72,
+          "threadMs": 36.11,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 11.17
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 0.92
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 71.69,
+          "threadMs": 27.95,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 0,
+              "inclusiveMs": 0
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 70.43,
+          "threadMs": 32.41,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 8.54
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 65.24,
+          "threadMs": 35.62,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 9.31
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 55.17,
+          "threadMs": 24.28,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 5.52
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 45.74,
+          "threadMs": 21.19,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.92
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 3.67
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 33.2,
+          "threadMs": 32.6,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 46,
+              "inclusiveMs": 13.09
+            },
+            {
+              "event": "Layout",
+              "count": 1,
+              "inclusiveMs": 12.83
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 3,
+              "inclusiveMs": 3.3
+            }
+          ]
+        },
+        {
+          "event": "EventDispatch",
+          "ms": 30.63,
+          "threadMs": 20.34,
+          "nestedLayout": [
+            {
+              "event": "Document::UpdateStyleAndLayout",
+              "count": 1,
+              "inclusiveMs": 0.01
+            },
+            {
+              "event": "Layout",
+              "count": 0,
+              "inclusiveMs": 0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "count": 1,
+              "inclusiveMs": 9.01
+            }
+          ]
+        }
+      ],
+      "javascriptPerFrameMs": 22.43,
+      "legacyCodePerFrameMs": 2.61,
+      "scriptPerFrameMs": {
+        "mean": 26.14,
+        "p50": 13.8,
+        "p95": 90.67,
+        "p99": 97.76,
+        "max": 97.76
+      },
+      "frameIntervalMs": {
+        "p50": 173.75,
+        "p95": 532.86,
+        "p99": 810.72
+      },
+      "traceTasksOver50Ms": {
+        "count": 17,
+        "maxMs": 255.15
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 255.15,
+          "threadMs": 130.44,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 23.97,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 255.13",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 9.62",
+            "V8.GC_TIME_TO_SAFEPOINT 3.06"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 23.71",
+            "GpuChannel::ExecuteDeferredRequest 8.68",
+            "CommandBuffer::Flush 8.47",
+            "CommandBufferStub::OnAsyncFlush 8.47"
+          ]
+        },
+        {
+          "ms": 92.23,
+          "threadMs": 41.49,
+          "scriptEventMs": 0.09,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 92.23,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "Document::UpdateStyleAndLayout 91.4",
+            "Blink.ForcedStyleAndLayout.UpdateTime 91.39",
+            "LocalFrameView::UpdateStyleAndLayout 91.39",
+            "Blink.Style.UpdateTime 57.87",
+            "UpdateLayoutTree 50.04",
+            "Blink.Layout.UpdateTime 33.49"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 92.23"
+          ]
+        },
+        {
+          "ms": 90.73,
+          "threadMs": 43.39,
+          "scriptEventMs": 89.44,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 90.73,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "EventDispatch 89.49",
+            "FunctionCall 88.62",
+            "SerializedScriptValueFactory::create 20.16",
+            "Blink.Style.UpdateTime 13.05",
+            "UpdateLayoutTree 13.04",
+            "Document::updateStyle 13"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 90.73"
+          ]
+        },
+        {
+          "ms": 80.33,
+          "threadMs": 36.93,
+          "scriptEventMs": 80.17,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 80.33,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "EventDispatch 80.17",
+            "FunctionCall 71.4",
+            "AsyncTask Scheduled 23.31",
+            "SerializedScriptValueFactory::create 5.32",
+            "LocalFrameView::ScheduleAnimation 3.07",
+            "Document::UpdateStyleAndLayout 0.03"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 80.33"
+          ]
+        },
+        {
+          "ms": 78.9,
+          "threadMs": 36.28,
+          "scriptEventMs": 78.72,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 78.9,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "EventDispatch 79.44",
+            "FunctionCall 74.88",
+            "SerializedScriptValueFactory::create 20.17",
+            "Document::UpdateStyleAndLayout 11.21",
+            "MinorGC 5.92",
+            "V8.GC_SCAVENGER 5.87"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 78.9"
+          ]
+        },
+        {
+          "ms": 77.11,
+          "threadMs": 40.59,
+          "scriptEventMs": 6.63,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 77.11,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Document::UpdateStyleAndLayout 70.18",
+            "Blink.ForcedStyleAndLayout.UpdateTime 70.17",
+            "LocalFrameView::UpdateStyleAndLayout 70.17",
+            "Blink.Layout.UpdateTime 69.13",
+            "LocalFrameView::layout 69.12",
+            "Layout 68.62"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 77.11"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 25,
+        "p50": 4.3,
+        "p95": 11.4,
+        "max": 17.9
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    }
+  },
+  "caveat": "Focused transition recheck only, with software WebGL (SwiftShader). Both cold and repeated panel cycles are retained; 4× CPU throttling is a stress proxy, not physical hardware evidence. This does not replace the full performance protocol."
+}

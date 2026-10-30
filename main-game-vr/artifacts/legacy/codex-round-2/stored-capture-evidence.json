@@ -1,0 +1,726 @@
+{
+  "session": "stored",
+  "startedAt": "2026-10-30T00:04:26.185Z",
+  "profile": {
+    "runtime": "IWER Meta Quest 3 browser emulation, managed headless Chromium",
+    "view": "mono, 60-degree field of view",
+    "input": "hand ray + pinch, and index-fingertip presses on the touch tray; both controllers disconnected",
+    "developmentFramebufferScale": 0.25,
+    "physicalHeadset": false,
+    "note": "Development captures from software-rendered (SwiftShader) emulation, including emulator hand and ray overlays and the IWSDK emulator's blue \"Remote Control Active\" automation pill at the bottom of the view (not app UI); not a headset recording.",
+    "menuPinchView": "Menu pinches (reaching My Legacy) look almost straight down (88 degrees) so the hero and the menu atmosphere leave the view and software frames stay inside the 800 ms click window."
+  },
+  "captures": [
+    {
+      "name": "record-ledger",
+      "file": "artifacts/legacy/codex-round-2/stored-record-ledger.png",
+      "headPitchDegrees": 0,
+      "headYawDegrees": 0,
+      "note": "Stored banner War Record: full ledger",
+      "legacyView": "war-record",
+      "session": "stored",
+      "label": "",
+      "recordTab": "ledger",
+      "comfort": {
+        "textScale": 100,
+        "posture": "seated",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 9,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "record-unresolved",
+      "file": "artifacts/legacy/codex-round-2/stored-record-unresolved.png",
+      "headPitchDegrees": 0,
+      "headYawDegrees": 0,
+      "note": "Stored banner War Record: unresolved matters",
+      "legacyView": "war-record",
+      "session": "stored",
+      "label": "",
+      "recordTab": "unresolved",
+      "comfort": {
+        "textScale": 100,
+        "posture": "seated",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 9,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "heralds-station",
+      "file": "artifacts/legacy/codex-round-2/stored-heralds-station.png",
+      "headPitchDegrees": 0,
+      "headYawDegrees": 0,
+      "note": "Stored banner: heralds-station",
+      "legacyView": "heralds-station",
+      "session": "stored",
+      "label": "",
+      "recordTab": "unresolved",
+      "comfort": {
+        "textScale": 100,
+        "posture": "seated",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 9,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "muster-grounds",
+      "file": "artifacts/legacy/codex-round-2/stored-muster-grounds.png",
+      "headPitchDegrees": 0,
+      "headYawDegrees": 0,
+      "note": "Stored banner: muster-grounds",
+      "legacyView": "muster-grounds",
+      "session": "stored",
+      "label": "",
+      "recordTab": "unresolved",
+      "comfort": {
+        "textScale": 100,
+        "posture": "seated",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 9,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "banner-hall",
+      "file": "artifacts/legacy/codex-round-2/stored-banner-hall.png",
+      "headPitchDegrees": 0,
+      "headYawDegrees": 0,
+      "note": "Stored banner: banner-hall",
+      "legacyView": "banner-hall",
+      "session": "stored",
+      "label": "",
+      "recordTab": "unresolved",
+      "comfort": {
+        "textScale": 100,
+        "posture": "seated",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 9,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "reset-confirm",
+      "file": "artifacts/legacy/codex-round-2/stored-reset-confirm.png",
+      "headPitchDegrees": 0,
+      "headYawDegrees": 0,
+      "note": "Reset confirmation; the banner is kept",
+      "legacyView": "reset",
+      "session": "stored",
+      "label": "",
+      "recordTab": "unresolved",
+      "comfort": {
+        "textScale": 100,
+        "posture": "seated",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 9,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "pause",
+      "file": "artifacts/legacy/codex-round-2/stored-pause.png",
+      "headPitchDegrees": 0,
+      "headYawDegrees": 0,
+      "note": "Pause preserves the banner; Play remains one hand action away",
+      "legacyView": "pause",
+      "session": "stored",
+      "label": "",
+      "recordTab": "unresolved",
+      "comfort": {
+        "textScale": 100,
+        "posture": "seated",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 9,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "name": "touch-tray",
+      "file": "artifacts/legacy/codex-round-2/stored-touch-tray.png",
+      "headPitchDegrees": 44,
+      "headYawDegrees": 0,
+      "note": "Reachable touch tray with the shared Play action",
+      "legacyView": "overview",
+      "session": "stored",
+      "label": "",
+      "recordTab": "unresolved",
+      "comfort": {
+        "textScale": 100,
+        "posture": "seated",
+        "panelDistance": 1.5,
+        "panelHeight": "middle"
+      },
+      "metadata": {
+        "generation": 9,
+        "id": "tab-mvu748en-q38605",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "id": "Btn_Resume",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_war-record",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "war-record",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_RecordTab_ledger",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "war-record",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_RecordTab_unresolved",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "war-record",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockPlay",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "war-record",
+      "screen": "play"
+    },
+    {
+      "id": "Nav_Home",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "war-record",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "war-record",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_RecordBack",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_heralds-station",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "heralds-station",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockPlay",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "heralds-station",
+      "screen": "play"
+    },
+    {
+      "id": "Nav_Home",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "heralds-station",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "heralds-station",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_HeraldBack",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_muster-grounds",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockPlay",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "screen": "play"
+    },
+    {
+      "id": "Nav_Home",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "muster-grounds",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_MusterBack",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Landmark_banner-hall",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "banner-hall",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockPlay",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "banner-hall",
+      "screen": "play"
+    },
+    {
+      "id": "Nav_Home",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "banner-hall",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "banner-hall",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ResetOpen",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "reset",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockPlay",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "reset",
+      "screen": "play"
+    },
+    {
+      "id": "Nav_Home",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "reset",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "reset",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ResetCancel",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "banner-hall",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_HallBack",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockPause",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "pause",
+      "screen": "pause"
+    },
+    {
+      "id": "Legacy_DockPlay",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "play"
+    },
+    {
+      "id": "Nav_Home",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "overview",
+      "screen": "legacy"
+    }
+  ],
+  "cliRetries": [],
+  "emulationSetup": {
+    "applied": true,
+    "viewport": {
+      "width": 800,
+      "height": 560
+    },
+    "preferences": {
+      "quality": "low",
+      "motion": false,
+      "posture": "seated"
+    },
+    "visitCompleted": true,
+    "note": "Software-emulation accommodation only: the capture viewport, Quest Render Quality Low and Ambient Motion Off, and the short visit marked complete so entry opens Home."
+  },
+  "actionsToPlay": [
+    {
+      "from": "war-record",
+      "actions": 1,
+      "reachedPlay": true
+    },
+    {
+      "from": "heralds-station",
+      "actions": 1,
+      "reachedPlay": true
+    },
+    {
+      "from": "muster-grounds",
+      "actions": 1,
+      "reachedPlay": true
+    },
+    {
+      "from": "banner-hall",
+      "actions": 1,
+      "reachedPlay": true
+    },
+    {
+      "from": "reset",
+      "actions": 1,
+      "reachedPlay": true
+    },
+    {
+      "from": "pause",
+      "actions": 1,
+      "reachedPlay": true
+    }
+  ],
+  "final": {
+    "state": {
+      "screen": "legacy",
+      "entered": true,
+      "paused": false,
+      "pauseReason": "",
+      "textScale": 100,
+      "panelDistance": 1.5,
+      "panelHeight": "middle",
+      "posture": "seated",
+      "leftTracked": true,
+      "rightTracked": true,
+      "legacyLoad": "ready",
+      "legacyActive": true,
+      "legacyView": "overview",
+      "legacySession": "stored",
+      "legacyPersistent": true,
+      "legacySaved": true,
+      "legacySave": "none",
+      "legacyLabel": "",
+      "legacyPreview": "",
+      "legacyFounded": true,
+      "legacyBanner": "Keepers of the Umbra",
+      "legacyNation": "korvenia",
+      "legacyDraftName": "",
+      "legacyMotto": "We hold",
+      "legacyHeraldry": "Purpure, a chief argent, a tower or",
+      "legacyRepresentative": "Lucien",
+      "legacyFile": "a",
+      "legacyMemberChoice": "member-2",
+      "legacyFileChoice": "a",
+      "legacyLandmark": "",
+      "legacyHover": "",
+      "legacySelectSource": "list",
+      "legacyNotice": "",
+      "legacyChallenge": "accepted",
+      "legacyRecordTab": "unresolved",
+      "legacyChronicle": 3,
+      "legacyUnread": 1,
+      "legacyAftermath": 0,
+      "legacyMirrorBack": "",
+      "legacyMirrorPrimary": "",
+      "legacyEnvironment": "standin",
+      "legacyEnvironmentReady": true,
+      "legacyRecenters": 0,
+      "legacyMessage": "",
+      "legacyPanelTopDegrees": 11.702901840209961,
+      "legacyPanelBottomDegrees": -19.29004669189453,
+      "legacyPanelDistance": 1.403566837310791,
+      "legacyTrayDistance": 0.6000000238418579,
+      "legacyTrayElevationDegrees": -47.36803436279297,
+      "legacyTrayTouch": false,
+      "legacyTrayTouchGateDegrees": -25.29004669189453
+    },
+    "session": {
+      "deviceName": "Meta Quest 3",
+      "isRuntimeInstalled": true,
+      "sessionActive": true,
+      "sessionOffered": false,
+      "sessionMode": "immersive-vr",
+      "enabledFeatures": [
+        "hand-tracking",
+        "local-floor",
+        "bounded-floor",
+        "viewer",
+        "local"
+      ],
+      "visibilityState": "visible",
+      "runtimeKind": "emulated",
+      "browser": {
+        "lifecycle": {
+          "state": "running",
+          "policy": "eager",
+          "sessionId": "d2b08423-63f9-404b-9612-ed4b4ac5dac8",
+          "browserEpoch": 1,
+          "revision": 32,
+          "stateEnteredAt": "2026-10-29T23:49:59.951Z",
+          "lastObservedAt": "2026-10-30T00:04:34.628Z",
+          "failures": 0,
+          "cleanupConfirmed": true,
+          "attemptLimit": 3,
+          "historyTruncated": false,
+          "retryEligible": false,
+          "nextAction": "Use runtime_list_targets to inspect endpoint readiness.",
+          "history": [
+            {
+              "revision": 1,
+              "state": "launching",
+              "at": "2026-10-29T23:49:59.306Z",
+              "reason": "launch"
+            },
+            {
+              "revision": 2,
+              "state": "launching",
+              "at": "2026-10-29T23:49:59.306Z",
+              "reason": "prepared"
+            },
+            {
+              "revision": 3,
+              "state": "running",
+              "at": "2026-10-29T23:49:59.951Z",
+              "reason": "running"
+            }
+          ],
+          "attemptId": "79e55164-46f5-456f-bc16-c9325b2c2d80"
+        },
+        "status": "connected",
+        "clients": [
+          {
+            "commandReady": true,
+            "sessionId": "d2b08423-63f9-404b-9612-ed4b4ac5dac8",
+            "browserEpoch": 1,
+            "deviceClass": "managed",
+            "pageId": "tab-mvu748en-q38605",
+            "role": "app",
+            "tabGeneration": 9
+          },
+          {
+            "commandReady": true,
+            "sessionId": "d2b08423-63f9-404b-9612-ed4b4ac5dac8",
+            "browserEpoch": 1,
+            "deviceClass": "managed",
+            "pageId": "tab-mvu746un-ila0an",
+            "role": "editor",
+            "sceneSessionId": "scene-2lkxyalgu8c",
+            "tabGeneration": 1
+          }
+        ],
+        "lastBridgeConnectedAt": "2026-10-30T00:04:33.743Z",
+        "lastCommandReadyAt": "2026-10-30T00:04:34.627Z",
+        "connected": true,
+        "commandReady": true,
+        "connectedClientCount": 2,
+        "lastTransitionAt": "2026-10-29T23:49:59.951Z",
+        "audioMuted": false
+      },
+      "browserConnected": true,
+      "browserCommandReady": true
+    }
+  },
+  "finishedAt": "2026-10-30T00:08:58.943Z"
+}

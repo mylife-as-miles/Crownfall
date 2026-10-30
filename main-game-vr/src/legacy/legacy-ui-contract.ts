@@ -139,14 +139,14 @@ export const LEGACY_PANEL_ACTION_IDS = [
   'Legacy_RecordBack', 'Legacy_RecordPrev', 'Legacy_RecordNext',
   'Legacy_HeraldBack', 'Legacy_HeraldPrev', 'Legacy_HeraldNext',
   'Legacy_NoticeBack', 'Legacy_NoticeAccept', 'Legacy_NoticeAwaiting',
-  'Legacy_AcceptCancel', 'Legacy_AcceptConfirm', 'Legacy_AwaitingBack',
+  'Legacy_AcceptCancel', 'Legacy_AcceptConfirm', 'Legacy_AwaitingBack', 'Legacy_AwaitingPlay',
   'Legacy_ResetCancel', 'Legacy_ResetConfirm',
   'Legacy_Resume', 'Legacy_PauseHome',
 ] as const;
 export type LegacyPanelActionId = typeof LEGACY_PANEL_ACTION_IDS[number];
 
 /** The tray's navigation, always in reach; Back and the primary action mirror the panel's current view. */
-export const LEGACY_DOCK_ACTION_IDS = ['Legacy_DockBack', 'Legacy_DockPrimary', 'Legacy_DockHome', 'Legacy_DockRecenter', 'Legacy_DockPause', 'Legacy_DockExit'] as const;
+export const LEGACY_DOCK_ACTION_IDS = ['Legacy_DockBack', 'Legacy_DockPrimary', 'Legacy_DockHome', 'Legacy_DockPlay', 'Legacy_DockRecenter', 'Legacy_DockPause', 'Legacy_DockExit'] as const;
 export type LegacyDockActionId = typeof LEGACY_DOCK_ACTION_IDS[number];
 
 /** Images that show the live heraldry raster. */

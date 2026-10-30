@@ -53,6 +53,10 @@ export const LEGACY_COPY = {
   title: "My Legacy",
   tagline: "Your Banner. Your People. Your Place in Crownfall.",
   backToHome: "Return to Home",
+  navigation: {
+    play: "Play",
+    playLabel: "Leave My Legacy for Play",
+  },
   /** The Muster's principle, shown where the house's side of the formation is framed. */
   principle: "You move the entire formation, but not everyone on the board belongs to your house.",
   founding: {

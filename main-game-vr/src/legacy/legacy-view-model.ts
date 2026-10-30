@@ -434,6 +434,7 @@ function buildBannerholdView(model: LegacyPanelModel, input: LegacyModelInput): 
       model.texts.Legacy_Title = LEGACY_COPY.awaitingBoard.title;
       model.texts.Legacy_Awaiting_Readiness = readinessText(state);
       model.controls.Legacy_AwaitingBack = control();
+      model.controls.Legacy_AwaitingPlay = control();
       break;
     case 'reset':
       model.texts.Legacy_Title = LEGACY_COPY.reset.title;
@@ -889,6 +890,7 @@ export function buildLegacyDockModel(input: LegacyModelInput, panel: LegacyPanel
       Legacy_DockBack: mirrored(back),
       Legacy_DockPrimary: mirrored(primary),
       Legacy_DockHome: control(!paused),
+      Legacy_DockPlay: control(),
       Legacy_DockRecenter: control(input.entered),
       Legacy_DockPause: control(input.entered && !paused),
       Legacy_DockExit: control(input.entered),

@@ -87,8 +87,48 @@ async function main() {
   };
   const back = (id, view) => d.pinch(id, (v) => v.legacyView === view);
   const openLandmark = (landmark) => d.pinch(`Legacy_Landmark_${landmark}`, (v) => v.legacyView === landmark);
+  const playRoundTrip = (from, returnView = from) => {
+    const banner = d.state().legacyBanner;
+    d.pinch('Legacy_DockPlay', (v) => v.screen === 'play' && !v.paused && !v.legacyActive, { pitch: 44 });
+    (evidence.actionsToPlay ??= []).push({ from, actions: 1, reachedPlay: true });
+    d.menuPinch('Nav_Home', (v) => v.screen === 'home');
+    const restored = d.reachLegacy();
+    assert.equal(restored.legacyView, returnView);
+    assert.equal(restored.legacyBanner, banner);
+  };
 
   const flows = {
+    stored() {
+      let s = enter();
+      assert.ok(s.legacyFounded, 'A real UI-founded test banner is required');
+      for (let step = 0; s.legacyView !== 'overview' && step < 5; step++) {
+        const before = s.legacyView;
+        s = d.pinch('Legacy_DockBack', (v) => v.legacyView !== before, { pitch: 44 });
+      }
+      assert.equal(s.legacyView, 'overview');
+      const backIds = { 'war-record': 'Legacy_RecordBack', 'heralds-station': 'Legacy_HeraldBack', 'muster-grounds': 'Legacy_MusterBack', 'banner-hall': 'Legacy_HallBack' };
+      for (const landmark of Object.keys(backIds)) {
+        openLandmark(landmark);
+        if (landmark === 'war-record') {
+          d.pinch('Legacy_RecordTab_ledger', (v) => v.legacyRecordTab === 'ledger');
+          capture('record-ledger', 0, 'Stored banner War Record: full ledger');
+          d.pinch('Legacy_RecordTab_unresolved', (v) => v.legacyRecordTab === 'unresolved');
+          capture('record-unresolved', 0, 'Stored banner War Record: unresolved matters');
+        } else capture(landmark, 0, `Stored banner: ${landmark}`);
+        playRoundTrip(landmark);
+        if (landmark === 'banner-hall') {
+          d.pinch('Legacy_ResetOpen', (v) => v.legacyView === 'reset');
+          capture('reset-confirm', 0, 'Reset confirmation; the banner is kept');
+          playRoundTrip('reset');
+          d.pinch('Legacy_ResetCancel', (v) => v.legacyView === 'banner-hall');
+        }
+        d.pinch(backIds[landmark], (v) => v.legacyView === 'overview');
+      }
+      d.pinch('Legacy_DockPause', (v) => v.paused, { pitch: 44 });
+      capture('pause', 0, 'Pause preserves the banner; Play remains one hand action away');
+      playRoundTrip('pause', 'overview');
+      capture('touch-tray', 44, 'Reachable touch tray with the shared Play action');
+    },
     production() {
       let s = enter();
       if (s.legacyView === 'aftermath') s = d.pinch('Legacy_AftermathLater', (v) => v.legacyView === 'overview');
@@ -193,8 +233,13 @@ async function main() {
       const raw = kind === 'future' ? JSON.stringify({ schemaVersion: 99, banner: null }) : '{"schemaVersion":1,"banner":';
       if (d.cli('xr', 'status').sessionActive) { try { d.cli('xr', 'exit', {}); } catch { /* An ended session acknowledgement is fine. */ } }
       evidence.storedBefore = d.browserRun('scripts/verify-legacy.mjs', { CROWNFALL_LEGACY_PROBE: 'set-save', CROWNFALL_LEGACY_SAVE: raw });
-      d.reload();
-      enter();
+      // A preceding preview capture leaves its URL query in place. Recovery
+      // must resolve ordinary storage, never render that preview under a
+      // recovery caption.
+      openSession('');
+      const recovered = enter();
+      assert.equal(recovered.legacySession, 'recovery');
+      assert.equal(recovered.legacyView, 'recovery');
       capture('recovery', 0, kind === 'future' ? 'A save from a newer version, left untouched' : 'An unreadable save, left untouched, with a guest visit or a new banner offered');
       evidence.storedAfter = d.browserRun('scripts/verify-legacy.mjs', { CROWNFALL_LEGACY_PROBE: 'storage' });
       assert.equal(evidence.storedAfter, raw, 'the unreadable save is exactly as it was');
@@ -230,6 +275,7 @@ async function main() {
     for (let attempt = 1; ; attempt++) {
       try {
         if (session === 'production') flows.production();
+        else if (session === 'stored') flows.stored();
         else if (session === 'guest') flows.guest();
         else if (session.startsWith('preview:')) flows.preview(session.slice('preview:'.length));
         else if (session.startsWith('recovery:')) flows.recovery(session.slice('recovery:'.length));

@@ -1,0 +1,993 @@
+{
+  "measuredAt": "2026-10-29T23:36:08.771Z",
+  "target": "http://127.0.0.1:5181",
+  "build": "production build (vite preview)",
+  "scenarioPreset": "Low (75 % render scale), 1280×720, reduced motion",
+  "scenarios": {
+    "entry": {
+      "wallMs": 6916,
+      "longTasks": {
+        "count": 2,
+        "maxMs": 1196,
+        "totalMs": 1877
+      },
+      "longTaskCauses": {
+        "waiting on the GPU process": 2
+      },
+      "frames": 56,
+      "selfTimeMs": {
+        "legacyCode": 65.62,
+        "otherBundles": 1996.12,
+        "webglCalls": 0,
+        "gamepadPolling": 0,
+        "otherNative": 41.15,
+        "garbageCollector": 8.54,
+        "testHarness": 14.14,
+        "browserNative": 227.28,
+        "idle": 4154.02
+      },
+      "javascriptPerFrameMs": 37.7,
+      "legacyCodePerFrameMs": 1.17,
+      "scriptPerFrameMs": {
+        "mean": 37.84,
+        "p50": 0.14,
+        "p95": 44.19,
+        "p99": 1196.76,
+        "max": 1196.76
+      },
+      "frameIntervalMs": {
+        "p50": 16.69,
+        "p95": 681.83,
+        "p99": 1210.47
+      },
+      "traceTasksOver50Ms": {
+        "count": 2,
+        "maxMs": 1196.1
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 1196.1,
+          "threadMs": 18.06,
+          "scriptEventMs": 1196.1,
+          "gpuWaitMs": 694.42,
+          "gpuProcessBusyMs": 1181.9,
+          "cause": "waiting on the GPU process",
+          "top": [
+            "TimerBase::run 1196.1",
+            "TimerFire 1196.1",
+            "AsyncTask Run 1196.08",
+            "ImplementationBase::WaitForCmd 694.79",
+            "CommandBufferHelper::Finish 694.78",
+            "CommandBufferProxyImpl::WaitForGetOffset 694.42"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 1178.42",
+            "GpuChannel::ExecuteDeferredRequest 37.07",
+            "CommandBuffer::Flush 36.74",
+            "CommandBufferStub::OnAsyncFlush 36.72"
+          ]
+        },
+        {
+          "ms": 681.2,
+          "threadMs": 29.28,
+          "scriptEventMs": 681.2,
+          "gpuWaitMs": 649.27,
+          "gpuProcessBusyMs": 675.6,
+          "cause": "waiting on the GPU process",
+          "top": [
+            "TimerBase::run 681.2",
+            "TimerFire 681.2",
+            "AsyncTask Run 681.19",
+            "GLES2Implementation::GetProgramiv 649.48",
+            "ImplementationBase::GetBucketContents 649.41",
+            "ImplementationBase::WaitForCmd 649.35"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 675.37",
+            "GpuChannel::ExecuteDeferredRequest 21.35",
+            "WebGL 20.47",
+            "CommandBuffer::Flush 20.43"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 3,
+        "p50": 1.4,
+        "p95": 2.1,
+        "max": 2.1
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      },
+      "afterEntry": {
+        "jsHeapMB": 6.17,
+        "stats": {
+          "source": "stand-in",
+          "drawCalls": 32,
+          "triangles": 3266,
+          "geometries": 31,
+          "textures": 1,
+          "programs": 6
+        }
+      },
+      "loadingFeedback": {
+        "loadingFramedAtMs": 3307.9,
+        "longTasksBeforeFeedback": 0
+      }
+    },
+    "idle10s": {
+      "wallMs": 10727,
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0,
+        "totalMs": 0
+      },
+      "longTaskCauses": {},
+      "frames": 603,
+      "selfTimeMs": {
+        "legacyCode": 4.02,
+        "otherBundles": 2.33,
+        "webglCalls": 0,
+        "gamepadPolling": 0,
+        "otherNative": 19.92,
+        "garbageCollector": 0,
+        "testHarness": 0,
+        "browserNative": 663.79,
+        "idle": 9487.99
+      },
+      "javascriptPerFrameMs": 0.04,
+      "legacyCodePerFrameMs": 0.01,
+      "scriptPerFrameMs": {
+        "mean": 0.09,
+        "p50": 0.08,
+        "p95": 0.16,
+        "p99": 0.24,
+        "max": 0.96
+      },
+      "frameIntervalMs": {
+        "p50": 16.66,
+        "p95": 17.07,
+        "p99": 20.02
+      },
+      "traceTasksOver50Ms": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "longTaskAnatomy": [],
+      "renderSubmissionMs": {
+        "samples": 3,
+        "p50": 1.4,
+        "p95": 2.1,
+        "max": 2.1
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    },
+    "orbitDrag5s": {
+      "wallMs": 5926,
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0,
+        "totalMs": 0
+      },
+      "longTaskCauses": {},
+      "frames": 104,
+      "selfTimeMs": {
+        "legacyCode": 4.16,
+        "otherBundles": 97.54,
+        "webglCalls": 18.29,
+        "gamepadPolling": 0,
+        "otherNative": 18.25,
+        "garbageCollector": 3.47,
+        "testHarness": 16.31,
+        "browserNative": 624.73,
+        "idle": 4552.14
+      },
+      "javascriptPerFrameMs": 1.36,
+      "legacyCodePerFrameMs": 0.04,
+      "scriptPerFrameMs": {
+        "mean": 1.99,
+        "p50": 1.23,
+        "p95": 5.18,
+        "p99": 20.41,
+        "max": 22
+      },
+      "frameIntervalMs": {
+        "p50": 30.1,
+        "p95": 271.35,
+        "p99": 350.32
+      },
+      "traceTasksOver50Ms": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "longTaskAnatomy": [],
+      "renderSubmissionMs": {
+        "samples": 107,
+        "p50": 0.6,
+        "p95": 4.5,
+        "max": 21.8
+      },
+      "framePacingMs": {
+        "samples": 103,
+        "p50": 33.3,
+        "p95": 266.6,
+        "max": 433.3
+      }
+    },
+    "landmarkCycling": {
+      "wallMs": 2759,
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0,
+        "totalMs": 0
+      },
+      "longTaskCauses": {},
+      "frames": 15,
+      "selfTimeMs": {
+        "legacyCode": 14.88,
+        "otherBundles": 25.05,
+        "webglCalls": 0,
+        "gamepadPolling": 0,
+        "otherNative": 39.37,
+        "garbageCollector": 13.78,
+        "testHarness": 2.29,
+        "browserNative": 93.04,
+        "idle": 2438.22
+      },
+      "javascriptPerFrameMs": 6.21,
+      "legacyCodePerFrameMs": 0.99,
+      "scriptPerFrameMs": {
+        "mean": 6.14,
+        "p50": 0.89,
+        "p95": 34.34,
+        "p99": 34.34,
+        "max": 34.34
+      },
+      "frameIntervalMs": {
+        "p50": 17.32,
+        "p95": 574.81,
+        "p99": 574.81
+      },
+      "traceTasksOver50Ms": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "longTaskAnatomy": [],
+      "renderSubmissionMs": {
+        "samples": 112,
+        "p50": 0.6,
+        "p95": 4.5,
+        "max": 21.8
+      },
+      "framePacingMs": {
+        "samples": 103,
+        "p50": 33.3,
+        "p95": 266.6,
+        "max": 433.3
+      }
+    },
+    "nationSwitch": {
+      "wallMs": 2871,
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0,
+        "totalMs": 0
+      },
+      "longTaskCauses": {
+        "renderer main-thread work": 1
+      },
+      "frames": 13,
+      "selfTimeMs": {
+        "legacyCode": 5.77,
+        "otherBundles": 5.26,
+        "webglCalls": 1.8,
+        "gamepadPolling": 0,
+        "otherNative": 5.94,
+        "garbageCollector": 0.59,
+        "testHarness": 1.77,
+        "browserNative": 136.87,
+        "idle": 2582.08
+      },
+      "javascriptPerFrameMs": 1.49,
+      "legacyCodePerFrameMs": 0.44,
+      "scriptPerFrameMs": {
+        "mean": 1.95,
+        "p50": 1.15,
+        "p95": 7.57,
+        "p99": 7.57,
+        "max": 7.57
+      },
+      "frameIntervalMs": {
+        "p50": 16.69,
+        "p95": 603.25,
+        "p99": 603.25
+      },
+      "traceTasksOver50Ms": {
+        "count": 1,
+        "maxMs": 80.13
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 80.13,
+          "threadMs": 73.61,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 0,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 80.11",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.04",
+            "V8.GC_TIME_TO_SAFEPOINT 0.03"
+          ],
+          "gpuProcessTop": []
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 6,
+        "p50": 1,
+        "p95": 1.1,
+        "max": 1.1
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    },
+    "foundingTyping": {
+      "wallMs": 3395,
+      "longTasks": {
+        "count": 0,
+        "maxMs": 0,
+        "totalMs": 0
+      },
+      "longTaskCauses": {},
+      "frames": 32,
+      "selfTimeMs": {
+        "legacyCode": 1.47,
+        "otherBundles": 9.42,
+        "webglCalls": 0,
+        "gamepadPolling": 0,
+        "otherNative": 0,
+        "garbageCollector": 0,
+        "testHarness": 0,
+        "browserNative": 256.03,
+        "idle": 2851.4
+      },
+      "javascriptPerFrameMs": 0.34,
+      "legacyCodePerFrameMs": 0.05,
+      "scriptPerFrameMs": {
+        "mean": 2.42,
+        "p50": 2.36,
+        "p95": 3.72,
+        "p99": 4.53,
+        "max": 4.53
+      },
+      "frameIntervalMs": {
+        "p50": 94.54,
+        "p95": 98.15,
+        "p99": 98.28
+      },
+      "traceTasksOver50Ms": {
+        "count": 0,
+        "maxMs": 0
+      },
+      "longTaskAnatomy": [],
+      "renderSubmissionMs": {
+        "samples": 6,
+        "p50": 1,
+        "p95": 1.1,
+        "max": 1.1
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    }
+  },
+  "presets": {
+    "low": {
+      "jsHeapMB": 6.12,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 36,
+        "triangles": 4306,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      },
+      "effectivePreset": "low"
+    },
+    "medium": {
+      "jsHeapMB": 6.27,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 36,
+        "triangles": 4306,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      },
+      "effectivePreset": "medium"
+    },
+    "high": {
+      "jsHeapMB": 6.42,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 36,
+        "triangles": 4306,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      },
+      "effectivePreset": "high"
+    }
+  },
+  "roundTrips": {
+    "trips": 5,
+    "before": {
+      "jsHeapMB": 6.94,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 32,
+        "triangles": 3266,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      }
+    },
+    "after": {
+      "jsHeapMB": 7.19,
+      "stats": {
+        "source": "stand-in",
+        "drawCalls": 32,
+        "triangles": 3266,
+        "geometries": 31,
+        "textures": 1,
+        "programs": 6
+      }
+    }
+  },
+  "throttled4x": {
+    "entry": {
+      "wallMs": 5730,
+      "longTasks": {
+        "count": 8,
+        "maxMs": 930,
+        "totalMs": 1730
+      },
+      "longTaskCauses": {
+        "waiting on the GPU process": 2,
+        "renderer main-thread work": 3,
+        "renderer thread off-CPU (host contention)": 1
+      },
+      "frames": 72,
+      "selfTimeMs": {
+        "legacyCode": 229.24,
+        "otherBundles": 1535.58,
+        "webglCalls": 0.62,
+        "gamepadPolling": 0,
+        "otherNative": 172.45,
+        "garbageCollector": 16,
+        "testHarness": 93.29,
+        "browserNative": 793.88,
+        "idle": 2493.23
+      },
+      "javascriptPerFrameMs": 27.14,
+      "legacyCodePerFrameMs": 3.18,
+      "scriptPerFrameMs": {
+        "mean": 26.38,
+        "p50": 0.4,
+        "p95": 114.8,
+        "p99": 932.8,
+        "max": 932.8
+      },
+      "frameIntervalMs": {
+        "p50": 16.86,
+        "p95": 403.42,
+        "p99": 944.13
+      },
+      "traceTasksOver50Ms": {
+        "count": 10,
+        "maxMs": 930.25
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 930.25,
+          "threadMs": 498.8,
+          "scriptEventMs": 930.25,
+          "gpuWaitMs": 484.56,
+          "gpuProcessBusyMs": 886.69,
+          "cause": "waiting on the GPU process",
+          "top": [
+            "TimerBase::run 930.25",
+            "TimerFire 930.25",
+            "AsyncTask Run 930.24",
+            "ImplementationBase::WaitForCmd 485.99",
+            "CommandBufferHelper::Finish 485.97",
+            "CommandBufferProxyImpl::WaitForGetOffset 484.56"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 883.96",
+            "GpuChannel::ExecuteDeferredRequest 4.53",
+            "CommandBuffer::Flush 4.18",
+            "CommandBufferStub::OnAsyncFlush 4.16"
+          ]
+        },
+        {
+          "ms": 386.62,
+          "threadMs": 210.57,
+          "scriptEventMs": 386.62,
+          "gpuWaitMs": 215.06,
+          "gpuProcessBusyMs": 363.4,
+          "cause": "waiting on the GPU process",
+          "top": [
+            "TimerBase::run 386.62",
+            "TimerFire 386.62",
+            "AsyncTask Run 386.61",
+            "GLES2Implementation::GetProgramiv 215.67",
+            "ImplementationBase::GetBucketContents 215.6",
+            "ImplementationBase::WaitForCmd 215.09"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 363.26",
+            "GpuChannel::ExecuteDeferredRequest 10.37",
+            "WebGL 10.26",
+            "CommandBuffer::Flush 10.24"
+          ]
+        },
+        {
+          "ms": 226.57,
+          "threadMs": 150,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 36.62,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 226.55",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.98",
+            "V8.GC_TIME_TO_SAFEPOINT 0.02",
+            "V8.GC_SCAVENGER_COMPLETE_SWEEP_ARRAY_BUFFERS 0.01"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 36.57",
+            "GpuChannel::ExecuteDeferredRequest 13.72",
+            "RendererRasterWorker 13.5",
+            "CommandBuffer::Flush 13.47"
+          ]
+        },
+        {
+          "ms": 105.26,
+          "threadMs": 84,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 105.26,
+          "cause": "renderer main-thread work",
+          "top": [
+            "v8.evaluateModule 100.91"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 105.26"
+          ]
+        },
+        {
+          "ms": 91.09,
+          "threadMs": 37.93,
+          "scriptEventMs": 60.88,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 91.09,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "ProxyMain::BeginMainFrame 91.08",
+            "WebFrameWidgetImpl::BeginMainFrame 60.95",
+            "Blink.Animate.UpdateTime 60.93",
+            "PageAnimator::serviceScriptedAnimations 60.91",
+            "FrameRequestCallbackCollection::ExecuteFrameCallbacks 60.88",
+            "FireAnimationFrame 60.88"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 91.09"
+          ]
+        },
+        {
+          "ms": 71.09,
+          "threadMs": 69.33,
+          "scriptEventMs": 71.08,
+          "gpuWaitMs": 5.52,
+          "gpuProcessBusyMs": 2.93,
+          "cause": "renderer main-thread work",
+          "top": [
+            "AsyncTask Run 71.12",
+            "TimerBase::run 71.08",
+            "TimerFire 71.08",
+            "ImplementationBase::WaitForCmd 6.34",
+            "CommandBufferHelper::Finish 5.98",
+            "CommandBufferProxyImpl::WaitForGetOffset 5.52"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 1.54",
+            "GpuChannel::ExecuteDeferredRequest 1.46",
+            "WebGL 0.83",
+            "CommandBuffer::Flush 0.78"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 3,
+        "p50": 8.1,
+        "p95": 14.4,
+        "max": 14.4
+      },
+      "framePacingMs": {
+        "samples": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      }
+    },
+    "orbitDrag5s": {
+      "wallMs": 5955,
+      "longTasks": {
+        "count": 8,
+        "maxMs": 85,
+        "totalMs": 533
+      },
+      "longTaskCauses": {
+        "renderer thread off-CPU (host contention)": 4,
+        "renderer main-thread work": 2
+      },
+      "frames": 113,
+      "selfTimeMs": {
+        "legacyCode": 78.82,
+        "otherBundles": 415.86,
+        "webglCalls": 291.32,
+        "gamepadPolling": 0,
+        "otherNative": 181.41,
+        "garbageCollector": 9.87,
+        "testHarness": 83.1,
+        "browserNative": 2020.37,
+        "idle": 2245.58
+      },
+      "javascriptPerFrameMs": 8.65,
+      "legacyCodePerFrameMs": 0.7,
+      "scriptPerFrameMs": {
+        "mean": 11.05,
+        "p50": 6.75,
+        "p95": 32.84,
+        "p99": 44.22,
+        "max": 48.25
+      },
+      "frameIntervalMs": {
+        "p50": 32.88,
+        "p95": 85.62,
+        "p99": 414.95
+      },
+      "traceTasksOver50Ms": {
+        "count": 9,
+        "maxMs": 85.29
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 85.29,
+          "threadMs": 38.69,
+          "scriptEventMs": 32.76,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 84.59,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "ProxyMain::BeginMainFrame 85.29",
+            "WebFrameWidgetImpl::UpdateLifecycle 36.35",
+            "FunctionCall 25.87",
+            "LocalFrameView::RunPaintLifecyclePhase 23.11",
+            "Blink.Paint.UpdateTime 22.08",
+            "CullRectUpdate 20.98"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 84.51",
+            "GpuChannel::ExecuteDeferredRequest 0.46",
+            "WebGL 0.32",
+            "CommandBuffer::Flush 0.32"
+          ]
+        },
+        {
+          "ms": 80.75,
+          "threadMs": 80.33,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 0,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 80.73",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.05",
+            "V8.GC_TIME_TO_SAFEPOINT 0.01",
+            "V8.GC_SCAVENGER_COMPLETE_SWEEP_ARRAY_BUFFERS 0.01"
+          ],
+          "gpuProcessTop": []
+        },
+        {
+          "ms": 71.91,
+          "threadMs": 30.31,
+          "scriptEventMs": 30.42,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 71.89,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "ProxyMain::BeginMainFrame 71.91",
+            "WebFrameWidgetImpl::UpdateLifecycle 38.6",
+            "LocalFrameView::RunStyleAndLayoutLifecyclePhases 37.86",
+            "LocalFrameView::UpdateStyleAndLayout 30.57",
+            "EventHandler::handleMouseMoveEvent 24.18",
+            "EventDispatch 23.2"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 71.84",
+            "GpuChannel::ExecuteDeferredRequest 0.41",
+            "WebGL 0.26",
+            "CommandBuffer::Flush 0.25"
+          ]
+        },
+        {
+          "ms": 68.6,
+          "threadMs": 29.59,
+          "scriptEventMs": 42.15,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 68.47,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "ProxyMain::BeginMainFrame 68.59",
+            "WebFrameWidgetImpl::BeginMainFrame 44.77",
+            "Blink.Animate.UpdateTime 44.77",
+            "FunctionCall 38.96",
+            "PageAnimator::serviceScriptedAnimations 37.31",
+            "FrameRequestCallbackCollection::ExecuteFrameCallbacks 37.28"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 68.37",
+            "GpuChannel::ExecuteDeferredRequest 0.63",
+            "WebGL 0.48",
+            "CommandBuffer::Flush 0.47"
+          ]
+        },
+        {
+          "ms": 67.43,
+          "threadMs": 30.83,
+          "scriptEventMs": 47.42,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 63.47,
+          "cause": "renderer thread off-CPU (host contention)",
+          "top": [
+            "ProxyMain::BeginMainFrame 67.42",
+            "FunctionCall 47.12",
+            "EventHandler::handleMouseMoveEvent 29.31",
+            "EventDispatch 29.24",
+            "WebFrameWidgetImpl::UpdateLifecycle 18.81",
+            "WebFrameWidgetImpl::BeginMainFrame 18.22"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 63.34",
+            "GpuChannel::ExecuteDeferredRequest 0.49",
+            "WebGL 0.4",
+            "CommandBuffer::Flush 0.39"
+          ]
+        },
+        {
+          "ms": 65.29,
+          "threadMs": 32.82,
+          "scriptEventMs": 5.24,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 64.95,
+          "cause": "renderer main-thread work",
+          "top": [
+            "ProxyMain::BeginMainFrame 65.29",
+            "WebFrameWidgetImpl::UpdateLifecycle 29.05",
+            "LocalFrameView::RunPaintLifecyclePhase 18.44",
+            "LocalFrameView::pushPaintArtifactToCompositor 18.34",
+            "Blink.CompositingCommit.UpdateTime 18.34",
+            "Layerize 18.34"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 64.79",
+            "GpuChannel::ExecuteDeferredRequest 0.6",
+            "WebGL 0.46",
+            "CommandBuffer::Flush 0.46"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 112,
+        "p50": 3.6,
+        "p95": 23.8,
+        "max": 30
+      },
+      "framePacingMs": {
+        "samples": 106,
+        "p50": 33.4,
+        "p95": 83.2,
+        "max": 433.3
+      }
+    },
+    "landmarkCycling": {
+      "wallMs": 3426,
+      "longTasks": {
+        "count": 5,
+        "maxMs": 122,
+        "totalMs": 422
+      },
+      "longTaskCauses": {
+        "renderer main-thread work": 6
+      },
+      "frames": 17,
+      "selfTimeMs": {
+        "legacyCode": 61.48,
+        "otherBundles": 108.27,
+        "webglCalls": 0.81,
+        "gamepadPolling": 0,
+        "otherNative": 245.84,
+        "garbageCollector": 34.33,
+        "testHarness": 6.37,
+        "browserNative": 497.3,
+        "idle": 2295.07
+      },
+      "javascriptPerFrameMs": 26.51,
+      "legacyCodePerFrameMs": 3.62,
+      "scriptPerFrameMs": {
+        "mean": 26.67,
+        "p50": 5.03,
+        "p95": 122.09,
+        "p99": 122.09,
+        "max": 122.09
+      },
+      "frameIntervalMs": {
+        "p50": 87.25,
+        "p95": 550.1,
+        "p99": 550.1
+      },
+      "traceTasksOver50Ms": {
+        "count": 6,
+        "maxMs": 126.13
+      },
+      "longTaskAnatomy": [
+        {
+          "ms": 126.13,
+          "threadMs": 126.08,
+          "scriptEventMs": 0,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 0,
+          "cause": "renderer main-thread work",
+          "top": [
+            "Receive mojo message 126.09",
+            "V8.GC_HEAP_ENSURE_SWEEPING_COMPLETED 0.06",
+            "V8.GC_TIME_TO_SAFEPOINT 0.01"
+          ],
+          "gpuProcessTop": []
+        },
+        {
+          "ms": 122.08,
+          "threadMs": 105.2,
+          "scriptEventMs": 121.94,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 122.08,
+          "cause": "renderer main-thread work",
+          "top": [
+            "EventDispatch 122.08",
+            "FunctionCall 120.83",
+            "Document::UpdateStyleAndLayout 49.23",
+            "Blink.ForcedStyleAndLayout.UpdateTime 47.4",
+            "LocalFrameView::UpdateStyleAndLayout 47.37",
+            "Blink.Layout.UpdateTime 46.46"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 122.08"
+          ]
+        },
+        {
+          "ms": 100.25,
+          "threadMs": 86.7,
+          "scriptEventMs": 98.88,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 20.67,
+          "cause": "renderer main-thread work",
+          "top": [
+            "EventDispatch 99.49",
+            "FunctionCall 98.77",
+            "Document::UpdateStyleAndLayout 22.22",
+            "Blink.ForcedStyleAndLayout.UpdateTime 22.19",
+            "LocalFrameView::UpdateStyleAndLayout 22.17",
+            "Blink.Style.UpdateTime 13.11"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 20.57",
+            "CommandBufferStub::PerformWork 0.07",
+            "GLContextEGL::MakeCurrent 0.05",
+            "Scheduler::FinishTask 0"
+          ]
+        },
+        {
+          "ms": 68.33,
+          "threadMs": 66.66,
+          "scriptEventMs": 55.64,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 0,
+          "cause": "renderer main-thread work",
+          "top": [
+            "EventDispatch 55.76",
+            "FunctionCall 54.47",
+            "EventHandler::handleMouseReleaseEvent 54.23",
+            "LocalFrameView::UpdateStyleAndLayout 31.59",
+            "Document::UpdateStyleAndLayout 25.46",
+            "Blink.ForcedStyleAndLayout.UpdateTime 24.35"
+          ],
+          "gpuProcessTop": []
+        },
+        {
+          "ms": 66.38,
+          "threadMs": 46.06,
+          "scriptEventMs": 4.89,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 66.38,
+          "cause": "renderer main-thread work",
+          "top": [
+            "ProxyMain::BeginMainFrame 66.37",
+            "WebFrameWidgetImpl::BeginMainFrame 55.98",
+            "EventHandler::handleMouseMoveEvent 47.94",
+            "LayoutView::HitTest 47.87",
+            "LocalFrameView::RunStyleAndLayoutLifecyclePhases 42.81",
+            "LocalFrameView::UpdateStyleAndLayout 42.8"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 66.38"
+          ]
+        },
+        {
+          "ms": 64.97,
+          "threadMs": 51.51,
+          "scriptEventMs": 64.78,
+          "gpuWaitMs": 0,
+          "gpuProcessBusyMs": 64.97,
+          "cause": "renderer main-thread work",
+          "top": [
+            "EventDispatch 66.41",
+            "FunctionCall 64.68",
+            "Document::UpdateStyleAndLayout 27.73",
+            "Blink.ForcedStyleAndLayout.UpdateTime 24.88",
+            "LocalFrameView::UpdateStyleAndLayout 24.85",
+            "Blink.Layout.UpdateTime 19.37"
+          ],
+          "gpuProcessTop": [
+            "Scheduler::RunTask 64.97"
+          ]
+        }
+      ],
+      "renderSubmissionMs": {
+        "samples": 118,
+        "p50": 3.4,
+        "p95": 23.8,
+        "max": 30
+      },
+      "framePacingMs": {
+        "samples": 106,
+        "p50": 33.4,
+        "p95": 83.2,
+        "max": 433.3
+      }
+    }
+  },
+  "caveat": "Software-rendered WebGL (SwiftShader) on a shared 4-CPU container with no GPU, under heavy load from other jobs. Long tasks are attributed from the trace (longTaskAnatomy and longTaskCauses): with SwiftShader the GPU process composites and rasterizes on the CPU, so synchronous WebGL calls (context creation, the first use of a shader program) can wait behind a slow SwapBuffers. Frame intervals and absolute times understate real hardware and never prove smoothness. JavaScript self time by owner (CPU profile), render submission per frame, renderer counts and heap are the closest hardware-independent signals. Long tasks come from the page's longtask observer; selfTimeMs.browserNative is native browser work outside JavaScript (with software WebGL this includes waiting on the rasterizing GPU process), so a long task without matching JavaScript self time is not script work. scriptPerFrameMs buckets top-level script events between frame starts and overstates the tail when frames are sparse. Real-GPU and device smoothness must be confirmed by a person on that hardware.",
+  "notes": {
+    "programs": "Linked shader programs come from the stand-in's extra programs field; the contract's stats do not include programs yet.",
+    "renderSubmissionMs": "Main-thread time inside each renderer.render call over the most recent rendered frames (up to 120), from the stand-in's extra submissionTimesMs field.",
+    "framePacingMs": "The contract's frameTimesMs as the stand-in fills it: intervals between rendered frames during continuous rendering (a definition requested for the contract), so GPU-bound frames count. Adaptive quality reads it.",
+    "longTaskAnatomy": "Per long task: wall time, the renderer main thread's own CPU time (threadMs), time inside script events, time blocked on GPU-process round trips (gpuWaitMs: CommandBufferProxyImpl::WaitFor* slices), how long the GPU process main thread was busy meanwhile and with what (gpuProcessTop). cause classifies the task: waiting on the GPU process, renderer thread off-CPU (host contention: wall time far above thread time without GPU waits), or renderer main-thread work."
+  }
+}

@@ -86,12 +86,15 @@ export class LegacySessionController {
     if (this.legacyState.mode === 'preview') return LEGACY_COPY.preview.locked;
     const transition = reduceLegacy(this.legacyState, { type: 'reset', at });
     if (transition.error) return transition.error;
-    this.legacyState = transition.state;
-    this.status = 'none';
+    // A refused storage clear must leave the live banner and its saved status intact,
+    // so Cancel/Retry still refer to the same house shown by the confirmation.
     if (this.canSave() && this.storage) {
       const cleared = clearLegacy(this.storage);
       if (!cleared.ok) return cleared.error;
     }
+    this.legacyState = transition.state;
+    this.status = 'none';
+    this.savedOnce = false;
     return null;
   }
 

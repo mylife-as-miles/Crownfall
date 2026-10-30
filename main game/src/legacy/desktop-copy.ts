@@ -16,9 +16,6 @@ export const DESKTOP_LEGACY_COPY = {
   landmarks: "Landmarks",
   lookAround: "Look around",
   pointerHint: "Drag to look around · Scroll to zoom",
-  /** Leaves My Legacy for the menu's Play tab, from any Legacy screen. */
-  play: "Play",
-  playLabel: "Leave My Legacy for Play",
   suggest: "Suggest",
   customArms: "Custom",
   bannerhold: "Bannerhold",

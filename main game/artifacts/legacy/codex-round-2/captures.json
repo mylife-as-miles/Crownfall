@@ -1,0 +1,70 @@
+{
+  "captures": [
+    {
+      "path": "artifacts/legacy/codex-round-2/1280x720-founding.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "url": "http://127.0.0.1:5181/?model=none&legacy=fresh"
+    },
+    {
+      "path": "artifacts/legacy/codex-round-2/844x390-overview.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "url": "http://127.0.0.1:5181/?model=none&legacyPreview=founded"
+    },
+    {
+      "path": "artifacts/legacy/codex-round-2/844x390-muster.png",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "url": "http://127.0.0.1:5181/?model=none&legacyPreview=founded"
+    },
+    {
+      "path": "artifacts/legacy/codex-round-2/1920x1080-aftermath.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "http://127.0.0.1:5181/?model=none&legacyPreview=captive"
+    },
+    {
+      "path": "artifacts/legacy/codex-round-2/1920x1080-war-record.png",
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "http://127.0.0.1:5181/?model=none&legacyPreview=captive"
+    },
+    {
+      "path": "artifacts/legacy/codex-round-2/1280x720-accept.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "url": "http://127.0.0.1:5181/?model=none&legacyPreview=founded"
+    },
+    {
+      "path": "artifacts/legacy/codex-round-2/1280x720-awaiting.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "url": "http://127.0.0.1:5181/?model=none&legacyPreview=founded"
+    },
+    {
+      "path": "artifacts/legacy/codex-round-2/1280x720-preview-missing.png",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "url": "http://127.0.0.1:5181/?model=none&legacyPreview=missing-preview"
+    }
+  ],
+  "errors": [],
+  "scope": "Actual production UI captures reached through pointer/keyboard. Low quality, reduced motion, SwiftShader software rendering; environment is explicitly labelled stand-in. Fixture sessions labelled on screen; no private canon supplied or captured."
+}

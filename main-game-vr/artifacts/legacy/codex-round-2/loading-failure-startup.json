@@ -1,0 +1,8 @@
+{
+  "passed": false,
+  "physicalHeadset": false,
+  "input": "Actual emulated hand ray and pinch, controllers disconnected",
+  "checks": [],
+  "interactions": [],
+  "failure": "Error: {\"code\":\"cli_error\",\"message\":\"Managed browser automation is configured, but the managed browser is not running. Retry after the browser relaunches or restart the dev session.\"}\n    at run (file:///workspace/Crownfall/main-game-vr/scripts/legacy-driver.mjs:39:60)\n    at browserRun (file:///workspace/Crownfall/main-game-vr/scripts/legacy-driver.mjs:46:56)\n    at Object.prepareEmulation (file:///workspace/Crownfall/main-game-vr/scripts/legacy-driver.mjs:210:21)\n    at file:///workspace/Crownfall/main-game-vr/scripts/verify-legacy-failure.mjs:25:7"
+}

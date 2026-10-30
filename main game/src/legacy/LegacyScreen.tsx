@@ -35,7 +35,8 @@ import { WarRecordPanel } from "./panels/WarRecordPanel";
 import { PreviewMissingPanel, RecoveryPanel } from "./RecoveryPanel";
 import { currentNavigable, focusDefault, focusEdge, moveFocus } from "./spatial-nav";
 import { legacyTimestamp } from "./storage";
-import { useLegacySession } from "./useLegacySession";
+import { loadInitialLegacySession, useLegacySession } from "./useLegacySession";
+import type { InitialLegacySession } from "./useLegacySession";
 import "./LegacyScreen.css";
 
 export interface LegacyScreenProps {
@@ -62,8 +63,12 @@ function cycleLandmark(id: LandmarkId, delta: 1 | -1): LandmarkId {
   return LEGACY_LANDMARKS[(index + delta + LEGACY_LANDMARKS.length) % LEGACY_LANDMARKS.length];
 }
 
-export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(function LegacyScreen({ active, reducedMotion, quality, onBack, onPlay }, ref) {
-  const session = useLegacySession();
+interface ResolvedLegacyScreenProps extends LegacyScreenProps {
+  initialSession: InitialLegacySession;
+}
+
+export const LegacyScreen = forwardRef<LegacyScreenHandle, ResolvedLegacyScreenProps>(function LegacyScreen({ active, reducedMotion, quality, onBack, onPlay, initialSession }, ref) {
+  const session = useLegacySession(initialSession);
   const { state, dispatch } = session;
   const [draft, setDraft] = useState<FoundingDraft>(() => createFoundingDraft());
   const [inspected, setInspected] = useState<LandmarkId | null>(null);
@@ -95,6 +100,7 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
   const labelsRef = useRef<LandmarkLabelsHandle>(null);
   const dialogRef = useRef<LegacyDialogHandle>(null);
   const focusRequest = useRef<FocusRequest | null>(null);
+  const focusFrame = useRef(0);
   const beatTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const mode: Mode = session.kind === "recovery" ? "recovery" : session.kind === "preview-missing" ? "preview-missing" : state.banner ? "bannerhold" : "founding";
@@ -370,6 +376,7 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
   useEffect(() => () => {
     if (beatTimer.current !== undefined) clearTimeout(beatTimer.current);
     if (feedbackTimer.current !== undefined) clearTimeout(feedbackTimer.current);
+    if (focusFrame.current !== 0) cancelAnimationFrame(focusFrame.current);
   }, []);
 
   const applyFocusRequest = useCallback(() => {
@@ -395,8 +402,21 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
     if (done) focusRequest.current = null;
   }, [active, dialog, beat, overview, selected, inputMode, activeScope, focusLandmarkLabel]);
 
-  // Declared after every effect that requests focus, so a request made during this commit is applied in it.
-  useEffect(() => { applyFocusRequest(); });
+  // Discrete React effects can run before paint. Focusing/scrolling a newly
+  // mounted inspector there forces its layout into the input task. Let its
+  // first frame lay out, then restore the same requested target next frame.
+  const scheduleFocusRequest = useCallback(() => {
+    if (focusFrame.current !== 0) cancelAnimationFrame(focusFrame.current);
+    focusFrame.current = requestAnimationFrame(() => {
+      focusFrame.current = requestAnimationFrame(() => {
+        focusFrame.current = 0;
+        applyFocusRequest();
+      });
+    });
+  }, [applyFocusRequest]);
+  // Declared after effects that request focus; the latest committed view owns
+  // the request, so another transition cancels any obsolete pending target.
+  useEffect(() => { if (focusRequest.current) scheduleFocusRequest(); });
 
   // ------------------------------------------------------------- input
 
@@ -448,7 +468,7 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
       reset() { /* Legacy has no resettable preferences; dissolving a banner always asks first. */ },
       focus() {
         requestFocus({ kind: "default" });
-        applyFocusRequest();
+        scheduleFocusRequest();
       },
       cancel() {
         if (dialog) { setDialog(null); return true; }
@@ -476,7 +496,7 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
         if (!dialog && !beat && environment && (mode === "bannerhold" || mode === "founding")) environment.nudgeOrbit(yaw, pitch, zoom);
       },
     };
-  }, [dialog, beat, mode, draft.step, overview, showAftermath, inspected, closeUp, selected, environment, activeScope, focusLandmarkLabel, finishBeat, openLandmark, closeInspection, cycleInspection, requestFocus, applyFocusRequest]);
+  }, [dialog, beat, mode, draft.step, overview, showAftermath, inspected, closeUp, selected, environment, activeScope, focusLandmarkLabel, finishBeat, openLandmark, closeInspection, cycleInspection, requestFocus, scheduleFocusRequest]);
 
   // ------------------------------------------------------------- render
 
@@ -575,7 +595,7 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
 
     {mode === "founding" && <FoundingCeremony ref={foundingRef} draft={draft} onChange={setDraft} onRaise={raiseBanner} onCancel={onBack} guest={!session.persistent} />}
     {mode === "recovery" && session.session.kind === "recovery" && <RecoveryPanel ref={recoveryRef} reason={session.session.reason} error={session.session.error} onReplace={confirmReplacement} onGuest={continueAsGuest} />}
-    {mode === "preview-missing" && session.session.kind === "preview-missing" && <PreviewMissingPanel ref={recoveryRef} error={session.session.error} onGuest={continueAsGuest} />}
+    {mode === "preview-missing" && session.session.kind === "preview-missing" && <PreviewMissingPanel ref={recoveryRef} error={session.session.error} previews={session.session.previews} onGuest={continueAsGuest} />}
 
     {beat && <div className="legacy-beat" role="status" onClick={finishBeat}>
       <HeraldryEmblem className="legacy-beat-banner" heraldry={beat.heraldry} aspect="banner" label="" />
@@ -587,7 +607,7 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
     <footer className="legacy-footer" aria-label={UI.controls}>
       <button type="button" className="legacy-footer-button" data-legacy-back aria-label={backLabel} onClick={onBack}><span className="controller-key" aria-hidden="true">B</span>{backLabel}</button>
       {/* Chess comes first: every Legacy screen is one action from the Play tab. */}
-      {!beat && <button type="button" className="legacy-footer-button legacy-footer-play" data-legacy-play aria-label={UI.playLabel} onClick={onPlay}>{UI.play}<span className="legacy-footer-chevron" aria-hidden="true">›</span></button>}
+      {!beat && <button type="button" className="legacy-footer-button legacy-footer-play" data-legacy-play aria-label={LEGACY_COPY.navigation.playLabel} onClick={onPlay}>{LEGACY_COPY.navigation.play}<span className="legacy-footer-chevron" aria-hidden="true">›</span></button>}
       {overview && <button type="button" className="legacy-footer-button" aria-label={UI.select} onClick={() => openLandmark(selected)}><span className="controller-key" aria-hidden="true">A</span>{UI.select}</button>}
       {mode === "bannerhold" && !beat && <span className="legacy-footer-hint"><span className="controller-key legacy-key-wide" aria-hidden="true">LB</span><span className="controller-key legacy-key-wide" aria-hidden="true">RB</span>{UI.landmarks}</span>}
       {(mode === "bannerhold" || mode === "founding") && !beat && <span className="legacy-footer-hint"><span className="controller-key legacy-key-wide" aria-hidden="true">RS</span>{UI.lookAround}</span>}
@@ -599,3 +619,12 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(fu
 });
 
 export default LegacyScreen;
+
+/** Resolve the session once per lazy-load attempt, without bringing fixture tapes into the normal screen chunk. */
+export async function loadLegacyScreen() {
+  const initialSession = await loadInitialLegacySession();
+  const Screen = forwardRef<LegacyScreenHandle, LegacyScreenProps>(function ResolvedLegacyScreen(props, ref) {
+    return <LegacyScreen {...props} ref={ref} initialSession={initialSession} />;
+  });
+  return { default: Screen };
+}

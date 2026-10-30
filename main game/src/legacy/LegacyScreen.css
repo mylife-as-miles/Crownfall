@@ -258,6 +258,12 @@
   from { opacity: 0; transform: translate3d(12px, 0, 0); }
   to { opacity: 1; transform: none; }
 }
+/* Same entry motion under a second name: restarting it does not require
+   replacing the common inspector frame/header/footer DOM. */
+@keyframes legacy-panel-in-alt {
+  from { opacity: 0; transform: translate3d(12px, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
 .legacy-panel-header,
 .legacy-card-header {
   position: relative;

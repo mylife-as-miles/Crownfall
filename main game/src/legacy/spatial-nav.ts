@@ -93,9 +93,19 @@ export function focusEdge(scope: HTMLElement, last: boolean): boolean {
  * primary action.
  */
 export function focusDefault(scope: HTMLElement, reveal = true): boolean {
-  const candidates = navigableElements(scope);
-  const preferred = candidates.find((element) => element.hasAttribute("data-nav-default")) ?? candidates[0];
-  if (!preferred) return false;
-  focusElement(preferred, reveal);
-  return true;
+  // The primary action is explicit. Avoid measuring every file, member and
+  // ledger row just to focus it. Callers supply the active, state-selected
+  // panel; its authored default is visible by construction, so DOM guards
+  // suffice here without synchronously flushing style/layout.
+  for (const preferred of scope.querySelectorAll<HTMLElement>(`${NAV_SELECTOR}[data-nav-default]`)) {
+    if (preferred.hasAttribute("disabled") || preferred.closest("[hidden], [inert], [aria-hidden='true']")) continue;
+    focusElement(preferred, reveal);
+    return true;
+  }
+  for (const candidate of scope.querySelectorAll<HTMLElement>(NAV_SELECTOR)) {
+    if (!isNavigable(candidate)) continue;
+    focusElement(candidate, reveal);
+    return true;
+  }
+  return false;
 }

@@ -36,6 +36,7 @@ export const QUEST_LEGACY_COPY = {
   awaitingButton: LEGACY_COPY.awaitingBoard.title,
   dock: {
     home: LEGACY_COPY.backToHome,
+    play: LEGACY_COPY.navigation.play,
     recenter: 'Recenter',
     pause: 'Pause',
     exit: 'Exit VR',

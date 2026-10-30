@@ -82,6 +82,33 @@ test('a stored banner loads, every accepted change saves, and dissolving clears 
   assert.equal(controller.dissolve(AT), null);
   assert.equal(storage.values.has(LEGACY_STORAGE_KEY), false, 'dissolving removes the save');
   assert.equal(controller.state.banner, null);
+  assert.equal(controller.info().saved, false, 'an erased banner is no longer saved here');
+});
+
+test('a refused storage clear preserves the live banner, save bytes and saved status for retry', async () => {
+  class RefusingClearStorage extends RecordingStorage {
+    refuse = true;
+    override removeItem(key: string): void {
+      if (this.refuse) throw new Error('Storage clear refused');
+      super.removeItem(key);
+    }
+  }
+  const storage = new RefusingClearStorage();
+  const controller = new LegacySessionController(storage);
+  await controller.resolve('', AT);
+  assert.equal(controller.commit(FOUND).error, null);
+  const before = controller.state;
+  const info = controller.info();
+  const raw = storage.values.get(LEGACY_STORAGE_KEY);
+  assert.ok(controller.dissolve(AT), 'the refusal is returned to the confirmation');
+  assert.equal(controller.state, before, 'the same banner remains visible');
+  assert.deepEqual(controller.info(), info);
+  assert.equal(storage.values.get(LEGACY_STORAGE_KEY), raw);
+  storage.refuse = false;
+  assert.equal(controller.dissolve(AT), null, 'the same confirmation can be retried');
+  assert.equal(controller.state.banner, null);
+  assert.equal(controller.info().saved, false);
+  assert.equal(storage.values.has(LEGACY_STORAGE_KEY), false);
 });
 
 test('a new device saves only once a banner is raised, and the tray then says so', async () => {

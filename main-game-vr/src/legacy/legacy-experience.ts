@@ -51,6 +51,8 @@ import { spatialText } from './spatial-text.js';
 /** Navigation the Home menu system performs on behalf of My Legacy. */
 export interface LegacyHostActions {
   home(): void;
+  /** Leaves any Legacy view for the existing Play tab without changing or launching a match. */
+  play(): void;
   pause(): void;
   resume(): void;
   exit(): void;
@@ -83,7 +85,7 @@ const SELECTABLE_PREFIXES = ['Legacy_Nation_', 'Legacy_Suggestion_', 'Legacy_Pre
 /** Generated control classes and the look each one starts from. */
 const BUTTON_CLASSES: ReadonlyArray<readonly [string, LegacyButtonVariant]> = [['lg-btn', 'button'], ['lg-btn-primary', 'primary'], ['lg-btn-danger', 'danger']];
 /** Controls that still answer while My Legacy is paused: the pause view's own, and the tray's Recenter, Exit and mirrors of them. */
-const PAUSED_CONTROLS = new Set<string>(['Legacy_Resume', 'Legacy_PauseHome', 'Legacy_DockRecenter', 'Legacy_DockExit', 'Legacy_DockBack', 'Legacy_DockPrimary']);
+const PAUSED_CONTROLS = new Set<string>(['Legacy_Resume', 'Legacy_PauseHome', 'Legacy_DockPlay', 'Legacy_DockRecenter', 'Legacy_DockExit', 'Legacy_DockBack', 'Legacy_DockPrimary']);
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -150,7 +152,7 @@ export class QuestLegacyExperience {
   private recenters = 0;
   private sceneDirty = true;
   private disposed = false;
-  private readonly sessionLabel: HTMLElement | null;
+  private sessionLabel: HTMLElement | null = null;
 
   /**
    * Instantiates the reading panel and the touch tray from their lazy manifest entries under the
@@ -158,19 +160,27 @@ export class QuestLegacyExperience {
    */
   static async create(world: World, stateEntity: Entity, actions: LegacyHostActions): Promise<QuestLegacyExperience> {
     const anchorEntity = world.requireSceneEntity(LEGACY_SCENE_NODES.anchor);
-    const [panel, dock] = await Promise.all([
-      world.assets.instantiate<UIKitMLAsset>(LEGACY_UI_LAYOUT.panelManifestId),
-      world.assets.instantiate<UIKitMLAsset>(LEGACY_UI_LAYOUT.dockManifestId),
+    // A successful first panel must stay hidden while its sibling is still loading.
+    if (anchorEntity.object3D) anchorEntity.object3D.visible = false;
+    const panels = await Promise.allSettled([
+      world.assets.instantiate<UIKitMLAsset>(LEGACY_UI_LAYOUT.panelManifestId).then((asset) => {
+        asset.name = LEGACY_PANEL_NAMES.panel;
+        return { asset, entity: world.createTransformEntity(asset, { parent: anchorEntity }) };
+      }),
+      world.assets.instantiate<UIKitMLAsset>(LEGACY_UI_LAYOUT.dockManifestId).then((asset) => {
+        asset.name = LEGACY_PANEL_NAMES.dock;
+        return { asset, entity: world.createTransformEntity(asset, { parent: anchorEntity }) };
+      }),
     ]);
-    panel.name = LEGACY_PANEL_NAMES.panel;
-    dock.name = LEGACY_PANEL_NAMES.dock;
-    const panelEntity = world.createTransformEntity(panel, { parent: anchorEntity });
-    const dockEntity = world.createTransformEntity(dock, { parent: anchorEntity });
+    const [panel, dock] = panels;
     try {
-      return new QuestLegacyExperience(world, stateEntity, actions, anchorEntity, panelEntity, panel, dockEntity, dock);
+      if (panel.status === 'rejected') throw panel.reason;
+      if (dock.status === 'rejected') throw dock.reason;
+      return new QuestLegacyExperience(world, stateEntity, actions, anchorEntity, panel.value.entity, panel.value.asset, dock.value.entity, dock.value.asset);
     } catch (error) {
-      panelEntity.dispose();
-      dockEntity.dispose();
+      // Wait for both loads before rolling back, so a slower successful sibling
+      // cannot arrive after the failed visit and remain orphaned in the world.
+      for (const loaded of panels) if (loaded.status === 'fulfilled') loaded.value.entity.dispose();
       throw error;
     }
   }
@@ -186,22 +196,29 @@ export class QuestLegacyExperience {
     private readonly dock: UIKitMLAsset,
   ) {
     this.anchor = anchorEntity.object3D!;
-    // Hidden until Home shows My Legacy; hidden panels also stay out of the pointer target lists.
-    this.anchor.visible = false;
-    for (const id of LEGACY_HERALDRY_IMAGE_IDS) this.panel.requireElementById<UIKit.Image>(id).setProperties({ src: this.heraldry.texture });
-    this.panel.requireElementById<UIKit.Image>(LEGACY_HOUSE_SHIELD_IDS.allied).setProperties({ src: this.alliedShield.texture });
-    this.panel.requireElementById<UIKit.Image>(LEGACY_HOUSE_SHIELD_IDS.rival).setProperties({ src: this.rivalShield.texture });
-    // Live texts arrive with a placeholder so UIKitML gives them a text node; clear them before first display.
-    for (const owner of [this.panel, this.dock]) {
-      for (const element of owner.document.getElementsByClassName(LEGACY_LIVE_TEXT.className)) element.setProperties({ text: '' });
-      for (const [className, variant] of BUTTON_CLASSES) {
-        for (const element of owner.document.getElementsByClassName(className)) this.buttonVariants.set(element, variant);
+    try {
+      // Hidden until Home shows My Legacy; hidden panels also stay out of the pointer target lists.
+      this.anchor.visible = false;
+      for (const id of LEGACY_HERALDRY_IMAGE_IDS) this.panel.requireElementById<UIKit.Image>(id).setProperties({ src: this.heraldry.texture });
+      this.panel.requireElementById<UIKit.Image>(LEGACY_HOUSE_SHIELD_IDS.allied).setProperties({ src: this.alliedShield.texture });
+      this.panel.requireElementById<UIKit.Image>(LEGACY_HOUSE_SHIELD_IDS.rival).setProperties({ src: this.rivalShield.texture });
+      // Live texts arrive with a placeholder so UIKitML gives them a text node; clear them before first display.
+      for (const owner of [this.panel, this.dock]) {
+        for (const element of owner.document.getElementsByClassName(LEGACY_LIVE_TEXT.className)) element.setProperties({ text: '' });
+        for (const [className, variant] of BUTTON_CLASSES) {
+          for (const element of owner.document.getElementsByClassName(className)) this.buttonVariants.set(element, variant);
+        }
       }
+      this.bindControls();
+      this.sessionLabel = this.createBrowserLabel();
+      this.stagePanels();
+      if (import.meta.env.DEV) this.cleanup.push(installLegacyDiagnostics(this));
+    } catch (error) {
+      // Construction may fail after textures or a subset of handlers exist.
+      // The factory owns entity rollback; this instance owns these resources.
+      this.releaseResources();
+      throw error;
     }
-    this.bindControls();
-    this.sessionLabel = this.createBrowserLabel();
-    this.stagePanels();
-    if (import.meta.env.DEV) this.cleanup.push(installLegacyDiagnostics(this));
   }
 
   private element(id: string): UIKit.Text {
@@ -336,12 +353,14 @@ export class QuestLegacyExperience {
     this.bind('Legacy_AcceptCancel', this.flowEvent({ type: 'cancel-accept' }));
     this.bind('Legacy_AcceptConfirm', () => this.acceptChallenge());
     this.bind('Legacy_AwaitingBack', this.flowEvent({ type: 'notice-list' }));
+    this.bind('Legacy_AwaitingPlay', () => this.actions.play());
     this.bind('Legacy_Resume', () => this.actions.resume());
     this.bind('Legacy_PauseHome', () => this.actions.home());
     const dock: Record<typeof LEGACY_DOCK_ACTION_IDS[number], () => void> = {
       Legacy_DockBack: () => this.pressMirror('back'),
       Legacy_DockPrimary: () => this.pressMirror('primary'),
       Legacy_DockHome: () => this.actions.home(),
+      Legacy_DockPlay: () => this.actions.play(),
       Legacy_DockRecenter: () => this.actions.recenter(),
       Legacy_DockPause: () => this.actions.pause(),
       Legacy_DockExit: () => this.actions.exit(),
@@ -641,12 +660,16 @@ export class QuestLegacyExperience {
   dispose(): void {
     if (this.disposed) return;
     this.disposed = true;
+    this.releaseResources();
+    this.panelEntity.dispose();
+    this.dockEntity.dispose();
+  }
+
+  private releaseResources(): void {
     for (const release of this.cleanup) release();
     this.cleanup.length = 0;
     this.environment?.dispose();
     this.environment = null;
-    this.panelEntity.dispose();
-    this.dockEntity.dispose();
     this.heraldry.dispose();
     this.alliedShield.dispose();
     this.rivalShield.dispose();

@@ -26,7 +26,7 @@ the full ownership table.
 | --- | --- | --- |
 | `types.ts`, `environment-contract.ts` | orchestrator | Domain, persistence, presentation and environment contracts |
 | `content/` | gameplay | Nations, availability config, heraldry vocabulary and suggestions, external houses, member name pools, Muster file claims, shared UI copy |
-| `domain/` | gameplay | `reduceLegacy`, founding, nomination, match processing, politics, chronicle, aftermath, presentation (`LegacySceneState`), Muster formation for the engine bridge, persistence and migration, preview fixtures |
+| `domain/` | gameplay | `reduceLegacy`, founding, nomination, match processing, politics, War Record (`chronicle` internally), aftermath, presentation (`LegacySceneState`), Muster formation for the engine bridge, persistence and migration, preview fixtures |
 | `heraldry/` | gameplay | Heraldry → vector shapes and RGBA rasters for UI previews, standards and shields |
 | `environment/` | environment | Blueprint and layout data, building kits, geometry kernel, textures, terrain, life/motion metadata, per-nation environments, quality profiles, VR staging constants |
 | `tests/` | both | `domain-*` / `heraldry-*` (gameplay) and `environment-*` (environment) `node:test` suites |
@@ -45,7 +45,7 @@ characters of letters, spaces, apostrophes or hyphens. The nation must be `avail
 in the availability config. Founding generates three house members deterministically from the
 nation name pools and the seed, sets rank `minor-banner`, recognition 0, representation 1, creates
 relations with the nation's allied Great House (starts disdainful) and its foreign rival house
-(starts wary), writes a `founding` chronicle entry, and posts two notices: the allied Great House's
+(starts wary), writes a `founding` War Record entry, and posts two notices: the allied Great House's
 **Muster summons** and the rival house's **formal challenge**. The challenge is a Muster conflict
 and states its national wager in plain words before any match.
 
@@ -66,7 +66,7 @@ a representative absent from the formation, fixture records in production. Outco
 
 | Stakes | Representative captured, outcome | Result |
 | --- | --- | --- |
-| `classic` | any | Chronicle notes the capture. No injury, captivity or death. |
+| `classic` | any | The War Record notes the capture. No injury, captivity or death. |
 | `muster` | defeat | **Captive** of the capturing house (or the opponent crown); captivity notice and unresolved matter. |
 | `muster` | victory or draw | **Injured** (recovered from the field or exchanged under truce); recovers after one further recorded match. |
 | any | not captured, promoted on the board | Battlefield promotion recorded; political rank unchanged. |
@@ -76,7 +76,7 @@ allied disposition. The allied representative captured under the player's comman
 disposition, a grievance, an `allied-accounting` unresolved matter and an `allied-demand` notice,
 even in victory. Capturing the rival representative → rival grievance, memory and a `rival-vow`
 notice with an unresolved `grievance`, so an open thread never requires a loss. Winning a Muster
-conflict against the nation holding a captive returns that member (`return` chronicle entry, matter
+conflict against the nation holding a captive returns that member (`return` War Record entry, matter
 resolved, member available). Injured members whose recovery match is reached become available.
 
 **Stance thresholds.** disposition ≤ −60 hostile, ≤ −15 disdainful, < 15 wary, < 50 cordial, else
@@ -86,7 +86,7 @@ the rival at −10 (wary).
 **Hall tier** (visible development only): recognition ≥ 4 → 1, ≥ 10 → 2, ≥ 18 → 3. Rank stays
 `minor-banner` until a political promotion system exists.
 
-**Aftermath.** All facts go to the chronicle. `pendingAftermath` keeps at most two prominent entry
+**Aftermath.** All facts go to the War Record. `pendingAftermath` keeps at most two prominent entry
 ids, chosen by priority: captivity, return, allied-accounting, grievance/vow, promotion, injury,
 match result.
 

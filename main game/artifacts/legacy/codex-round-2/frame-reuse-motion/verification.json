@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "environment": "stand-in",
+  "scope": "Playwright against the dev or preview server with model=none except the sorcerer round-trip check. Landmarks are driven through their DOM labels, so the suite runs against the stand-in or the environment workflow's renderer. Controller input is a mocked standard Gamepad API, not physical controller validation. WebGL is software-rendered (SwiftShader); no frame timing is implied.",
+  "checks": [
+    "With motion enabled, retained inspector frames replay the same 280 ms native CSS animation and identical keyframes on a landmark change",
+    "No JavaScript or console errors"
+  ],
+  "layouts": [],
+  "errors": []
+}

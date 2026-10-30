@@ -9,8 +9,6 @@ import { getAlliedHouse, getRivalHouse } from "../content/houses";
 import { eligibleMusterFiles, isFileLetter } from "../content/muster";
 import { isNationId } from "../content/nations";
 import { chronicleEntryId } from "./chronicle";
-// Deprecated default for callers that pass no preview source; see LegacySessionOptions.previews.
-import { buildLegacyPreview, listLegacyPreviews } from "./fixtures";
 import type { LegacyPreviewListing } from "./fixtures";
 import { validateBannerName, validateMotto } from "./founding";
 import { isKnownHouseId } from "./identity";
@@ -385,9 +383,9 @@ export interface LegacySessionOptions extends PersistenceOptions {
   /** createdAt for fresh states; defaults to LEGACY_EPOCH. Founding stamps the real time. */
   at?: string;
   /**
-   * Previews for ?legacyPreview URLs, from loadLegacyPreviewSource(). Omitting it falls back to the
-   * built-in fixtures, which keeps them in the caller's chunk: a deprecated default, removed once
-   * both apps pass a source.
+   * Previews for ?legacyPreview URLs, from loadLegacyPreviewSource(). When omitted, preview requests
+   * return a nonpersistent "preview-missing" session without touching storage. App callers use
+   * resolveLegacySessionLazily() so ordinary visits never load the fixture catalogue.
    */
   previews?: LegacyPreviewSource;
 }
@@ -432,7 +430,8 @@ export function resolveLegacySession(search: string, storage: LegacyStorageLike 
   const at = options.at;
   const previewId = readSearchParam(search, "legacyPreview");
   if (previewId !== null) {
-    const source: LegacyPreviewSource = options.previews ?? { buildLegacyPreview, listLegacyPreviews };
+    const source = options.previews;
+    if (!source) return previewMissingSession(previewId, LEGACY_COPY.preview.unavailable, [], at);
     const listings = source.listLegacyPreviews();
     const state = source.buildLegacyPreview(previewId);
     if (!state) return previewMissingSession(previewId, LEGACY_COPY.preview.missing(previewId), listings, at);

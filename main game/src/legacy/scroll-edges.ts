@@ -27,8 +27,10 @@ export function useScrollEdges(element: HTMLElement | null): void {
       }
     };
     const schedule = () => { if (frame === 0) frame = requestAnimationFrame(update); };
-    update();
     element.addEventListener("scroll", schedule, { passive: true });
+    // ResizeObserver delivers the initial box after layout. Measuring in this
+    // mount effect would force a synchronous layout every time an inspector
+    // is replaced; the initial observation schedules the same edge cues.
     const resize = new ResizeObserver(schedule);
     resize.observe(element);
     const mutations = new MutationObserver(schedule);

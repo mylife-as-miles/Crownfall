@@ -96,6 +96,10 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.atmosphere = new CrownfallAtmosphere(this.atmosphereObject);
     this.legacyActions = {
       home: () => this.dispatch(this.state.paused ? { type: 'pause-home' } : { type: 'back' }),
+      play: () => {
+        if (this.state.paused) this.dispatch({ type: 'pause-home' });
+        this.dispatch({ type: 'nav', screen: 'play' });
+      },
       pause: () => this.dispatch({ type: 'pause', reason: 'Take your time. Your place is kept.' }),
       resume: () => { if (!this.state.entered || this.leftTracked || this.rightTracked) this.dispatch({ type: 'resume' }); },
       exit: () => { void this.exit(); },
@@ -346,6 +350,10 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
         this.legacyLoad = 'failed';
         this.legacyStatus = 'My Legacy could not open. Select My Legacy again to retry.';
         if (this.state.screen === 'legacy') this.dispatch({ type: 'back' });
+        // A download can fail after tracking loss or an explicit Pause. Leave
+        // the failed route there too; otherwise the paused Legacy view retries
+        // on every render instead of keeping Home available.
+        else if (this.state.paused && this.state.previousScreen === 'legacy') this.dispatch({ type: 'pause-home' });
         else this.render();
       });
   }

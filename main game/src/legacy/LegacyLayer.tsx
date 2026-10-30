@@ -5,10 +5,10 @@ import type { LegacyScreenHandle } from "./legacy-handle";
 import { failedChunkUrl, isChunkLoadFailure, LegacyErrorBoundary, LegacyFailure } from "./LegacyFailure";
 import "./LegacyLayer.css";
 
-type LegacyScreenModule = typeof import("./LegacyScreen");
+type LegacyScreenModule = Awaited<ReturnType<typeof import("./LegacyScreen").loadLegacyScreen>>;
 
 // The Legacy screen, shared domain and environment load on first entry only.
-const importLegacyScreen = (): Promise<LegacyScreenModule> => import("./LegacyScreen");
+const importLegacyScreen = (): Promise<LegacyScreenModule> => import("./LegacyScreen").then((module) => module.loadLegacyScreen());
 
 /**
  * A fresh lazy screen for each attempt. After a failed download the browser
@@ -19,7 +19,7 @@ function lazyLegacyScreen(retryOf: string | null, attempt: number) {
   if (!retryOf) return lazy(importLegacyScreen);
   const url = new URL(retryOf, window.location.href);
   url.searchParams.set("legacyRetry", String(attempt));
-  return lazy((): Promise<LegacyScreenModule> => import(/* @vite-ignore */ url.href));
+  return lazy((): Promise<LegacyScreenModule> => import(/* @vite-ignore */ url.href).then((module) => module.loadLegacyScreen()));
 }
 
 /** Matches the layer's fade-out in LegacyLayer.css. */

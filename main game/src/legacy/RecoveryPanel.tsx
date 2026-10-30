@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { LEGACY_COPY } from "../../../shared/legacy/content/copy";
-import { listLegacyPreviews } from "../../../shared/legacy/domain/fixtures";
+import type { LegacyPreviewListing } from "../../../shared/legacy/domain/fixtures";
 
 interface RecoveryPanelProps {
   reason: string;
@@ -35,11 +35,12 @@ export const RecoveryPanel = forwardRef<HTMLElement, RecoveryPanelProps>(functio
 
 interface PreviewMissingPanelProps {
   error: string;
+  previews: readonly LegacyPreviewListing[];
   onGuest(): void;
 }
 
 /** ?legacyPreview named no known fixture: list the real previews and offer a guest banner. */
-export const PreviewMissingPanel = forwardRef<HTMLElement, PreviewMissingPanelProps>(function PreviewMissingPanel({ error, onGuest }, ref) {
+export const PreviewMissingPanel = forwardRef<HTMLElement, PreviewMissingPanelProps>(function PreviewMissingPanel({ error, previews, onGuest }, ref) {
   return <section ref={ref} className="legacy-card legacy-recovery" aria-labelledby="legacy-preview-missing-title" data-preview-missing>
     <header className="legacy-card-header">
       <p className="legacy-eyebrow">{LEGACY_COPY.preview.label}</p>
@@ -48,7 +49,7 @@ export const PreviewMissingPanel = forwardRef<HTMLElement, PreviewMissingPanelPr
     </header>
     <div className="legacy-card-body">
       <ul className="legacy-preview-list">
-        {listLegacyPreviews().map((preview) => <li key={preview.id}>
+        {previews.map((preview) => <li key={preview.id}>
           <a href={`?legacyPreview=${encodeURIComponent(preview.id)}`} data-nav>{preview.title}</a>
           <span className="legacy-muted">{preview.description}</span>
         </li>)}

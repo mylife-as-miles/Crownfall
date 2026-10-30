@@ -1,0 +1,281 @@
+{
+  "measuredAt": "2026-10-29T23:33:53.414Z",
+  "target": "http://127.0.0.1:5180",
+  "build": "development (Vite dev server)",
+  "launchToFirstMove": "Not measurable in this build: the menu's Play cards are previews and no chess board is connected to this menu, so there is no first move to time. The numbers below time launch to the menu accepting input on the Play tab, to the Classic card being selected by the first key press, and to the Classic card opening.",
+  "caveat": "Measured in headless Chromium with software WebGL on a shared, heavily loaded 4-CPU container. Absolute times overstate real hardware; the comparison with and without a saved banner and the Legacy requests and save reads during launch are the meaningful signals.",
+  "launch": [
+    {
+      "model": "none",
+      "save": false,
+      "run": 0,
+      "menuReadyMs": 761.6,
+      "firstKeySentMs": 864.7,
+      "firstInputAcceptedMs": 884.7,
+      "classicOpenedMs": 908.9,
+      "saveReads": 0,
+      "legacyRequests": []
+    },
+    {
+      "model": "none",
+      "save": false,
+      "run": 1,
+      "menuReadyMs": 682,
+      "firstKeySentMs": 786.8,
+      "firstInputAcceptedMs": 809.1,
+      "classicOpenedMs": 841.8,
+      "saveReads": 0,
+      "legacyRequests": []
+    },
+    {
+      "model": "none",
+      "save": false,
+      "run": 2,
+      "menuReadyMs": 798.9,
+      "firstKeySentMs": 851.7,
+      "firstInputAcceptedMs": 863.6,
+      "classicOpenedMs": 880.4,
+      "saveReads": 0,
+      "legacyRequests": []
+    },
+    {
+      "model": "none",
+      "save": true,
+      "run": 0,
+      "menuReadyMs": 794.6,
+      "firstKeySentMs": 830.1,
+      "firstInputAcceptedMs": 848.9,
+      "classicOpenedMs": 891.7,
+      "saveReads": 0,
+      "legacyRequests": []
+    },
+    {
+      "model": "none",
+      "save": true,
+      "run": 1,
+      "menuReadyMs": 723,
+      "firstKeySentMs": 835,
+      "firstInputAcceptedMs": 850.4,
+      "classicOpenedMs": 883.3,
+      "saveReads": 0,
+      "legacyRequests": []
+    },
+    {
+      "model": "none",
+      "save": true,
+      "run": 2,
+      "menuReadyMs": 670.5,
+      "firstKeySentMs": 790.7,
+      "firstInputAcceptedMs": 806.1,
+      "classicOpenedMs": 853.1,
+      "saveReads": 0,
+      "legacyRequests": []
+    },
+    {
+      "model": "default",
+      "save": false,
+      "run": 0,
+      "menuReadyMs": 7835.8,
+      "firstKeySentMs": 7979.2,
+      "firstInputAcceptedMs": 7993.2,
+      "classicOpenedMs": 8032.9,
+      "saveReads": 0,
+      "legacyRequests": []
+    },
+    {
+      "model": "default",
+      "save": true,
+      "run": 0,
+      "menuReadyMs": 7781.4,
+      "firstKeySentMs": 8304,
+      "firstInputAcceptedMs": 8320.3,
+      "classicOpenedMs": 8349.5,
+      "saveReads": 0,
+      "legacyRequests": []
+    }
+  ],
+  "actionsToPlay": [
+    {
+      "start": "founding (nation step)",
+      "method": "pointer",
+      "toPlay": 1,
+      "toClassicOpened": 2,
+      "reachedPlay": true
+    },
+    {
+      "start": "founding (nation step)",
+      "method": "keys",
+      "toPlay": 2,
+      "toClassicOpened": 4,
+      "reachedPlay": true
+    },
+    {
+      "start": "founding (review step)",
+      "method": "pointer",
+      "toPlay": 1,
+      "toClassicOpened": 2,
+      "reachedPlay": true
+    },
+    {
+      "start": "founding (review step)",
+      "method": "keys",
+      "toPlay": 5,
+      "toClassicOpened": 7,
+      "reachedPlay": true
+    },
+    {
+      "start": "overview",
+      "method": "pointer",
+      "toPlay": 1,
+      "toClassicOpened": 2,
+      "reachedPlay": true
+    },
+    {
+      "start": "overview",
+      "method": "keys",
+      "toPlay": 2,
+      "toClassicOpened": 4,
+      "reachedPlay": true
+    },
+    {
+      "start": "inspector: banner-hall",
+      "method": "pointer",
+      "toPlay": 1,
+      "toClassicOpened": 2,
+      "reachedPlay": true
+    },
+    {
+      "start": "inspector: banner-hall",
+      "method": "keys",
+      "toPlay": 3,
+      "toClassicOpened": 5,
+      "reachedPlay": true
+    },
+    {
+      "start": "inspector: muster-grounds",
+      "method": "pointer",
+      "toPlay": 1,
+      "toClassicOpened": 2,
+      "reachedPlay": true
+    },
+    {
+      "start": "inspector: muster-grounds",
+      "method": "keys",
+      "toPlay": 3,
+      "toClassicOpened": 5,
+      "reachedPlay": true
+    },
+    {
+      "start": "inspector: war-record",
+      "method": "pointer",
+      "toPlay": 1,
+      "toClassicOpened": 2,
+      "reachedPlay": true
+    },
+    {
+      "start": "inspector: war-record",
+      "method": "keys",
+      "toPlay": 3,
+      "toClassicOpened": 5,
+      "reachedPlay": true
+    },
+    {
+      "start": "inspector: heralds-station",
+      "method": "pointer",
+      "toPlay": 1,
+      "toClassicOpened": 2,
+      "reachedPlay": true
+    },
+    {
+      "start": "inspector: heralds-station",
+      "method": "keys",
+      "toPlay": 3,
+      "toClassicOpened": 5,
+      "reachedPlay": true
+    },
+    {
+      "start": "dialog (accept the challenge)",
+      "method": "pointer",
+      "toPlay": 2,
+      "toClassicOpened": 3,
+      "reachedPlay": true
+    },
+    {
+      "start": "dialog (accept the challenge)",
+      "method": "keys",
+      "toPlay": 4,
+      "toClassicOpened": 6,
+      "reachedPlay": true
+    },
+    {
+      "start": "aftermath",
+      "method": "pointer",
+      "toPlay": 1,
+      "toClassicOpened": 2,
+      "reachedPlay": true
+    },
+    {
+      "start": "aftermath",
+      "method": "keys",
+      "toPlay": 3,
+      "toClassicOpened": 5,
+      "reachedPlay": true
+    }
+  ],
+  "webEntry": {
+    "entry": "web/src/main.tsx",
+    "files": 48,
+    "legacyFiles": [],
+    "packages": [
+      "chess.js",
+      "lucide-react",
+      "react",
+      "react-dom/client",
+      "three",
+      "three/examples/jsm/controls/OrbitControls.js",
+      "three/examples/jsm/geometries/RoundedBoxGeometry.js",
+      "three/examples/jsm/loaders/GLTFLoader.js",
+      "three/examples/jsm/postprocessing/BokehPass.js",
+      "three/examples/jsm/postprocessing/EffectComposer.js",
+      "three/examples/jsm/postprocessing/OutputPass.js",
+      "three/examples/jsm/postprocessing/RenderPass.js",
+      "three/examples/jsm/postprocessing/SMAAPass.js",
+      "three/examples/jsm/postprocessing/SSAOPass.js",
+      "three/examples/jsm/postprocessing/ShaderPass.js",
+      "three/examples/jsm/postprocessing/UnrealBloomPass.js",
+      "three/examples/jsm/utils/BufferGeometryUtils.js",
+      "three/examples/jsm/utils/SkeletonUtils.js"
+    ]
+  },
+  "launchSummary": {
+    "menuOnlyWithoutSave": {
+      "runs": 3,
+      "menuReadyMs": 761.6,
+      "firstInputAcceptedMs": 863.6,
+      "classicOpenedMs": 880.4
+    },
+    "menuOnlyWithSave": {
+      "runs": 3,
+      "menuReadyMs": 723,
+      "firstInputAcceptedMs": 848.9,
+      "classicOpenedMs": 883.3
+    },
+    "fullBootWithoutSave": {
+      "runs": 1,
+      "menuReadyMs": 7835.8,
+      "firstInputAcceptedMs": 7993.2,
+      "classicOpenedMs": 8032.9
+    },
+    "fullBootWithSave": {
+      "runs": 1,
+      "menuReadyMs": 7781.4,
+      "firstInputAcceptedMs": 8320.3,
+      "classicOpenedMs": 8349.5
+    }
+  },
+  "actionsSummary": {
+    "pointerWorstToPlay": 2,
+    "keysWorstToPlay": 5,
+    "controller": "Controller B is the same Back action as Escape (App maps both to back()); the gamepad group verifies B from the Bannerhold to Home."
+  }
+}

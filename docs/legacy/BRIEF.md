@@ -131,7 +131,7 @@ data exists:
 - **Available** — stands among the house levy.
 - **Injured** — recovers in the holding, only if an injury was legitimately recorded.
 - **Captive** — their place is empty, with an indication of which rival holds them.
-- **Returned** — presence restored; the Chronicle preserves the event.
+- **Returned** — presence restored; the War Record preserves the event.
 - **Promoted** — record and presentation acknowledge the battlefield promotion without
   automatically changing political standing.
 
@@ -193,7 +193,7 @@ Both apps build; shared-content sync checks pass; My Legacy opens a real 3D scen
 platforms; identity, nation and heraldry persist and are visible in the environment; the primary
 settlement has authored architecture, layered lighting, readable detail and subtle life; desktop
 inputs work; Quest works with tracked hands in an actual immersive session with navigation, pause and
-recovery; a named Pawn can be nominated and inspected; Chronicle and politics render from shared data
+recovery; a named Pawn can be nominated and inspected; War Record and politics render from shared data
 with no fabricated production results; tests cover capture, victory, defeat, draw, reset and
 persistence; environment assets are optimised with measured frame timing and resource use; existing
 menus and the sorcerer stay intact; My Legacy runs smoothly in the browser without lag or hitches and meets every budget in `docs/legacy/PERFORMANCE.md` (measured each evidence round); captures exist for desktop and Quest; browser emulation is never

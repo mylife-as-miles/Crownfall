@@ -1,8 +1,8 @@
 import { memo, useId, useMemo } from "react";
 import { describeHeraldry } from "../../../shared/legacy/content/heraldry";
-import { heraldrySvgPaths } from "../../../shared/legacy/heraldry/svg";
 import type { HeraldryAspect } from "../../../shared/legacy/heraldry/shapes";
 import type { Heraldry } from "../../../shared/legacy/types";
+import { cachedHeraldryPaths } from "./heraldry-path-cache";
 
 interface HeraldryEmblemProps {
   heraldry: Heraldry;
@@ -16,7 +16,7 @@ interface HeraldryEmblemProps {
 /** Renders the shared heraldry shapes as SVG elements (no HTML injection), matching rasterizeHeraldry. */
 export const HeraldryEmblem = memo(function HeraldryEmblem({ heraldry, aspect, swallowtail = false, className, label }: HeraldryEmblemProps) {
   const clipId = `heraldry-${useId().replace(/[^A-Za-z0-9_-]/g, "")}`;
-  const paths = useMemo(() => heraldrySvgPaths(heraldry, aspect, { swallowtail }), [heraldry, aspect, swallowtail]);
+  const paths = useMemo(() => cachedHeraldryPaths(heraldry, aspect, swallowtail), [heraldry, aspect, swallowtail]);
   const name = label ?? describeHeraldry(heraldry);
   return <svg className={className} viewBox={paths.viewBox} role={name ? "img" : undefined} aria-label={name || undefined} aria-hidden={name ? undefined : true} focusable="false">
     <defs><clipPath id={clipId}><path d={paths.outline} /></clipPath></defs>

@@ -13,8 +13,10 @@
     "build": "npm run build:desktop && npm run build:quest",
     "test:quest": "npm --prefix main-game-vr run test",
     "test:legacy": "main-game-vr/node_modules/.bin/tsx --test shared/legacy/tests/*.test.ts",
+    "test:legacy:desktop": "main-game-vr/node_modules/.bin/tsx --test \"main game/src/legacy/\"*.test.ts",
     "test:legacy:engine": "cd web && npx vitest run src/legacy",
     "check:sync": "npm --prefix main-game-vr run check:sync",
+    "check:legacy:lazy": "node scripts/check-legacy-lazy.mjs",
     "setup": "node scripts/setup-menus.mjs"
   }
 }

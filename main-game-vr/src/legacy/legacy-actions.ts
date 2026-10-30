@@ -47,6 +47,7 @@ export const LEGACY_ACTION_LABELS: Readonly<Record<LegacyPanelActionId, string>>
   Legacy_AcceptCancel: LEGACY_COPY.founding.back,
   Legacy_AcceptConfirm: LEGACY_COPY.notices.accept,
   Legacy_AwaitingBack: QUEST_LEGACY_COPY.back,
+  Legacy_AwaitingPlay: LEGACY_COPY.navigation.play,
   Legacy_ResetCancel: LEGACY_COPY.reset.cancel,
   Legacy_ResetConfirm: LEGACY_COPY.reset.confirm,
   Legacy_Resume: QUEST_LEGACY_COPY.pause.resume,
@@ -76,7 +77,7 @@ export const LEGACY_VIEW_MIRRORS: Readonly<Partial<Record<LegacyViewId, LegacyMi
   LegacyView_Herald: { back: ['Legacy_HeraldBack'], primary: [] },
   LegacyView_Notice: { back: ['Legacy_NoticeBack'], primary: ['Legacy_NoticeAccept', 'Legacy_NoticeAwaiting'] },
   LegacyView_Accept: { back: ['Legacy_AcceptCancel'], primary: ['Legacy_AcceptConfirm'] },
-  LegacyView_Awaiting: { back: ['Legacy_AwaitingBack'], primary: [] },
+  LegacyView_Awaiting: { back: ['Legacy_AwaitingBack'], primary: ['Legacy_AwaitingPlay'] },
   LegacyView_Reset: { back: ['Legacy_ResetCancel'], primary: [] },
   LegacyView_Pause: { back: ['Legacy_PauseHome'], primary: ['Legacy_Resume'] },
 };

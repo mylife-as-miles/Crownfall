@@ -264,6 +264,15 @@ async function traceFrames(cdp, action) {
   await complete;
   cdp.off("Tracing.dataCollected", collect);
   const selfTimeMs = attribute(profile);
+  const samplesByNode = new Map();
+  for (let sample = 0; sample < profile.samples.length; sample++) {
+    const id = profile.samples[sample];
+    samplesByNode.set(id, (samplesByNode.get(id) ?? 0) + Math.max(0, profile.timeDeltas[sample] ?? 0) / 1000);
+  }
+  const cpuHotspots = profile.nodes
+    .filter((node) => !["(idle)", "(root)", "(program)"].includes(node.callFrame.functionName))
+    .map((node) => ({ function: node.callFrame.functionName || "(anonymous)", url: node.callFrame.url.replace(origin, ""), line: node.callFrame.lineNumber + 1, selfMs: round(samplesByNode.get(node.id) ?? 0) }))
+    .sort((a, b) => b.selfMs - a.selfMs).slice(0, 12);
   // The page's renderer main thread is the one with the most events; the GPU process main thread does SwiftShader's compositing and GL work.
   const mains = events.filter((event) => event.name === "thread_name" && event.args?.name === "CrRendererMain");
   const eventCount = (thread) => events.reduce((count, event) => count + (event.pid === thread.pid && event.tid === thread.tid ? 1 : 0), 0);
@@ -287,7 +296,8 @@ async function traceFrames(cdp, action) {
   const intervals = [];
   for (let frame = 1; frame < frameStarts.length; frame++) intervals.push((frameStarts[frame] - frameStarts[frame - 1]) / 1000);
   intervals.sort((a, b) => a - b);
-  const isTask = (event) => onMain(event) && event.ph === "X" && (event.name === "ThreadControllerImpl::RunTask" || event.name === "RunTask");
+  const isTaskEvent = (event) => event.ph === "X" && (event.name === "ThreadControllerImpl::RunTask" || event.name === "RunTask");
+  const isTask = (event) => onMain(event) && isTaskEvent(event);
   const contains = (outer, inner) => inner.ts >= outer.ts && inner.ts + (inner.dur ?? 0) <= outer.ts + (outer.dur ?? 0);
   // Outermost tasks only, longest first: a RunTask nested in another is the same task.
   const outerTasks = [];
@@ -299,7 +309,7 @@ async function traceFrames(cdp, action) {
   // thread's own CPU time, its waits on the GPU process (command-buffer round trips), and what the GPU process was doing meanwhile.
   const gpuTasks = [];
   if (gpuMain) {
-    for (const task of events.filter((event) => event.pid === gpuMain.pid && event.tid === gpuMain.tid && isTask(event)).sort((a, b) => (b.dur ?? 0) - (a.dur ?? 0))) {
+    for (const task of events.filter((event) => event.pid === gpuMain.pid && event.tid === gpuMain.tid && isTaskEvent(event)).sort((a, b) => (b.dur ?? 0) - (a.dur ?? 0))) {
       if (!gpuTasks.some((kept) => contains(kept, task))) gpuTasks.push(task);
     }
   }
@@ -312,7 +322,7 @@ async function traceFrames(cdp, action) {
     const gpuWaitMs = inside.filter((event) => /^CommandBufferProxyImpl::WaitFor/.test(event.name)).reduce((sum, event) => sum + (event.dur ?? 0) / 1000, 0);
     const gpuBusyMs = gpuTasks.reduce((sum, gpuTask) => sum + overlap(gpuTask, task), 0);
     const gpuByName = new Map();
-    if (gpuMain) for (const event of events) if (event.pid === gpuMain.pid && event.tid === gpuMain.tid && event.ph === "X" && !isTask(event)) { const ms = overlap(event, task); if (ms > 0) gpuByName.set(event.name, (gpuByName.get(event.name) ?? 0) + ms); }
+    if (gpuMain) for (const event of events) if (event.pid === gpuMain.pid && event.tid === gpuMain.tid && event.ph === "X" && !isTaskEvent(event)) { const ms = overlap(event, task); if (ms > 0) gpuByName.set(event.name, (gpuByName.get(event.name) ?? 0) + ms); }
     const wallMs = task.dur / 1000;
     const threadMs = typeof task.tdur === "number" ? task.tdur / 1000 : null;
     const harness = byName.has("CpuProfiler::StartProfiling");
@@ -333,9 +343,24 @@ async function traceFrames(cdp, action) {
   });
   // The page's own main-thread JavaScript (bundles, the native APIs they call and GC); the harness's scripts are excluded.
   const javascript = selfTimeMs.legacyCode + selfTimeMs.otherBundles + selfTimeMs.webglCalls + selfTimeMs.gamepadPolling + selfTimeMs.otherNative + selfTimeMs.garbageCollector;
+  const scriptWorkOver8Ms = topLevel.filter((event) => (event.dur ?? 0) > 8000)
+    .sort((a, b) => b.dur - a.dur).slice(0, 10).map((task) => ({
+      event: task.name, eventType: task.args?.data?.type ?? null, ms: round(task.dur / 1000), threadMs: typeof task.tdur === "number" ? round(task.tdur / 1000) : null,
+      calls: events.filter((event) => onMain(event) && event.ph === "X" && event.name === "FunctionCall" && contains(task, event))
+        .sort((a, b) => b.dur - a.dur).slice(0, 4).map((event) => ({
+          function: event.args?.data?.functionName ?? null, url: (event.args?.data?.url ?? "").replace(origin, ""), line: event.args?.data?.lineNumber ?? null,
+          ms: round(event.dur / 1000), threadMs: typeof event.tdur === "number" ? round(event.tdur / 1000) : null,
+        })),
+      nestedLayout: ["Document::UpdateStyleAndLayout", "Layout", "UpdateLayoutTree"].map((name) => {
+        const slices = events.filter((event) => onMain(event) && event.ph === "X" && event.name === name && contains(task, event));
+        return { event: name, count: slices.length, inclusiveMs: round(slices.reduce((sum, event) => sum + (event.dur ?? 0) / 1000, 0)) };
+      }),
+    }));
   return {
     frames: frameStarts.length,
     selfTimeMs,
+    cpuHotspots,
+    scriptWorkOver8Ms,
     javascriptPerFrameMs: round(javascript / Math.max(1, frameStarts.length)),
     legacyCodePerFrameMs: round(selfTimeMs.legacyCode / Math.max(1, frameStarts.length)),
     scriptPerFrameMs: { mean: round(perFrame.reduce((sum, value) => sum + value, 0) / Math.max(1, perFrame.length)), p50: round(percentile(scriptSorted, 0.5)), p95: round(percentile(scriptSorted, 0.95)), p99: round(percentile(scriptSorted, 0.99)), max: round(scriptSorted[scriptSorted.length - 1] ?? 0) },
@@ -421,6 +446,29 @@ async function measurePerformance() {
     };
     console.log(`PERF ${name}: ${JSON.stringify(bucket[name])}`);
   };
+  // A measured transition regression can be rechecked without repeating the
+  // full entry/idle/leak protocol or replacing its evidence.
+  if (process.env.CROWNFALL_LEGACY_PERF_ONLY === "landmarks") {
+    for (const rate of [1, 4]) {
+      const { context, page } = await createPage({ params: { legacyPreview: "founded", legacyStats: "1" }, preferences: LOW_PRESET, observeLongTasks: true });
+      const cdp = await page.context().newCDPSession(page);
+      await cdp.send("Performance.enable");
+      await openLegacyByKeyboard(page);
+      await cdp.send("Emulation.setCPUThrottlingRate", { rate });
+      const bucket = rate === 1 ? report.scenarios : report.throttled4x;
+      await scenario(bucket, "landmarkCyclingCold", page, cdp, () => cycleLandmarks(page));
+      await scenario(bucket, "landmarkCyclingRepeat", page, cdp, async () => {
+        for (let cycle = 0; cycle < 3; cycle++) await cycleLandmarks(page);
+      });
+      await cdp.send("Emulation.setCPUThrottlingRate", { rate: 1 });
+      await context.close();
+    }
+    report.caveat = "Focused transition recheck only, with software WebGL (SwiftShader). Both cold and repeated panel cycles are retained; 4× CPU throttling is a stress proxy, not physical hardware evidence. This does not replace the full performance protocol.";
+    await mkdir(directory, { recursive: true });
+    await writeFile(`${directory}/performance-focus.json`, JSON.stringify(report, null, 2) + "\n");
+    record(`Focused landmark transition performance recorded in ${directory}/performance-focus.json`);
+    return;
+  }
   {
     const { context, page } = await createPage({ params: { legacyPreview: "founded", legacyStats: "1" }, preferences: LOW_PRESET, observeLongTasks: true });
     const cdp = await page.context().newCDPSession(page);
@@ -689,6 +737,7 @@ try {
     assert.equal(requests.some((path) => /LegacyScreen|createStandInEnvironment|createLegacyEnvironment/.test(path)), false, "Legacy screen and environment load only on entry");
     await openLegacyByKeyboard(page);
     assert.ok(requests.some((path) => /LegacyScreen/.test(path)), "the Legacy screen chunk loads on entry");
+    assert.equal(requests.some((path) => /\/fixtures(?:-[\w-]+)?\.(?:js|ts)$/.test(path)), false, "ordinary Legacy entry never downloads development fixture tapes");
     assert.ok(["stand-in", "environment"].includes(environmentSource), `the ready screen names its renderer (got ${environmentSource})`);
     assert.equal(await legacyMode(page), "founding");
     assert.equal(await page.locator("dialog.menu-dialog").evaluate((dialog) => dialog.open), false, "no modal dialog opens");
@@ -1193,6 +1242,98 @@ try {
     }
   }
   if (section("layout")) record("Founding steps, overview (with the next-step strip clear of every landmark label) and all four panels fit the stage at 844×390, 1280×720 and 1920×1080 with no horizontal overflow or clipped text, no Legacy text below 11 px, and an opaque founding actions bar");
+
+  if (section("scroll")) {
+    const { context, page } = await createPage({ viewport: { width: 844, height: 390 }, params: { legacyPreview: "founded" } });
+    await openLegacyByKeyboard(page);
+    await page.locator('.legacy-label[data-landmark="heralds-station"]').click();
+    const body = page.locator(".legacy-panel-body");
+    await page.waitForFunction(() => {
+      const element = document.querySelector(".legacy-panel-body");
+      return element && element.scrollHeight > element.clientHeight + 1 && element.hasAttribute("data-scroll-bottom") && !element.hasAttribute("data-scroll-top");
+    });
+    const box = await body.boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.wheel(0, 10000);
+    await page.waitForFunction(() => {
+      const element = document.querySelector(".legacy-panel-body");
+      return element?.hasAttribute("data-scroll-top") && !element.hasAttribute("data-scroll-bottom");
+    });
+    await page.mouse.wheel(0, -10000);
+    await page.waitForFunction(() => {
+      const element = document.querySelector(".legacy-panel-body");
+      return element?.hasAttribute("data-scroll-bottom") && !element.hasAttribute("data-scroll-top");
+    });
+    await page.locator(".legacy-panel-cycle--next").click();
+    await page.locator('[data-landmark-panel="banner-hall"]').waitFor();
+    await page.waitForFunction(() => {
+      const element = document.querySelector(".legacy-panel-body");
+      return element && !element.hasAttribute("data-scroll-top") && element.hasAttribute("data-scroll-bottom") === (element.scrollHeight > element.clientHeight + 1);
+    });
+    await context.close();
+    record("Scroll edge cues initialize after layout, follow actual wheel scrolling to both endpoints, and reinitialize on a fresh inspector at 844×390");
+  }
+
+  if (section("panelidentity")) {
+    const { context, page } = await createPage({ params: { legacyPreview: "founded" } });
+    await openLegacyByKeyboard(page);
+    await page.locator('.legacy-label[data-landmark="muster-grounds"]').click();
+    await focusIs(page, () => document.activeElement?.closest(".legacy-panel-body") !== null);
+    const selectedMember = await page.locator('.legacy-member[aria-checked="true"]').getAttribute("data-member");
+    await page.locator('.legacy-member:not([aria-checked="true"]):not([aria-disabled="true"])').first().click();
+    assert.notEqual(await page.locator('.legacy-member[aria-checked="true"]').getAttribute("data-member"), selectedMember, "an uncommitted nomination choice changed");
+    await page.evaluate(() => { window.__inspectorNodes = {
+      frame: document.querySelector(".legacy-panel"), header: document.querySelector(".legacy-panel-header"),
+      footer: document.querySelector(".legacy-panel-footer"), body: document.querySelector(".legacy-panel-body"),
+      animation: document.querySelector(".legacy-panel").style.animationName,
+    }; });
+    for (const landmark of ["war-record", "heralds-station", "banner-hall", "muster-grounds"]) {
+      await page.locator(".legacy-panel-cycle--next").click();
+      await page.locator(`[data-landmark-panel="${landmark}"]`).waitFor();
+      await page.waitForFunction(() => document.querySelector(".legacy-panel").style.animationName !== window.__inspectorNodes.animation);
+      await focusIs(page, () => document.activeElement?.closest(".legacy-panel-body") !== null);
+      const identity = await page.evaluate(() => {
+        const old = window.__inspectorNodes;
+        const frame = document.querySelector(".legacy-panel"), body = document.querySelector(".legacy-panel-body");
+        const result = {
+          frame: frame === old.frame, header: document.querySelector(".legacy-panel-header") === old.header,
+          footer: document.querySelector(".legacy-panel-footer") === old.footer, bodyReset: body !== old.body,
+          scrollTop: body.scrollTop, motion: getComputedStyle(frame).animationName,
+        };
+        old.body = body; old.animation = frame.style.animationName;
+        return result;
+      });
+      assert.deepEqual(identity, { frame: true, header: true, footer: true, bodyReset: true, scrollTop: 0, motion: "none" }, `${landmark}: frame reuse preserves the body reset and reduced motion`);
+    }
+    assert.equal(await page.locator('.legacy-member[aria-checked="true"]').getAttribute("data-member"), selectedMember, "re-entering the Muster Grounds resets uncommitted choices just as before");
+    await context.close();
+    record("Cycling retains inspector frame/header/footer identity, resets the keyed body and uncommitted nomination, restores body focus, restarts the entry animation and preserves reduced motion");
+  }
+
+  if (section("panelmotion")) {
+    const { context, page } = await createPage({ params: { legacyPreview: "founded" }, reducedMotion: "no-preference", preferences: { motion: true } });
+    await openLegacyByKeyboard(page);
+    await page.locator('.legacy-label[data-landmark="banner-hall"]').click();
+    const animation = () => page.locator(".legacy-panel").evaluate((frame) => {
+      const name = getComputedStyle(frame).animationName;
+      const active = frame.getAnimations().find((item) => item.animationName === name);
+      return { name, timing: active?.effect?.getTiming(), keyframes: active?.effect?.getKeyframes() };
+    });
+    await page.waitForFunction(() => document.querySelector(".legacy-panel").style.animationName === "legacy-panel-in");
+    const before = await animation();
+    await page.locator(".legacy-panel-cycle--next").click();
+    await page.locator('[data-landmark-panel="muster-grounds"]').waitFor();
+    await page.waitForFunction((name) => document.querySelector(".legacy-panel").style.animationName !== name, before.name);
+    const after = await animation();
+    assert.notEqual(after.name, before.name, "the retained frame restarts its CSS animation");
+    assert.equal(before.timing?.duration, 280);
+    assert.deepEqual(after.timing, before.timing);
+    assert.deepEqual(after.keyframes, before.keyframes);
+    await mkdir(directory, { recursive: true });
+    await writeFile(`${directory}/panel-motion.json`, JSON.stringify({ before, after, input: "actual pointer cycle", reducedMotion: false }, null, 2) + "\n");
+    await context.close();
+    record("With motion enabled, retained inspector frames replay the same 280 ms native CSS animation and identical keyframes on a landmark change");
+  }
 
   // 8. The decoded sorcerer survives a Legacy round trip: same canvas, no second download.
   if (section("sorcerer")) {
