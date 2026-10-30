@@ -33,6 +33,8 @@ Quest verifies founding, both hands, fingertip presses, all landmarks, nominatio
 - Launch to the first legal move is unavailable because this menu is not connected to the creator's chess port. The evidence times access to the existing Play menu instead. The protected chess/Play implementation was not changed to manufacture a measurement.
 - Stable GPU resource counts across five desktop round trips and a small post-GC heap increase do not establish leak freedom.
 
+The follow-up inspector vector-image experiment passed 144 pixel comparisons, first-frame readiness, geometry and accessibility checks, but repeated navigation regressed to 5.03/21.60 ms mean/p95. It was reverted. Its patch and negative evidence remain in `main game/artifacts/legacy/codex-round-2/vector-image/`; runtime source retains the verified `cd0f657` baseline. Both production builds passed again after rollback.
+
 [Desktop evidence](../../main%20game/artifacts/legacy/codex-round-2/README.md) · [Quest evidence and review PDF](../../main-game-vr/artifacts/legacy/codex-round-2/README.md)
 
 Branch integration, PR creation and publication remain owner decisions under the handover. No branch merge, deployment or new PR is part of this checkpoint.

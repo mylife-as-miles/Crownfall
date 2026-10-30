@@ -1,0 +1,36 @@
+{
+  "retained": false,
+  "baselineCommit": "cd0f65799c4730e0b7210353635bfc516a7cf079",
+  "reason": "No proven material navigation performance gain; cold improved but repeated navigation and CPU cost regressed in this replay.",
+  "pixelChecks": true,
+  "checks": {
+    "scenarios": {
+      "landmarkCyclingCold": {
+        "mean": 4.91,
+        "p95": 15.49,
+        "cpuMsPerFrame": 3.3,
+        "longTasks": 0
+      },
+      "landmarkCyclingRepeat": {
+        "mean": 5.03,
+        "p95": 21.6,
+        "cpuMsPerFrame": 3.34,
+        "longTasks": 0
+      }
+    },
+    "throttled4x": {
+      "landmarkCyclingCold": {
+        "mean": 40.57,
+        "p95": 102.08,
+        "cpuMsPerFrame": 30.34,
+        "longTasks": 10
+      },
+      "landmarkCyclingRepeat": {
+        "mean": 27.98,
+        "p95": 95.66,
+        "cpuMsPerFrame": 22.11,
+        "longTasks": 19
+      }
+    }
+  }
+}

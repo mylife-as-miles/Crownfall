@@ -9,5 +9,6 @@ Actual Chromium/SwiftShader verification on the current feature branch. These ca
 - `frame-reuse-motion/`: two actual CSS-animation groups; the initial missing-directory harness failure is retained separately.
 - `frame-reuse/performance-focus.json`: latest quiet measurement for the retained inspector frame. Repeated mean/p95 3.76/10.14 ms and cold 5.65/23.65 ms remain outside the full budget. Neither has unthrottled page long tasks; 4× CPU remains over budget with long tasks.
 - Earlier `performance.json`, `performance-focus.json`, `paint-focus/` and `path-cache/` preserve prior probes, including the explicitly contended run. Do not substitute these for final-state acceptance.
+- `vector-image/`: a reverted follow-up experiment, including its reproducible patch. Rendering/readiness/layout/accessibility passed (144 pixel comparisons), but repeated performance regressed to 5.03/21.60 ms mean/p95. None of that experimental source is retained; both builds passed after rollback.
 
 The scripts retain raw top-level input events, thread time and nested layout attribution. Sparse frame buckets can aggregate separate tasks; some raw events nevertheless exceed the budget. No numerical quality pass is claimed.

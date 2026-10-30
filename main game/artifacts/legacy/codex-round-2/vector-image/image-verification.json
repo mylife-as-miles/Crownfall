@@ -1,0 +1,453 @@
+{
+  "passed": true,
+  "pixelComparisons": 144,
+  "imageFrames": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "frames": [
+        [
+          {
+            "connected": false,
+            "complete": true,
+            "width": 100,
+            "height": 150
+          }
+        ],
+        [
+          {
+            "connected": false,
+            "complete": true,
+            "width": 100,
+            "height": 150
+          }
+        ],
+        [
+          {
+            "connected": false,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": false,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          }
+        ],
+        [
+          {
+            "connected": false,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": false,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          }
+        ],
+        [
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          }
+        ],
+        [
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          }
+        ]
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "frames": [
+        [
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 150
+          }
+        ],
+        [
+          {
+            "connected": false,
+            "complete": true,
+            "width": 100,
+            "height": 150
+          }
+        ],
+        [
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          }
+        ],
+        [
+          {
+            "connected": false,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": false,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          }
+        ],
+        [
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          }
+        ],
+        [
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          },
+          {
+            "connected": true,
+            "complete": true,
+            "width": 100,
+            "height": 120
+          }
+        ]
+      ]
+    }
+  ],
+  "geometry": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "landmark": "banner-hall",
+      "images": [
+        {
+          "complete": true,
+          "name": "Sable, an eclipse or",
+          "hidden": null,
+          "before": {
+            "width": 89.59375,
+            "height": 134.390625
+          },
+          "original": {
+            "width": 89.59375,
+            "height": 134.390625
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "landmark": "muster-grounds",
+      "images": [
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 12.15625,
+            "height": 14.578125
+          },
+          "original": {
+            "width": 12.15625,
+            "height": 14.578125
+          }
+        },
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 12.15625,
+            "height": 14.578125
+          },
+          "original": {
+            "width": 12.15625,
+            "height": 14.578125
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "landmark": "heralds-station",
+      "images": [
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 19.1875,
+            "height": 23.015625
+          },
+          "original": {
+            "width": 19.1875,
+            "height": 23.015625
+          }
+        },
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 19.1875,
+            "height": 23.015625
+          },
+          "original": {
+            "width": 19.1875,
+            "height": 23.015625
+          }
+        },
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 33.265625,
+            "height": 39.90625
+          },
+          "original": {
+            "width": 33.265625,
+            "height": 39.90625
+          }
+        },
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 33.265625,
+            "height": 39.90625
+          },
+          "original": {
+            "width": 33.265625,
+            "height": 39.90625
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "landmark": "banner-hall",
+      "images": [
+        {
+          "complete": true,
+          "name": "Sable, an eclipse or",
+          "hidden": null,
+          "before": {
+            "width": 54,
+            "height": 81
+          },
+          "original": {
+            "width": 54,
+            "height": 81
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "landmark": "muster-grounds",
+      "images": [
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 11,
+            "height": 13.1875
+          },
+          "original": {
+            "width": 11,
+            "height": 13.1875
+          }
+        },
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 11,
+            "height": 13.1875
+          },
+          "original": {
+            "width": 11,
+            "height": 13.1875
+          }
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "landmark": "heralds-station",
+      "images": [
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 18,
+            "height": 21.59375
+          },
+          "original": {
+            "width": 18,
+            "height": 21.59375
+          }
+        },
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 18,
+            "height": 21.59375
+          },
+          "original": {
+            "width": 18,
+            "height": 21.59375
+          }
+        },
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 30,
+            "height": 36
+          },
+          "original": {
+            "width": 30,
+            "height": 36
+          }
+        },
+        {
+          "complete": true,
+          "name": "",
+          "hidden": "true",
+          "before": {
+            "width": 30,
+            "height": 36
+          },
+          "original": {
+            "width": 30,
+            "height": 36
+          }
+        }
+      ]
+    }
+  ],
+  "errors": []
+}

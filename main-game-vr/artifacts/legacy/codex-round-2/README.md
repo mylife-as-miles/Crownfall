@@ -2,7 +2,7 @@
 
 [Review PDF — 22 selected desktop/Quest captures](Crownfall-Legacy-Review.pdf) · [Compact comparison](ui-runtime-review.jpg)
 
-All Quest images come from an active IWER Quest 3 session with actual emulated hand input and both controllers disconnected. The scripts use a closer mono view, software rendering and a development framebuffer scale of 0.25; these are not physical-headset screenshots or performance measurements.
+The 33 immersive Quest images come from active IWER Quest 3 sessions with actual emulated hand input and both controllers disconnected. `preview-captive-browser-entry.png` separately shows browser entry before VR. The scripts use a closer mono view, software rendering and a development framebuffer scale of 0.25; these are not physical-headset screenshots or performance measurements.
 
 | Evidence | Result |
 | --- | --- |
