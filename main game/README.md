@@ -29,9 +29,15 @@ Asset failures show Retry/Continue controls. A failed model can retry without ch
 
 Home uses one 298 × 434 tile on the left and two 298 × 215 tiles stacked on the right, with four-pixel gaps, at 1280 × 720. The full grid is 600 × 434 pixels. My Legacy is the tall tile, Chronicles is upper right, and Herald Board is lower right. The supplied king and portal images use centered cover crops; Chronicles contains the complete four-region map, retaining its context. Only the exact supplied titles appear on the tiles. There are no invented descriptions, statistics, story entries or news feeds.
 
-Each tile opens a clear unavailable-state dialog. The menu does not implement legacy profiles, chronicles or a herald feed. Home selection and the last right-hand row are remembered across navigation. Left/right moves between columns; up/down moves between the stacked tiles. Home/End selects the first/last tile. Keyboard, pointer and controller selection keep focus aligned. Settings returns to its originating screen. Back from Home returns to Play; Back from Play retains the Home confirmation.
+Chronicles opens the shared archive with its Atlas, Interregnum and Laws records. My Legacy and Herald Board retain their unavailable-state dialogs on this branch. Home selection and the last right-hand row are remembered across navigation. Left/right moves between columns; up/down moves between the stacked tiles. Home/End selects the first/last tile. Keyboard, pointer and controller selection keep focus aligned. Settings returns to its originating screen. Back from Home returns to Play; Back from Play retains the Home confirmation.
 
 `src/home-content.ts` configures the three content slots, image fit and supported actions. The original JPEGs are preserved byte-for-byte outside Git under `/workspace/crownfall-home-originals/`. Separate full-resolution WebP delivery copies are in `public/assets/home/`; mapping, hashes and display fits are in `artifacts/home-artwork.json`. The private Page and reference image remain unchanged and outside the repository.
+
+## Chronicles recovery
+
+If the 3D view cannot load, the flat painting keeps the same approved records and Back controls. A shared notice explains the failure and asks the viewer to return Home and reopen Chronicles to retry. The broader archive hall and later collections are still in progress; see [the current checkpoint](../docs/chronicles/WORK_STATUS.md).
+
+The focused production check is `CROWNFALL_TEST_URL=http://localhost:5196 node scripts/verify-chronicles-fallback.mjs` with the built app served on that URL. It disables WebGL only in its browser session and verifies the visible notice, record content, layout and Back at 1280×720 and 844×390. Fresh results and captures are in [artifacts/chronicles/recovery-2026-10-30/](artifacts/chronicles/recovery-2026-10-30/).
 
 ## Chapters
 

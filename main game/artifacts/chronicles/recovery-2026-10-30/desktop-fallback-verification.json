@@ -1,0 +1,58 @@
+{
+  "startedAt": "2026-10-30T11:06:38.983Z",
+  "passed": true,
+  "scope": "Production desktop flat fallback, shared failure guidance, record and Back at 1280x720 and 844x390",
+  "fault": "WebGL unavailable through a browser initialization seam; not a network failure",
+  "checks": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "passed": true,
+      "message": "The 3D map could not load. Records remain available. Return Home and reopen Chronicles to retry.",
+      "record": "korvenia",
+      "back": "entry -> focus -> Home",
+      "layout": {
+        "notice": {
+          "x": 105.328125,
+          "y": 115.1875,
+          "width": 1069.34375,
+          "height": 16.125
+        },
+        "overlaps": [],
+        "clipped": false,
+        "viewportOverflow": false
+      },
+      "capture": "desktop-fallback-1280x720.png"
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "passed": true,
+      "message": "The 3D map could not load. Records remain available. Return Home and reopen Chronicles to retry.",
+      "record": "korvenia",
+      "back": "entry -> focus -> Home",
+      "layout": {
+        "notice": {
+          "x": 129.953125,
+          "y": 62.390625,
+          "width": 584.078125,
+          "height": 13.1875
+        },
+        "overlaps": [],
+        "clipped": false,
+        "viewportOverflow": false
+      },
+      "capture": "desktop-fallback-844x390.png"
+    }
+  ],
+  "errors": [],
+  "expectedErrors": [
+    "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context.",
+    "THREE.WebGLRenderer: THREE.WebGLRenderer: Error creating WebGL context."
+  ],
+  "completedAt": "2026-10-30T11:06:45.145Z"
+}

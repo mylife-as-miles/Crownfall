@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import "./chronicles/archive-loading.test";
 import { CHRONICLE_EXHIBITS, CHRONICLE_LABELS, CHRONICLE_RECORDS, CHRONICLES_TITLE, getChronicleRecords, getHotspotRecords } from "../../shared/chronicles/content";
 import { RELIEF_SEGMENTS, buildReliefMesh, imageToRelief, intersectRelief, reliefHeightAt, reliefToImage } from "../../shared/chronicles/archive/relief";
 import { CHRONICLES_SCENE_FIXTURE } from "../../shared/chronicles/scene-state.fixture";

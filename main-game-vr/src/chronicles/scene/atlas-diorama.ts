@@ -374,6 +374,8 @@ export class AtlasDiorama {
   private reveal = 0;
   private time = 0;
   private alive = true;
+  private buildFailed = false;
+  private generation = 0;
   private placement = { posture: 'seated' as AtlasPosture, footer: -0.57, distance: 1.5 };
   private readonly rest = new Color(0.96, 0.96, 0.96);
   private readonly hover = new Color(1.3, 1.14, 0.96);
@@ -385,18 +387,23 @@ export class AtlasDiorama {
 
   constructor(private readonly world: World, private readonly parent: Entity, private readonly events: AtlasDioramaEvents) {}
 
-  get ready(): boolean { return !!this.root; }
+  get ready(): boolean { return !!this.root && !this.builder && !this.buildFailed; }
+  get failed(): boolean { return this.buildFailed; }
   get object(): Group | null { return this.root; }
 
   /** Starts the sliced build, or keeps what an earlier open built. */
   open(): void {
-    if (!this.builder && !this.root) this.builder = this.build();
+    if (!this.alive || this.builder || this.root) return;
+    this.buildFailed = false;
+    this.builder = this.build(++this.generation);
   }
 
   /** Releases entities and GPU objects; the shared relief stays cached for the next visit. */
   close(): void {
-    if (!this.builder && !this.root) return;
+    // Invalidate a pending load even when no GPU objects have been created.
+    this.generation++;
     this.builder = null;
+    this.loading = null;
     for (const view of this.markers) {
       view.group.removeEventListener('click', view.onClick);
       view.entity.dispose();
@@ -412,12 +419,18 @@ export class AtlasDiorama {
     this.shaders.length = 0;
     // The painting stays cached by AssetManager; only its GPU copy is released.
     this.texture?.dispose();
+    this.texture = null;
     this.root = null; this.rootEntity = null; this.groundEntity = null;
     this.tableMaterial = null; this.slabMaterial = null;
     this.reveal = 0;
   }
 
   dispose(): void { this.alive = false; this.close(); }
+
+  private fail(): void {
+    this.close();
+    this.buildFailed = true;
+  }
 
   setVisible(visible: boolean): void {
     this.visible = visible;
@@ -440,9 +453,11 @@ export class AtlasDiorama {
   update(delta: number, motion: boolean): void {
     if (this.builder) {
       const start = performance.now();
-      while (this.builder && performance.now() - start < ATLAS_DIORAMA.buildBudget) {
-        if (this.builder.next().done) this.builder = null;
-      }
+      try {
+        while (this.builder && performance.now() - start < ATLAS_DIORAMA.buildBudget) {
+          if (this.builder.next().done) this.builder = null;
+        }
+      } catch { this.fail(); }
     }
     if (!this.root || !this.visible) return;
     if (motion) this.time += delta;
@@ -481,14 +496,18 @@ export class AtlasDiorama {
     this.root.position.set(0, sea, -(near + depth / 2));
   }
 
-  private *build(): Generator<void, void, void> {
+  private *build(generation: number): Generator<void, void, void> {
     const width = ATLAS_DIORAMA.width;
     this.loading ||= AssetManager.loadTextureById(QUEST_CHRONICLE_IDS.mapAsset).then(texture => {
+      // A late result belongs to AssetManager, never to a closed or newer visit.
+      if (!this.alive || generation !== this.generation) return;
       texture.colorSpace = SRGBColorSpace;
       texture.anisotropy = Math.min(4, this.world.renderer.capabilities.getMaxAnisotropy());
       texture.needsUpdate = true;
       this.texture = texture;
-    }).catch(() => { this.loading = null; });
+    }).catch(() => {
+      if (this.alive && generation === this.generation) this.fail();
+    });
     if (!relief) {
       // Small slices keep the cold first frames short; the budget loop packs several per frame once warm.
       const slices = reliefMeshSlices(width, RELIEF_SEGMENTS.quest, 4);

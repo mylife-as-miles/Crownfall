@@ -1,0 +1,201 @@
+{
+  "date": "2026-10-30",
+  "passed": true,
+  "scope": "Map loader failure, visible shared guidance, native hand record/Back, clean re-entry and recovered marker",
+  "runtime": "IWSDK 1.1.0-rc.2, IWER Quest 3, active immersive-vr, actual hand ray and pinch; controllers disconnected",
+  "physicalHeadset": false,
+  "fault": "One-shot AssetManager map-loader rejection through a returned browser-run preparation callback. This is not a network request failure. All CLI hand input ran after the callback returned.",
+  "loader": {
+    "calls": 2,
+    "rejected": 1,
+    "delegated": 1,
+    "successes": 1,
+    "delegatedRejections": 0,
+    "restored": true
+  },
+  "failureFeedback": {
+    "id": "Chronicles_Load_Failure",
+    "visible": true,
+    "clipped": false,
+    "text": "The 3D map could not load. Records remain available. Return Home and reopen Chronicles to retry.",
+    "hiddenAfterRecovery": true
+  },
+  "recordsAvailableWhileFailed": {
+    "entry": "korvenia",
+    "selectedControl": "Hotspot_korvenia",
+    "nativeTitleVisible": true,
+    "nativeBodyVisible": true,
+    "clipped": false
+  },
+  "steps": [
+    {
+      "action": "back-entry",
+      "target": "Btn_Back",
+      "input": "actual emulated hand ray + pinch",
+      "hovered": true,
+      "passed": true,
+      "quest": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_korvenia",
+        "entered": true,
+        "paused": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true
+      },
+      "archive": {
+        "open": true,
+        "ready": false,
+        "load": "failed",
+        "loading": false,
+        "entry": "",
+        "focus": "korvenia",
+        "panelPose": "control-surface",
+        "selection": "korvenia"
+      }
+    },
+    {
+      "action": "back-focus",
+      "target": "Btn_Back",
+      "input": "actual emulated hand ray + pinch",
+      "hovered": true,
+      "passed": true,
+      "quest": {
+        "screen": "chronicles",
+        "selectedControl": "Exhibit_atlas",
+        "entered": true,
+        "paused": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true
+      },
+      "archive": {
+        "open": true,
+        "ready": false,
+        "load": "failed",
+        "loading": false,
+        "entry": "",
+        "focus": "overview",
+        "panelPose": "control-surface",
+        "selection": ""
+      }
+    },
+    {
+      "action": "back-home",
+      "target": "Btn_Back",
+      "input": "actual emulated hand ray + pinch",
+      "hovered": true,
+      "passed": true,
+      "quest": {
+        "screen": "home",
+        "selectedControl": "Home_chronicles",
+        "entered": true,
+        "paused": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true
+      },
+      "archive": {
+        "open": false,
+        "ready": false,
+        "load": "failed",
+        "loading": false,
+        "entry": "",
+        "focus": "overview",
+        "panelPose": "menu",
+        "selection": ""
+      }
+    },
+    {
+      "action": "reentry",
+      "target": "Home_chronicles",
+      "input": "actual emulated hand ray + pinch",
+      "hovered": true,
+      "passed": true,
+      "quest": {
+        "screen": "chronicles",
+        "selectedControl": "Exhibit_atlas",
+        "entered": true,
+        "paused": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true
+      },
+      "archive": {
+        "open": true,
+        "ready": true,
+        "load": "ready",
+        "loading": false,
+        "entry": "",
+        "focus": "overview",
+        "panelPose": "control-surface",
+        "selection": ""
+      }
+    },
+    {
+      "action": "recovered-marker",
+      "target": "Marker_solforiz",
+      "input": "actual emulated hand ray + pinch",
+      "hovered": true,
+      "passed": true,
+      "quest": {
+        "screen": "chronicles",
+        "selectedControl": "Hotspot_solforiz",
+        "entered": true,
+        "paused": false,
+        "handsTracked": true,
+        "leftTracked": true,
+        "rightTracked": true
+      },
+      "archive": {
+        "open": true,
+        "ready": true,
+        "load": "ready",
+        "loading": false,
+        "entry": "solforiz",
+        "focus": "solforiz",
+        "panelPose": "control-surface",
+        "selection": "solforiz"
+      }
+    }
+  ],
+  "captures": [
+    {
+      "file": "failure-xr.png",
+      "sessionActive": true,
+      "state": "failed, Korvenia record open"
+    },
+    {
+      "file": "recovered-xr.png",
+      "sessionActive": true,
+      "state": "ready, Solforiz record open after a real marker selection"
+    }
+  ],
+  "softwareAccommodations": {
+    "quality": "low",
+    "motion": false,
+    "developmentFramebufferScale": 0.25,
+    "headPitchDuringPinches": 88,
+    "capturePose": {
+      "yaw": -40,
+      "pitch": -6
+    },
+    "note": "Initial near-press setup attempts exceeded the SDK 800 ms click window; the successful changed-path proof uses hand ray/pinch. Visit-complete and low preferences were test preparation before reload."
+  },
+  "unexpectedConsoleErrors": [],
+  "cleanup": {
+    "originalLoaderRestored": true,
+    "xrExited": true,
+    "managedRuntimeStopped": true,
+    "transientHelperRemoved": true
+  },
+  "limits": [
+    "Software emulation does not establish physical Quest comfort, tracking or GPU performance.",
+    "The old allocation/performance and broader M1/critic gates remain open.",
+    "The recovered XR map extends below the capture edge, and an SDK overlay covers part of the lower image. These captures do not certify whole-map framing or fine text."
+  ],
+  "visualReview": {
+    "contactSheet": "recovery-review.jpg",
+    "result": "No new overlap or theme defect; named UI bounds support message fit. Capture limits remain explicit."
+  }
+}

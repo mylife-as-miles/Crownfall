@@ -2,6 +2,7 @@ import { BackSide, Mesh, MeshBasicMaterial, Quaternion, SphereGeometry, Vector3 
 import type { Entity, Object3D, UIKit, UIKitMLAsset, World } from '@iwsdk/core';
 import type { Vec3 } from '../../../shared/chronicles/archive/types';
 import { getHotspotRecords } from '../../../shared/chronicles/content';
+import { getChroniclesLoadFailure } from '../../../shared/chronicles/status';
 import type { ChronicleCollectionId, ChronicleNationId, ChroniclesSceneState } from '../../../shared/chronicles/types';
 import { QUEST_CHRONICLE_IDS, QUEST_CHRONICLE_LAYOUT } from '../ui-contract.js';
 import { ChroniclesArchiveState } from './archive-state.js';
@@ -151,6 +152,7 @@ export class ArchiveController {
   private holdTime = 0;
   private pending: (() => void) | null = null;
   private loadingShown = false;
+  private failureShown = false;
   private loadingStep = -1;
   private loadingFrames = 0;
   private buildSeconds = 0;
@@ -186,6 +188,11 @@ export class ArchiveController {
     const previous = this.view;
     this.view = view;
     this.shown = view.shown;
+    const failure = view.shown && getChroniclesLoadFailure(view.scene.load) !== null;
+    if (failure !== this.failureShown) {
+      this.failureShown = failure;
+      this.element(QUEST_CHRONICLE_IDS.failure)?.setProperties(failure ? SHOW : HIDE);
+    }
     if (view.open && !this.roomOpen) {
       this.roomOpen = true;
       this.reported = false;

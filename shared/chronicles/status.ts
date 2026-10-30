@@ -3,6 +3,14 @@
 // in-world label (Recorded, Disputed, Testimony, Rumor) and from a source's
 // evidence classes: an approved record may be in-world Rumor, and a working
 // proposal stays unapproved even when it describes something Recorded.
+import type { ChroniclesLoad } from './types';
+
+/** Shared interface feedback; approved records remain available in the fallback. */
+export const CHRONICLES_LOAD_FAILURE = 'The 3D map could not load. Records remain available. Return Home and reopen Chronicles to retry.';
+
+export function getChroniclesLoadFailure(load: ChroniclesLoad): string | null {
+  return load === 'flat' || load === 'failed' ? CHRONICLES_LOAD_FAILURE : null;
+}
 
 /** Production authority of the words, set by the creator. Agents write only the last two. */
 export type CanonStatus = "approved" | "public-assertion" | "disputed-testimony" | "working-proposal" | "placeholder";

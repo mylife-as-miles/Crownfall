@@ -26,6 +26,7 @@ export class MonumentRoom implements ArchiveRoom {
   }
 
   get ready(): boolean { return this.diorama.ready; }
+  get failed(): boolean { return this.diorama.failed; }
   /** The diorama does not report partial progress, so the loading bar sweeps until it is ready. */
   get progress(): number { return this.diorama.ready ? 1 : 0; }
 

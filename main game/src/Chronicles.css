@@ -80,6 +80,18 @@
   transition: opacity 320ms ease, visibility 0s linear 320ms;
 }
 .chronicles-screen:not([data-load="loading"]) .chronicles-loading { opacity: 0; visibility: hidden; }
+.chronicles-failure {
+  position: absolute;
+  z-index: 2;
+  left: var(--chronicles-left);
+  right: var(--chronicles-left);
+  top: 16cqh;
+  margin: 0;
+  color: #dfd2b6;
+  font-size: max(1.05cqw, 11px);
+  line-height: 1.2;
+  pointer-events: none;
+}
 .chronicles-loading-orbit {
   position: relative;
   width: max(8.5cqw, 64px);

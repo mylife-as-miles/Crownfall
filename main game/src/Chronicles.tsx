@@ -4,7 +4,7 @@ import {
   CHRONICLES_MAP, CHRONICLES_TITLE, CHRONICLE_EXHIBITS, CHRONICLE_LABELS, getChronicleRecord, getChronicleShortTitle, getHotspotRecords,
 } from "../../shared/chronicles/content";
 import { getChronicleEntry, getCollectionEntries } from "../../shared/chronicles/registry";
-import { CHRONICLES_CONTENT_POLICY, getCanonMarker } from "../../shared/chronicles/status";
+import { CHRONICLES_CONTENT_POLICY, getCanonMarker, getChroniclesLoadFailure } from "../../shared/chronicles/status";
 import type { ChronicleCollectionId, ChronicleEntry } from "../../shared/chronicles/types";
 import { cycleCollection, hotspotIndexOf, isTypingTarget, moveOnAtlas, stepList } from "./chronicles/input";
 import { createChroniclesStage, type ChroniclesStage, type ChroniclesStageTarget } from "./chronicles/stage";
@@ -80,6 +80,7 @@ export default forwardRef<ChroniclesHandle, ChroniclesProps>(function Chronicles
   const reducedMotionRef = useRef(reducedMotion);
   const handlers = useRef({ target(_target: ChroniclesStageTarget | null) { /* set below */ }, activate(_target: ChroniclesStageTarget) { /* set below */ } });
   const flat = load === "flat" || load === "failed";
+  const failure = getChroniclesLoadFailure(load);
   const entries = collection === "atlas" ? [] : getCollectionEntries(collection, POLICY);
   const count = collection === "atlas" ? hotspots.length : entries.length;
   const index = Math.max(0, Math.min(count - 1, cursor[collection]));
@@ -390,6 +391,7 @@ export default forwardRef<ChroniclesHandle, ChroniclesProps>(function Chronicles
       </span>
       <span className="chronicles-loading-track" aria-hidden="true"><span className="chronicles-loading-fill" /></span>
     </div>
+    {failure && <p className="chronicles-failure" role="status">{failure}</p>}
     <header ref={headerRef} className="chronicles-header">
       <h1 id="chronicles-heading" className="chronicles-title">{CHRONICLES_TITLE}</h1>
       <span className="chronicles-header-rule" aria-hidden="true" />

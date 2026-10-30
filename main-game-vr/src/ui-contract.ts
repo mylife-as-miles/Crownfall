@@ -55,6 +55,7 @@ export const QUEST_CHRONICLE_IDS = {
   mapAsset: 'chronicles-map',
   loading: 'Chronicles_Loading',
   loadingFill: 'Chronicles_Loading_Fill',
+  failure: 'Chronicles_Load_Failure',
   recordMarker: 'Record_Marker',
   tab: (exhibit: ChronicleCollectionId): string => `Exhibit_${exhibit}`,
   pane: (exhibit: ChronicleCollectionId): string => `Chronicles_${exhibit}`,

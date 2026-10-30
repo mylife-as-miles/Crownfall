@@ -7,7 +7,7 @@ import { HOME_CONTENT } from '../shared/menu/content.ts';
 import { CHRONICLE_EXHIBITS, CHRONICLE_RECORDS, CHRONICLES_MAP, CHRONICLES_TITLE, getChronicleRecords, getChronicleShortTitle, getHotspotRecords } from '../shared/chronicles/content.ts';
 import { textureFile, textureMemory, QUEST_PRESETS } from '../shared/chronicles/archive/materials.ts';
 import { CHRONICLE_REGISTRY } from '../shared/chronicles/registry.ts';
-import { CANON_MARKERS, isCreatorApproved } from '../shared/chronicles/status.ts';
+import { CANON_MARKERS, CHRONICLES_LOAD_FAILURE, isCreatorApproved } from '../shared/chronicles/status.ts';
 import type { ContentPolicy } from '../shared/chronicles/status.ts';
 import { QUEST_CHRONICLE_CONTROLS, QUEST_CHRONICLE_EXTENT, QUEST_CHRONICLE_IDS, QUEST_UI_LAYOUT, questText } from '../main-game-vr/src/ui-contract.ts';
 
@@ -32,6 +32,9 @@ export function assertChroniclesSync(uikitml: string, quest: { assets: string; d
   control(QUEST_CHRONICLE_IDS.recordMarker, 'the canon marker chip');
   control(QUEST_CHRONICLE_IDS.loading, 'the loading bar');
   control(QUEST_CHRONICLE_IDS.loadingFill, 'the loading bar fill');
+  control(QUEST_CHRONICLE_IDS.failure, 'the load-failure feedback');
+  copy(CHRONICLES_LOAD_FAILURE, 'the shared failure and retry guidance');
+  assert.match(chroniclesElement(uikitml, QUEST_CHRONICLE_IDS.failure), /display:\s*none/u, 'Load-failure feedback must start hidden');
   // The loading bar is wordless, and the marker chip is generated empty: the runtime fills it from the content policy.
   const loadingBar = chroniclesElement(uikitml, QUEST_CHRONICLE_IDS.loading);
   assert.doesNotMatch(loadingBar.replace(/<[^>]*>/gu, ''), /\S/u, 'The Chronicles loading bar must carry no text');

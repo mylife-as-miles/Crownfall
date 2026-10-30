@@ -7,8 +7,8 @@ import {
   getChronicleEntries, getChronicleEntry, getCollectionEntries, validateChronicleProposal,
 } from "./registry";
 import {
-  CANON_MARKERS, CANON_STATUSES, CHRONICLES_CONTENT_POLICY, SOURCE_RELIABILITIES,
-  getCanonMarker, isCanonStatus, isCreatorApproved, isStatusVisible,
+  CANON_MARKERS, CANON_STATUSES, CHRONICLES_CONTENT_POLICY, CHRONICLES_LOAD_FAILURE, SOURCE_RELIABILITIES,
+  getCanonMarker, getChroniclesLoadFailure, isCanonStatus, isCreatorApproved, isStatusVisible,
 } from "./status";
 import type { CanonStatus, ContentPolicy } from "./status";
 import type { ChronicleEntry, ChronicleLabel, ChronicleRecord } from "./types";
@@ -17,6 +17,13 @@ const OFF: ContentPolicy = { showUnapproved: false };
 const ON: ContentPolicy = { showUnapproved: true };
 const MALFORMED_POLICIES = [{}, null, undefined, { showUnapproved: "yes" }, { showUnapproved: 1 }] as unknown as ContentPolicy[];
 const APPROVED_IDS = CHRONICLE_RECORDS.map((record) => record.id);
+
+test("both fallback states share honest failure and re-entry guidance, hidden during normal loading and readiness", () => {
+  for (const load of ["flat", "failed"] as const) assert.equal(getChroniclesLoadFailure(load), CHRONICLES_LOAD_FAILURE);
+  for (const load of ["loading", "ready"] as const) assert.equal(getChroniclesLoadFailure(load), null);
+  assert.match(CHRONICLES_LOAD_FAILURE, /Records remain available/);
+  assert.match(CHRONICLES_LOAD_FAILURE, /Return Home and reopen Chronicles to retry/);
+});
 
 // Development fixtures for these tests only: never content and never shipped.
 const fixture = (change: Partial<ChronicleEntry> = {}): ChronicleEntry => ({

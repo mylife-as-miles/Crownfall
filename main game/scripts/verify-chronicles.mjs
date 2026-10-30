@@ -64,6 +64,7 @@ const existingChrome = `${await readFile("src/Showcase.tsx", "utf8")}\n${await r
 for (const text of chrome) assert.ok(existingChrome.includes(`aria-label="${text}"`) || existingChrome.includes(`>${text}<`), `${text} is existing menu chrome`);
 const approvedText = [
   CHRONICLES_TITLE, CHRONICLES_MAP.alt,
+  status.CHRONICLES_LOAD_FAILURE,
   ...CHRONICLE_EXHIBITS.map((exhibit) => exhibit.title),
   ...Object.values(CHRONICLE_LABELS).flatMap((label) => [label.name, label.meaning]),
   ...registry.getChronicleEntries(POLICY).flatMap((entry) => [entry.title, entry.body]),
@@ -781,6 +782,9 @@ await phase("flat fallback (WebGL disabled)", async () => {
   try {
     await ui.enter();
     await ui.ready("flat");
+    const feedback = page.locator(".chronicles-failure");
+    assert.equal(await feedback.isVisible(), true, "the flat fallback explains the failure and re-entry retry");
+    assert.equal(await feedback.textContent(), status.CHRONICLES_LOAD_FAILURE);
     const box = await page.locator(".chronicles-flat-image").evaluate((image) => {
       const rect = image.getBoundingClientRect();
       return { left: rect.left, top: rect.top, width: rect.width, height: rect.height, naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight, complete: image.complete, alt: image.alt };

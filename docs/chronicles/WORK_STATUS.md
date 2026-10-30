@@ -1,5 +1,53 @@
 # Chronicles — work status
 
+## Current checkpoint — 30 October 2026
+
+The inherited branch snapshot is `d497a41`. The recovery below is ready for review; it does not
+complete M1. The older M0 audit and M1 plan are retained below as historical context, including
+their original component tables, failures and open gates. The shared status layer, registry,
+scene-state reducer, blueprint/kernel/materials and desktop/Quest integration scaffolds already
+exist; both runtime adapters still use the interim Atlas monument rather than the complete hall.
+
+- A rejected Quest map load now reaches the shared failed state, ends loading, releases partial
+  objects and retries on re-entry. Late callbacks cannot restore a closed visit or fail a newer
+  one, and readiness follows the texture upload.
+- Both platforms show one shared, ordinary interface notice with honest Home/reopen retry guidance.
+  Quest markup was regenerated. This focused error feedback extends the historical M1 no-new-words
+  plan; it adds no lore and leaves the approved records and supplied artwork unchanged.
+- The delivered map hashes were already correct at the inherited tip. No artwork or hash repair
+  was needed. The older framing and bare-ground failure entries below are historical; this recovery
+  did not rerun the unrelated motion or performance suites.
+- Fresh checks pass: both typechecks and production builds; 121 Quest/shared tests; sync with 303
+  generated elements and 72 identical mirrored assets; the private content check; and diff checks.
+- [Quest recovery evidence](../../main-game-vr/artifacts/chronicles/recovery-2026-10-30/verification.json)
+  proves an active emulated immersive session with controllers disconnected: a real hand ray and
+  pinch enters the failed archive, its shared notice is visible/unclipped, records and Back remain
+  usable, and hand re-entry reaches ready before a real map marker opens its record. The fault is
+  explicitly a one-shot loader rejection, not a network failure. Its preparation callback returned
+  before CLI hand commands; the original loader was restored afterwards. Low quality, motion off,
+  a development framebuffer scale of 0.25 and an upward head pose during pinches are recorded
+  software-rendering accommodations. The managed runtime was stopped.
+- [Desktop fallback evidence](../../main%20game/artifacts/chronicles/recovery-2026-10-30/desktop-fallback-verification.json)
+  passes at 1280×720 and 844×390: the shared notice is visible with no clipping, control/record
+  overlap or viewport overflow; the approved record is exact; Back returns Home. Only the deliberately
+  unavailable WebGL context reports expected errors. The preview server was stopped.
+
+Reproduction: from `main game`, serve the production build and run
+`CROWNFALL_TEST_URL=http://localhost:5196 node scripts/verify-chronicles-fallback.mjs`.
+For the bounded Quest loader seam, use `scripts/chronicles-loader-probe.mjs` through the managed
+`browser run` command with `CROWNFALL_MAP_PROBE=arm`, then actual hand input and state/UI queries;
+use `status` and `restore` for its counter evidence and cleanup. Each callback must return before
+the next CLI command. This script contains only the public test seam, not private reference material.
+
+The complete hall, remaining collections, G1/G2/M1 critic acceptance, broader allocation/performance
+gates and physical Quest comfort/tracking/GPU validation remain open. These checks establish the
+bounded recovery and desktop/Quest feedback parity, not full archive completion.
+The recovered XR map extends below its capture edge and the SDK overlay covers part of the lower
+image. The compact review found no new overlap or theme defect, but these captures do not certify
+whole-map framing, fine text or physical comfort.
+
+## Historical M0 audit and M1 plan
+
 *The Archive of Ash & Aether (working presentation title). Lead architect, end of M0, 29 October 2026.*
 
 Read this file first after any context loss or in a new session, then

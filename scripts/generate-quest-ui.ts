@@ -11,6 +11,7 @@ import {
   CHRONICLE_EXHIBITS, CHRONICLE_LABELS, CHRONICLE_RECORDS, CHRONICLES_TITLE,
   getChronicleRecords, getChronicleShortTitle, getHotspotRecords,
 } from '../shared/chronicles/content.ts';
+import { CHRONICLES_LOAD_FAILURE } from '../shared/chronicles/status.ts';
 import {
   ARENAS, CHAPTERS, HOME_CONTENT, NAV_TABS, PLAY_CARDS,
   SETTINGS_CATEGORIES, SHOWCASE_CATEGORIES, getModalContent,
@@ -302,7 +303,9 @@ export async function generateQuestUI(destination?: string): Promise<void> {
     `${rect(loading.x, loading.y, loading.width, loading.height)} border-radius: ${loading.height / 2}; background-color: #39352a; display: none; pointer-events: none;`);
   const chronicles = view('View_Chronicles', text(CHRONICLES_TITLE, 128, 81.744, chronicleTitleWidth - 24, 24, 'chronicles-title', 'Chronicles_Title')
     + node('div', undefined, '', '', `${rect(128 + chronicleTitleWidth - 13, 82, 1, 24)} background-color: #39352a; pointer-events: none;`)
-    + exhibitTabs + loadingBar + atlas + interregnum + laws + record);
+    + exhibitTabs + loadingBar
+    + text(CHRONICLES_LOAD_FAILURE, 128, 120, 1024, 24, 'body', QUEST_CHRONICLE_IDS.failure, 'display: none; font-size: 16; line-height: 1.2; color: #dfd2b6; pointer-events: none;')
+    + atlas + interregnum + laws + record);
 
   let navLeft = 128;
   const nav = NAV_TABS.map((tab, index) => {
