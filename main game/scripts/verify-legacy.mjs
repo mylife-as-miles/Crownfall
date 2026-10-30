@@ -1161,9 +1161,9 @@ try {
     await openLegacyByKeyboard(page);
     assert.equal(await legacyMode(page), "recovery");
     assert.match(await page.locator("[data-recovery]").innerText(), /The banner rolls cannot be read[\s\S]*left untouched/i);
-    await focusIs(page, () => document.activeElement?.textContent?.trim() === "Raise a new banner");
+    await focusIs(page, () => document.activeElement?.textContent?.trim() === "Continue as a guest");
     assert.equal(await storedSave(page), corrupt);
-    await page.getByRole("button", { name: "Continue as a guest", exact: true }).click();
+    await page.keyboard.press("Enter");
     await waitMode(page, "founding");
     assert.equal(await page.locator("[data-session-label]").innerText(), GUEST_LABEL);
     assert.equal(await storedSave(page), corrupt);
@@ -1172,6 +1172,19 @@ try {
     await openLegacyByKeyboard(page);
     assert.equal(await legacyMode(page), "recovery");
     await page.getByRole("button", { name: "Raise a new banner", exact: true }).click();
+    await focusIs(page, () => document.activeElement?.closest("dialog") !== null && document.activeElement?.textContent?.trim() === "BBack");
+    await page.keyboard.press("Enter");
+    await page.locator("dialog.legacy-dialog[open]").waitFor({ state: "detached" });
+    assert.equal(await legacyMode(page), "recovery", "the destructive confirmation defaults to Back");
+    assert.equal(await storedSave(page), corrupt);
+    await page.getByRole("button", { name: "Raise a new banner", exact: true }).click();
+    await page.locator("dialog.legacy-dialog[open]").waitFor();
+    await page.evaluate(() => { if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); });
+    await page.keyboard.press("Enter");
+    await page.locator("dialog.legacy-dialog[open]").waitFor({ state: "detached" });
+    assert.equal(await legacyMode(page), "recovery", "activation after focus loss follows the safe default");
+    assert.equal(await storedSave(page), corrupt);
+    await page.getByRole("button", { name: "Raise a new banner", exact: true }).click();
     await page.locator("dialog.legacy-dialog[open]").getByRole("button", { name: /Raise a new banner/ }).click();
     await waitMode(page, "founding");
     assert.equal(await page.locator("[data-session-label]").count(), 0, "a replacement founding is persistent, not a guest");
@@ -1179,7 +1192,7 @@ try {
     await foundByPointer(page);
     const replaced = JSON.parse(await storedSave(page));
     assert.ok(replaced.banner && replaced.schemaVersion === 1);
-    record("A corrupt save opens the recovery panel and stays untouched (guest or abandoned founding); Raise a new banner asks for confirmation and only the new banner's first save replaces it");
+    record("Corrupt-save recovery defaults to Guest; replacement defaults to Back even after deliberate focus loss; the old bytes survive Guest and cancellation, and only explicitly raising the confirmed replacement writes a new save");
     await context.close();
   }
   if (section("recovery")) {
@@ -1188,8 +1201,20 @@ try {
     await openLegacyByKeyboard(page);
     assert.equal(await page.locator("[data-recovery]").getAttribute("data-recovery"), "future-version");
     assert.match(await page.locator("[data-recovery]").innerText(), /Saved by a newer version/i);
+    await focusIs(page, () => document.activeElement?.textContent?.trim() === "Continue as a guest");
     assert.equal(await storedSave(page), future);
-    record("A save from a newer schema is refused with its own explanation and left untouched");
+    await page.getByRole("button", { name: "Raise a new banner", exact: true }).click();
+    await focusIs(page, () => document.activeElement?.closest("dialog") !== null && document.activeElement?.textContent?.trim() === "BBack");
+    await page.keyboard.press("Enter");
+    await page.locator("dialog.legacy-dialog[open]").waitFor({ state: "detached" });
+    assert.equal(await legacyMode(page), "recovery");
+    assert.equal(await storedSave(page), future);
+    await page.getByRole("button", { name: "Continue as a guest", exact: true }).click();
+    await waitMode(page, "founding");
+    await foundByPointer(page);
+    assert.equal(await storedSave(page), future, "a fully raised guest banner cannot overwrite the future save");
+    assert.deepEqual(await writes(page), [], "neither cancellation nor guest founding writes the stored record");
+    record("A future-schema save defaults to Guest, cancelling its replacement keeps its exact bytes, and a fully completed guest founding never writes it");
     await context.close();
   }
 

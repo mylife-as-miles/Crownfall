@@ -276,7 +276,7 @@ export class QuestLegacyExperience {
       this.updateBrowserLabel();
       this.beginFounding();
     });
-    this.bind('Legacy_RecoveryNew', () => this.beginFounding());
+    this.bind('Legacy_RecoveryNew', this.flowEvent({ type: 'request-replace' }));
     for (const nationId of NATION_ORDER) this.bind(legacyNationId(nationId), this.flowEvent({ type: 'choose-nation', nationId }));
     this.bind('Legacy_FoundingHome', () => this.actions.home());
     this.bind('Legacy_NationNext', this.flowEvent({ type: 'founding-step', view: 'name' }));
@@ -326,8 +326,11 @@ export class QuestLegacyExperience {
       });
     }
     this.bind('Legacy_ResetOpen', this.flowEvent({ type: 'request-reset' }));
-    this.bind('Legacy_ResetCancel', this.flowEvent({ type: 'cancel-reset' }));
-    this.bind('Legacy_ResetConfirm', () => this.dissolveBanner());
+    this.bind('Legacy_ResetCancel', () => this.dispatchFlow({ type: this.flow.view === 'replace' ? 'cancel-replace' : 'cancel-reset' }));
+    this.bind('Legacy_ResetConfirm', () => {
+      if (this.flow.view === 'replace') this.beginFounding();
+      else if (this.flow.view === 'reset') this.dissolveBanner();
+    });
     for (const id of ['Legacy_HallBack', 'Legacy_MusterBack', 'Legacy_RecordBack', 'Legacy_HeraldBack']) this.bind(id, this.flowEvent({ type: 'overview' }));
     this.bind('Legacy_MusterChoose', () => this.openNomination());
     this.bind('Legacy_NominateBack', this.flowEvent({ type: 'close-nominate' }));

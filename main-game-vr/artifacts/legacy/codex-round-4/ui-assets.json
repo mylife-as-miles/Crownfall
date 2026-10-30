@@ -1,0 +1,22 @@
+{
+  "assets": [
+    {
+      "id": "crownfall-menu",
+      "kind": "uikitml",
+      "name": "Crownfall Menu",
+      "url": "/ui/menu.uikitml"
+    },
+    {
+      "id": "crownfall-legacy",
+      "kind": "uikitml",
+      "name": "My Legacy Panel",
+      "url": "/ui/legacy.uikitml"
+    },
+    {
+      "id": "crownfall-legacy-dock",
+      "kind": "uikitml",
+      "name": "My Legacy Dock",
+      "url": "/ui/legacy-dock.uikitml"
+    }
+  ]
+}

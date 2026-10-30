@@ -19,7 +19,7 @@ export type LegacyRecordTab = 'conflicts' | 'unresolved' | 'ledger';
 export type LegacyKeyboardTarget = 'name' | 'motto';
 export type LegacyFlowView =
   | 'loading' | 'recovery' | LegacyFoundingView | 'raised' | 'aftermath' | 'overview' | LegacyInspectorView
-  | 'nominate' | 'notice' | 'accept' | 'awaiting' | 'reset';
+  | 'nominate' | 'notice' | 'accept' | 'awaiting' | 'reset' | 'replace';
 
 export const LEGACY_FOUNDING_VIEWS: readonly LegacyFoundingView[] = ['nation', 'name', 'keyboard', 'arms', 'confirm'];
 export const LEGACY_RECORD_TABS: readonly LegacyRecordTab[] = ['conflicts', 'unresolved', 'ledger'];
@@ -102,7 +102,9 @@ export type LegacyFlowEvent =
   | { type: 'show-awaiting' }
   | { type: 'cancel-accept' }
   | { type: 'request-reset' }
-  | { type: 'cancel-reset' };
+  | { type: 'cancel-reset' }
+  | { type: 'request-replace' }
+  | { type: 'cancel-replace' };
 
 export function createFoundingDraft(nationId: NationId, seed: number): LegacyFoundingDraftState {
   return { nationId, name: '', motto: '', heraldry: defaultHeraldry(nationId), seed: seed >>> 0, suggestionPage: 0 };
@@ -293,6 +295,10 @@ export function reduceLegacyFlow(flow: LegacyFlowState, event: LegacyFlowEvent):
   switch (event.type) {
     case 'show':
       return { ...flow, view: event.view, landmark: null, noticeId: null };
+    case 'request-replace':
+      return flow.view === 'recovery' ? withView(flow, 'replace') : flow;
+    case 'cancel-replace':
+      return flow.view === 'replace' ? withView(flow, 'recovery') : flow;
     case 'begin-founding':
       return {
         ...flow,

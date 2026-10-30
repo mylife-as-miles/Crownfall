@@ -26,8 +26,8 @@ export const RecoveryPanel = forwardRef<HTMLElement, RecoveryPanelProps>(functio
       </details>
       <p className="legacy-fineprint">{future ? LEGACY_COPY.futureSave.replaceNote : copy.startNewNote}</p>
       <footer className="legacy-card-actions">
-        <button type="button" className="legacy-button" data-nav onClick={onGuest}>{copy.guest}</button>
-        <button type="button" className="legacy-button legacy-button--primary" data-nav data-nav-default onClick={onReplace}>{copy.startNew}</button>
+        <button type="button" className="legacy-button" data-nav data-nav-default onClick={onGuest}>{copy.guest}</button>
+        <button type="button" className="legacy-button legacy-button--primary" data-nav onClick={onReplace}>{copy.startNew}</button>
       </footer>
     </div>
   </section>;

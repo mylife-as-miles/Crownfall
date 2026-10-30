@@ -1,0 +1,376 @@
+{
+  "passed": true,
+  "startedAt": "2026-10-30T10:43:23.538Z",
+  "physicalHeadset": false,
+  "input": "Active IWER hand rays/pinches and fingertip presses, both controllers disconnected",
+  "developmentFramebufferScale": 0.25,
+  "checks": [
+    "corrupt: explicit replacement confirmation, no mirrored destructive action, fingertip Back preserves stored bytes",
+    "corrupt: the default fingertip action starts a nonpersistent guest session",
+    "future: explicit replacement confirmation, no mirrored destructive action, fingertip Back preserves stored bytes",
+    "Future save: completing the safe guest path never writes the newer stored record",
+    "future: the default fingertip action starts a nonpersistent guest session",
+    "Only an explicitly confirmed and completed replacement founding writes a new saved banner",
+    "Normal dissolution keeps its own labels and safe Back; the preserved Play exit works"
+  ],
+  "captures": [
+    {
+      "kind": "corrupt",
+      "file": "artifacts/legacy/codex-round-4/corrupt-replacement.png",
+      "metadata": {
+        "generation": 6,
+        "id": "tab-mvuu22m0-29zab8",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    },
+    {
+      "kind": "future",
+      "file": "artifacts/legacy/codex-round-4/future-replacement.png",
+      "metadata": {
+        "generation": 7,
+        "id": "tab-mvuu22m0-29zab8",
+        "outerUrl": "https://localhost:8081/",
+        "url": "https://localhost:8081/",
+        "workspaceFramed": true,
+        "downscaled": false,
+        "height": 493,
+        "mimeType": "image/png",
+        "width": 780
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "id": "Btn_Resume",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_RecoveryNew",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "replace",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockBack",
+      "device": "hand-right",
+      "kind": "poke",
+      "attempt": 1,
+      "contactMs": 302.6,
+      "distanceFromEye": 0.61,
+      "legacyView": "recovery"
+    },
+    {
+      "id": "Legacy_DockPrimary",
+      "device": "hand-right",
+      "kind": "poke",
+      "attempt": 1,
+      "contactMs": 334.7,
+      "distanceFromEye": 0.61,
+      "legacyView": "nation"
+    },
+    {
+      "id": "Btn_Resume",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_RecoveryNew",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "replace",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockBack",
+      "device": "hand-right",
+      "kind": "poke",
+      "attempt": 1,
+      "contactMs": 443,
+      "distanceFromEye": 0.61,
+      "legacyView": "recovery"
+    },
+    {
+      "id": "Legacy_DockPrimary",
+      "device": "hand-right",
+      "kind": "poke",
+      "attempt": 1,
+      "contactMs": 265.4,
+      "distanceFromEye": 0.61,
+      "legacyView": "nation"
+    },
+    {
+      "id": "Legacy_NationNext",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "name",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Suggestion_0",
+      "device": "hand-left",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "name",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_NameNext",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "arms",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ArmsNext",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "confirm",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ConfirmRaise",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "raised",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockPrimary",
+      "device": "hand-right",
+      "kind": "poke",
+      "attempt": 1,
+      "contactMs": 262.2,
+      "distanceFromEye": 0.61,
+      "legacyView": "overview"
+    },
+    {
+      "id": "Btn_Resume",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "home"
+    },
+    {
+      "id": "Home_legacy",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_RecoveryNew",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "replace",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ResetConfirm",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "nation",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_NationNext",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "name",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_Suggestion_0",
+      "device": "hand-left",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "name",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_NameNext",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "arms",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ArmsNext",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "confirm",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ConfirmRaise",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "raised",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockPrimary",
+      "device": "hand-right",
+      "kind": "poke",
+      "attempt": 1,
+      "contactMs": 311,
+      "distanceFromEye": 0.61,
+      "legacyView": "overview"
+    },
+    {
+      "id": "Legacy_Landmark_banner-hall",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "banner-hall",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_ResetOpen",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "reset",
+      "screen": "legacy"
+    },
+    {
+      "id": "Legacy_DockBack",
+      "device": "hand-right",
+      "kind": "poke",
+      "attempt": 1,
+      "contactMs": 280.8,
+      "distanceFromEye": 0.61,
+      "legacyView": "banner-hall"
+    },
+    {
+      "id": "Legacy_DockPlay",
+      "device": "hand-right",
+      "kind": "ray",
+      "attempt": 1,
+      "holdSeconds": 0.01,
+      "legacyView": "banner-hall",
+      "screen": "play"
+    }
+  ],
+  "cliRetries": [],
+  "final": {
+    "screen": "play",
+    "entered": true,
+    "paused": false,
+    "pauseReason": "",
+    "textScale": 100,
+    "panelDistance": 1.5,
+    "panelHeight": "middle",
+    "posture": "seated",
+    "leftTracked": true,
+    "rightTracked": true,
+    "legacyLoad": "ready",
+    "legacyActive": false,
+    "legacyView": "banner-hall",
+    "legacySession": "stored",
+    "legacyPersistent": true,
+    "legacySaved": true,
+    "legacySave": "saved",
+    "legacyLabel": "",
+    "legacyPreview": "",
+    "legacyFounded": true,
+    "legacyBanner": "House Morvanel",
+    "legacyNation": "korvenia",
+    "legacyDraftName": "House Morvanel",
+    "legacyMotto": "",
+    "legacyHeraldry": "Sable, an eclipse or",
+    "legacyRepresentative": "",
+    "legacyFile": "",
+    "legacyMemberChoice": "",
+    "legacyFileChoice": "",
+    "legacyLandmark": "banner-hall",
+    "legacyHover": "",
+    "legacySelectSource": "list",
+    "legacyNotice": "",
+    "legacyChallenge": "unread",
+    "legacyRecordTab": "conflicts",
+    "legacyChronicle": 1,
+    "legacyUnread": 2,
+    "legacyAftermath": 0,
+    "legacyMirrorBack": "Legacy_HallBack",
+    "legacyMirrorPrimary": "",
+    "legacyEnvironment": "standin",
+    "legacyEnvironmentReady": true,
+    "legacyRecenters": 0,
+    "legacyMessage": "",
+    "legacyPanelTopDegrees": 11.702901840209961,
+    "legacyPanelBottomDegrees": -19.29004669189453,
+    "legacyPanelDistance": 1.403566837310791,
+    "legacyTrayDistance": 0.6000000238418579,
+    "legacyTrayElevationDegrees": -47.36803436279297,
+    "legacyTrayTouch": false,
+    "legacyTrayTouchGateDegrees": -25.29004669189453
+  },
+  "originalSaveRestored": true,
+  "finishedAt": "2026-10-30T10:48:36.385Z"
+}

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "environment": "stand-in",
+  "scope": "Playwright against the dev or preview server with model=none except the sorcerer round-trip check. Landmarks are driven through their DOM labels, so the suite runs against the stand-in or the environment workflow's renderer. Controller input is a mocked standard Gamepad API, not physical controller validation. WebGL is software-rendered (SwiftShader); no frame timing is implied.",
+  "checks": [
+    "?legacyPreview=captive shows the persistent preview label and title, at most two aftermath messages with the War Record note (Back sets them aside), the captive state, and makes no storage writes even after interaction",
+    "Acknowledge (Enter/A) dismisses the aftermath in the session state; preview acknowledgements are still never written",
+    "An unknown preview id explains itself, lists the real development previews and touches no storage",
+    "?legacy=fresh starts a labelled guest founding that ignores and never writes the stored banner; accepting the challenge before a Pawn is named states the readiness gap and offers Name your Pawn at the Muster Grounds, which opens the Muster Grounds on Nominate",
+    "Corrupt-save recovery defaults to Guest; replacement defaults to Back even after deliberate focus loss; the old bytes survive Guest and cancellation, and only explicitly raising the confirmed replacement writes a new save",
+    "A future-schema save defaults to Guest, cancelling its replacement keeps its exact bytes, and a fully completed guest founding never writes it",
+    "Keyboard and pointer entry release the visible overview label before hiding it, focus the primary action without an extra stop, and rapid cycling/Back/re-entry/Tab retain the latest visible focus scope",
+    "No JavaScript or console errors"
+  ],
+  "layouts": [],
+  "errors": []
+}

@@ -38,3 +38,17 @@ The round-2 vector-image experiment was reverted after repeated navigation regre
 [Round-3 desktop evidence and captures](../../main%20game/artifacts/legacy/codex-round-3/README.md) · [Round-2 desktop evidence](../../main%20game/artifacts/legacy/codex-round-2/README.md) · [Quest evidence and review PDF](../../main-game-vr/artifacts/legacy/codex-round-2/README.md)
 
 Branch integration, PR creation and publication remain owner decisions under the handover. No branch merge, deployment or new PR is part of this checkpoint.
+
+## Round 4 — recovery and failed creation
+
+Recovery now defaults to Guest on desktop and in the Quest touch tray. Desktop replacement defaults to Back, including after focus loss. Quest replacement has a separate confirmation using the existing confirmation panel; its tray mirrors only Back. Opening or cancelling replacement does not write storage. Completing a guest founding preserves a newer save, and only an explicitly confirmed, completed replacement writes a new banner. Normal dissolution restores its own labels after the reused panel closes.
+
+Quest environment factories now run under isolated entity owners. A rejected factory releases its attached partial resources and remaining ray/poke entities before fallback. Tests use real SDK entities, including recycled entity generations, deduplicated resources and shader-uniform textures. Existing sibling resources and marked SDK-owned assets retain their original owners. Resources allocated outside the attempt tree or borrowed without an ownership marker remain the factory's responsibility; this is not a universal leak guarantee.
+
+A bounded module-import retry keeps successful imports and uses the same-origin URL reported by a recognized browser download error. It permits two fresh URLs, then asks for reload; unknown errors are not retried indefinitely. A panel-document failure does not discard a successfully loaded module. The generic helper remains outside the lazy Legacy directory, and both production lazy-graph checks still pass.
+
+Fresh checks: **76 shared tests**, **143 Quest/shared tests**, both TypeScript/production builds, generated-content/asset sync and lazy graphs pass. The desktop affected browser run passes eight groups with no JavaScript or console errors. Active Quest browser emulation passes seven recovery groups with both controllers disconnected, using both hand rays and fingertip presses. The original stored save is restored after verification. These counts overlap and must not be added together.
+
+Three new domain regression guards check repeated selector purity, inspector reads that cannot heal/release/consume aftermath, and renderer/founding-preview isolation. They establish those tested paths, not a universal static purity proof. No protected chess, Play, generated UI or approved menu artwork was changed.
+
+[Round-4 recovery and retry evidence](../../main-game-vr/artifacts/legacy/codex-round-4/README.md) · [Desktop affected browser result](../../main%20game/artifacts/legacy/codex-round-4/desktop/verification.json). Earlier performance and physical-headset acceptance gates above remain open; this round does not claim new timing or headset passes.

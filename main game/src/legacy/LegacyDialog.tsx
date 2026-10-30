@@ -68,10 +68,10 @@ export const LegacyDialog = forwardRef<LegacyDialogHandle, LegacyDialogProps>(fu
       activate() {
         const active = document.activeElement;
         if (active instanceof HTMLButtonElement && buttons().includes(active)) active.click();
-        else onConfirm();
+        else (destructive ? cancelRef.current : confirmRef.current)?.click();
       },
     };
-  }, [onConfirm]);
+  }, [destructive]);
 
   return <dialog
     ref={dialogRef}

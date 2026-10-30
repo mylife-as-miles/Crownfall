@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-30",
+  "physicalHeadset": false,
+  "checks": [
+    {
+      "check": "Shared domain",
+      "passed": 76,
+      "failed": 0,
+      "countsOverlap": true
+    },
+    {
+      "check": "Quest and shared",
+      "passed": 143,
+      "failed": 0,
+      "countsOverlap": true
+    },
+    {
+      "check": "Desktop production build",
+      "passed": true,
+      "advisories": "Existing large-chunk warnings; Quest also has third-party annotation warnings."
+    },
+    {
+      "check": "Quest production build",
+      "passed": true,
+      "advisories": "Existing large-chunk warnings; Quest also has third-party annotation warnings."
+    },
+    {
+      "check": "Generated UI/content/assets sync",
+      "passed": true,
+      "legacyElements": 499,
+      "legacyControls": 133,
+      "menuElements": 236,
+      "identicalAssetCopies": 21,
+      "menuResources": 31
+    },
+    {
+      "check": "Production lazy graph",
+      "passed": true,
+      "apps": [
+        {
+          "app": "main game",
+          "startupModules": 1,
+          "fixtureChunk": "fixtures-CRU07vdn.js",
+          "passed": true
+        },
+        {
+          "app": "main-game-vr",
+          "startupModules": 1,
+          "fixtureChunk": "fixtures-Dil98nM-.js",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

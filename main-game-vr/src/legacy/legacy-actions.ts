@@ -61,7 +61,7 @@ export interface LegacyMirrorCandidates {
 }
 
 export const LEGACY_VIEW_MIRRORS: Readonly<Partial<Record<LegacyViewId, LegacyMirrorCandidates>>> = {
-  LegacyView_Recovery: { back: ['Legacy_RecoveryHome'], primary: ['Legacy_RecoveryNew'] },
+  LegacyView_Recovery: { back: ['Legacy_RecoveryHome'], primary: ['Legacy_RecoveryGuest'] },
   LegacyView_Nation: { back: [], primary: ['Legacy_NationNext'] },
   LegacyView_Name: { back: ['Legacy_NameBack'], primary: ['Legacy_NameNext'] },
   LegacyView_Keyboard: { back: ['Legacy_KeyboardCancel'], primary: ['Legacy_KeyboardDone'] },

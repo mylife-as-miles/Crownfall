@@ -107,6 +107,7 @@ export interface LegacyDockModel {
 const VIEW_ELEMENT: Readonly<Record<LegacyFlowState['view'], LegacyViewId>> = {
   loading: 'LegacyView_Loading',
   recovery: 'LegacyView_Recovery',
+  replace: 'LegacyView_Reset',
   nation: 'LegacyView_Nation',
   name: 'LegacyView_Name',
   keyboard: 'LegacyView_Keyboard',
@@ -244,6 +245,14 @@ export function buildLegacyPanelModel(input: LegacyModelInput): LegacyPanelModel
       for (const id of ['Legacy_RecoveryHome', 'Legacy_RecoveryGuest', 'Legacy_RecoveryNew']) model.controls[id] = control();
       break;
     }
+    case 'replace':
+      model.texts.Legacy_Title = LEGACY_COPY.newBanner.title;
+      model.texts.Legacy_Reset_Body = session.reason === 'future-version' ? LEGACY_COPY.futureSave.replaceNote : LEGACY_COPY.invalidSave.startNewNote;
+      model.texts.Legacy_ResetConfirm_Label = LEGACY_COPY.invalidSave.startNew;
+      model.texts.Legacy_ResetCancel_Label = LEGACY_COPY.founding.back;
+      model.controls.Legacy_ResetCancel = control();
+      model.controls.Legacy_ResetConfirm = control();
+      break;
     case 'nation':
       model.texts.Legacy_Title = LEGACY_COPY.founding.title;
       model.texts.Legacy_Subtitle = stepSubtitle(flow);
@@ -439,6 +448,9 @@ function buildBannerholdView(model: LegacyPanelModel, input: LegacyModelInput): 
     case 'reset':
       model.texts.Legacy_Title = LEGACY_COPY.reset.title;
       model.texts.Legacy_Subtitle = banner.name;
+      model.texts.Legacy_Reset_Body = LEGACY_COPY.reset.body;
+      model.texts.Legacy_ResetConfirm_Label = LEGACY_COPY.reset.confirm;
+      model.texts.Legacy_ResetCancel_Label = LEGACY_COPY.reset.cancel;
       model.controls.Legacy_ResetCancel = control();
       model.controls.Legacy_ResetConfirm = control();
       break;
@@ -883,8 +895,8 @@ export function buildLegacyDockModel(input: LegacyModelInput, panel: LegacyPanel
     texts: {
       Legacy_DockLabel: dockLabel(input),
       Legacy_DockStatus: status,
-      Legacy_DockBack_Label: back ? LEGACY_ACTION_LABELS[back] : '',
-      Legacy_DockPrimary_Label: primary ? LEGACY_ACTION_LABELS[primary] : '',
+      Legacy_DockBack_Label: back ? panel.texts[`${back}_Label`] ?? LEGACY_ACTION_LABELS[back] : '',
+      Legacy_DockPrimary_Label: primary ? panel.texts[`${primary}_Label`] ?? LEGACY_ACTION_LABELS[primary] : '',
     },
     controls: {
       Legacy_DockBack: mirrored(back),

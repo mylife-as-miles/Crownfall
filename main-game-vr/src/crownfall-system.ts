@@ -15,6 +15,7 @@ import { QUEST_UI_LAYOUT, QUEST_VIEW_IDS, QUEST_SETTING_ROWS } from './ui-contra
 import { CrownfallAtmosphere } from './atmosphere.js';
 // Type-only: My Legacy is a separate chunk, imported the first time its route opens.
 import type { LegacyHostActions, QuestLegacyExperience } from './legacy/legacy-experience.js';
+import { RetryableModuleImport } from './retryable-import.js';
 
 const SELECTION_GROUPS = {
   home: HOME_CONTENT.map(item => `Home_${item.action}`),
@@ -45,6 +46,11 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
   private legacyActions!: LegacyHostActions;
   /** My Legacy is loaded on first entry: idle until then, loading while its chunk and panels arrive. */
   private legacyLoad: 'idle' | 'loading' | 'ready' | 'failed' = 'idle';
+  private readonly legacyModule = new RetryableModuleImport(
+    () => import('./legacy/legacy-experience.js'),
+    (url): Promise<typeof import('./legacy/legacy-experience.js')> => import(/* @vite-ignore */ url),
+    () => window.location.href,
+  );
   private legacyStatus = '';
   private heroStatus = '';
   /** False while My Legacy replaces the menu views, sorcerer and atmosphere. */
@@ -333,7 +339,7 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
     this.legacyLoad = 'loading';
     this.legacyStatus = 'Preparing My Legacy...';
     performance.mark('crownfall:legacy-requested');
-    import('./legacy/legacy-experience.js')
+    this.legacyModule.load()
       .then(({ QuestLegacyExperience }) => QuestLegacyExperience.create(this.world, this.stateEntity, this.legacyActions))
       .then((legacy) => {
         if (!this.alive) { legacy.dispose(); return; }
@@ -348,7 +354,9 @@ export class CrownfallMenuSystem extends createSystem({ state: { required: [Crow
         console.error('[My Legacy] My Legacy could not be loaded.', error);
         if (!this.alive) return;
         this.legacyLoad = 'failed';
-        this.legacyStatus = 'My Legacy could not open. Select My Legacy again to retry.';
+        this.legacyStatus = this.legacyModule.reloadRequired
+          ? 'My Legacy could not open. Reload Crownfall to retry.'
+          : 'My Legacy could not open. Select My Legacy again to retry.';
         if (this.state.screen === 'legacy') this.dispatch({ type: 'back' });
         // A download can fail after tracking loss or an explicit Pause. Leave
         // the failed route there too; otherwise the paused Legacy view retries

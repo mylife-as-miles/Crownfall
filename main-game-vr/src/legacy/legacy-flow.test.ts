@@ -403,6 +403,35 @@ test('the tray says "saved" only when the banner shown is on this device, and mi
   }
 });
 
+test('recovery mirrors the guest path and replacement requires a separate cancellable confirmation', () => {
+  const state = createLegacyState();
+  const recovery = reduceLegacyFlow(createLegacyFlow('korvenia'), { type: 'show', view: 'recovery' });
+  const session: LegacySessionInfo = { ...NEW, kind: 'recovery', reason: 'future-version', error: 'Newer schema' };
+  const recoveryInput = input(state, recovery, { session });
+  assert.equal(buildLegacyDockModel(recoveryInput).mirror.primary, 'Legacy_RecoveryGuest');
+  assert.equal(buildLegacyDockModel(recoveryInput).texts.Legacy_DockPrimary_Label, LEGACY_COPY.invalidSave.guest);
+  const requested = reduceLegacyFlow(recovery, { type: 'request-replace' });
+  assert.equal(requested.view, 'replace');
+  assert.equal(requested.draft, recovery.draft, 'requesting replacement has not started or changed a draft');
+  const replaceInput = input(state, requested, { session });
+  const panel = buildLegacyPanelModel(replaceInput);
+  assert.equal(panel.view, 'LegacyView_Reset');
+  assert.equal(panel.texts.Legacy_Title, LEGACY_COPY.newBanner.title);
+  assert.equal(panel.texts.Legacy_Reset_Body, LEGACY_COPY.futureSave.replaceNote);
+  assert.equal(panel.texts.Legacy_ResetConfirm_Label, LEGACY_COPY.invalidSave.startNew);
+  assert.equal(panel.texts.Legacy_ResetCancel_Label, LEGACY_COPY.founding.back);
+  const dock = buildLegacyDockModel(replaceInput, panel);
+  assert.equal(dock.mirror.primary, null, 'replacement is never a mirrored default action');
+  assert.equal(dock.mirror.back, 'Legacy_ResetCancel');
+  assert.equal(dock.texts.Legacy_DockBack_Label, LEGACY_COPY.founding.back, 'the tray matches the confirmation it cancels');
+  assert.equal(reduceLegacyFlow(requested, { type: 'cancel-replace' }).view, 'recovery');
+  assert.equal(reduceLegacyFlow(recovery, { type: 'cancel-replace' }), recovery);
+  const founded = foundedState();
+  const reset = buildLegacyPanelModel(input(founded, reduceLegacyFlow(open(founded, 'banner-hall'), { type: 'request-reset' })));
+  assert.equal(reset.texts.Legacy_Reset_Body, LEGACY_COPY.reset.body);
+  assert.equal(reset.texts.Legacy_ResetConfirm_Label, LEGACY_COPY.reset.confirm, 'normal dissolve never inherits replacement copy');
+});
+
 test('pause replaces the panel until a tracked hand can resume, and keeps the Legacy view underneath', () => {
   const state = foundedState();
   const flow = overviewFlow();

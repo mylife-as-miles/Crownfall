@@ -248,6 +248,7 @@ export const LegacyScreen = forwardRef<LegacyScreenHandle, ResolvedLegacyScreenP
         body: future ? LEGACY_COPY.futureSave.replaceNote : LEGACY_COPY.invalidSave.startNewNote,
         confirmLabel: LEGACY_COPY.invalidSave.startNew,
         cancelLabel: LEGACY_COPY.founding.back,
+        destructive: true,
       },
       confirm: () => {
         setDialog(null);

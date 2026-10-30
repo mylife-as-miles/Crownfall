@@ -1,0 +1,995 @@
+{
+  "ok": true,
+  "data": {
+    "workspaceRoot": "/workspace/Crownfall/main-game-vr",
+    "operation": "browser.logs",
+    "result": [
+      {
+        "timestamp": 1793356329939,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/?__iwsdkManagedWorkspace=[redacted]",
+        "args": [
+          "Frame navigated: https://localhost:8081/?__iwsdkManagedWorkspace=[redacted]"
+        ],
+        "frameUrl": "https://localhost:8081/?__iwsdkManagedWorkspace=[redacted]",
+        "kind": "navigation",
+        "url": "https://localhost:8081/?__iwsdkManagedWorkspace=[redacted]"
+      },
+      {
+        "timestamp": 1793356329960,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793356330897,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793356332125,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356332146,
+        "level": "info",
+        "message": "Frame navigated: about:blank",
+        "args": [
+          "Frame navigated: about:blank"
+        ],
+        "frameUrl": "about:blank",
+        "kind": "navigation",
+        "url": "about:blank",
+        "repeatCount": 2
+      },
+      {
+        "timestamp": 1793356332218,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793356332968,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793356333118,
+        "level": "warn",
+        "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+        "args": [
+          "\"THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356333906,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356339139,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356339140,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356339561,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356339561,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356438887,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793356439354,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793356440298,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356443103,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356443103,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356667281,
+        "level": "warn",
+        "message": "THREE.WebGLRenderer: Can't change size while VR device is presenting.",
+        "args": [
+          "\"THREE.WebGLRenderer: Can't change size while VR device is presenting.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "repeatCount": 3
+      },
+      {
+        "timestamp": 1793356667789,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793356668330,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793356669391,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356674101,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356674102,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356732441,
+        "level": "error",
+        "message": "GET https://localhost:8081/src/legacy/legacy-experience.ts: net::ERR_FAILED",
+        "args": [
+          "GET https://localhost:8081/src/legacy/legacy-experience.ts: net::ERR_FAILED"
+        ],
+        "failure": "net::ERR_FAILED",
+        "frameUrl": "https://localhost:8081/",
+        "kind": "requestfailed",
+        "method": "GET",
+        "resourceType": "script",
+        "url": "https://localhost:8081/src/legacy/legacy-experience.ts"
+      },
+      {
+        "timestamp": 1793356732441,
+        "level": "error",
+        "message": "Failed to load resource: net::ERR_FAILED",
+        "args": [
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "columnNumber": 0,
+        "frameUrl": "https://localhost:8081/src/legacy/legacy-experience.ts",
+        "kind": "console",
+        "lineNumber": 0,
+        "url": "https://localhost:8081/src/legacy/legacy-experience.ts"
+      },
+      {
+        "timestamp": 1793356732479,
+        "level": "error",
+        "message": "[My Legacy] My Legacy could not be loaded. TypeError: Failed to fetch dynamically imported module: https://localhost:8081/src/legacy/legacy-experience.ts",
+        "args": [
+          "\"[My Legacy] My Legacy could not be loaded.\"",
+          "{\"name\":\"TypeError\"}"
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/src/crownfall-system.ts",
+        "kind": "console",
+        "lineNumber": 435,
+        "url": "https://localhost:8081/src/crownfall-system.ts"
+      },
+      {
+        "timestamp": 1793356859600,
+        "level": "warn",
+        "message": "THREE.WebGLRenderer: Can't change size while VR device is presenting.",
+        "args": [
+          "\"THREE.WebGLRenderer: Can't change size while VR device is presenting.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "repeatCount": 3
+      },
+      {
+        "timestamp": 1793356861680,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793356862215,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793356863181,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356867799,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356867800,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793356936029,
+        "level": "error",
+        "message": "GET https://localhost:8081/src/legacy/legacy-experience.ts: net::ERR_FAILED",
+        "args": [
+          "GET https://localhost:8081/src/legacy/legacy-experience.ts: net::ERR_FAILED"
+        ],
+        "failure": "net::ERR_FAILED",
+        "frameUrl": "https://localhost:8081/",
+        "kind": "requestfailed",
+        "method": "GET",
+        "resourceType": "script",
+        "url": "https://localhost:8081/src/legacy/legacy-experience.ts"
+      },
+      {
+        "timestamp": 1793356936029,
+        "level": "error",
+        "message": "Failed to load resource: net::ERR_FAILED",
+        "args": [
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "columnNumber": 0,
+        "frameUrl": "https://localhost:8081/src/legacy/legacy-experience.ts",
+        "kind": "console",
+        "lineNumber": 0,
+        "url": "https://localhost:8081/src/legacy/legacy-experience.ts"
+      },
+      {
+        "timestamp": 1793356936055,
+        "level": "error",
+        "message": "[My Legacy] My Legacy could not be loaded. TypeError: Failed to fetch dynamically imported module: https://localhost:8081/src/legacy/legacy-experience.ts",
+        "args": [
+          "\"[My Legacy] My Legacy could not be loaded.\"",
+          "{\"name\":\"TypeError\"}"
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/src/crownfall-system.ts",
+        "kind": "console",
+        "lineNumber": 435,
+        "url": "https://localhost:8081/src/crownfall-system.ts"
+      },
+      {
+        "timestamp": 1793357009116,
+        "level": "warn",
+        "message": "THREE.WebGLRenderer: Can't change size while VR device is presenting.",
+        "args": [
+          "\"THREE.WebGLRenderer: Can't change size while VR device is presenting.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "repeatCount": 3
+      },
+      {
+        "timestamp": 1793357009551,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793357010132,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793357010995,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357015883,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357015889,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357019502,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793357019905,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793357020645,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357025538,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357025539,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357099073,
+        "level": "warn",
+        "message": "THREE.WebGLRenderer: Can't change size while VR device is presenting.",
+        "args": [
+          "\"THREE.WebGLRenderer: Can't change size while VR device is presenting.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357101210,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793357101663,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793357102757,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357107078,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357107079,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357199633,
+        "level": "warn",
+        "message": "THREE.WebGLRenderer: Can't change size while VR device is presenting.",
+        "args": [
+          "\"THREE.WebGLRenderer: Can't change size while VR device is presenting.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357201615,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793357202224,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793357203067,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357207804,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357207804,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357338119,
+        "level": "warn",
+        "message": "THREE.WebGLRenderer: Can't change size while VR device is presenting.",
+        "args": [
+          "\"THREE.WebGLRenderer: Can't change size while VR device is presenting.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "repeatCount": 3
+      },
+      {
+        "timestamp": 1793357340154,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793357340772,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793357341861,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357346074,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357346075,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357405047,
+        "level": "error",
+        "message": "GET https://localhost:8081/src/legacy/legacy-experience.ts: net::ERR_FAILED",
+        "args": [
+          "GET https://localhost:8081/src/legacy/legacy-experience.ts: net::ERR_FAILED"
+        ],
+        "failure": "net::ERR_FAILED",
+        "frameUrl": "https://localhost:8081/",
+        "kind": "requestfailed",
+        "method": "GET",
+        "resourceType": "script",
+        "url": "https://localhost:8081/src/legacy/legacy-experience.ts"
+      },
+      {
+        "timestamp": 1793357405047,
+        "level": "error",
+        "message": "Failed to load resource: net::ERR_FAILED",
+        "args": [
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "columnNumber": 0,
+        "frameUrl": "https://localhost:8081/src/legacy/legacy-experience.ts",
+        "kind": "console",
+        "lineNumber": 0,
+        "url": "https://localhost:8081/src/legacy/legacy-experience.ts"
+      },
+      {
+        "timestamp": 1793357496635,
+        "level": "warn",
+        "message": "THREE.WebGLRenderer: Can't change size while VR device is presenting.",
+        "args": [
+          "\"THREE.WebGLRenderer: Can't change size while VR device is presenting.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "repeatCount": 3
+      },
+      {
+        "timestamp": 1793357497164,
+        "level": "info",
+        "message": "Frame navigated: https://localhost:8081/",
+        "args": [
+          "Frame navigated: https://localhost:8081/"
+        ],
+        "frameUrl": "https://localhost:8081/",
+        "kind": "navigation",
+        "url": "https://localhost:8081/"
+      },
+      {
+        "timestamp": 1793357497682,
+        "level": "log",
+        "message": "[IWSDK Dev] Configuration: {device: metaQuest3, activation: localhost, verbose: false, sem: null, ai: null}",
+        "args": [
+          "\"[IWSDK Dev] Configuration:\"",
+          "{\"device\":\"metaQuest3\",\"activation\":\"localhost\",\"verbose\":false,\"sem\":null,\"ai\":null,\"workspace\":{\"enabled\":true,\"open\":true,\"headless\":true,\"devUI\":true,\"browserAutomation\":true,\"viewport\":null,\"screenshotSize\":{\"width\":800,\"height\":800}},\"userAgentException\":\"/OculusBrowser/\",\"iwer\":true,\"nativeXRControl\":false}"
+        ],
+        "columnNumber": 1084215,
+        "frameUrl": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js",
+        "kind": "console",
+        "lineNumber": 983,
+        "url": "https://localhost:8081/@id/__x00__virtual:iwsdk-dev-runtime/chunks/injection-template-0HSd4CcE.js"
+      },
+      {
+        "timestamp": 1793357498435,
+        "level": "log",
+        "message": "                                                 \n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \n===============================================\nImmersive Web SDK v1.1.0-rc.2\nThree.js r185\nEliCS v3.4.2",
+        "args": [
+          "\"                                                 \\n▄▄▄▄▄▄  ▄▄      ▄▄   ▄▄▄▄    ▄▄▄▄▄     ▄▄   ▄▄▄ \\n▀▀██▀▀  ██      ██ ▄█▀▀▀▀█   ██▀▀▀██   ██  ██▀  \\n  ██    ▀█▄ ██ ▄█▀ ██▄       ██    ██  ██▄██    \\n  ██     ██ ██ ██   ▀████▄   ██    ██  █████    \\n  ██     ███▀▀███       ▀██  ██    ██  ██  ██▄  \\n▄▄██▄▄   ███  ███  █▄▄▄▄▄█▀  ██▄▄▄██   ██   ██▄ \\n▀▀▀▀▀▀   ▀▀▀  ▀▀▀   ▀▀▀▀▀    ▀▀▀▀▀     ▀▀    ▀▀                                                \\n===============================================\\nImmersive Web SDK v1.1.0-rc.2\\nThree.js r185\\nEliCS v3.4.2\""
+        ],
+        "columnNumber": 8,
+        "frameUrl": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 122,
+        "url": "https://localhost:8081/node_modules/@iwsdk/core/dist/index.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357502596,
+        "level": "warn",
+        "message": "THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.",
+        "args": [
+          "\"THREE.Matrix3: .translate() is deprecated. Use .makeTranslation() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357502596,
+        "level": "warn",
+        "message": "THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.",
+        "args": [
+          "\"THREE.Matrix3: .scale() is deprecated. Use .makeScale() instead.\""
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f",
+        "kind": "console",
+        "lineNumber": 296,
+        "url": "https://localhost:8081/node_modules/.vite/deps/chunk-WNIOHBZ6.js?v=3595429f"
+      },
+      {
+        "timestamp": 1793357568303,
+        "level": "error",
+        "message": "GET https://localhost:8081/src/legacy/legacy-experience.ts: net::ERR_FAILED",
+        "args": [
+          "GET https://localhost:8081/src/legacy/legacy-experience.ts: net::ERR_FAILED"
+        ],
+        "failure": "net::ERR_FAILED",
+        "frameUrl": "https://localhost:8081/",
+        "kind": "requestfailed",
+        "method": "GET",
+        "resourceType": "script",
+        "url": "https://localhost:8081/src/legacy/legacy-experience.ts"
+      },
+      {
+        "timestamp": 1793357568303,
+        "level": "error",
+        "message": "Failed to load resource: net::ERR_FAILED",
+        "args": [
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "columnNumber": 0,
+        "frameUrl": "https://localhost:8081/src/legacy/legacy-experience.ts",
+        "kind": "console",
+        "lineNumber": 0,
+        "url": "https://localhost:8081/src/legacy/legacy-experience.ts"
+      },
+      {
+        "timestamp": 1793357576365,
+        "level": "error",
+        "message": "[My Legacy] My Legacy could not be loaded. TypeError: Failed to fetch dynamically imported module: https://localhost:8081/src/legacy/legacy-experience.ts",
+        "args": [
+          "\"[My Legacy] My Legacy could not be loaded.\"",
+          "{\"name\":\"TypeError\"}"
+        ],
+        "columnNumber": 14,
+        "frameUrl": "https://localhost:8081/src/crownfall-system.ts",
+        "kind": "console",
+        "lineNumber": 435,
+        "url": "https://localhost:8081/src/crownfall-system.ts"
+      }
+    ]
+  }
+}
